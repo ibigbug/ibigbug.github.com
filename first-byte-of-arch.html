@@ -3,81 +3,76 @@
     <head>
         <meta charset="UTF-8">
         <title>
-arch试用手记
-||我是巴弟</title>
+arch试用手记 -
+ 8D is Here</title>
         <meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1">
-        <link media="all" rel="stylesheet" href="/static/css/layout.css" type="text/css" />
-        <script src="/static/js/jquery.js" type="text/javascript"></script>
-        <script type="text/javascript">
-            $(document).ready(function(){
-                $('.nav-home').addClass('current');
-            });
-        </script>
+        <link media="all" rel="stylesheet" href="/static/default/css/reset.css" type="text/css" />
+        <link media="all" rel="stylesheet" href="/static/default/css/typo.css" type="text/css" />
+        <link media="all" rel="stylesheet" href="/static/default/css/style.css" type="text/css" />
     </head>
     <body>
         <header id="header">
+            <h1 class="brand"><a href="/">8D is Here</a></h1>
             <nav id="nav">
-                <ul>
-                    <li>
+                <ul class="fn-clear">
+                    <li class="fn-left">
                     <a class="nav-home" href="/">Home</a>
                     </li>
                     
-                    <li>
-                    <a class="nav-Work" href="/Work">Work</a>
+                    <li class="fn-left">
+                    <a class="nav-work" href="/work">Work</a>
                     </li>
                     
-                    <li>
+                    <li class="fn-left">
                     <a href="/feed.xml">Feed</a>
                     </li>
                 </ul>
             </nav>
         </header>
-        <div class="wrap">
+        <div class="wrap typo">
             
 <div class="entry">
     <h1 class="entry-title"><a href="/first-byte-of-arch.html">arch试用手记</a></h1>
-    <div class="entry-meta">
+    <small class="entry-meta">
         Published on
         <time datetime="2012-10-21">2012-10-21</time>
-        in <a href="/Work">Work</a>
-    </div>
+        
+        in <a href="/work">Work</a>
+        
+    </small>
     <div class="entry-content">
-        <p>前段时间装了Arch，用了大概一周多了吧。   </p>
-<p>从接触linux到现在大概也算是有几年时间了，之前一直在用ubuntu，其间也尝试过cent啊，arch啊，gentoo啊，但都没有持久。因为受到了windows的影响吧。是从ubuntu里面慢慢熟悉了linux，才逐渐拜托了对windows的依赖（话说ubuntu可真是windows用户通向linux的一根非常平滑的管道）。    </p>
-<p>记得第一次装arch的时候内心是有一种恐惧感的，虽然当时还有安装脚本。现在的安装步骤看起来变得繁琐了，不过我更喜欢现在的安装过程，因为既不像gentoo那样费时费力，又不像windows或者ubuntu那样简单无脑。其实在安装之前就就对arch有一份好感，正式见面之后便深深的喜欢上了它。还是简单记录一下安装步骤吧。    </p>
-<p>我选择的是光盘安装：    </p>
+        <p>前段时间装了Arch，用了大概一周多了吧。</p>
+<p>从接触linux到现在大概也算是有几年时间了，之前一直在用ubuntu，其间也尝试过cent啊，arch啊，gentoo啊，但都没有持久。因为受到了windows的影响吧。是从ubuntu里面慢慢熟悉了linux，才逐渐拜托了对windows的依赖（话说ubuntu可真是windows用户通向linux的一根非常平滑的管道）。</p>
+<p>记得第一次装arch的时候内心是有一种恐惧感的，虽然当时还有安装脚本。现在的安装步骤看起来变得繁琐了，不过我更喜欢现在的安装过程，因为既不像gentoo那样费时费力，又不像windows或者ubuntu那样简单无脑。其实在安装之前就就对arch有一份好感，正式见面之后便深深的喜欢上了它。还是简单记录一下安装步骤吧。</p>
+<p>我选择的是光盘安装：</p>
 <ol>
 <li>
 <h6>备份</h6>
-</li>
-</ol>
 <p>这个不用多说吧</p>
-<ol>
+</li>
 <li>
 <h6>制作启动盘</h6>
-</li>
-</ol>
 <p>下载那个几百兆的iso，刻到光盘就好了。如果没有光驱，也可以写进U盘。顺便抱怨一下我的人品：在windows里面用了N种XXX写入工具做的引导盘都有各种问题不能启动，最后还是被迫装了cgywin用dd写进去的。</p>
-<ol>
+</li>
 <li>
 <h6>安装</h6>
-</li>
-</ol>
 <p>#vi install.txt即可。</p>
 <p>如果你不知道之后做什么，那么建议你暂时先不要用arch。</p>
 <p>当你执行arch-chroot的时候，那么恭喜你已经完成了arch的安装。紧接着你可以修改pacman的mirrorlist，选择你网络环境下速度最快的源。</p>
 <p>接下来还有一些收尾工作。</p>
-<ol>
+</li>
 <li>
 <h6>收尾</h6>
+<ul>
+<li>
+<p>安装引导</p>
+<p>我选的是grub2，因为毕竟熟悉一些。不过有一点，装好了grub之后默认是只能识别arch操作系统的。如果你的硬盘上有windows 7等其他系   统，那么推荐你安装一个叫做os-prober的东西，可以节省手动写配置文件的时间。</p>
 </li>
 <li>
-<p>安装引导
-我选的是grub2，因为毕竟熟悉一些。不过有一点，装好了grub之后默认是只能识别arch操作系统的。如果你的硬盘上有windows 7等其他系   统，那么推荐你安装一个叫做os-prober的东西，可以节省手动写配置文件的时间。</p>
+<p>其他</p>
+<p>安装完引导之后，你就可以不用引导盘直接启动硬盘上的arch了。至于其他的一些本地化啊、图形啊、声音之类的配置就自由选择了。这里顺便强力推荐一个叫做“下拉式终端”的东西。</p>
 </li>
-<li>
-<p>其他
-安装完引导之后，你就可以不用引导盘直接启动硬盘上的arch了。至于其他的一些本地化啊、图形啊、声音之类的配置就自由选择了。这里顺便强力推荐一个叫做“下拉式终端”的东西。</p>
+</ul>
 </li>
 </ol>
 <p>下面谈一谈接触arch不长时间的感受吧。</p>
@@ -88,12 +83,16 @@ arch试用手记
 <p>正如我一直想追求的：keep is simple，stupid。</p>
     </div>
     <div class="entry-meta fn-clear">
-        
-        没有上一篇了...
-        
-        
-        没有下一篇了...
-        
+        <span class="fn-left">
+            
+            没有上一篇了...
+            
+        </span>
+        <span class="fn-right">
+            
+            没有下一篇了...
+            
+        </span>
     </div>
     
     <div id="disqus_thread"></div>
@@ -101,17 +100,18 @@ arch试用手记
         var disqus_shortname = 'heheblog';
         var disqus_title = 'arch试用手记';
         (function() {
-        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
-        dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
-        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+            var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+            dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
         })();
     </script>
     
 </div>
 
+            <div class="end">&#10084;</div>
         </div>
         <footer id="footer">
-            <p>Copyright by <a class="copyright" href="http://ibigbug.github.com">我是巴弟</a> | Powered by <a href="https://github.com/ibigbug/sblog">SBlog</a></p>
+            <small>Copyright by <a class="copyright" href="http://ibigbug.github.com">8D IS HERE</a> | Powered by <a href="https://github.com/ibigbug/sblog">SBlog</a></small>
         </footer>
         
         <script type="text/javascript">
@@ -125,5 +125,7 @@ arch试用手记
             })();
         </script>
         
+        <link href='http://fonts.googleapis.com/css?family=Strait&subset=latin,cyrillic' rel='stylesheet' type='text/css'>
+
     </body>
 </html>

@@ -1,54 +1,53 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
-    <title>我是巴弟</title>
+    <title>8D is Here</title>
     <link href="http://ibigbug.github.com" />
-    <updated>2012-11-26T02:08:46Z</updated>
+    <updated>2012-11-26T23:51:33Z</updated>
     <id>http://ibigbug.github.com</id>
+    
+    
+    
     
     <entry>
         <title type="html"><![CDATA[arch试用手记]]></title>
         <author><name>xiaoba</name><uri>http://ibigbug.github.com</uri></author>
         <link href="http://ibigbug.github.com/first-byte-of-arch.html"/>
-        <updated>2012-11-26T02:08:46Z</updated>
-        <published>2012-11-26T02:08:46Z</published>
+        <updated>2012-11-26T23:51:33Z</updated>
+        <published>2012-11-26T23:51:33Z</published>
         <id>http://ibigbug.github.com/first-byte-of-arch.html</id>
         <content type="html" xml:base="None" xml:lang="en">
-            <![CDATA[ <p>前段时间装了Arch，用了大概一周多了吧。   </p>
-<p>从接触linux到现在大概也算是有几年时间了，之前一直在用ubuntu，其间也尝试过cent啊，arch啊，gentoo啊，但都没有持久。因为受到了windows的影响吧。是从ubuntu里面慢慢熟悉了linux，才逐渐拜托了对windows的依赖（话说ubuntu可真是windows用户通向linux的一根非常平滑的管道）。    </p>
-<p>记得第一次装arch的时候内心是有一种恐惧感的，虽然当时还有安装脚本。现在的安装步骤看起来变得繁琐了，不过我更喜欢现在的安装过程，因为既不像gentoo那样费时费力，又不像windows或者ubuntu那样简单无脑。其实在安装之前就就对arch有一份好感，正式见面之后便深深的喜欢上了它。还是简单记录一下安装步骤吧。    </p>
-<p>我选择的是光盘安装：    </p>
+            <![CDATA[ <p>前段时间装了Arch，用了大概一周多了吧。</p>
+<p>从接触linux到现在大概也算是有几年时间了，之前一直在用ubuntu，其间也尝试过cent啊，arch啊，gentoo啊，但都没有持久。因为受到了windows的影响吧。是从ubuntu里面慢慢熟悉了linux，才逐渐拜托了对windows的依赖（话说ubuntu可真是windows用户通向linux的一根非常平滑的管道）。</p>
+<p>记得第一次装arch的时候内心是有一种恐惧感的，虽然当时还有安装脚本。现在的安装步骤看起来变得繁琐了，不过我更喜欢现在的安装过程，因为既不像gentoo那样费时费力，又不像windows或者ubuntu那样简单无脑。其实在安装之前就就对arch有一份好感，正式见面之后便深深的喜欢上了它。还是简单记录一下安装步骤吧。</p>
+<p>我选择的是光盘安装：</p>
 <ol>
 <li>
 <h6>备份</h6>
-</li>
-</ol>
 <p>这个不用多说吧</p>
-<ol>
+</li>
 <li>
 <h6>制作启动盘</h6>
-</li>
-</ol>
 <p>下载那个几百兆的iso，刻到光盘就好了。如果没有光驱，也可以写进U盘。顺便抱怨一下我的人品：在windows里面用了N种XXX写入工具做的引导盘都有各种问题不能启动，最后还是被迫装了cgywin用dd写进去的。</p>
-<ol>
+</li>
 <li>
 <h6>安装</h6>
-</li>
-</ol>
 <p>#vi install.txt即可。</p>
 <p>如果你不知道之后做什么，那么建议你暂时先不要用arch。</p>
 <p>当你执行arch-chroot的时候，那么恭喜你已经完成了arch的安装。紧接着你可以修改pacman的mirrorlist，选择你网络环境下速度最快的源。</p>
 <p>接下来还有一些收尾工作。</p>
-<ol>
+</li>
 <li>
 <h6>收尾</h6>
+<ul>
+<li>
+<p>安装引导</p>
+<p>我选的是grub2，因为毕竟熟悉一些。不过有一点，装好了grub之后默认是只能识别arch操作系统的。如果你的硬盘上有windows 7等其他系   统，那么推荐你安装一个叫做os-prober的东西，可以节省手动写配置文件的时间。</p>
 </li>
 <li>
-<p>安装引导
-我选的是grub2，因为毕竟熟悉一些。不过有一点，装好了grub之后默认是只能识别arch操作系统的。如果你的硬盘上有windows 7等其他系   统，那么推荐你安装一个叫做os-prober的东西，可以节省手动写配置文件的时间。</p>
+<p>其他</p>
+<p>安装完引导之后，你就可以不用引导盘直接启动硬盘上的arch了。至于其他的一些本地化啊、图形啊、声音之类的配置就自由选择了。这里顺便强力推荐一个叫做“下拉式终端”的东西。</p>
 </li>
-<li>
-<p>其他
-安装完引导之后，你就可以不用引导盘直接启动硬盘上的arch了。至于其他的一些本地化啊、图形啊、声音之类的配置就自由选择了。这里顺便强力推荐一个叫做“下拉式终端”的东西。</p>
+</ul>
 </li>
 </ol>
 <p>下面谈一谈接触arch不长时间的感受吧。</p>
@@ -59,5 +58,6 @@
 <p>正如我一直想追求的：keep is simple，stupid。</p> ]]>
         </content>
     </entry>
+    
     
 </feed>
