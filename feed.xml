@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <title>8D is Here</title>
     <link href="http://ibigbug.github.com" />
-    <updated>2012-11-27T00:09:07Z</updated>
+    <updated>2012-11-27T00:19:02Z</updated>
     <id>http://ibigbug.github.com</id>
     
     
@@ -12,8 +12,8 @@
         <title type="html"><![CDATA[arch试用手记]]></title>
         <author><name>xiaoba</name><uri>http://ibigbug.github.com</uri></author>
         <link href="http://ibigbug.github.com/first-byte-of-arch.html"/>
-        <updated>2012-11-27T00:09:07Z</updated>
-        <published>2012-11-27T00:09:07Z</published>
+        <updated>2012-11-27T00:19:02Z</updated>
+        <published>2012-11-27T00:19:02Z</published>
         <id>http://ibigbug.github.com/first-byte-of-arch.html</id>
         <content type="html" xml:base="None" xml:lang="en">
             <![CDATA[ <p>前段时间装了Arch，用了大概一周多了吧。</p>
@@ -65,8 +65,8 @@
         <title type="html"><![CDATA[梦蝶]]></title>
         <author><name>xiaoba</name><uri>http://ibigbug.github.com</uri></author>
         <link href="http://ibigbug.github.com/mengdie-say-byebye.html"/>
-        <updated>2012-11-27T00:09:07Z</updated>
-        <published>2012-11-27T00:09:07Z</published>
+        <updated>2012-11-27T00:19:02Z</updated>
+        <published>2012-11-27T00:19:02Z</published>
         <id>http://ibigbug.github.com/mengdie-say-byebye.html</id>
         <content type="html" xml:base="None" xml:lang="en">
             <![CDATA[ <p>在新图自习完毕,听说今晚两个中心总监换届,比平时早一个小时去办公室开部长会,半路一碗炒粉是晚餐.</p>
@@ -87,8 +87,8 @@
         <title type="html"><![CDATA[大二下]]></title>
         <author><name>xiaoba</name><uri>http://ibigbug.github.com</uri></author>
         <link href="http://ibigbug.github.com/grade2-2nd-term.html"/>
-        <updated>2012-11-27T00:09:07Z</updated>
-        <published>2012-11-27T00:09:07Z</published>
+        <updated>2012-11-27T00:19:02Z</updated>
+        <published>2012-11-27T00:19:02Z</published>
         <id>http://ibigbug.github.com/grade2-2nd-term.html</id>
         <content type="html" xml:base="None" xml:lang="en">
             <![CDATA[ <p>考完了大二下的最后一门，真是虚成狗了。昨晚看了一晚，趴了1个小时直接去考场——已经不知道第几次通宵复习了。</p>
@@ -108,8 +108,8 @@
         <title type="html"><![CDATA[轉眼已過好多年]]></title>
         <author><name>xiaoba</name><uri>http://ibigbug.github.com</uri></author>
         <link href="http://ibigbug.github.com/memory.html"/>
-        <updated>2012-11-27T00:09:07Z</updated>
-        <published>2012-11-27T00:09:07Z</published>
+        <updated>2012-11-27T00:19:02Z</updated>
+        <published>2012-11-27T00:19:02Z</published>
         <id>http://ibigbug.github.com/memory.html</id>
         <content type="html" xml:base="None" xml:lang="en">
             <![CDATA[ <p>這一次高中班聚人數明顯少了許多，不知道下一次，下下次如何。</p>
