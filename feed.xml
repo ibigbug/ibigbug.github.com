@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <title>8D is Here</title>
     <link href="http://ibigbug.github.com" />
-    <updated>2012-11-27T00:19:02Z</updated>
+    <updated>2012-11-27T01:23:08Z</updated>
     <id>http://ibigbug.github.com</id>
     
     
@@ -12,8 +12,8 @@
         <title type="html"><![CDATA[arch试用手记]]></title>
         <author><name>xiaoba</name><uri>http://ibigbug.github.com</uri></author>
         <link href="http://ibigbug.github.com/first-byte-of-arch.html"/>
-        <updated>2012-11-27T00:19:02Z</updated>
-        <published>2012-11-27T00:19:02Z</published>
+        <updated>2012-11-27T01:23:08Z</updated>
+        <published>2012-11-27T01:23:08Z</published>
         <id>http://ibigbug.github.com/first-byte-of-arch.html</id>
         <content type="html" xml:base="None" xml:lang="en">
             <![CDATA[ <p>前段时间装了Arch，用了大概一周多了吧。</p>
@@ -65,8 +65,8 @@
         <title type="html"><![CDATA[梦蝶]]></title>
         <author><name>xiaoba</name><uri>http://ibigbug.github.com</uri></author>
         <link href="http://ibigbug.github.com/mengdie-say-byebye.html"/>
-        <updated>2012-11-27T00:19:02Z</updated>
-        <published>2012-11-27T00:19:02Z</published>
+        <updated>2012-11-27T01:23:08Z</updated>
+        <published>2012-11-27T01:23:08Z</published>
         <id>http://ibigbug.github.com/mengdie-say-byebye.html</id>
         <content type="html" xml:base="None" xml:lang="en">
             <![CDATA[ <p>在新图自习完毕,听说今晚两个中心总监换届,比平时早一个小时去办公室开部长会,半路一碗炒粉是晚餐.</p>
@@ -87,8 +87,8 @@
         <title type="html"><![CDATA[大二下]]></title>
         <author><name>xiaoba</name><uri>http://ibigbug.github.com</uri></author>
         <link href="http://ibigbug.github.com/grade2-2nd-term.html"/>
-        <updated>2012-11-27T00:19:02Z</updated>
-        <published>2012-11-27T00:19:02Z</published>
+        <updated>2012-11-27T01:23:08Z</updated>
+        <published>2012-11-27T01:23:08Z</published>
         <id>http://ibigbug.github.com/grade2-2nd-term.html</id>
         <content type="html" xml:base="None" xml:lang="en">
             <![CDATA[ <p>考完了大二下的最后一门，真是虚成狗了。昨晚看了一晚，趴了1个小时直接去考场——已经不知道第几次通宵复习了。</p>
@@ -108,8 +108,8 @@
         <title type="html"><![CDATA[轉眼已過好多年]]></title>
         <author><name>xiaoba</name><uri>http://ibigbug.github.com</uri></author>
         <link href="http://ibigbug.github.com/memory.html"/>
-        <updated>2012-11-27T00:19:02Z</updated>
-        <published>2012-11-27T00:19:02Z</published>
+        <updated>2012-11-27T01:23:08Z</updated>
+        <published>2012-11-27T01:23:08Z</published>
         <id>http://ibigbug.github.com/memory.html</id>
         <content type="html" xml:base="None" xml:lang="en">
             <![CDATA[ <p>這一次高中班聚人數明顯少了許多，不知道下一次，下下次如何。</p>
@@ -181,6 +181,38 @@
 <p>然而，這個已經不重要了。</p>
 <p>不是後記：</p>
 <p>由于最近情緒比較低落（一年前的我一定會用蛋疼來形容的），就寫了這一段既不普通，又不文藝的文字。用來記錄下那一些怕被忘掉的故事。我一直覺得平時我是一個比較二逼的人，沒輕沒重沒心沒肺的。但是改不了的就是這個喜歡蛋疼的習慣。不是放不下，而是不舍得放下。</p> ]]>
+        </content>
+    </entry>
+    
+    
+    
+    <entry>
+        <title type="html"><![CDATA[疯子哥再见]]></title>
+        <author><name>xiaoba</name><uri>http://ibigbug.github.com</uri></author>
+        <link href="http://ibigbug.github.com/andy-say-byebye.html"/>
+        <updated>2012-11-27T01:23:08Z</updated>
+        <published>2012-11-27T01:23:08Z</published>
+        <id>http://ibigbug.github.com/andy-say-byebye.html</id>
+        <content type="html" xml:base="None" xml:lang="en">
+            <![CDATA[ <p>疯子哥今天出发了，离开了他热爱的城市，留恋的亲人朋友，乘坐搭载着充满期待和未知的航班，开始一段新的旅程。</p>
+<blockquote>
+<p>“年轻在于折腾”。</p>
+</blockquote>
+<p>一切顺利。</p>
+<p>算起来来武大有一年半了，不过与疯子哥一起玩的时间不多，毕竟大我两届，但是可以说他是对我大学生活帮助和影响最大的人之一。</p>
+<p>要是没有认识疯子哥，就没有bayuwei2010–8GE_EB–fkbyw–lovebyw-ibigbug。</p>
+<p>要是没有认识疯子哥，转院到电气的决定说不定还要犹豫一下。</p>
+<p>要是没有认识疯子哥，即使加入了网络部也一定会跟现在有很大的不同。</p>
+<p>疯子哥是我来学校之后认识的第一位学长，第一次在阿里巴见面的时候好紧张好不安啊，以至于都没记住他长什么样，就记住他那看起来蛮Geek的发型，于是理发一直短平快的也想留跟他一样的发型。记得那天刚刚听完校会宣讲就急忙跑去阿里巴，目测还是让一哥跟疯子哥等了好久。当时说的什么也记不大清了，只记得后来加了自强技术中心还是疯子哥给的建议。至于自强对我的意义，那就是另外的故事了。</p>
+<p>大一下学期辗转反侧机缘巧合我来到了电气院，成了疯子哥的直系学弟。虽然心里非常舍不得在物院的兄弟朋友们，但是想到在电气我还认识疯子哥，也就不至于感到那么孤独和无助了。记得当时想急需一位老师的号码，于是想起了疯子哥，果然不一会就拿到了。后来一遇到什么解决不了的麻烦就习惯性的想起了疯子哥，什么电脑坏了啊，实验报告啊，包括后来生活感情问题。都给你添了许多麻烦呢。</p>
+<p>转眼来到电气也有一年时间了。虽然我来网络部时候你已经退休了，但是有困难的时候你依然会毫不保留的伸出援助之手。</p>
+<p>可以说没有crazyandytk，就没有现在的ibigbug。</p>
+<p>不过你走之前没请客= =！等明年毕业典礼时候你回来再见吧。</p>
+<p>再过一年，Daniel也要走了，然后是Sigma，都是一走之后就不知几年还能再见或者再也不见，但是这些记忆我会一生都记住，感谢你们陪我一起走过。夜蚊子应该不会走吧？要是搞网站的话别忘了叫我帮你测试安全漏洞哦。</p>
+<p>看Latitude疯子哥已经不在中国大陆境内了吧，一路保重。</p>
+<p>好好学习~</p>
+<p>天天开心~</p>
+<p>嘻嘻！</p> ]]>
         </content>
     </entry>
     
