@@ -1,23 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
     <title>8D is Here</title>
-    <link href="http://ibigbug.github.com" />
-    <updated>2012-11-27T01:23:08Z</updated>
-    <id>http://ibigbug.github.com</id>
+    <link href="http://blog.xiaoba.me" />
+    <updated>2012-11-27T01:31:02Z</updated>
+    <id>http://blog.xiaoba.me</id>
     
     
     
     
     <entry>
         <title type="html"><![CDATA[arch试用手记]]></title>
-        <author><name>xiaoba</name><uri>http://ibigbug.github.com</uri></author>
-        <link href="http://ibigbug.github.com/first-byte-of-arch.html"/>
-        <updated>2012-11-27T01:23:08Z</updated>
-        <published>2012-11-27T01:23:08Z</published>
-        <id>http://ibigbug.github.com/first-byte-of-arch.html</id>
+        <author><name>xiaoba</name><uri>http://blog.xiaoba.me</uri></author>
+        <link href="http://blog.xiaoba.me/first-byte-of-arch.html"/>
+        <updated>2012-11-27T01:31:02Z</updated>
+        <published>2012-11-27T01:31:02Z</published>
+        <id>http://blog.xiaoba.me/first-byte-of-arch.html</id>
         <content type="html" xml:base="None" xml:lang="en">
             <![CDATA[ <p>前段时间装了Arch，用了大概一周多了吧。</p>
-doubanclaim678ed9a3db431b5a
 <p>从接触linux到现在大概也算是有几年时间了，之前一直在用ubuntu，其间也尝试过cent啊，arch啊，gentoo啊，但都没有持久。因为受到了windows的影响吧。是从ubuntu里面慢慢熟悉了linux，才逐渐拜托了对windows的依赖（话说ubuntu可真是windows用户通向linux的一根非常平滑的管道）。</p>
 <p>记得第一次装arch的时候内心是有一种恐惧感的，虽然当时还有安装脚本。现在的安装步骤看起来变得繁琐了，不过我更喜欢现在的安装过程，因为既不像gentoo那样费时费力，又不像windows或者ubuntu那样简单无脑。其实在安装之前就就对arch有一份好感，正式见面之后便深深的喜欢上了它。还是简单记录一下安装步骤吧。</p>
 <p>我选择的是光盘安装：</p>
@@ -64,11 +63,11 @@ doubanclaim678ed9a3db431b5a
     
     <entry>
         <title type="html"><![CDATA[梦蝶]]></title>
-        <author><name>xiaoba</name><uri>http://ibigbug.github.com</uri></author>
-        <link href="http://ibigbug.github.com/mengdie-say-byebye.html"/>
-        <updated>2012-11-27T01:23:08Z</updated>
-        <published>2012-11-27T01:23:08Z</published>
-        <id>http://ibigbug.github.com/mengdie-say-byebye.html</id>
+        <author><name>xiaoba</name><uri>http://blog.xiaoba.me</uri></author>
+        <link href="http://blog.xiaoba.me/mengdie-say-byebye.html"/>
+        <updated>2012-11-27T01:31:02Z</updated>
+        <published>2012-11-27T01:31:02Z</published>
+        <id>http://blog.xiaoba.me/mengdie-say-byebye.html</id>
         <content type="html" xml:base="None" xml:lang="en">
             <![CDATA[ <p>在新图自习完毕,听说今晚两个中心总监换届,比平时早一个小时去办公室开部长会,半路一碗炒粉是晚餐.</p>
 <p>来到网站,二会竟然因为拿不到钥匙没开门,于是十几位部长总监挤在小小的办公室里,见证两位总监的离去,当然,还有两位新生代的出现为两大中心注入新鲜的活力.</p>
@@ -86,11 +85,11 @@ doubanclaim678ed9a3db431b5a
     
     <entry>
         <title type="html"><![CDATA[大二下]]></title>
-        <author><name>xiaoba</name><uri>http://ibigbug.github.com</uri></author>
-        <link href="http://ibigbug.github.com/grade2-2nd-term.html"/>
-        <updated>2012-11-27T01:23:08Z</updated>
-        <published>2012-11-27T01:23:08Z</published>
-        <id>http://ibigbug.github.com/grade2-2nd-term.html</id>
+        <author><name>xiaoba</name><uri>http://blog.xiaoba.me</uri></author>
+        <link href="http://blog.xiaoba.me/grade2-2nd-term.html"/>
+        <updated>2012-11-27T01:31:02Z</updated>
+        <published>2012-11-27T01:31:02Z</published>
+        <id>http://blog.xiaoba.me/grade2-2nd-term.html</id>
         <content type="html" xml:base="None" xml:lang="en">
             <![CDATA[ <p>考完了大二下的最后一门，真是虚成狗了。昨晚看了一晚，趴了1个小时直接去考场——已经不知道第几次通宵复习了。</p>
 <p>交完卷出来，不知道是累还是困还是饿，反正就不是舒服的感觉。估计考研的感觉也就这B样吧，提前适应下子也好。</p>
@@ -107,11 +106,11 @@ doubanclaim678ed9a3db431b5a
     
     <entry>
         <title type="html"><![CDATA[轉眼已過好多年]]></title>
-        <author><name>xiaoba</name><uri>http://ibigbug.github.com</uri></author>
-        <link href="http://ibigbug.github.com/memory.html"/>
-        <updated>2012-11-27T01:23:08Z</updated>
-        <published>2012-11-27T01:23:08Z</published>
-        <id>http://ibigbug.github.com/memory.html</id>
+        <author><name>xiaoba</name><uri>http://blog.xiaoba.me</uri></author>
+        <link href="http://blog.xiaoba.me/memory.html"/>
+        <updated>2012-11-27T01:31:02Z</updated>
+        <published>2012-11-27T01:31:02Z</published>
+        <id>http://blog.xiaoba.me/memory.html</id>
         <content type="html" xml:base="None" xml:lang="en">
             <![CDATA[ <p>這一次高中班聚人數明顯少了許多，不知道下一次，下下次如何。</p>
 <p>畢業了之後，即便是當初最親近的人如軟哥，小黑，還有所有的室友也只能一年見一兩次也就知足了。</p>
@@ -189,11 +188,11 @@ doubanclaim678ed9a3db431b5a
     
     <entry>
         <title type="html"><![CDATA[疯子哥再见]]></title>
-        <author><name>xiaoba</name><uri>http://ibigbug.github.com</uri></author>
-        <link href="http://ibigbug.github.com/andy-say-byebye.html"/>
-        <updated>2012-11-27T01:23:08Z</updated>
-        <published>2012-11-27T01:23:08Z</published>
-        <id>http://ibigbug.github.com/andy-say-byebye.html</id>
+        <author><name>xiaoba</name><uri>http://blog.xiaoba.me</uri></author>
+        <link href="http://blog.xiaoba.me/andy-say-byebye.html"/>
+        <updated>2012-11-27T01:31:02Z</updated>
+        <published>2012-11-27T01:31:02Z</published>
+        <id>http://blog.xiaoba.me/andy-say-byebye.html</id>
         <content type="html" xml:base="None" xml:lang="en">
             <![CDATA[ <p>疯子哥今天出发了，离开了他热爱的城市，留恋的亲人朋友，乘坐搭载着充满期待和未知的航班，开始一段新的旅程。</p>
 <blockquote>
