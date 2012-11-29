@@ -2,9 +2,51 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <title>8D is Here</title>
     <link href="http://blog.xiaoba.me" />
-    <updated>2012-11-28T04:38:56Z</updated>
+    <updated>2012-11-30T03:42:02Z</updated>
     <id>http://blog.xiaoba.me</id>
     
+    
+    
+    
+    <entry>
+        <title type="html"><![CDATA[Run Custom Scripts on boot under Systemd]]></title>
+        <author><name>xiaoba</name><uri>http://blog.xiaoba.me</uri></author>
+        <link href="http://blog.xiaoba.me/run_script_on_boot_under_systemd.html"/>
+        <published>None</published>
+        <id>http://blog.xiaoba.me/run_script_on_boot_under_systemd.html</id>
+        <content type="html" xml:base="None" xml:lang="en">
+            <![CDATA[ <p>As archlinux has replaced <em>initscripts</em> with <em>systemd</em> as default init system and <a href="https://www.archlinux.org/news/end-of-initscripts-support/">will start removing initscripts suppport</a>, I use systemd now.</p>
+<p>To be different from <em>initscripts</em>, <em>rc scripts</em> are no longer available. However it's complicated to write a very  <em>.service</em> boot script for each program. So solusion like this may be useful:</p>
+<ol>
+<li>
+<p>Create a systemd-service-script which start a normal script and run it on boot.</p>
+</li>
+<li>
+<p>You can execute any command via the script mentioned in step 1.</p>
+</li>
+</ol>
+<p>In fact we are emulating the <em>rc.local</em> script which only works under <em>initscripts</em>.</p>
+<p>The demo may look like this:</p>
+<h4>custom.service:</h4>
+<div class="highlight"><pre>[Unit]
+Description=Custom startup-scripts
+
+[Service]
+ExecStart=/usr/bin/systemd_scripts_on_boot
+
+[Install]
+WantedBy=multi-user.target
+</pre></div>
+
+<h4>systemd_scripts_on_boot:</h4>
+<div class="highlight"><pre>#!/bin/bash
+
+EXECUTE YOUR CUSTOM SCRIPT YOU WANT TO RUN ON STARTUP
+</pre></div>
+
+<p>I'm a newbie on linux, systemd and English. Please let me know if any bugs ^^</p> ]]>
+        </content>
+    </entry>
     
     
     
