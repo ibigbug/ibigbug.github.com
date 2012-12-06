@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <title>8D is Here</title>
     <link href="http://blog.xiaoba.me" />
-    <updated>2012-12-07T04:15:45Z</updated>
+    <updated>2012-12-07T04:44:16Z</updated>
     <id>http://blog.xiaoba.me</id>
     
     
@@ -10,7 +10,7 @@
         <title type="html"><![CDATA[A Byte of WSGI]]></title>
         <author><name>xiaoba</name><uri>http://blog.xiaoba.me</uri></author>
         <link href="http://blog.xiaoba.me/wsgi.html"/>
-        <published>None</published>
+        <published>2012-12-07T04:44:16Z</published>
         <id>http://blog.xiaoba.me/wsgi.html</id>
         <content type="html" xml:base="None" xml:lang="en">
             <![CDATA[ <p>If you have ever used some python frameworks like <em>tornado</em>, <em>flask</em>, you may hear about WSGI. But what's this?</p>
@@ -54,7 +54,7 @@
         <title type="html"><![CDATA[Run Custom Scripts on boot under Systemd]]></title>
         <author><name>xiaoba</name><uri>http://blog.xiaoba.me</uri></author>
         <link href="http://blog.xiaoba.me/run_script_on_boot_under_systemd.html"/>
-        <published>None</published>
+        <published>2012-11-09T04:44:16Z</published>
         <id>http://blog.xiaoba.me/run_script_on_boot_under_systemd.html</id>
         <content type="html" xml:base="None" xml:lang="en">
             <![CDATA[ <p>As archlinux has replaced <em>initscripts</em> with <em>systemd</em> as default init system and <a href="https://www.archlinux.org/news/end-of-initscripts-support/">will start removing initscripts suppport</a>, I use systemd now.</p>
@@ -96,7 +96,7 @@ EXECUTE YOUR CUSTOM SCRIPT YOU WANT TO RUN ON STARTUP
         <title type="html"><![CDATA[arch试用手记]]></title>
         <author><name>xiaoba</name><uri>http://blog.xiaoba.me</uri></author>
         <link href="http://blog.xiaoba.me/first-byte-of-arch.html"/>
-        <published>None</published>
+        <published>2012-10-21T04:44:16Z</published>
         <id>http://blog.xiaoba.me/first-byte-of-arch.html</id>
         <content type="html" xml:base="None" xml:lang="en">
             <![CDATA[ <p>前段时间装了Arch，用了大概一周多了吧。</p>
@@ -148,7 +148,7 @@ EXECUTE YOUR CUSTOM SCRIPT YOU WANT TO RUN ON STARTUP
         <title type="html"><![CDATA[大二下]]></title>
         <author><name>xiaoba</name><uri>http://blog.xiaoba.me</uri></author>
         <link href="http://blog.xiaoba.me/grade2-2nd-term.html"/>
-        <published>None</published>
+        <published>2012-06-22T04:44:16Z</published>
         <id>http://blog.xiaoba.me/grade2-2nd-term.html</id>
         <content type="html" xml:base="None" xml:lang="en">
             <![CDATA[ <p>考完了大二下的最后一门，真是虚成狗了。昨晚看了一晚，趴了1个小时直接去考场——已经不知道第几次通宵复习了。</p>
@@ -166,7 +166,7 @@ EXECUTE YOUR CUSTOM SCRIPT YOU WANT TO RUN ON STARTUP
         <title type="html"><![CDATA[轉眼已過好多年]]></title>
         <author><name>xiaoba</name><uri>http://blog.xiaoba.me</uri></author>
         <link href="http://blog.xiaoba.me/memory.html"/>
-        <published>None</published>
+        <published>2012-01-24T04:44:16Z</published>
         <id>http://blog.xiaoba.me/memory.html</id>
         <content type="html" xml:base="None" xml:lang="en">
             <![CDATA[ <p>這一次高中班聚人數明顯少了許多，不知道下一次，下下次如何。</p>
@@ -247,7 +247,7 @@ EXECUTE YOUR CUSTOM SCRIPT YOU WANT TO RUN ON STARTUP
         <title type="html"><![CDATA[疯子哥再见]]></title>
         <author><name>xiaoba</name><uri>http://blog.xiaoba.me</uri></author>
         <link href="http://blog.xiaoba.me/andy-say-byebye.html"/>
-        <published>None</published>
+        <published>2012-01-06T04:44:16Z</published>
         <id>http://blog.xiaoba.me/andy-say-byebye.html</id>
         <content type="html" xml:base="None" xml:lang="en">
             <![CDATA[ <p>疯子哥今天出发了，离开了他热爱的城市，留恋的亲人朋友，乘坐搭载着充满期待和未知的航班，开始一段新的旅程。</p>
@@ -278,7 +278,7 @@ EXECUTE YOUR CUSTOM SCRIPT YOU WANT TO RUN ON STARTUP
         <title type="html"><![CDATA[梦蝶]]></title>
         <author><name>xiaoba</name><uri>http://blog.xiaoba.me</uri></author>
         <link href="http://blog.xiaoba.me/mengdie-say-byebye.html"/>
-        <published>None</published>
+        <published>2011-12-04T04:44:16Z</published>
         <id>http://blog.xiaoba.me/mengdie-say-byebye.html</id>
         <content type="html" xml:base="None" xml:lang="en">
             <![CDATA[ <p>在新图自习完毕,听说今晚两个中心总监换届,比平时早一个小时去办公室开部长会,半路一碗炒粉是晚餐.</p>
