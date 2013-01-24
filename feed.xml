@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <title>8D is Here</title>
     <link href="http://blog.xiaoba.me" />
-    <updated>2013-01-25T03:05:10Z</updated>
+    <updated>2013-01-25T03:09:07Z</updated>
     <id>http://blog.xiaoba.me</id>
     
     
@@ -10,7 +10,7 @@
         <title type="html"><![CDATA[Node.js 和 express.js初体验]]></title>
         <author><name>xiaoba</name><uri>http://blog.xiaoba.me</uri></author>
         <link href="http://blog.xiaoba.me/node-and-express.html"/>
-        <published>2013-01-25T03:05:10Z</published>
+        <published>2013-01-25T03:09:07Z</published>
         <id>http://blog.xiaoba.me/node-and-express.html</id>
         <content type="html" xml:base="None" xml:lang="en">
             <![CDATA[ <p>因为前几天有位朋友分手了,要删掉人人网的所有状态.看他在那一条一条点来点去挺麻烦的,何不写个脚本来自动删呢.于是便有了本文.</p>
@@ -31,7 +31,7 @@
 </li>
 </ol>
 <p>唉写到这里又不免感叹我这个学渣的悲哀TT,可是无论如何,既然生命要继续,我还是要把东西写完.</p>
-<p>Node是什么我就不抄百科了.express就是node平台下面的一个web框架.对应起来就像tornado是python的一个web框架一样.但又不完全等价:因为python是一门语言,而node是一个平台,跑的是喜闻乐见的javascript语言,用的google的V8引擎.</p>
+<p>Node是什么我就不抄百科了.Express就是Node平台下面的一个web框架.对应起来就像Tornado是Python的一个web框架一样.但又不完全等价:因为Python是一门语言,而Node是一个平台,跑的是喜闻乐见的JavaScript语言,用的Google的V8引擎.</p>
 <p>因为Node是以异步出名的,所以刚开始上手的时候真是有点不习惯.比如从数据库读一个User,然后渲染到前台.如果是在python里面,只要依次执行两个函数就好了.可是到这里,我前台页面都渲染完了,控制台显示User还没读出来(当然是夸张了,不过应该是这个道理).没错,要用回调的方式来解决了.至于具体的解决方案和手册教程,网上的前辈们早已总结好了.随便一搜就搜得到.</p>
 <p>对Node大概有个了解之后,就开始之前提到的那个脚本.这里采用了Express.js+jsdom+request三个库来处理,除了jsdom这个库有memory leak的bug之外,这个bug我要mark一下,因为当时是部署到heroku的,采集状态不一会程序就crash了- =.log里面显示的是定位到jsdom那一行内存不足了(开始完全想不到会是这个库的问题,以为Node的性能好差啊,随便写个类爬虫应用就内存不足),后来网上搜了搜,好多人有同样的问题,就是要在jsdom的任务执行完毕之后用<code>window.close()</code>来关掉对应的env(其实看起来也不算是bug了,使用不得当而已),其他过程都问题不大,按照手册按部就班把这个小应用写了出来.放到了鄙人的<a href="https://github.com/ibigbug/nodetest">github</a>上面了.</p>
 <p>不过还是遗留了一个问题就是:目前的状态采集和处理操作是顺序执行的(这个专业词叫什么来着我给搞忘记了),也就是说目前,在采集的时候,程序是阻塞掉的,不能同时删除.也是网上简单搜了一下,因为node的是异步执行的所以不用多线程的概念还是怎么回事.反正要把采集和处理能够并行执行才好,不知道node在这个问题上一般是怎么处理.改天再研究一下好了.记得好像是可以用setTimeout来避免主线程被阻塞掉的,但是setTimeout的原理看过又给搞忘记了,改天再翻下书好了.</p>
@@ -45,7 +45,7 @@
         <title type="html"><![CDATA[ansys解决平行传输线周围静电场分布]]></title>
         <author><name>xiaoba</name><uri>http://blog.xiaoba.me</uri></author>
         <link href="http://blog.xiaoba.me/ansys.html"/>
-        <published>2012-12-13T03:05:10Z</published>
+        <published>2012-12-13T03:09:07Z</published>
         <id>http://blog.xiaoba.me/ansys.html</id>
         <content type="html" xml:base="None" xml:lang="en">
             <![CDATA[ <p>最近有一门电磁场的实验课要交一份实验报告内容如题.</p>
@@ -87,7 +87,7 @@
         <title type="html"><![CDATA[A Byte of WSGI]]></title>
         <author><name>xiaoba</name><uri>http://blog.xiaoba.me</uri></author>
         <link href="http://blog.xiaoba.me/wsgi.html"/>
-        <published>2012-12-07T03:05:10Z</published>
+        <published>2012-12-07T03:09:07Z</published>
         <id>http://blog.xiaoba.me/wsgi.html</id>
         <content type="html" xml:base="None" xml:lang="en">
             <![CDATA[ <p>If you have ever used some python frameworks like <em>tornado</em>, <em>flask</em>, you may hear about WSGI. But what's this?</p>
@@ -131,7 +131,7 @@
         <title type="html"><![CDATA[Run Custom Scripts on boot under Systemd]]></title>
         <author><name>xiaoba</name><uri>http://blog.xiaoba.me</uri></author>
         <link href="http://blog.xiaoba.me/run_script_on_boot_under_systemd.html"/>
-        <published>2012-11-09T03:05:10Z</published>
+        <published>2012-11-09T03:09:07Z</published>
         <id>http://blog.xiaoba.me/run_script_on_boot_under_systemd.html</id>
         <content type="html" xml:base="None" xml:lang="en">
             <![CDATA[ <p>As archlinux has replaced <em>initscripts</em> with <em>systemd</em> as default init system and <a href="https://www.archlinux.org/news/end-of-initscripts-support/">will start removing initscripts suppport</a>, I use systemd now.</p>
@@ -173,7 +173,7 @@ EXECUTE YOUR CUSTOM SCRIPT YOU WANT TO RUN ON STARTUP
         <title type="html"><![CDATA[arch试用手记]]></title>
         <author><name>xiaoba</name><uri>http://blog.xiaoba.me</uri></author>
         <link href="http://blog.xiaoba.me/first-byte-of-arch.html"/>
-        <published>2012-10-21T03:05:10Z</published>
+        <published>2012-10-21T03:09:07Z</published>
         <id>http://blog.xiaoba.me/first-byte-of-arch.html</id>
         <content type="html" xml:base="None" xml:lang="en">
             <![CDATA[ <p>前段时间装了Arch，用了大概一周多了吧。</p>
@@ -225,7 +225,7 @@ EXECUTE YOUR CUSTOM SCRIPT YOU WANT TO RUN ON STARTUP
         <title type="html"><![CDATA[大二下]]></title>
         <author><name>xiaoba</name><uri>http://blog.xiaoba.me</uri></author>
         <link href="http://blog.xiaoba.me/grade2-2nd-term.html"/>
-        <published>2012-06-22T03:05:10Z</published>
+        <published>2012-06-22T03:09:07Z</published>
         <id>http://blog.xiaoba.me/grade2-2nd-term.html</id>
         <content type="html" xml:base="None" xml:lang="en">
             <![CDATA[ <p>考完了大二下的最后一门，真是虚成狗了。昨晚看了一晚，趴了1个小时直接去考场——已经不知道第几次通宵复习了。</p>
@@ -243,7 +243,7 @@ EXECUTE YOUR CUSTOM SCRIPT YOU WANT TO RUN ON STARTUP
         <title type="html"><![CDATA[轉眼已過好多年]]></title>
         <author><name>xiaoba</name><uri>http://blog.xiaoba.me</uri></author>
         <link href="http://blog.xiaoba.me/memory.html"/>
-        <published>2012-01-24T03:05:10Z</published>
+        <published>2012-01-24T03:09:07Z</published>
         <id>http://blog.xiaoba.me/memory.html</id>
         <content type="html" xml:base="None" xml:lang="en">
             <![CDATA[ <p>這一次高中班聚人數明顯少了許多，不知道下一次，下下次如何。</p>
@@ -324,7 +324,7 @@ EXECUTE YOUR CUSTOM SCRIPT YOU WANT TO RUN ON STARTUP
         <title type="html"><![CDATA[疯子哥再见]]></title>
         <author><name>xiaoba</name><uri>http://blog.xiaoba.me</uri></author>
         <link href="http://blog.xiaoba.me/andy-say-byebye.html"/>
-        <published>2012-01-06T03:05:10Z</published>
+        <published>2012-01-06T03:09:07Z</published>
         <id>http://blog.xiaoba.me/andy-say-byebye.html</id>
         <content type="html" xml:base="None" xml:lang="en">
             <![CDATA[ <p>疯子哥今天出发了，离开了他热爱的城市，留恋的亲人朋友，乘坐搭载着充满期待和未知的航班，开始一段新的旅程。</p>
@@ -355,7 +355,7 @@ EXECUTE YOUR CUSTOM SCRIPT YOU WANT TO RUN ON STARTUP
         <title type="html"><![CDATA[梦蝶]]></title>
         <author><name>xiaoba</name><uri>http://blog.xiaoba.me</uri></author>
         <link href="http://blog.xiaoba.me/mengdie-say-byebye.html"/>
-        <published>2011-12-04T03:05:10Z</published>
+        <published>2011-12-04T03:09:07Z</published>
         <id>http://blog.xiaoba.me/mengdie-say-byebye.html</id>
         <content type="html" xml:base="None" xml:lang="en">
             <![CDATA[ <p>在新图自习完毕,听说今晚两个中心总监换届,比平时早一个小时去办公室开部长会,半路一碗炒粉是晚餐.</p>
