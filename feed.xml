@@ -2,17 +2,38 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <title>8D is Here</title>
     <link href="http://blog.xiaoba.me" />
-    <updated>2013-01-25T03:09:07Z</updated>
+    <updated>2013-03-23T20:42:08Z</updated>
     <id>http://blog.xiaoba.me</id>
+    
+    
+    <entry>
+        <title type="html"><![CDATA[用Python生成特定频率的波形文件]]></title>
+        <author><name>xiaoba</name><uri>http://blog.xiaoba.me</uri></author>
+        <link href="http://blog.xiaoba.me/generate-simple-wave.html"/>
+        <published>2013-03-23T20:42:08Z</published>
+        <id>http://blog.xiaoba.me/generate-simple-wave.html</id>
+        <content type="html" xml:base="" xml:lang="en">
+            <![CDATA[ <p>好久不写流水帐了，这一次的流水帐还是代码笔记。</p>
+<p>最近买了个耳机，不算太好，不过算是比那种10块钱的好用些吧。网上相关文章看了一些，无意间看到一个小工具，可以发出特定频率的声音来测试耳机和人耳对频率的反应。不过遗憾的是没有for Linux版本的。干脆自己学写一个好了。</p>
+<p>起初打算是把某个wav里面特定的频率过滤出来，好歹还学过一点傅里叶变换没有全忘记。要是用一个带通滤波器应该可以撸出来吧。没动手之前以为滤波器会很难写，然而不得不感叹Scipy的强大，什么FIR，IIR都只要直接设定参数便可以直接使用了！这个让我激动了一把，因为当时没有学原理，现在有了<code>scipy.signal</code>就不怕了！可是故事并没有因此而向好的方向发展，wav文件读进来的数据，不知道该怎么把设计好的滤波器应用上去，无论是python内置的wave还是scipy封装的<code>scipy.io.wavefile</code>都没法得到想要的结果，于是这个仅持续了两天的工程还是流产了。唉学艺不精啊！希望有相关经验的朋友能不吝指点一下。</p>
+<p>退而求其次，就有了本文。</p>
+<p>因为有了前面两天的基础，对wave文件有了一定了解，想实现题目讲的就不难了。加上搜资料一共用了10min就做好了。代码放在了<a href="https://gist.github.com/ibigbug/5227390">gist</a>。不过还有个问题就是产生的波形频率不是特别纯，在基波附近又很多的谐波，由于数学学得不好，也暂时不去考虑了，说不定哪一天可以忽然想清楚了呢。</p>
+<p><em>哦对了，测试的时候不要把频率撸的太低或者太高！！！第一是会很难受！！！第二会不会很危险（<a href="http://chinese.engadget.com/2008/12/09/Sonic-Nausea/">看这里不知真假！！！！</a>）！！！</em></p>
+<p>顺便记录一点最近的烦心事吧。感冒！！！！！！每天咳的要死，躺在床上就咳，怕影响室友睡觉，就去外面抽烟，外面又好冷啊，回到床上接着咳，这样折腾一两次就2，3点多了，早晨根本没精力起床TT。。。更别说去图书馆吵其他人了。。。</p>
+<p>看到知乎招聘，想试一试，随便写了50字简历过去没想到不到2个小时就有了回复，又激动了一把。是两道代码题目，一道是应该考状态机，一直没怎么了解过所以难度有点大;另一道是考web开发的，这一个还稍微了解一点。虽然不是专业班子，好赖不及两道题都写出了，还比deadline提前了3天发了回去。结果石沉大海去了。。。再TT。。。</p>
+<p>考研应该考不上吧。。。实习又撸不到。。。第三次TT。。。</p> ]]>
+        </content>
+    </entry>
+    
     
     
     <entry>
         <title type="html"><![CDATA[Node.js 和 express.js初体验]]></title>
         <author><name>xiaoba</name><uri>http://blog.xiaoba.me</uri></author>
         <link href="http://blog.xiaoba.me/node-and-express.html"/>
-        <published>2013-01-25T03:09:07Z</published>
+        <published>2013-01-25T20:42:08Z</published>
         <id>http://blog.xiaoba.me/node-and-express.html</id>
-        <content type="html" xml:base="None" xml:lang="en">
+        <content type="html" xml:base="" xml:lang="en">
             <![CDATA[ <p>因为前几天有位朋友分手了,要删掉人人网的所有状态.看他在那一条一条点来点去挺麻烦的,何不写个脚本来自动删呢.于是便有了本文.</p>
 <p>其实脚本不难写,因为3g.renren.com的登录验证是不麻烦的.返回的html结构也不复杂,请求过程也都很直白,用python的话应该不是什么难题.可是既然node最近这么火,就正好借机会试一下吧.嘿嘿^^.</p>
 <p>跟复习专业课一样,学一种新的工具流程也都差不多.无非是:</p>
@@ -45,9 +66,9 @@
         <title type="html"><![CDATA[ansys解决平行传输线周围静电场分布]]></title>
         <author><name>xiaoba</name><uri>http://blog.xiaoba.me</uri></author>
         <link href="http://blog.xiaoba.me/ansys.html"/>
-        <published>2012-12-13T03:09:07Z</published>
+        <published>2012-12-13T20:42:08Z</published>
         <id>http://blog.xiaoba.me/ansys.html</id>
-        <content type="html" xml:base="None" xml:lang="en">
+        <content type="html" xml:base="" xml:lang="en">
             <![CDATA[ <p>最近有一门电磁场的实验课要交一份实验报告内容如题.</p>
 <p>由于没有去上课结果不会写.网上搜了几下,发现相关资料挺少的,更别提实例了.于是赶紧从图书馆借了一本ansys的书翻了整整一夜算是应付过去了.</p>
 <p>ansys是一个很强大的工程软件, 具体可以去看百科.这里只记录一些关于用有限元方法来处理电磁场的基本步骤,至于有限元算法本身,我不懂,此文也不涉及.</p>
@@ -87,9 +108,9 @@
         <title type="html"><![CDATA[A Byte of WSGI]]></title>
         <author><name>xiaoba</name><uri>http://blog.xiaoba.me</uri></author>
         <link href="http://blog.xiaoba.me/wsgi.html"/>
-        <published>2012-12-07T03:09:07Z</published>
+        <published>2012-12-07T20:42:08Z</published>
         <id>http://blog.xiaoba.me/wsgi.html</id>
-        <content type="html" xml:base="None" xml:lang="en">
+        <content type="html" xml:base="" xml:lang="en">
             <![CDATA[ <p>If you have ever used some python frameworks like <em>tornado</em>, <em>flask</em>, you may hear about WSGI. But what's this?</p>
 <p>WSGI means Web Server Gateway Interface. What it is <strong>NOT</strong>:a server, a python module, a framework, an API or any kind of software. What it is: What it is: an interface specification by which server and application communicate. WSGI is just a kind of protocol who makes web app and web server communicate friendly.</p>
 <p>A simple WSGI application(meaning WSGI compliant) may look like this:</p>
@@ -131,9 +152,9 @@
         <title type="html"><![CDATA[Run Custom Scripts on boot under Systemd]]></title>
         <author><name>xiaoba</name><uri>http://blog.xiaoba.me</uri></author>
         <link href="http://blog.xiaoba.me/run_script_on_boot_under_systemd.html"/>
-        <published>2012-11-09T03:09:07Z</published>
+        <published>2012-11-09T20:42:08Z</published>
         <id>http://blog.xiaoba.me/run_script_on_boot_under_systemd.html</id>
-        <content type="html" xml:base="None" xml:lang="en">
+        <content type="html" xml:base="" xml:lang="en">
             <![CDATA[ <p>As archlinux has replaced <em>initscripts</em> with <em>systemd</em> as default init system and <a href="https://www.archlinux.org/news/end-of-initscripts-support/">will start removing initscripts suppport</a>, I use systemd now.</p>
 <p>To be different from <em>initscripts</em>, <em>rc scripts</em> are no longer available. However it's complicated to write a very  <em>.service</em> boot script for each program. So solusion like this may be useful:</p>
 <ol>
@@ -173,9 +194,9 @@ EXECUTE YOUR CUSTOM SCRIPT YOU WANT TO RUN ON STARTUP
         <title type="html"><![CDATA[arch试用手记]]></title>
         <author><name>xiaoba</name><uri>http://blog.xiaoba.me</uri></author>
         <link href="http://blog.xiaoba.me/first-byte-of-arch.html"/>
-        <published>2012-10-21T03:09:07Z</published>
+        <published>2012-10-21T20:42:08Z</published>
         <id>http://blog.xiaoba.me/first-byte-of-arch.html</id>
-        <content type="html" xml:base="None" xml:lang="en">
+        <content type="html" xml:base="" xml:lang="en">
             <![CDATA[ <p>前段时间装了Arch，用了大概一周多了吧。</p>
 <p>从接触linux到现在大概也算是有几年时间了，之前一直在用ubuntu，其间也尝试过cent啊，arch啊，gentoo啊，但都没有持久。因为受到了windows的影响吧。是从ubuntu里面慢慢熟悉了linux，才逐渐拜托了对windows的依赖（话说ubuntu可真是windows用户通向linux的一根非常平滑的管道）。</p>
 <p>记得第一次装arch的时候内心是有一种恐惧感的，虽然当时还有安装脚本。现在的安装步骤看起来变得繁琐了，不过我更喜欢现在的安装过程，因为既不像gentoo那样费时费力，又不像windows或者ubuntu那样简单无脑。其实在安装之前就就对arch有一份好感，正式见面之后便深深的喜欢上了它。还是简单记录一下安装步骤吧。</p>
@@ -225,9 +246,9 @@ EXECUTE YOUR CUSTOM SCRIPT YOU WANT TO RUN ON STARTUP
         <title type="html"><![CDATA[大二下]]></title>
         <author><name>xiaoba</name><uri>http://blog.xiaoba.me</uri></author>
         <link href="http://blog.xiaoba.me/grade2-2nd-term.html"/>
-        <published>2012-06-22T03:09:07Z</published>
+        <published>2012-06-22T20:42:08Z</published>
         <id>http://blog.xiaoba.me/grade2-2nd-term.html</id>
-        <content type="html" xml:base="None" xml:lang="en">
+        <content type="html" xml:base="" xml:lang="en">
             <![CDATA[ <p>考完了大二下的最后一门，真是虚成狗了。昨晚看了一晚，趴了1个小时直接去考场——已经不知道第几次通宵复习了。</p>
 <p>交完卷出来，不知道是累还是困还是饿，反正就不是舒服的感觉。估计考研的感觉也就这B样吧，提前适应下子也好。</p>
 <p>绩点持续走低，现在真是只求过不求高分了。只求顺利毕业，爬爬电线杆搬搬变压器，是在不行就回家种韭菜放羊去。</p>
@@ -243,9 +264,9 @@ EXECUTE YOUR CUSTOM SCRIPT YOU WANT TO RUN ON STARTUP
         <title type="html"><![CDATA[轉眼已過好多年]]></title>
         <author><name>xiaoba</name><uri>http://blog.xiaoba.me</uri></author>
         <link href="http://blog.xiaoba.me/memory.html"/>
-        <published>2012-01-24T03:09:07Z</published>
+        <published>2012-01-24T20:42:08Z</published>
         <id>http://blog.xiaoba.me/memory.html</id>
-        <content type="html" xml:base="None" xml:lang="en">
+        <content type="html" xml:base="" xml:lang="en">
             <![CDATA[ <p>這一次高中班聚人數明顯少了許多，不知道下一次，下下次如何。</p>
 <p>畢業了之後，即便是當初最親近的人如軟哥，小黑，還有所有的室友也只能一年見一兩次也就知足了。</p>
 <p>見到了老周，與我腦海中的印象是一樣的，沒有顯得蒼老，依然堆著滿臉笑容。</p>
@@ -324,9 +345,9 @@ EXECUTE YOUR CUSTOM SCRIPT YOU WANT TO RUN ON STARTUP
         <title type="html"><![CDATA[疯子哥再见]]></title>
         <author><name>xiaoba</name><uri>http://blog.xiaoba.me</uri></author>
         <link href="http://blog.xiaoba.me/andy-say-byebye.html"/>
-        <published>2012-01-06T03:09:07Z</published>
+        <published>2012-01-06T20:42:08Z</published>
         <id>http://blog.xiaoba.me/andy-say-byebye.html</id>
-        <content type="html" xml:base="None" xml:lang="en">
+        <content type="html" xml:base="" xml:lang="en">
             <![CDATA[ <p>疯子哥今天出发了，离开了他热爱的城市，留恋的亲人朋友，乘坐搭载着充满期待和未知的航班，开始一段新的旅程。</p>
 <blockquote>
 <p>“年轻在于折腾”。</p>
@@ -355,9 +376,9 @@ EXECUTE YOUR CUSTOM SCRIPT YOU WANT TO RUN ON STARTUP
         <title type="html"><![CDATA[梦蝶]]></title>
         <author><name>xiaoba</name><uri>http://blog.xiaoba.me</uri></author>
         <link href="http://blog.xiaoba.me/mengdie-say-byebye.html"/>
-        <published>2011-12-04T03:09:07Z</published>
+        <published>2011-12-04T20:42:08Z</published>
         <id>http://blog.xiaoba.me/mengdie-say-byebye.html</id>
-        <content type="html" xml:base="None" xml:lang="en">
+        <content type="html" xml:base="" xml:lang="en">
             <![CDATA[ <p>在新图自习完毕,听说今晚两个中心总监换届,比平时早一个小时去办公室开部长会,半路一碗炒粉是晚餐.</p>
 <p>来到网站,二会竟然因为拿不到钥匙没开门,于是十几位部长总监挤在小小的办公室里,见证两位总监的离去,当然,还有两位新生代的出现为两大中心注入新鲜的活力.</p>
 <p>第一次听说苏姐姐,还是因为梦蝶.programmers are shy又或者’希捷硬盘’那不堪回首的二三往事啊.那时贺欣怪阿姨还在,我还在物院,一起在物院的仓库里找展架,送她回去的樱花路上她教我’会做事,会装逼,会做PPT’.后来什么都没学会.那时候我只听浣熊的,一心一意在前端写着不能算作页面的页面.</p>
