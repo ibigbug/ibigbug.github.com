@@ -2,15 +2,48 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <title>8D is Here</title>
     <link href="http://blog.xiaoba.me" />
-    <updated>2013-03-23T21:09:56Z</updated>
+    <updated>2013-04-11T20:31:18Z</updated>
     <id>http://blog.xiaoba.me</id>
+    
+    
+    <entry>
+        <title type="html"><![CDATA[Ath9k驱动在Arch中无法连接无线网的问题]]></title>
+        <author><name>xiaoba</name><uri>http://blog.xiaoba.me</uri></author>
+        <link href="http://blog.xiaoba.me/ath9k-under-archlinux.html"/>
+        <published>2013-04-11T20:31:18Z</published>
+        <id>http://blog.xiaoba.me/ath9k-under-archlinux.html</id>
+        <content type="html" xml:base="" xml:lang="en">
+            <![CDATA[ <p>自从弄好了校园网无线共享之后发现Arch的无线网络有问题，莫名其妙各种连不上，各种iw的命令放上去都是<code>Invalid argument</code>，真是郁闷= =</p>
+<p>为什么这么确定是Arch问题呢，因为手机和Windows都没问题= =。</p>
+<p>折腾了两天，算是把问题解决了。</p>
+<p>最开始以为是更新内核之后驱动有问题，于是自己编译了Arch Wiki里面提到的<code>compat-wireless</code>。果不其然，现在可以操作无线网卡了！但是还是连不上网。</p>
+<p>继续翻手册，上面提到wicd可能造成无线不稳定，卸载之，不成。</p>
+<p>手册又提到了把无线网卡的电源管理关掉，也没有解决。</p>
+<p>不过此时虽然无线不能用，有线依然可以用得好好的啊。凑合着用了一下午的有线，但心里还是不爽。</p>
+<p>直到刚刚才想起可以用<code>dmesg</code>的，里面的相关记录的是<code>ctrl-event-disconnected reason=0</code>，放进去Google，好像好多人有这个问题。这下放心了肯定可以解决了。</p>
+<p>最终参考<a href="https://bbs.archlinux.org/viewtopic.php?id=137643">这个帖子</a>中一位老兄的办法：</p>
+<blockquote>
+<p># sudo modprobe -rf ath9k<br />
+# sudo modprobe -v ath9k nohwcrypt=1<br />
+# sudo service network-manager restart # or wicd or whatever  </p>
+<h4>If it works, make it permanent:</h4>
+<p># echo "options ath9k nohwcrypt=1" | sudo tee /etc/modprobe.d/ath9k.conf  </p>
+</blockquote>
+<p>至此，Ath9k驱动在Arch中无法连接无线网的问题已经解决了。</p>
+<p>好了，终于可以连上路由器了！激动！</p>
+<p>但是更令人激动的是虽然连上路由了但是竟然他妈的不能浏览网页！！更有甚者！！连路由都Ping不通！好吧我承认高兴太早了、、</p>
+<p>再dmesg，发现是一个跟IPv6有关的错误，猜想是openwrt的IPv6没有配置好的问题吧，于是先<a href="https://wiki.archlinux.org/index.php/IPv6#Disable_IPv6">把无线网卡的IPv6干掉</a>，现在已经可以正常使用无线网了。</p>
+<p>不过话说今天打球的时候崴脚了好他妈疼啊啊啊啊！高中毕业之后就没有崴脚过的印象了，没想到时隔多年竟然又遇到了好不爽啊、、疼的连路都不想走啊、、不过晚饭的时候部长帮我带了吃的，好幸福、</p> ]]>
+        </content>
+    </entry>
+    
     
     
     <entry>
         <title type="html"><![CDATA[用Python生成特定频率的波形文件]]></title>
         <author><name>xiaoba</name><uri>http://blog.xiaoba.me</uri></author>
         <link href="http://blog.xiaoba.me/generate-simple-wave.html"/>
-        <published>2013-03-23T21:09:56Z</published>
+        <published>2013-03-23T20:31:18Z</published>
         <id>http://blog.xiaoba.me/generate-simple-wave.html</id>
         <content type="html" xml:base="" xml:lang="en">
             <![CDATA[ <p>好久不写流水帐了，这一次的流水帐还是代码笔记。</p>
@@ -31,7 +64,7 @@
         <title type="html"><![CDATA[Node.js 和 express.js初体验]]></title>
         <author><name>xiaoba</name><uri>http://blog.xiaoba.me</uri></author>
         <link href="http://blog.xiaoba.me/node-and-express.html"/>
-        <published>2013-01-25T21:09:56Z</published>
+        <published>2013-01-25T20:31:18Z</published>
         <id>http://blog.xiaoba.me/node-and-express.html</id>
         <content type="html" xml:base="" xml:lang="en">
             <![CDATA[ <p>因为前几天有位朋友分手了,要删掉人人网的所有状态.看他在那一条一条点来点去挺麻烦的,何不写个脚本来自动删呢.于是便有了本文.</p>
@@ -66,7 +99,7 @@
         <title type="html"><![CDATA[ansys解决平行传输线周围静电场分布]]></title>
         <author><name>xiaoba</name><uri>http://blog.xiaoba.me</uri></author>
         <link href="http://blog.xiaoba.me/ansys.html"/>
-        <published>2012-12-13T21:09:56Z</published>
+        <published>2012-12-13T20:31:18Z</published>
         <id>http://blog.xiaoba.me/ansys.html</id>
         <content type="html" xml:base="" xml:lang="en">
             <![CDATA[ <p>最近有一门电磁场的实验课要交一份实验报告内容如题.</p>
@@ -108,7 +141,7 @@
         <title type="html"><![CDATA[A Byte of WSGI]]></title>
         <author><name>xiaoba</name><uri>http://blog.xiaoba.me</uri></author>
         <link href="http://blog.xiaoba.me/wsgi.html"/>
-        <published>2012-12-07T21:09:56Z</published>
+        <published>2012-12-07T20:31:18Z</published>
         <id>http://blog.xiaoba.me/wsgi.html</id>
         <content type="html" xml:base="" xml:lang="en">
             <![CDATA[ <p>If you have ever used some python frameworks like <em>tornado</em>, <em>flask</em>, you may hear about WSGI. But what's this?</p>
@@ -152,7 +185,7 @@
         <title type="html"><![CDATA[Run Custom Scripts on boot under Systemd]]></title>
         <author><name>xiaoba</name><uri>http://blog.xiaoba.me</uri></author>
         <link href="http://blog.xiaoba.me/run_script_on_boot_under_systemd.html"/>
-        <published>2012-11-09T21:09:56Z</published>
+        <published>2012-11-09T20:31:18Z</published>
         <id>http://blog.xiaoba.me/run_script_on_boot_under_systemd.html</id>
         <content type="html" xml:base="" xml:lang="en">
             <![CDATA[ <p>As archlinux has replaced <em>initscripts</em> with <em>systemd</em> as default init system and <a href="https://www.archlinux.org/news/end-of-initscripts-support/">will start removing initscripts suppport</a>, I use systemd now.</p>
@@ -194,7 +227,7 @@ EXECUTE YOUR CUSTOM SCRIPT YOU WANT TO RUN ON STARTUP
         <title type="html"><![CDATA[arch试用手记]]></title>
         <author><name>xiaoba</name><uri>http://blog.xiaoba.me</uri></author>
         <link href="http://blog.xiaoba.me/first-byte-of-arch.html"/>
-        <published>2012-10-21T21:09:56Z</published>
+        <published>2012-10-21T20:31:18Z</published>
         <id>http://blog.xiaoba.me/first-byte-of-arch.html</id>
         <content type="html" xml:base="" xml:lang="en">
             <![CDATA[ <p>前段时间装了Arch，用了大概一周多了吧。</p>
@@ -246,7 +279,7 @@ EXECUTE YOUR CUSTOM SCRIPT YOU WANT TO RUN ON STARTUP
         <title type="html"><![CDATA[大二下]]></title>
         <author><name>xiaoba</name><uri>http://blog.xiaoba.me</uri></author>
         <link href="http://blog.xiaoba.me/grade2-2nd-term.html"/>
-        <published>2012-06-22T21:09:56Z</published>
+        <published>2012-06-22T20:31:18Z</published>
         <id>http://blog.xiaoba.me/grade2-2nd-term.html</id>
         <content type="html" xml:base="" xml:lang="en">
             <![CDATA[ <p>考完了大二下的最后一门，真是虚成狗了。昨晚看了一晚，趴了1个小时直接去考场——已经不知道第几次通宵复习了。</p>
@@ -264,7 +297,7 @@ EXECUTE YOUR CUSTOM SCRIPT YOU WANT TO RUN ON STARTUP
         <title type="html"><![CDATA[轉眼已過好多年]]></title>
         <author><name>xiaoba</name><uri>http://blog.xiaoba.me</uri></author>
         <link href="http://blog.xiaoba.me/memory.html"/>
-        <published>2012-01-24T21:09:56Z</published>
+        <published>2012-01-24T20:31:18Z</published>
         <id>http://blog.xiaoba.me/memory.html</id>
         <content type="html" xml:base="" xml:lang="en">
             <![CDATA[ <p>這一次高中班聚人數明顯少了許多，不知道下一次，下下次如何。</p>
@@ -345,7 +378,7 @@ EXECUTE YOUR CUSTOM SCRIPT YOU WANT TO RUN ON STARTUP
         <title type="html"><![CDATA[疯子哥再见]]></title>
         <author><name>xiaoba</name><uri>http://blog.xiaoba.me</uri></author>
         <link href="http://blog.xiaoba.me/andy-say-byebye.html"/>
-        <published>2012-01-06T21:09:56Z</published>
+        <published>2012-01-06T20:31:18Z</published>
         <id>http://blog.xiaoba.me/andy-say-byebye.html</id>
         <content type="html" xml:base="" xml:lang="en">
             <![CDATA[ <p>疯子哥今天出发了，离开了他热爱的城市，留恋的亲人朋友，乘坐搭载着充满期待和未知的航班，开始一段新的旅程。</p>
@@ -376,7 +409,7 @@ EXECUTE YOUR CUSTOM SCRIPT YOU WANT TO RUN ON STARTUP
         <title type="html"><![CDATA[梦蝶]]></title>
         <author><name>xiaoba</name><uri>http://blog.xiaoba.me</uri></author>
         <link href="http://blog.xiaoba.me/mengdie-say-byebye.html"/>
-        <published>2011-12-04T21:09:56Z</published>
+        <published>2011-12-04T20:31:18Z</published>
         <id>http://blog.xiaoba.me/mengdie-say-byebye.html</id>
         <content type="html" xml:base="" xml:lang="en">
             <![CDATA[ <p>在新图自习完毕,听说今晚两个中心总监换届,比平时早一个小时去办公室开部长会,半路一碗炒粉是晚餐.</p>
