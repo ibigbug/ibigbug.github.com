@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <title>8D is Here</title>
     <link href="http://blog.xiaoba.me" />
-    <updated>2013-05-07T21:02:36Z</updated>
+    <updated>2013-05-07T21:38:11Z</updated>
     <id>http://blog.xiaoba.me</id>
     
     
@@ -10,7 +10,7 @@
         <title type="html"><![CDATA[Javascript中的垃圾回收机制]]></title>
         <author><name>xiaoba</name><uri>http://blog.xiaoba.me</uri></author>
         <link href="http://blog.xiaoba.me/garbage-collection-in-javascript.html"/>
-        <published>2013-05-07T21:02:36Z</published>
+        <published>2013-05-07T21:38:11Z</published>
         <id>http://blog.xiaoba.me/garbage-collection-in-javascript.html</id>
         <content type="html" xml:base="" xml:lang="en">
             <![CDATA[ <h1>Javascript 中的内存管理</h1>
@@ -138,7 +138,6 @@
 <p>这种算法把“可以回收”定义成“对象不可达”，即访问不到。</p>
 <p>这种算法，会定义一个“根”，并且定期地从“根”出发，找出“根”下面的所有对象，看能不能从“根”找到一条路径引用到这个对象。从不同的“根”出发，垃圾回收程序就可以区分所有对象是不是“不可达”的，当对象“不可达”时候，便被回收。</p>
 <p>这种算法比引用计数算法要好些。因为 “一个对象的引用计数是0”可以推出“这个对象不可达”，逆命题则为假。也就是说这种算法扩充了垃圾回收的范围。</p>
-<p>在2012年左右，所有的现代浏览器都采用了这种标记清除的垃圾回收机制。然而这种垃圾回收机制算法的核心，不是算法本身，而是在于如何确定“可以回收”吧。</p>
 <h3>循环引用不再是困扰</h3>
 <p>在上面的循环引用例子中，当函数返回时，o 和 o2都已经不再被任何人引用，也就是“不可达”了，便顺理成章地被垃圾回收掉了。</p>
 <h3>局限：对象需要明确的“不可达”</h3>
@@ -164,7 +163,7 @@
         <title type="html"><![CDATA[Ath9k驱动在Arch中无法连接无线网的问题]]></title>
         <author><name>xiaoba</name><uri>http://blog.xiaoba.me</uri></author>
         <link href="http://blog.xiaoba.me/ath9k-under-archlinux.html"/>
-        <published>2013-04-11T21:02:36Z</published>
+        <published>2013-04-11T21:38:11Z</published>
         <id>http://blog.xiaoba.me/ath9k-under-archlinux.html</id>
         <content type="html" xml:base="" xml:lang="en">
             <![CDATA[ <p>自从弄好了校园网无线共享之后发现Arch的无线网络有问题，莫名其妙各种连不上，各种iw的命令放上去都是<code>Invalid argument</code>，真是郁闷= =</p>
@@ -197,7 +196,7 @@
         <title type="html"><![CDATA[用Python生成特定频率的波形文件]]></title>
         <author><name>xiaoba</name><uri>http://blog.xiaoba.me</uri></author>
         <link href="http://blog.xiaoba.me/generate-simple-wave.html"/>
-        <published>2013-03-23T21:02:36Z</published>
+        <published>2013-03-23T21:38:11Z</published>
         <id>http://blog.xiaoba.me/generate-simple-wave.html</id>
         <content type="html" xml:base="" xml:lang="en">
             <![CDATA[ <p>好久不写流水帐了，这一次的流水帐还是代码笔记。</p>
@@ -218,7 +217,7 @@
         <title type="html"><![CDATA[Node.js 和 express.js初体验]]></title>
         <author><name>xiaoba</name><uri>http://blog.xiaoba.me</uri></author>
         <link href="http://blog.xiaoba.me/node-and-express.html"/>
-        <published>2013-01-25T21:02:36Z</published>
+        <published>2013-01-25T21:38:11Z</published>
         <id>http://blog.xiaoba.me/node-and-express.html</id>
         <content type="html" xml:base="" xml:lang="en">
             <![CDATA[ <p>因为前几天有位朋友分手了,要删掉人人网的所有状态.看他在那一条一条点来点去挺麻烦的,何不写个脚本来自动删呢.于是便有了本文.</p>
@@ -253,7 +252,7 @@
         <title type="html"><![CDATA[ansys解决平行传输线周围静电场分布]]></title>
         <author><name>xiaoba</name><uri>http://blog.xiaoba.me</uri></author>
         <link href="http://blog.xiaoba.me/ansys.html"/>
-        <published>2012-12-13T21:02:36Z</published>
+        <published>2012-12-13T21:38:11Z</published>
         <id>http://blog.xiaoba.me/ansys.html</id>
         <content type="html" xml:base="" xml:lang="en">
             <![CDATA[ <p>最近有一门电磁场的实验课要交一份实验报告内容如题.</p>
@@ -295,7 +294,7 @@
         <title type="html"><![CDATA[A Byte of WSGI]]></title>
         <author><name>xiaoba</name><uri>http://blog.xiaoba.me</uri></author>
         <link href="http://blog.xiaoba.me/wsgi.html"/>
-        <published>2012-12-07T21:02:36Z</published>
+        <published>2012-12-07T21:38:11Z</published>
         <id>http://blog.xiaoba.me/wsgi.html</id>
         <content type="html" xml:base="" xml:lang="en">
             <![CDATA[ <p>If you have ever used some python frameworks like <em>tornado</em>, <em>flask</em>, you may hear about WSGI. But what's this?</p>
@@ -339,7 +338,7 @@
         <title type="html"><![CDATA[Run Custom Scripts on boot under Systemd]]></title>
         <author><name>xiaoba</name><uri>http://blog.xiaoba.me</uri></author>
         <link href="http://blog.xiaoba.me/run_script_on_boot_under_systemd.html"/>
-        <published>2012-11-09T21:02:36Z</published>
+        <published>2012-11-09T21:38:11Z</published>
         <id>http://blog.xiaoba.me/run_script_on_boot_under_systemd.html</id>
         <content type="html" xml:base="" xml:lang="en">
             <![CDATA[ <p>As archlinux has replaced <em>initscripts</em> with <em>systemd</em> as default init system and <a href="https://www.archlinux.org/news/end-of-initscripts-support/">will start removing initscripts suppport</a>, I use systemd now.</p>
@@ -381,7 +380,7 @@ EXECUTE YOUR CUSTOM SCRIPT YOU WANT TO RUN ON STARTUP
         <title type="html"><![CDATA[arch试用手记]]></title>
         <author><name>xiaoba</name><uri>http://blog.xiaoba.me</uri></author>
         <link href="http://blog.xiaoba.me/first-byte-of-arch.html"/>
-        <published>2012-10-21T21:02:36Z</published>
+        <published>2012-10-21T21:38:11Z</published>
         <id>http://blog.xiaoba.me/first-byte-of-arch.html</id>
         <content type="html" xml:base="" xml:lang="en">
             <![CDATA[ <p>前段时间装了Arch，用了大概一周多了吧。</p>
@@ -433,7 +432,7 @@ EXECUTE YOUR CUSTOM SCRIPT YOU WANT TO RUN ON STARTUP
         <title type="html"><![CDATA[大二下]]></title>
         <author><name>xiaoba</name><uri>http://blog.xiaoba.me</uri></author>
         <link href="http://blog.xiaoba.me/grade2-2nd-term.html"/>
-        <published>2012-06-22T21:02:36Z</published>
+        <published>2012-06-22T21:38:11Z</published>
         <id>http://blog.xiaoba.me/grade2-2nd-term.html</id>
         <content type="html" xml:base="" xml:lang="en">
             <![CDATA[ <p>考完了大二下的最后一门，真是虚成狗了。昨晚看了一晚，趴了1个小时直接去考场——已经不知道第几次通宵复习了。</p>
@@ -451,7 +450,7 @@ EXECUTE YOUR CUSTOM SCRIPT YOU WANT TO RUN ON STARTUP
         <title type="html"><![CDATA[轉眼已過好多年]]></title>
         <author><name>xiaoba</name><uri>http://blog.xiaoba.me</uri></author>
         <link href="http://blog.xiaoba.me/memory.html"/>
-        <published>2012-01-24T21:02:36Z</published>
+        <published>2012-01-24T21:38:11Z</published>
         <id>http://blog.xiaoba.me/memory.html</id>
         <content type="html" xml:base="" xml:lang="en">
             <![CDATA[ <p>這一次高中班聚人數明顯少了許多，不知道下一次，下下次如何。</p>
@@ -532,7 +531,7 @@ EXECUTE YOUR CUSTOM SCRIPT YOU WANT TO RUN ON STARTUP
         <title type="html"><![CDATA[疯子哥再见]]></title>
         <author><name>xiaoba</name><uri>http://blog.xiaoba.me</uri></author>
         <link href="http://blog.xiaoba.me/andy-say-byebye.html"/>
-        <published>2012-01-06T21:02:36Z</published>
+        <published>2012-01-06T21:38:11Z</published>
         <id>http://blog.xiaoba.me/andy-say-byebye.html</id>
         <content type="html" xml:base="" xml:lang="en">
             <![CDATA[ <p>疯子哥今天出发了，离开了他热爱的城市，留恋的亲人朋友，乘坐搭载着充满期待和未知的航班，开始一段新的旅程。</p>
@@ -563,7 +562,7 @@ EXECUTE YOUR CUSTOM SCRIPT YOU WANT TO RUN ON STARTUP
         <title type="html"><![CDATA[梦蝶]]></title>
         <author><name>xiaoba</name><uri>http://blog.xiaoba.me</uri></author>
         <link href="http://blog.xiaoba.me/mengdie-say-byebye.html"/>
-        <published>2011-12-04T21:02:36Z</published>
+        <published>2011-12-04T21:38:11Z</published>
         <id>http://blog.xiaoba.me/mengdie-say-byebye.html</id>
         <content type="html" xml:base="" xml:lang="en">
             <![CDATA[ <p>在新图自习完毕,听说今晚两个中心总监换届,比平时早一个小时去办公室开部长会,半路一碗炒粉是晚餐.</p>
