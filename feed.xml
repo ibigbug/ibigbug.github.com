@@ -2,15 +2,78 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <title>8D is Here</title>
     <link href="http://blog.xiaoba.me" />
-    <updated>2013-05-17T19:21:17Z</updated>
+    <updated>2013-07-27T00:53:07Z</updated>
     <id>http://blog.xiaoba.me</id>
+    
+    
+    <entry>
+        <title type="html"><![CDATA[Javascript中的debounce模式]]></title>
+        <author><name>xiaoba</name><uri>http://blog.xiaoba.me</uri></author>
+        <link href="http://blog.xiaoba.me/debounce-in-javascript.html"/>
+        <published>2013-07-26T00:53:07Z</published>
+        <id>http://blog.xiaoba.me/debounce-in-javascript.html</id>
+        <content type="html" xml:base="" xml:lang="en">
+            <![CDATA[ <blockquote>
+<p>轻一点，求求你&gt;&lt;</p>
+</blockquote>
+<h2>1.What——什么是debounce模式？</h2>
+<p>如果你写过单片机开发的键盘扫描，那么你一定知道要进行「去抖动」。没错，在JS处理页面交互事件时，往往也需要进行一些去抖处理，这就是debounce。当然这里只是借用了名字，其实与键盘扫描的去抖，还是有一点差别的。下面有个效果演示，如果你心急，直接拉下去看效果。</p>
+<h2>2.Why——为什么要debounce？</h2>
+<p>正如引言中所述，对于「猛击」的现象，我们需要使用<code>debounce</code>来让点击轻一点~比如用户在进行订单提交的时候，需要单击「提交」按钮，往往会有意或者无意的出现「双击」甚至「多击」的现象，如果JS对每次单击都相应一次，发出一个请求到后台，那么一方面，可能会造成逻辑错误，也就是造成「下了很多订单」;另一方面，对于「多击」的没一个请求，都会发送到后台，给web服务器增加了压力。</p>
+<h2>3.How——如何debounce？</h2>
+<p>underscore框架中有一个方法，叫做「debounce」，就是我们今天要介绍的。</p>
+<p>这个方法使用起来很简单：</p>
+<div class="highlight"><pre><span class="kd">var</span> <span class="nx">lazyLayout</span> <span class="o">=</span> <span class="nx">_</span><span class="p">.</span><span class="nx">debounce</span><span class="p">(</span><span class="nx">calculateLayout</span><span class="p">,</span> <span class="mi">300</span><span class="p">);</span>
+<span class="nx">$</span><span class="p">(</span><span class="nb">window</span><span class="p">).</span><span class="nx">resize</span><span class="p">(</span><span class="nx">lazyLayout</span><span class="p">);</span>
+</pre></div>
+
+<p>上面的代码来自<a href="http://underscorejs.org/##debounce">underscore</a><br />
+这样被<code>debounce</code>处理之后的lazyLayout有什么效果呢？</p>
+<p>这是underscore中debounce的原型
+<div class="highlight"><pre><span class="nx">_</span><span class="p">.</span><span class="nx">debounce</span><span class="p">(</span><span class="kd">function</span><span class="p">,</span> <span class="nx">wait</span><span class="p">,</span> <span class="p">[</span><span class="nx">immediate</span><span class="p">])</span> 
+</pre></div></p>
+<p>有三个参数：</p>
+<ul>
+<li>function —— 需要被处理的函数</li>
+<li>wait —— 等待时间，也就是说，在函数第一次触发之后，会有<code>wait</code>这么长的一个等待时间，这段时间里，所有对「被debounce过的函数」的调用，全部被丢弃。通俗一点说，你点击一次按钮之后，不论再快速的点多少次按钮，我都只当一次处理，直到你停下来，wait一段时间过后再点击，那才算第二次生效。</li>
+<li>[immediate] —— 这是一个很有趣的参数，默认是undefined也就是false，可以设置为true。当为false时，是当计时器计时结束后，执行函数，实际效果就是：你不停的点击，我不管你，当你停下来了，我再重新开始计时，过了设定的时间后，函数被执行;而设置为true时，就是计时器开始计时，就执行函数，之后无论你再怎么疯狂点击，我也不理你了。</li>
+</ul>
+<p>怎么样，是不是很简单实用？有了这个处理之后，就再也不怕有人误点击，或者疯狂点击按钮提交表单了。  </p>
+<p>下面是一个deboucne的演示，顺带还有个throttle对比，你可以不管：<br />
+<a href="http://jsfiddle.net/amyseqmedia/dD99u/37/">Underscore.js throttle vs debounce example - jsFiddle</a></p>
+<p>那么这么好的方法，是如何实现呢？其实很简单，就是一个计时器，在计时器结束之前，如果发现新的点击（也就是函数调用）请求，将其丢弃，重置计时器。直到计时器结束后，执行函数(immediate为false);或者第一次点击之后，立即调用函数，同时启动计时器，再计时器结束之前，收到新的函数调用请求，丢弃，重置计时器(immediate为true)。下面是underscore的具体实现,我加了一点注释，方便理解：</p>
+<div class="highlight"><pre> <span class="nx">_</span><span class="p">.</span><span class="nx">debounce</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">func</span><span class="p">,</span> <span class="nx">wait</span><span class="p">,</span> <span class="nx">immediate</span><span class="p">)</span> <span class="p">{</span>
+    <span class="kd">var</span> <span class="nx">result</span><span class="p">;</span>  <span class="c1">// 用户函数调用返回值</span>
+    <span class="kd">var</span> <span class="nx">timeout</span> <span class="o">=</span> <span class="kc">null</span><span class="p">;</span>  <span class="c1">// 初始化计时器 因为会被返回的闭包引用，所以会保持，不会被GC。有关Javascript中的GC，可以参考[Javascript中的垃圾回收机制](http://blog.xiaoba.me/garbage-collection-in-javascript.html)</span>
+    <span class="k">return</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>  <span class="c1">// 返回被处理的函数</span>
+      <span class="kd">var</span> <span class="nx">context</span> <span class="o">=</span> <span class="k">this</span><span class="p">,</span> <span class="nx">args</span> <span class="o">=</span> <span class="nx">arguments</span><span class="p">;</span>  <span class="c1">// 保存现场</span>
+      <span class="kd">var</span> <span class="nx">later</span> <span class="o">=</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>  <span class="c1">// 传给计时器，以便结束时候可以调用</span>
+        <span class="c1">// 计时器结束之后，会进入这里</span>
+        <span class="nx">timeout</span> <span class="o">=</span> <span class="kc">null</span><span class="p">;</span>  <span class="c1">// 计时结束，重置计时器，以便处理下一次请求</span>
+        <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">immediate</span><span class="p">)</span> <span class="nx">result</span> <span class="o">=</span> <span class="nx">func</span><span class="p">.</span><span class="nx">apply</span><span class="p">(</span><span class="nx">context</span><span class="p">,</span> <span class="nx">args</span><span class="p">);</span>  <span class="c1">// immediate为false的话，在这里执行函数</span>
+      <span class="p">};</span>
+      <span class="kd">var</span> <span class="nx">callNow</span> <span class="o">=</span> <span class="nx">immediate</span> <span class="o">&amp;&amp;</span> <span class="o">!</span><span class="nx">timeout</span><span class="p">;</span>  <span class="c1">// 根据immediate和计时器是否结束来判断是否到了调用函数的时机。 注意这里还没有启动计时器，也就是如果设置了immediate为true，那么callNow就是true</span>
+      <span class="nx">clearTimeout</span><span class="p">(</span><span class="nx">timeout</span><span class="p">);</span>  <span class="c1">// 这里！ 上面的都是一些变量的声明和赋值，这里开始到了关键，每一次调用请求，执行到这里都会重置计时器，不论immediate是true还是false</span>
+      <span class="nx">timeout</span> <span class="o">=</span> <span class="nx">setTimeout</span><span class="p">(</span><span class="nx">later</span><span class="p">,</span> <span class="nx">wait</span><span class="p">);</span>  <span class="c1">// 然后再这里重新开始计时</span>
+      <span class="k">if</span> <span class="p">(</span><span class="nx">callNow</span><span class="p">)</span> <span class="nx">result</span> <span class="o">=</span> <span class="nx">func</span><span class="p">.</span><span class="nx">apply</span><span class="p">(</span><span class="nx">context</span><span class="p">,</span> <span class="nx">args</span><span class="p">);</span>  <span class="c1">// 注意这里的callNow，是上面赋值的。如果有设置了immediate，那么立即执行函数;如果immediate为false，那么就等上面的计时器结束，执行later</span>
+      <span class="k">return</span> <span class="nx">result</span><span class="p">;</span>  <span class="c1">// 返回结果</span>
+    <span class="p">};</span>
+  <span class="p">};</span>
+</pre></div>
+
+<h2>4.Where —— 哪里用到debounce？</h2>
+<p>如上所述，一些类似表单提交，比如下订单，评论，等等有点击事件的地方，都可以用到～</p>
+<p><em>以上大部分是个人理解，如有错误，请不吝指出^_^</em></p> ]]>
+        </content>
+    </entry>
+    
     
     
     <entry>
         <title type="html"><![CDATA[水很脏，]]></title>
         <author><name>xiaoba</name><uri>http://blog.xiaoba.me</uri></author>
         <link href="http://blog.xiaoba.me/dev-null.html"/>
-        <published>2013-05-17T19:21:17Z</published>
+        <published>2013-05-17T00:53:07Z</published>
         <id>http://blog.xiaoba.me/dev-null.html</id>
         <content type="html" xml:base="" xml:lang="en">
             <![CDATA[ <blockquote>
@@ -72,7 +135,7 @@
         <title type="html"><![CDATA[Javascript中的垃圾回收机制]]></title>
         <author><name>xiaoba</name><uri>http://blog.xiaoba.me</uri></author>
         <link href="http://blog.xiaoba.me/garbage-collection-in-javascript.html"/>
-        <published>2013-05-07T19:21:17Z</published>
+        <published>2013-05-07T00:53:07Z</published>
         <id>http://blog.xiaoba.me/garbage-collection-in-javascript.html</id>
         <content type="html" xml:base="" xml:lang="en">
             <![CDATA[ <h1>Javascript 中的内存管理</h1>
@@ -225,7 +288,7 @@
         <title type="html"><![CDATA[Ath9k驱动在Arch中无法连接无线网的问题]]></title>
         <author><name>xiaoba</name><uri>http://blog.xiaoba.me</uri></author>
         <link href="http://blog.xiaoba.me/ath9k-under-archlinux.html"/>
-        <published>2013-04-11T19:21:17Z</published>
+        <published>2013-04-11T00:53:07Z</published>
         <id>http://blog.xiaoba.me/ath9k-under-archlinux.html</id>
         <content type="html" xml:base="" xml:lang="en">
             <![CDATA[ <p>自从弄好了校园网无线共享之后发现Arch的无线网络有问题，莫名其妙各种连不上，各种iw的命令放上去都是<code>Invalid argument</code>，真是郁闷= =</p>
@@ -258,7 +321,7 @@
         <title type="html"><![CDATA[用Python生成特定频率的波形文件]]></title>
         <author><name>xiaoba</name><uri>http://blog.xiaoba.me</uri></author>
         <link href="http://blog.xiaoba.me/generate-simple-wave.html"/>
-        <published>2013-03-23T19:21:17Z</published>
+        <published>2013-03-23T00:53:07Z</published>
         <id>http://blog.xiaoba.me/generate-simple-wave.html</id>
         <content type="html" xml:base="" xml:lang="en">
             <![CDATA[ <p>好久不写流水帐了，这一次的流水帐还是代码笔记。</p>
@@ -279,7 +342,7 @@
         <title type="html"><![CDATA[Node.js 和 express.js初体验]]></title>
         <author><name>xiaoba</name><uri>http://blog.xiaoba.me</uri></author>
         <link href="http://blog.xiaoba.me/node-and-express.html"/>
-        <published>2013-01-25T19:21:17Z</published>
+        <published>2013-01-25T00:53:07Z</published>
         <id>http://blog.xiaoba.me/node-and-express.html</id>
         <content type="html" xml:base="" xml:lang="en">
             <![CDATA[ <p>因为前几天有位朋友分手了,要删掉人人网的所有状态.看他在那一条一条点来点去挺麻烦的,何不写个脚本来自动删呢.于是便有了本文.</p>
@@ -314,7 +377,7 @@
         <title type="html"><![CDATA[ansys解决平行传输线周围静电场分布]]></title>
         <author><name>xiaoba</name><uri>http://blog.xiaoba.me</uri></author>
         <link href="http://blog.xiaoba.me/ansys.html"/>
-        <published>2012-12-13T19:21:17Z</published>
+        <published>2012-12-13T00:53:07Z</published>
         <id>http://blog.xiaoba.me/ansys.html</id>
         <content type="html" xml:base="" xml:lang="en">
             <![CDATA[ <p>最近有一门电磁场的实验课要交一份实验报告内容如题.</p>
@@ -356,7 +419,7 @@
         <title type="html"><![CDATA[A Byte of WSGI]]></title>
         <author><name>xiaoba</name><uri>http://blog.xiaoba.me</uri></author>
         <link href="http://blog.xiaoba.me/wsgi.html"/>
-        <published>2012-12-07T19:21:17Z</published>
+        <published>2012-12-07T00:53:07Z</published>
         <id>http://blog.xiaoba.me/wsgi.html</id>
         <content type="html" xml:base="" xml:lang="en">
             <![CDATA[ <p>If you have ever used some python frameworks like <em>tornado</em>, <em>flask</em>, you may hear about WSGI. But what's this?</p>
@@ -400,7 +463,7 @@
         <title type="html"><![CDATA[Run Custom Scripts on boot under Systemd]]></title>
         <author><name>xiaoba</name><uri>http://blog.xiaoba.me</uri></author>
         <link href="http://blog.xiaoba.me/run_script_on_boot_under_systemd.html"/>
-        <published>2012-11-09T19:21:17Z</published>
+        <published>2012-11-09T00:53:07Z</published>
         <id>http://blog.xiaoba.me/run_script_on_boot_under_systemd.html</id>
         <content type="html" xml:base="" xml:lang="en">
             <![CDATA[ <p>As archlinux has replaced <em>initscripts</em> with <em>systemd</em> as default init system and <a href="https://www.archlinux.org/news/end-of-initscripts-support/">will start removing initscripts suppport</a>, I use systemd now.</p>
@@ -442,7 +505,7 @@ EXECUTE YOUR CUSTOM SCRIPT YOU WANT TO RUN ON STARTUP
         <title type="html"><![CDATA[arch试用手记]]></title>
         <author><name>xiaoba</name><uri>http://blog.xiaoba.me</uri></author>
         <link href="http://blog.xiaoba.me/first-byte-of-arch.html"/>
-        <published>2012-10-21T19:21:17Z</published>
+        <published>2012-10-21T00:53:07Z</published>
         <id>http://blog.xiaoba.me/first-byte-of-arch.html</id>
         <content type="html" xml:base="" xml:lang="en">
             <![CDATA[ <p>前段时间装了Arch，用了大概一周多了吧。</p>
@@ -494,7 +557,7 @@ EXECUTE YOUR CUSTOM SCRIPT YOU WANT TO RUN ON STARTUP
         <title type="html"><![CDATA[大二下]]></title>
         <author><name>xiaoba</name><uri>http://blog.xiaoba.me</uri></author>
         <link href="http://blog.xiaoba.me/grade2-2nd-term.html"/>
-        <published>2012-06-22T19:21:17Z</published>
+        <published>2012-06-22T00:53:07Z</published>
         <id>http://blog.xiaoba.me/grade2-2nd-term.html</id>
         <content type="html" xml:base="" xml:lang="en">
             <![CDATA[ <p>考完了大二下的最后一门，真是虚成狗了。昨晚看了一晚，趴了1个小时直接去考场——已经不知道第几次通宵复习了。</p>
@@ -512,7 +575,7 @@ EXECUTE YOUR CUSTOM SCRIPT YOU WANT TO RUN ON STARTUP
         <title type="html"><![CDATA[轉眼已過好多年]]></title>
         <author><name>xiaoba</name><uri>http://blog.xiaoba.me</uri></author>
         <link href="http://blog.xiaoba.me/memory.html"/>
-        <published>2012-01-24T19:21:17Z</published>
+        <published>2012-01-24T00:53:07Z</published>
         <id>http://blog.xiaoba.me/memory.html</id>
         <content type="html" xml:base="" xml:lang="en">
             <![CDATA[ <p>這一次高中班聚人數明顯少了許多，不知道下一次，下下次如何。</p>
@@ -593,7 +656,7 @@ EXECUTE YOUR CUSTOM SCRIPT YOU WANT TO RUN ON STARTUP
         <title type="html"><![CDATA[疯子哥再见]]></title>
         <author><name>xiaoba</name><uri>http://blog.xiaoba.me</uri></author>
         <link href="http://blog.xiaoba.me/andy-say-byebye.html"/>
-        <published>2012-01-06T19:21:17Z</published>
+        <published>2012-01-06T00:53:07Z</published>
         <id>http://blog.xiaoba.me/andy-say-byebye.html</id>
         <content type="html" xml:base="" xml:lang="en">
             <![CDATA[ <p>疯子哥今天出发了，离开了他热爱的城市，留恋的亲人朋友，乘坐搭载着充满期待和未知的航班，开始一段新的旅程。</p>
@@ -624,7 +687,7 @@ EXECUTE YOUR CUSTOM SCRIPT YOU WANT TO RUN ON STARTUP
         <title type="html"><![CDATA[梦蝶]]></title>
         <author><name>xiaoba</name><uri>http://blog.xiaoba.me</uri></author>
         <link href="http://blog.xiaoba.me/mengdie-say-byebye.html"/>
-        <published>2011-12-04T19:21:17Z</published>
+        <published>2011-12-04T00:53:07Z</published>
         <id>http://blog.xiaoba.me/mengdie-say-byebye.html</id>
         <content type="html" xml:base="" xml:lang="en">
             <![CDATA[ <p>在新图自习完毕,听说今晚两个中心总监换届,比平时早一个小时去办公室开部长会,半路一碗炒粉是晚餐.</p>
