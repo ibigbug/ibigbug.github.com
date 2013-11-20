@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <title>8D is Here</title>
     <link href="http://blog.xiaoba.me" />
-    <updated>2013-11-19T21:41:48Z</updated>
+    <updated>2013-11-20T21:58:29Z</updated>
     <id>http://blog.xiaoba.me</id>
     
     
@@ -10,7 +10,7 @@
         <title type="html"><![CDATA[什么时候该使用assert]]></title>
         <author><name>xiaoba</name><uri>http://blog.xiaoba.me</uri></author>
         <link href="http://blog.xiaoba.me/when-to-use-assert.html"/>
-        <published>2013-11-19T21:41:48Z</published>
+        <published>2013-11-19T21:58:29Z</published>
         <id>http://blog.xiaoba.me/when-to-use-assert.html</id>
         <content type="html" xml:base="" xml:lang="en">
             <![CDATA[ <p><em>【本文译自<a href="https://mail.python.org/pipermail/python-list/2013-November/660401.html">When to use assert</a>】</em></p>
@@ -60,7 +60,7 @@
 <div class="highlight"><pre><span class="k">assert</span> <span class="n">n</span> <span class="o">&gt;</span> <span class="mi">2</span>
 </pre></div>
 
-<p>断言也是一种防卫式编程形式。你可能没有对代码中可能出现的错误采取立即的保护手段，而是在后面对可能出现错误的变化情况做保护。理想情况下，测试用例会查处这些错误，不过让我们来面对他们，即使是有测试用例的情况下，也不一定保证测试完整。开发的查错机器人可能会崩溃并且连续好几周没人注意到，或者程序员在提交代码之前忘记执行测试。在内部做检查是另一层防止错误溜入的方式，除了那种使程序功能出错返回错误结果但并不致程序崩溃的错误。</p>
+<p>在防卫式编程中使用断言也是不错的方式。你可能没有对代码中可能出现的错误采取立即的保护手段，而是在后面对可能出现错误的变化情况做保护。理想情况下，测试用例会查处这些错误，不过让我们来面对他们，即使是有测试用例的情况下，也不一定保证测试完整。开发的查错机器人可能会崩溃并且连续好几周没人注意到，或者程序员在提交代码之前忘记执行测试。在内部做检查是另一层防止错误溜入的方式，除了那种使程序功能出错返回错误结果但并不致程序崩溃的错误。</p>
 <p>假设你知道某一个变量会有哪几种可能的取值，你要写一系列的<code>if...elif</code>代码段：</p>
 <div class="highlight"><pre><span class="c"># target is expected to be one of x, y, or z, and nothing else.</span>
 <span class="k">if</span> <span class="n">target</span> <span class="o">==</span> <span class="n">x</span><span class="p">:</span>
@@ -97,7 +97,7 @@
 
 <p>这种方法去掉了不必要的<code>value = c</code>的判断，帮助开发者使代码变得简洁，并且去掉了<code>RuntimeError</code>这一块<a href="http://en.wikipedia.org/wiki/Dead_code">死代码</a>。另外，发生「unexpected error」（未知错误）也会显得很尴尬，而且他们也确实会发生。</p>
 <p><a href="http://zh.wikipedia.org/wiki/%E5%A5%91%E7%BA%A6%E5%BC%8F%E8%AE%BE%E8%AE%A1">契约式设计</a>也是对断言的合理使用。在契约式设计中，我们认为函数与他的调用者之间签了契约。像下面这样：</p>
-<p>「如果你传给我一个非空字符床，我一定会返回给你这个字符串首字母的大写模式。」</p>
+<p>「如果你传给我一个非空字符串，我一定会返回给你这个字符串首字母的大写模式。」</p>
 <p>如果这个契约被函数或者调用函数的代码破坏，程序就会出现bug。我们说函数有「先验条件」（限制必须要有参数）和后置条件（限制必须要有返回值）。因此这个函数可能会这样编写：</p>
 <div class="highlight"><pre><span class="k">def</span> <span class="nf">first_upper</span><span class="p">(</span><span class="n">astring</span><span class="p">):</span>
     <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">astring</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">astring</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span>
@@ -131,7 +131,7 @@
         <title type="html"><![CDATA[Javascript中的debounce模式]]></title>
         <author><name>xiaoba</name><uri>http://blog.xiaoba.me</uri></author>
         <link href="http://blog.xiaoba.me/debounce-in-javascript.html"/>
-        <published>2013-07-26T21:41:48Z</published>
+        <published>2013-07-26T21:58:29Z</published>
         <id>http://blog.xiaoba.me/debounce-in-javascript.html</id>
         <content type="html" xml:base="" xml:lang="en">
             <![CDATA[ <blockquote>
@@ -194,7 +194,7 @@
         <title type="html"><![CDATA[水很脏，]]></title>
         <author><name>xiaoba</name><uri>http://blog.xiaoba.me</uri></author>
         <link href="http://blog.xiaoba.me/dev-null.html"/>
-        <published>2013-05-17T21:41:48Z</published>
+        <published>2013-05-17T21:58:29Z</published>
         <id>http://blog.xiaoba.me/dev-null.html</id>
         <content type="html" xml:base="" xml:lang="en">
             <![CDATA[ <blockquote>
@@ -256,7 +256,7 @@
         <title type="html"><![CDATA[Javascript中的垃圾回收机制]]></title>
         <author><name>xiaoba</name><uri>http://blog.xiaoba.me</uri></author>
         <link href="http://blog.xiaoba.me/garbage-collection-in-javascript.html"/>
-        <published>2013-05-07T21:41:48Z</published>
+        <published>2013-05-07T21:58:29Z</published>
         <id>http://blog.xiaoba.me/garbage-collection-in-javascript.html</id>
         <content type="html" xml:base="" xml:lang="en">
             <![CDATA[ <h1>Javascript 中的内存管理</h1>
@@ -409,7 +409,7 @@
         <title type="html"><![CDATA[Ath9k驱动在Arch中无法连接无线网的问题]]></title>
         <author><name>xiaoba</name><uri>http://blog.xiaoba.me</uri></author>
         <link href="http://blog.xiaoba.me/ath9k-under-archlinux.html"/>
-        <published>2013-04-11T21:41:48Z</published>
+        <published>2013-04-11T21:58:29Z</published>
         <id>http://blog.xiaoba.me/ath9k-under-archlinux.html</id>
         <content type="html" xml:base="" xml:lang="en">
             <![CDATA[ <p>自从弄好了校园网无线共享之后发现Arch的无线网络有问题，莫名其妙各种连不上，各种iw的命令放上去都是<code>Invalid argument</code>，真是郁闷= =</p>
@@ -442,7 +442,7 @@
         <title type="html"><![CDATA[用Python生成特定频率的波形文件]]></title>
         <author><name>xiaoba</name><uri>http://blog.xiaoba.me</uri></author>
         <link href="http://blog.xiaoba.me/generate-simple-wave.html"/>
-        <published>2013-03-23T21:41:48Z</published>
+        <published>2013-03-23T21:58:29Z</published>
         <id>http://blog.xiaoba.me/generate-simple-wave.html</id>
         <content type="html" xml:base="" xml:lang="en">
             <![CDATA[ <p>好久不写流水帐了，这一次的流水帐还是代码笔记。</p>
@@ -463,7 +463,7 @@
         <title type="html"><![CDATA[Node.js 和 express.js初体验]]></title>
         <author><name>xiaoba</name><uri>http://blog.xiaoba.me</uri></author>
         <link href="http://blog.xiaoba.me/node-and-express.html"/>
-        <published>2013-01-25T21:41:48Z</published>
+        <published>2013-01-25T21:58:29Z</published>
         <id>http://blog.xiaoba.me/node-and-express.html</id>
         <content type="html" xml:base="" xml:lang="en">
             <![CDATA[ <p>因为前几天有位朋友分手了,要删掉人人网的所有状态.看他在那一条一条点来点去挺麻烦的,何不写个脚本来自动删呢.于是便有了本文.</p>
@@ -498,7 +498,7 @@
         <title type="html"><![CDATA[ansys解决平行传输线周围静电场分布]]></title>
         <author><name>xiaoba</name><uri>http://blog.xiaoba.me</uri></author>
         <link href="http://blog.xiaoba.me/ansys.html"/>
-        <published>2012-12-13T21:41:48Z</published>
+        <published>2012-12-13T21:58:29Z</published>
         <id>http://blog.xiaoba.me/ansys.html</id>
         <content type="html" xml:base="" xml:lang="en">
             <![CDATA[ <p>最近有一门电磁场的实验课要交一份实验报告内容如题.</p>
@@ -540,7 +540,7 @@
         <title type="html"><![CDATA[A Byte of WSGI]]></title>
         <author><name>xiaoba</name><uri>http://blog.xiaoba.me</uri></author>
         <link href="http://blog.xiaoba.me/wsgi.html"/>
-        <published>2012-12-07T21:41:48Z</published>
+        <published>2012-12-07T21:58:29Z</published>
         <id>http://blog.xiaoba.me/wsgi.html</id>
         <content type="html" xml:base="" xml:lang="en">
             <![CDATA[ <p>If you have ever used some python frameworks like <em>tornado</em>, <em>flask</em>, you may hear about WSGI. But what's this?</p>
@@ -584,7 +584,7 @@
         <title type="html"><![CDATA[Run Custom Scripts on boot under Systemd]]></title>
         <author><name>xiaoba</name><uri>http://blog.xiaoba.me</uri></author>
         <link href="http://blog.xiaoba.me/run_script_on_boot_under_systemd.html"/>
-        <published>2012-11-09T21:41:48Z</published>
+        <published>2012-11-09T21:58:29Z</published>
         <id>http://blog.xiaoba.me/run_script_on_boot_under_systemd.html</id>
         <content type="html" xml:base="" xml:lang="en">
             <![CDATA[ <p>As archlinux has replaced <em>initscripts</em> with <em>systemd</em> as default init system and <a href="https://www.archlinux.org/news/end-of-initscripts-support/">will start removing initscripts suppport</a>, I use systemd now.</p>
@@ -626,7 +626,7 @@ EXECUTE YOUR CUSTOM SCRIPT YOU WANT TO RUN ON STARTUP
         <title type="html"><![CDATA[arch试用手记]]></title>
         <author><name>xiaoba</name><uri>http://blog.xiaoba.me</uri></author>
         <link href="http://blog.xiaoba.me/first-byte-of-arch.html"/>
-        <published>2012-10-21T21:41:48Z</published>
+        <published>2012-10-21T21:58:29Z</published>
         <id>http://blog.xiaoba.me/first-byte-of-arch.html</id>
         <content type="html" xml:base="" xml:lang="en">
             <![CDATA[ <p>前段时间装了Arch，用了大概一周多了吧。</p>
@@ -678,7 +678,7 @@ EXECUTE YOUR CUSTOM SCRIPT YOU WANT TO RUN ON STARTUP
         <title type="html"><![CDATA[大二下]]></title>
         <author><name>xiaoba</name><uri>http://blog.xiaoba.me</uri></author>
         <link href="http://blog.xiaoba.me/grade2-2nd-term.html"/>
-        <published>2012-06-22T21:41:48Z</published>
+        <published>2012-06-22T21:58:29Z</published>
         <id>http://blog.xiaoba.me/grade2-2nd-term.html</id>
         <content type="html" xml:base="" xml:lang="en">
             <![CDATA[ <p>考完了大二下的最后一门，真是虚成狗了。昨晚看了一晚，趴了1个小时直接去考场——已经不知道第几次通宵复习了。</p>
@@ -696,7 +696,7 @@ EXECUTE YOUR CUSTOM SCRIPT YOU WANT TO RUN ON STARTUP
         <title type="html"><![CDATA[轉眼已過好多年]]></title>
         <author><name>xiaoba</name><uri>http://blog.xiaoba.me</uri></author>
         <link href="http://blog.xiaoba.me/memory.html"/>
-        <published>2012-01-24T21:41:48Z</published>
+        <published>2012-01-24T21:58:29Z</published>
         <id>http://blog.xiaoba.me/memory.html</id>
         <content type="html" xml:base="" xml:lang="en">
             <![CDATA[ <p>這一次高中班聚人數明顯少了許多，不知道下一次，下下次如何。</p>
@@ -777,7 +777,7 @@ EXECUTE YOUR CUSTOM SCRIPT YOU WANT TO RUN ON STARTUP
         <title type="html"><![CDATA[疯子哥再见]]></title>
         <author><name>xiaoba</name><uri>http://blog.xiaoba.me</uri></author>
         <link href="http://blog.xiaoba.me/andy-say-byebye.html"/>
-        <published>2012-01-06T21:41:48Z</published>
+        <published>2012-01-06T21:58:29Z</published>
         <id>http://blog.xiaoba.me/andy-say-byebye.html</id>
         <content type="html" xml:base="" xml:lang="en">
             <![CDATA[ <p>疯子哥今天出发了，离开了他热爱的城市，留恋的亲人朋友，乘坐搭载着充满期待和未知的航班，开始一段新的旅程。</p>
@@ -808,7 +808,7 @@ EXECUTE YOUR CUSTOM SCRIPT YOU WANT TO RUN ON STARTUP
         <title type="html"><![CDATA[梦蝶]]></title>
         <author><name>xiaoba</name><uri>http://blog.xiaoba.me</uri></author>
         <link href="http://blog.xiaoba.me/mengdie-say-byebye.html"/>
-        <published>2011-12-04T21:41:48Z</published>
+        <published>2011-12-04T21:58:29Z</published>
         <id>http://blog.xiaoba.me/mengdie-say-byebye.html</id>
         <content type="html" xml:base="" xml:lang="en">
             <![CDATA[ <p>在新图自习完毕,听说今晚两个中心总监换届,比平时早一个小时去办公室开部长会,半路一碗炒粉是晚餐.</p>

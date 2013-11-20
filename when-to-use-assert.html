@@ -93,7 +93,7 @@
 <div class="highlight"><pre><span class="k">assert</span> <span class="n">n</span> <span class="o">&gt;</span> <span class="mi">2</span>
 </pre></div>
 
-<p>断言也是一种防卫式编程形式。你可能没有对代码中可能出现的错误采取立即的保护手段，而是在后面对可能出现错误的变化情况做保护。理想情况下，测试用例会查处这些错误，不过让我们来面对他们，即使是有测试用例的情况下，也不一定保证测试完整。开发的查错机器人可能会崩溃并且连续好几周没人注意到，或者程序员在提交代码之前忘记执行测试。在内部做检查是另一层防止错误溜入的方式，除了那种使程序功能出错返回错误结果但并不致程序崩溃的错误。</p>
+<p>在防卫式编程中使用断言也是不错的方式。你可能没有对代码中可能出现的错误采取立即的保护手段，而是在后面对可能出现错误的变化情况做保护。理想情况下，测试用例会查处这些错误，不过让我们来面对他们，即使是有测试用例的情况下，也不一定保证测试完整。开发的查错机器人可能会崩溃并且连续好几周没人注意到，或者程序员在提交代码之前忘记执行测试。在内部做检查是另一层防止错误溜入的方式，除了那种使程序功能出错返回错误结果但并不致程序崩溃的错误。</p>
 <p>假设你知道某一个变量会有哪几种可能的取值，你要写一系列的<code>if...elif</code>代码段：</p>
 <div class="highlight"><pre><span class="c"># target is expected to be one of x, y, or z, and nothing else.</span>
 <span class="k">if</span> <span class="n">target</span> <span class="o">==</span> <span class="n">x</span><span class="p">:</span>
@@ -130,7 +130,7 @@
 
 <p>这种方法去掉了不必要的<code>value = c</code>的判断，帮助开发者使代码变得简洁，并且去掉了<code>RuntimeError</code>这一块<a href="http://en.wikipedia.org/wiki/Dead_code">死代码</a>。另外，发生「unexpected error」（未知错误）也会显得很尴尬，而且他们也确实会发生。</p>
 <p><a href="http://zh.wikipedia.org/wiki/%E5%A5%91%E7%BA%A6%E5%BC%8F%E8%AE%BE%E8%AE%A1">契约式设计</a>也是对断言的合理使用。在契约式设计中，我们认为函数与他的调用者之间签了契约。像下面这样：</p>
-<p>「如果你传给我一个非空字符床，我一定会返回给你这个字符串首字母的大写模式。」</p>
+<p>「如果你传给我一个非空字符串，我一定会返回给你这个字符串首字母的大写模式。」</p>
 <p>如果这个契约被函数或者调用函数的代码破坏，程序就会出现bug。我们说函数有「先验条件」（限制必须要有参数）和后置条件（限制必须要有返回值）。因此这个函数可能会这样编写：</p>
 <div class="highlight"><pre><span class="k">def</span> <span class="nf">first_upper</span><span class="p">(</span><span class="n">astring</span><span class="p">):</span>
     <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">astring</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">astring</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span>
