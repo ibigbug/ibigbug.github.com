@@ -2,36 +2,15 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <title>8D is Here</title>
     <link href="http://blog.xiaoba.me" />
-    <updated>2013-12-08T19:04:47Z</updated>
+    <updated>2013-12-08T19:15:04Z</updated>
     <id>http://blog.xiaoba.me</id>
-    
-    
-    <entry>
-        <title type="html"><![CDATA[为什么我使用Linux]]></title>
-        <author><name>xiaoba</name><uri>http://blog.xiaoba.me</uri></author>
-        <link href="http://blog.xiaoba.me/why-i-use-linux.html"/>
-        <published>2013-12-08T19:04:47Z</published>
-        <id>http://blog.xiaoba.me/why-i-use-linux.html</id>
-        <content type="html" xml:base="" xml:lang="en">
-            <![CDATA[ <p>前段时间有以为新的follower在twitter上问我算不算是Arch用户，把我问了一愣（后来简单通过id了解一下，发现好像是人人网跪圈的某位大牛之类的吧）。由于最近一次定期维护系统时，我一狠心把Arch的分区也给格掉了，所以我回答他说曾经算是。想起之前<a href="https://twitter.com/cndaniel">Daniel</a>也问过我为什么要用Linux，刚好最近有时间，我就想了一下。</p>
-<p>不用掰手指算，我用Linux不久，也就两三年时间吧。对Linux文化了解的也不多，还不知道<a href="http://zh.wikipedia.org/wiki/GNU/Linux%E5%91%BD%E5%90%8D%E7%88%AD%E8%AD%B0">Linux与GNU/Linux命名之争</a>该如何站队；Linus的名言也背不出几条拿出来装腔；因为开源？没用Linux之前我是连安装软件之前的协议直接下一步跳过的，更别提什么版权意识开源精神了，即使用到现在也还是分不清各个License之间的细微区别，不过也有观点认为那是给商人们准备的，我们只要用就好了，所以才会出现像<a href="http://www.wtfpl.net/">WTFPL(Do What the Fuck You Want to Public License)</a>这样的License吧；至于有人说的比Windows好用，网上两者对比的文章也很容易搜到，在我看来，对于非程序员类职业来说，根本就是扯淡的观点。而且操作系统之争，编辑器之争，编程语言之争这类的「圣战」，连大牛们战个几天几夜，也战不出个孰优孰劣，所以我也只就我自己的经历来说说为什么我要使用Linux。</p>
-<p>第一次听说Linux大概是初中时候。那时喜欢去3800hk看一些「刷钻」、「盗号」之类的教学视频。应该有一次的视频里讲到通过TTL来判断主机OS时第一次了解到，原来除了Windows之外还有那么多「高级」的操作系统。那时好奇心也强，就攒了几块零钱，去找我们那里唯一一家卖电脑的商店找那位小哥刻了一张红旗Linux的安装包，给我盘的时候他说我肯定装不好。后来果然没装好。当时倒不是因为不知道怎么装，而是怕装好之后被我老爸发现又在乱搞一些没用的东西骂我一顿。也就作罢。</p>
-<p>再一次接触Linux，也是真正接触并使用Linux，已经是大一时候加入学校的某个社团之后了。那个社团技术部门招新的网站上写了很多我当时还没听过的东西，什么MySQL、Python、Javascript之类的。唯一听过名字的就是Linux了。来大学之后有了自己的电脑，第一件事就是给它装上了一个Ubuntu。当时看到这样的部门介绍，感觉就像空的水杯遇见了水龙头一样，心想大学果然是个好地方，我一定要加入这个社团来学习如何使用我电脑里面新鲜的Ubuntu操作系统。虽然当时对写代码一无所知，不过高中毕业暑假里面学的搭建twip代理，搭建wordpress博客，初中时候用「135批量扫描工具」抓肉鸡之类的经历，还有面试时候跟正在恢复被误删的数据库的两位大牛说的「哪怕就让我进来帮你们买买水，买买面包也行啊」这样的表现让他们觉得我还行吧，所以也就进了技术部门。便正式开始在「工作」中使用Linux了。而Ubuntu，和其他大多数新手一样，是我使用的第一个「发行版」。</p>
-<p>Ubuntu这个名字看起来很像乌托邦，其实读作「乌班图」。是一个很适合Windows用户转向Linux使用的发行版，安装过程与Windows基本无异。如果你愿意，也完全可以像Windows那样使用，因为是有图形界面的。我也正是在Ubuntu的使用过程中，接触了terminal、vim、python、markdown，并且习惯了能用键盘就不用鼠标。但毕竟是新手，对这些东西了解的并不深入，不过就像各种圈子一样，我也还是因此认识了一群跟我一样喜欢这些东西的朋友。</p>
-<p>然而折腾是停不下来的，用了没多久Ubuntu，我顺理成章地听说了Gentoo这个可以满足折腾欲，用现在的话来讲就是逼格很高的发行版。如你所知，宅男是管不住自己手的。于是就开始没日没夜的装Gentoo。Gentoo跟Ubuntu不同，所有东西都要自己定制，编译安装的，而我的机器又不好，编译一个内核记得差不多要一个多钟头，对我这个菜鸟来说，编译失败就意味着要完全从头再来，已保证跟手册是同步的。而图形界面用的时间就更久了。那时为了这个，课也不上了。夜里室友在睡觉，我就静静的盯着屏幕，看着一行一行的编译语句执行，就像黑客帝国里面的那种黑底绿字的字符雨闪过一样。我没生过孩子，不过当第一次编译出的内核可以正常启动时，我推测那种感觉就像多数男人看到自己的小蝌蚪被孕育到世界里面来一样吧。而看到自己编译出的图形界面的感觉可能就跟自己的儿子考上了清华或者娶了个富婆一样吧。也是从那个时候开始，我不大怎么上课了，也不会像正常人一样好好睡觉了。</p>
-<p>不过我发现Gentoo并不适合我，因为Gentoo安装软件包，都要自己动手编译，每次等这个编译的过程都很麻烦，很累。就像那些费劲千辛万苦追到女神之后发现两个人活在同一片蓝天，却不在同一个世界一样。我把Gentoo也格了，装了ArchLinux。在经历过Gentoo之后，我发觉Arch还是蛮适合我的。安装比Gentoo容易的多，可以按照自己的需求定制，又不用麻烦到事事都要自己动手设置好。用不到的一个不多，该有的一个不少。一切都很自然。所以这个也是我用得时间最长的发行版。直到我有了Mac，便很少再用了，在上一次定期维护系统时候，也给忍痛格掉了。</p>
-<p>今年暑假实习的时候，考虑到以后自己可能就要告别大学所学的专业课，成为一个职业码农了，干脆买了个MBA，正式加入了OS X阵营。Mac OS X其实跟Linux是有着相同祖先的，对我来说几乎没什么学习成本，我基本可以像使用Linux一样来使用Mac。但是毕竟是有钱来驱动的，Mac的图形界面要比每一个Linux发行版都优秀得多。在Mac里，我还是使用vim来编程，使用git来管理代码，使用dropbox和iCloud来同步文档，使用github来同步配置文件，使用号称最先进的「鼠须管」输入法，使用markdown和自己制作的SBlog程序来写博客，使用homebrew来管理安装一些开源软件。最近又买了一个Alfred 2来增强spotlight，感觉自己好像自己越来越像一个程序员了，就像小时候想象的一样。不过我毕竟算不上一个真正意义上合格的程序员。因为真正的程序员，是有创造力的，有能力改变世界的。每每想到这一点，总会点上一根忧伤的烟。</p>
-<p>所以要问我为什么要用Linux，我也确实不能优雅的谢邀然后再写个1，2，3条出来。用了就是用了，而且一直在用，已经养成一种习惯，就是觉得不在电脑上面打游戏的时候，键盘就比鼠标好用的多，terminal就比图形界面舒服的多。就像有些高中同学说我，你从学物理的改行到学电气去，最后不去电力部门怎么跑去当了个码农，我也不知道怎么回答，可能就像钓了一根大骨架的桑地亚哥那样吧。</p> ]]>
-        </content>
-    </entry>
-    
     
     
     <entry>
         <title type="html"><![CDATA[什么时候该使用assert]]></title>
         <author><name>xiaoba</name><uri>http://blog.xiaoba.me</uri></author>
         <link href="http://blog.xiaoba.me/when-to-use-assert.html"/>
-        <published>2013-11-19T19:04:47Z</published>
+        <published>2013-11-19T19:15:04Z</published>
         <id>http://blog.xiaoba.me/when-to-use-assert.html</id>
         <content type="html" xml:base="" xml:lang="en">
             <![CDATA[ <p><em>【本文译自<a href="https://mail.python.org/pipermail/python-list/2013-November/660401.html">When to use assert</a>】</em></p>
@@ -152,7 +131,7 @@ Steven</p>
         <title type="html"><![CDATA[Javascript中的debounce模式]]></title>
         <author><name>xiaoba</name><uri>http://blog.xiaoba.me</uri></author>
         <link href="http://blog.xiaoba.me/debounce-in-javascript.html"/>
-        <published>2013-07-26T19:04:47Z</published>
+        <published>2013-07-26T19:15:04Z</published>
         <id>http://blog.xiaoba.me/debounce-in-javascript.html</id>
         <content type="html" xml:base="" xml:lang="en">
             <![CDATA[ <blockquote>
@@ -215,7 +194,7 @@ Steven</p>
         <title type="html"><![CDATA[水很脏，]]></title>
         <author><name>xiaoba</name><uri>http://blog.xiaoba.me</uri></author>
         <link href="http://blog.xiaoba.me/dev-null.html"/>
-        <published>2013-05-17T19:04:47Z</published>
+        <published>2013-05-17T19:15:04Z</published>
         <id>http://blog.xiaoba.me/dev-null.html</id>
         <content type="html" xml:base="" xml:lang="en">
             <![CDATA[ <blockquote>
@@ -277,7 +256,7 @@ Steven</p>
         <title type="html"><![CDATA[Javascript中的垃圾回收机制]]></title>
         <author><name>xiaoba</name><uri>http://blog.xiaoba.me</uri></author>
         <link href="http://blog.xiaoba.me/garbage-collection-in-javascript.html"/>
-        <published>2013-05-07T19:04:47Z</published>
+        <published>2013-05-07T19:15:04Z</published>
         <id>http://blog.xiaoba.me/garbage-collection-in-javascript.html</id>
         <content type="html" xml:base="" xml:lang="en">
             <![CDATA[ <h1>Javascript 中的内存管理</h1>
@@ -430,7 +409,7 @@ Steven</p>
         <title type="html"><![CDATA[Ath9k驱动在Arch中无法连接无线网的问题]]></title>
         <author><name>xiaoba</name><uri>http://blog.xiaoba.me</uri></author>
         <link href="http://blog.xiaoba.me/ath9k-under-archlinux.html"/>
-        <published>2013-04-11T19:04:47Z</published>
+        <published>2013-04-11T19:15:04Z</published>
         <id>http://blog.xiaoba.me/ath9k-under-archlinux.html</id>
         <content type="html" xml:base="" xml:lang="en">
             <![CDATA[ <p>自从弄好了校园网无线共享之后发现Arch的无线网络有问题，莫名其妙各种连不上，各种iw的命令放上去都是<code>Invalid argument</code>，真是郁闷= =</p>
@@ -463,7 +442,7 @@ Steven</p>
         <title type="html"><![CDATA[用Python生成特定频率的波形文件]]></title>
         <author><name>xiaoba</name><uri>http://blog.xiaoba.me</uri></author>
         <link href="http://blog.xiaoba.me/generate-simple-wave.html"/>
-        <published>2013-03-23T19:04:47Z</published>
+        <published>2013-03-23T19:15:04Z</published>
         <id>http://blog.xiaoba.me/generate-simple-wave.html</id>
         <content type="html" xml:base="" xml:lang="en">
             <![CDATA[ <p>好久不写流水帐了，这一次的流水帐还是代码笔记。</p>
@@ -484,7 +463,7 @@ Steven</p>
         <title type="html"><![CDATA[Node.js 和 express.js初体验]]></title>
         <author><name>xiaoba</name><uri>http://blog.xiaoba.me</uri></author>
         <link href="http://blog.xiaoba.me/node-and-express.html"/>
-        <published>2013-01-25T19:04:47Z</published>
+        <published>2013-01-25T19:15:04Z</published>
         <id>http://blog.xiaoba.me/node-and-express.html</id>
         <content type="html" xml:base="" xml:lang="en">
             <![CDATA[ <p>因为前几天有位朋友分手了,要删掉人人网的所有状态.看他在那一条一条点来点去挺麻烦的,何不写个脚本来自动删呢.于是便有了本文.</p>
@@ -519,7 +498,7 @@ Steven</p>
         <title type="html"><![CDATA[ansys解决平行传输线周围静电场分布]]></title>
         <author><name>xiaoba</name><uri>http://blog.xiaoba.me</uri></author>
         <link href="http://blog.xiaoba.me/ansys.html"/>
-        <published>2012-12-13T19:04:47Z</published>
+        <published>2012-12-13T19:15:04Z</published>
         <id>http://blog.xiaoba.me/ansys.html</id>
         <content type="html" xml:base="" xml:lang="en">
             <![CDATA[ <p>最近有一门电磁场的实验课要交一份实验报告内容如题.</p>
@@ -561,7 +540,7 @@ Steven</p>
         <title type="html"><![CDATA[A Byte of WSGI]]></title>
         <author><name>xiaoba</name><uri>http://blog.xiaoba.me</uri></author>
         <link href="http://blog.xiaoba.me/wsgi.html"/>
-        <published>2012-12-07T19:04:47Z</published>
+        <published>2012-12-07T19:15:04Z</published>
         <id>http://blog.xiaoba.me/wsgi.html</id>
         <content type="html" xml:base="" xml:lang="en">
             <![CDATA[ <p>If you have ever used some python frameworks like <em>tornado</em>, <em>flask</em>, you may hear about WSGI. But what's this?</p>
@@ -605,7 +584,7 @@ Steven</p>
         <title type="html"><![CDATA[Run Custom Scripts on boot under Systemd]]></title>
         <author><name>xiaoba</name><uri>http://blog.xiaoba.me</uri></author>
         <link href="http://blog.xiaoba.me/run_script_on_boot_under_systemd.html"/>
-        <published>2012-11-09T19:04:47Z</published>
+        <published>2012-11-09T19:15:04Z</published>
         <id>http://blog.xiaoba.me/run_script_on_boot_under_systemd.html</id>
         <content type="html" xml:base="" xml:lang="en">
             <![CDATA[ <p>As archlinux has replaced <em>initscripts</em> with <em>systemd</em> as default init system and <a href="https://www.archlinux.org/news/end-of-initscripts-support/">will start removing initscripts suppport</a>, I use systemd now.</p>
@@ -647,7 +626,7 @@ EXECUTE YOUR CUSTOM SCRIPT YOU WANT TO RUN ON STARTUP
         <title type="html"><![CDATA[arch试用手记]]></title>
         <author><name>xiaoba</name><uri>http://blog.xiaoba.me</uri></author>
         <link href="http://blog.xiaoba.me/first-byte-of-arch.html"/>
-        <published>2012-10-21T19:04:47Z</published>
+        <published>2012-10-21T19:15:04Z</published>
         <id>http://blog.xiaoba.me/first-byte-of-arch.html</id>
         <content type="html" xml:base="" xml:lang="en">
             <![CDATA[ <p>前段时间装了Arch，用了大概一周多了吧。</p>
@@ -699,7 +678,7 @@ EXECUTE YOUR CUSTOM SCRIPT YOU WANT TO RUN ON STARTUP
         <title type="html"><![CDATA[大二下]]></title>
         <author><name>xiaoba</name><uri>http://blog.xiaoba.me</uri></author>
         <link href="http://blog.xiaoba.me/grade2-2nd-term.html"/>
-        <published>2012-06-22T19:04:47Z</published>
+        <published>2012-06-22T19:15:04Z</published>
         <id>http://blog.xiaoba.me/grade2-2nd-term.html</id>
         <content type="html" xml:base="" xml:lang="en">
             <![CDATA[ <p>考完了大二下的最后一门，真是虚成狗了。昨晚看了一晚，趴了1个小时直接去考场——已经不知道第几次通宵复习了。</p>
@@ -717,7 +696,7 @@ EXECUTE YOUR CUSTOM SCRIPT YOU WANT TO RUN ON STARTUP
         <title type="html"><![CDATA[轉眼已過好多年]]></title>
         <author><name>xiaoba</name><uri>http://blog.xiaoba.me</uri></author>
         <link href="http://blog.xiaoba.me/memory.html"/>
-        <published>2012-01-24T19:04:47Z</published>
+        <published>2012-01-24T19:15:04Z</published>
         <id>http://blog.xiaoba.me/memory.html</id>
         <content type="html" xml:base="" xml:lang="en">
             <![CDATA[ <p>這一次高中班聚人數明顯少了許多，不知道下一次，下下次如何。</p>
@@ -798,7 +777,7 @@ EXECUTE YOUR CUSTOM SCRIPT YOU WANT TO RUN ON STARTUP
         <title type="html"><![CDATA[疯子哥再见]]></title>
         <author><name>xiaoba</name><uri>http://blog.xiaoba.me</uri></author>
         <link href="http://blog.xiaoba.me/andy-say-byebye.html"/>
-        <published>2012-01-06T19:04:47Z</published>
+        <published>2012-01-06T19:15:04Z</published>
         <id>http://blog.xiaoba.me/andy-say-byebye.html</id>
         <content type="html" xml:base="" xml:lang="en">
             <![CDATA[ <p>疯子哥今天出发了，离开了他热爱的城市，留恋的亲人朋友，乘坐搭载着充满期待和未知的航班，开始一段新的旅程。</p>
@@ -829,7 +808,7 @@ EXECUTE YOUR CUSTOM SCRIPT YOU WANT TO RUN ON STARTUP
         <title type="html"><![CDATA[梦蝶]]></title>
         <author><name>xiaoba</name><uri>http://blog.xiaoba.me</uri></author>
         <link href="http://blog.xiaoba.me/mengdie-say-byebye.html"/>
-        <published>2011-12-04T19:04:47Z</published>
+        <published>2011-12-04T19:15:04Z</published>
         <id>http://blog.xiaoba.me/mengdie-say-byebye.html</id>
         <content type="html" xml:base="" xml:lang="en">
             <![CDATA[ <p>在新图自习完毕,听说今晚两个中心总监换届,比平时早一个小时去办公室开部长会,半路一碗炒粉是晚餐.</p>
