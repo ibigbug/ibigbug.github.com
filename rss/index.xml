@@ -2,15 +2,144 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <title>8D is Here</title>
     <link href="http://blog.xiaoba.me" />
-    <updated>2013-12-08T19:38:38Z</updated>
+    <updated>2013-12-13T20:42:06Z</updated>
     <id>http://blog.xiaoba.me</id>
+    
+    
+    <entry>
+        <title type="html"><![CDATA[Flask中的auto reloader机制]]></title>
+        <author><name>xiaoba</name><uri>http://blog.xiaoba.me</uri></author>
+        <link href="http://blog.xiaoba.me/how-flask-auto-reloader-work-and-redis-daemon-with-flask-script.html"/>
+        <published>2013-12-13T20:42:06Z</published>
+        <id>http://blog.xiaoba.me/how-flask-auto-reloader-work-and-redis-daemon-with-flask-script.html</id>
+        <content type="html" xml:base="" xml:lang="en">
+            <![CDATA[ <p>起因是看到一篇文章讲<a href="http://flask.pocoo.org/snippets/73/">Flask中使用消息队列</a>的文章。很简单，不细说。但是其中有一步是需要单独起一条守护进程来处理队列里面的数据。由于我比较懒，不想每次要运行两个命令才能开启应用。首先想到的是在Makefile里面添加一条<code>redis-daemon</code>。但是这样没有成功，猜测是因为Flask的server和Redis的daemon都是要阻塞的，一旦启动之后便不能返回，于是下一条规则便没法执行。只好在Flask-Script里面做文章，翻了下Flask准确的说是<a href="http://werkzeug.pocoo.org/">werkzeug</a>的源码，找到了实现方法。</p>
+<h1>一、 Flask auto_reloader的实现</h1>
+<p>准确地说是werkzeug实现的这个功能，而Flask是基于werkzeug构建起来的。相关的代码在werkzeug.serving模块中。整个原理其实很简单，就是不停的检测目录下的文件更改，比较文件的<code>最近修改时间</code>，如果有更新，就重启服务。但是实现起来其实有点复杂。当使用<code>auto_reloader</code>启动服务时，实际上会按照当前命令行参数新开一条python解释器进程。也就是启动后是会有两条python进程的，一条是我们自己启动的，我暂且称为「主进程」；另一条是werkzeug开的，我暂且称为「从进程」。当主进程启动后，会用<code>while 1</code>的方式阻塞，在<code>while</code>内部开启从进程，从进程又在内部开一条新的线程来跑web服务，然后调用<code>reloader_loop</code>方法来监视文件改动。</p>
+<h2>1). <code>run_simple</code>方法</h2>
+<p>文档中给的示例是用<code>run_simple</code>方法来启动一个web服务。如果使用<code>use_reloader</code>，便会调用<code>run_with_realoder</code>来包装这个web服务。写成伪代码如下：
+<div class="highlight"><pre><span class="k">def</span> <span class="nf">run_simple</span><span class="p">():</span>
+    <span class="k">def</span> <span class="nf">inner</span><span class="p">():</span>
+        <span class="n">start_http_server</span><span class="p">()</span>
+    <span class="k">if</span> <span class="n">use_reloader</span><span class="p">:</span>
+        <span class="n">run_with_realoder</span><span class="p">(</span><span class="n">inner</span><span class="p">)</span>  <span class="c"># 这个方法里面启动从进程</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">inner</span><span class="p">()</span>  <span class="c"># 这种情况比较简单，就不说了</span>
+</pre></div></p>
+<h2>2). <code>run_with_realoder</code>方法</h2>
+<p>这个方法源码不多，直接贴出来：
+<div class="highlight"><pre><span class="k">def</span> <span class="nf">run_with_reloader</span><span class="p">(</span><span class="n">main_func</span><span class="p">,</span> <span class="n">extra_files</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">interval</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Run the given function in an independent python interpreter.&quot;&quot;&quot;</span>
+    <span class="kn">import</span> <span class="nn">signal</span>
+    <span class="n">signal</span><span class="o">.</span><span class="n">signal</span><span class="p">(</span><span class="n">signal</span><span class="o">.</span><span class="n">SIGTERM</span><span class="p">,</span> <span class="k">lambda</span> <span class="o">*</span><span class="n">args</span><span class="p">:</span> <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">0</span><span class="p">))</span>
+    <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;WERKZEUG_RUN_MAIN&#39;</span><span class="p">)</span> <span class="o">==</span> <span class="s">&#39;true&#39;</span><span class="p">:</span>
+        <span class="n">thread</span><span class="o">.</span><span class="n">start_new_thread</span><span class="p">(</span><span class="n">main_func</span><span class="p">,</span> <span class="p">())</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">reloader_loop</span><span class="p">(</span><span class="n">extra_files</span><span class="p">,</span> <span class="n">interval</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">KeyboardInterrupt</span><span class="p">:</span>
+            <span class="k">return</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="n">restart_with_reloader</span><span class="p">())</span>
+    <span class="k">except</span> <span class="ne">KeyboardInterrupt</span><span class="p">:</span>
+        <span class="k">pass</span>
+</pre></div></p>
+<p>这个方法里面有个<code>WERKZEUG_RUN_MAIN</code>，是在从进程启动之前添加的env里面的。因此当主进程启动后第一次调用这个方法时，不会进入这个分支，直接进入<code>sys.exit(restart_with_reloader())</code>。而这里调用<code>sys.exit()</code>是不会直接退出的，因为<code>restart_with_reloader()</code>将阻塞。</p>
+<p>至于进入方法时的signal处理，依据官方文档中关于<code>thread</code>模块的说明：</p>
+<blockquote>
+<p>Threads interact strangely with interrupts: the KeyboardInterrupt exception will be received by an arbitrary thread. (When the signal module is available, interrupts always go to the main thread.)</p>
+</blockquote>
+<p>可以保证当收到<code>KeyboardInterrupt</code>时能够被「主进程」截获。</p>
+<h2>3). <code>restart_with_reloader</code>方法</h2>
+<p>我们再来看比较有内涵的<code>restart_with_reloader</code>方法：</p>
+<div class="highlight"><pre><span class="k">def</span> <span class="nf">restart_with_reloader</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;Spawn a new Python interpreter with the same arguments as this one,</span>
+<span class="sd">    but running the reloader thread.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">while</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="n">_log</span><span class="p">(</span><span class="s">&#39;info&#39;</span><span class="p">,</span> <span class="s">&#39; * Restarting with reloader&#39;</span><span class="p">)</span>
+        <span class="n">args</span> <span class="o">=</span> <span class="p">[</span><span class="n">sys</span><span class="o">.</span><span class="n">executable</span><span class="p">]</span> <span class="o">+</span> <span class="n">sys</span><span class="o">.</span><span class="n">argv</span>
+        <span class="n">new_environ</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        <span class="n">new_environ</span><span class="p">[</span><span class="s">&#39;WERKZEUG_RUN_MAIN&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s">&#39;true&#39;</span>
+
+        <span class="c"># a weird bug on windows. sometimes unicode strings end up in the</span>
+        <span class="c"># environment and subprocess.call does not like this, encode them</span>
+        <span class="c"># to latin1 and continue.</span>
+        <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s">&#39;nt&#39;</span> <span class="ow">and</span> <span class="n">PY2</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">iteritems</span><span class="p">(</span><span class="n">new_environ</span><span class="p">):</span>
+                <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">text_type</span><span class="p">):</span>
+                    <span class="n">new_environ</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s">&#39;iso-8859-1&#39;</span><span class="p">)</span>
+
+        <span class="n">exit_code</span> <span class="o">=</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">call</span><span class="p">(</span><span class="n">args</span><span class="p">,</span> <span class="n">env</span><span class="o">=</span><span class="n">new_environ</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">exit_code</span> <span class="o">!=</span> <span class="mi">3</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">exit_code</span>
+</pre></div>
+
+<p>这个方法看起来很危险，在<code>while 1</code>里面不停的新开python解释器不会把系统拖垮么？不会的。因为<code>subprocess</code>执行的命令其实就是开一个新的python解释器重新运行一次我们的<code>python manager.py runserver</code>命令，也就是我们之前说的「从进程」。而web服务器是要阻塞的，所以在上一个python解释器退出之前，是不会开新的解释器的。</p>
+<p>但是这一次与第一次我们手动运行<code>runserver</code>时候的情况不同。因为这个方法开始时候在env里面添加了一个新的环境变量「WERKZEUG_RUN_MAIN」，还记得<code>run_with_reloader</code>方法里面的第一个<code>if</code>吧，就是为了这里准备的。当从进程执行到<code>run_with_reloader</code>时，便进入了条件分支，而不会再无限启新的「从进程」耗光资源。而分支内部可以看到，开了一条线程来跑<code>main_func</code>也就是启动web服务的方法，紧接着启动<code>reloader_loop</code>也就是监视文件改动的循环。</p>
+<p>至此，整个带有<code>auto_reloader</code>功能的Flask服务全部启动完毕。</p>
+<p>然而还没完。有文件改动怎么重启呢？我们来看监视文件改动的循环<code>reloader_loop</code>的实现。</p>
+<h2>4). <code>reloader_loop</code>方法</h2>
+<p>这个方法其实是<code>_reloader_stat_loop</code>的引用。猜测可能之前是使用<code>python-inotify</code>来提供这个功能的，因为注释里面有提到说<code>inotify</code>不能正确的响应添加的文件，而且非常的buggy并且API也很混乱，所以使用基于CherryPy中的autoreload.py的方法修改来实现了。但是提交太多了，没有翻到是哪一次做的改动。不过这个不重要，我们来看实现：</p>
+<div class="highlight"><pre><span class="k">def</span> <span class="nf">_reloader_stat_loop</span><span class="p">(</span><span class="n">extra_files</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">interval</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+<span class="kn">from</span> <span class="nn">itertools</span> <span class="kn">import</span> <span class="n">chain</span>
+    <span class="n">mtimes</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="k">while</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">filename</span> <span class="ow">in</span> <span class="n">chain</span><span class="p">(</span><span class="n">_iter_module_files</span><span class="p">(),</span> <span class="n">extra_files</span> <span class="ow">or</span> <span class="p">()):</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">mtime</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">stat</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span><span class="o">.</span><span class="n">st_mtime</span>
+            <span class="k">except</span> <span class="ne">OSError</span><span class="p">:</span>
+                <span class="k">continue</span>
+
+            <span class="n">old_time</span> <span class="o">=</span> <span class="n">mtimes</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">old_time</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+                <span class="n">mtimes</span><span class="p">[</span><span class="n">filename</span><span class="p">]</span> <span class="o">=</span> <span class="n">mtime</span>
+                <span class="k">continue</span>
+            <span class="k">elif</span> <span class="n">mtime</span> <span class="o">&gt;</span> <span class="n">old_time</span><span class="p">:</span>
+                <span class="n">_log</span><span class="p">(</span><span class="s">&#39;info&#39;</span><span class="p">,</span> <span class="s">&#39; * Detected change in </span><span class="si">%r</span><span class="s">, reloading&#39;</span> <span class="o">%</span> <span class="n">filename</span><span class="p">)</span>
+                <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+        <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="n">interval</span><span class="p">)</span>
+</pre></div>
+
+<p>这个方法还是在从进程启动了web服务线程之后才调用的。不停的来检测监视目录下文件的<code>st_mtime</code>也就是最新修改时间。如果有修改便使用一个exit code 3来退出自己。在这里退出之后，会返回到前面提到的<code>restart_with_reloader</code>，而那里是一个<code>while 1</code>，具体就不细说了。</p>
+<h1>二、 结合Flask-Script来运行Redis守护进程</h1>
+<p>说了半天，终于到了重点了。到底该如何在Flask-Script中同时开启两条进程又能保证web服务能够被正常的reload呢？其实可能方法有很多，我是这样实现的，如果你有其他的更好的方法，希望能够指点。</p>
+<div class="highlight"><pre><span class="k">def</span> <span class="nf">runserver</span><span class="p">(</span><span class="n">domain</span><span class="o">=</span><span class="s">&#39;localhost&#39;</span><span class="p">,</span> <span class="n">port</span><span class="o">=</span><span class="mi">3000</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;start a local server for development&quot;&quot;&quot;</span>
+
+    <span class="kn">from</span> <span class="nn">werkzeug.serving</span> <span class="kn">import</span> <span class="n">run_with_reloader</span>
+    <span class="kn">from</span> <span class="nn">werkzeug.serving</span> <span class="kn">import</span> <span class="n">make_server</span>
+    <span class="kn">from</span> <span class="nn">werkzeug.debug</span> <span class="kn">import</span> <span class="n">DebuggedApplication</span>
+    <span class="n">application</span> <span class="o">=</span> <span class="n">DebuggedApplication</span><span class="p">(</span><span class="n">app</span><span class="p">,</span> <span class="bp">True</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">inner</span><span class="p">():</span>
+        <span class="k">print</span> <span class="s">&#39; * Starting Redis daemon&#39;</span>
+        <span class="n">thread</span><span class="o">.</span><span class="n">start_new_thread</span><span class="p">(</span><span class="n">run_daemon</span><span class="p">,</span> <span class="p">())</span>
+        <span class="k">print</span> <span class="s">&#39;   * Redis daemon running&#39;</span>
+        <span class="k">print</span><span class="p">(</span><span class="s">&#39; * Running on http://</span><span class="si">%s</span><span class="s">:</span><span class="si">%d</span><span class="s">/&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">domain</span><span class="p">,</span> <span class="n">port</span><span class="p">))</span>
+        <span class="n">make_server</span><span class="p">(</span><span class="n">domain</span><span class="p">,</span> <span class="n">port</span><span class="p">,</span> <span class="n">app</span><span class="o">=</span><span class="n">application</span><span class="p">)</span><span class="o">.</span><span class="n">serve_forever</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">run_daemon</span><span class="p">():</span>
+        <span class="kn">from</span> <span class="nn">app.utils</span> <span class="kn">import</span> <span class="n">queue_daemon</span>
+        <span class="n">queue_daemon</span><span class="p">(</span><span class="n">app</span><span class="p">)</span>
+
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">run_with_reloader</span><span class="p">(</span><span class="n">inner</span><span class="p">)</span>
+    <span class="k">except</span> <span class="ne">KeyboardInterrupt</span><span class="p">:</span>
+        <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+</pre></div>
+
+<h1>三、 后话</h1>
+<p>看完<code>auto_reload</code>的实现，感觉整个过程实现的非常巧妙，也非常严谨。而且整个代码写的逻辑非常清晰，注释非常完整。而且不知道你有没有注意到<code>restart_with_reloader</code>的最后两句判断<code>exit_code</code>：因为在整个serving模块里面，所有的exit code都是3，而3好像不是什么标准的exit status，werkzeug把3当作内部的常规exit code。如果在这里进行一次判断，可以保证进程的退出是werkzeug内部发起的正常退出；如果exit code不是3，说明进程退出有异常，便不再莽撞的重启服务，而是将exit code返回给「主进程」处理。对于需要频繁的退出和启动的程序，这样的处理便显得十分必要和严谨。开始慢慢的体会到大家说的「Pocco出品，必属精品」了。</p> ]]>
+        </content>
+    </entry>
+    
     
     
     <entry>
         <title type="html"><![CDATA[为什么我使用Linux]]></title>
         <author><name>xiaoba</name><uri>http://blog.xiaoba.me</uri></author>
         <link href="http://blog.xiaoba.me/why-i-use-linux.html"/>
-        <published>2013-12-08T19:38:38Z</published>
+        <published>2013-12-08T20:42:06Z</published>
         <id>http://blog.xiaoba.me/why-i-use-linux.html</id>
         <content type="html" xml:base="" xml:lang="en">
             <![CDATA[ <p>前段时间有以为新的follower在twitter上问我算不算是Arch用户，把我问了一愣（后来简单通过id了解一下，发现好像是人人网跪圈的某位大牛之类的吧）。由于最近一次定期维护系统时，我一狠心把Arch的分区也给格掉了，所以我回答他说曾经算是。想起之前<a href="https://twitter.com/cndaniel">Daniel</a>也问过我为什么要用Linux，刚好最近有时间，我就想了一下。</p>
@@ -32,7 +161,7 @@
         <title type="html"><![CDATA[什么时候该使用assert]]></title>
         <author><name>xiaoba</name><uri>http://blog.xiaoba.me</uri></author>
         <link href="http://blog.xiaoba.me/when-to-use-assert.html"/>
-        <published>2013-11-19T19:38:38Z</published>
+        <published>2013-11-19T20:42:06Z</published>
         <id>http://blog.xiaoba.me/when-to-use-assert.html</id>
         <content type="html" xml:base="" xml:lang="en">
             <![CDATA[ <p><em>【本文译自<a href="https://mail.python.org/pipermail/python-list/2013-November/660401.html">When to use assert</a>】</em></p>
@@ -153,7 +282,7 @@ Steven</p>
         <title type="html"><![CDATA[Javascript中的debounce模式]]></title>
         <author><name>xiaoba</name><uri>http://blog.xiaoba.me</uri></author>
         <link href="http://blog.xiaoba.me/debounce-in-javascript.html"/>
-        <published>2013-07-26T19:38:38Z</published>
+        <published>2013-07-26T20:42:06Z</published>
         <id>http://blog.xiaoba.me/debounce-in-javascript.html</id>
         <content type="html" xml:base="" xml:lang="en">
             <![CDATA[ <blockquote>
@@ -216,7 +345,7 @@ Steven</p>
         <title type="html"><![CDATA[水很脏，]]></title>
         <author><name>xiaoba</name><uri>http://blog.xiaoba.me</uri></author>
         <link href="http://blog.xiaoba.me/dev-null.html"/>
-        <published>2013-05-17T19:38:38Z</published>
+        <published>2013-05-17T20:42:06Z</published>
         <id>http://blog.xiaoba.me/dev-null.html</id>
         <content type="html" xml:base="" xml:lang="en">
             <![CDATA[ <blockquote>
@@ -278,7 +407,7 @@ Steven</p>
         <title type="html"><![CDATA[Javascript中的垃圾回收机制]]></title>
         <author><name>xiaoba</name><uri>http://blog.xiaoba.me</uri></author>
         <link href="http://blog.xiaoba.me/garbage-collection-in-javascript.html"/>
-        <published>2013-05-07T19:38:38Z</published>
+        <published>2013-05-07T20:42:06Z</published>
         <id>http://blog.xiaoba.me/garbage-collection-in-javascript.html</id>
         <content type="html" xml:base="" xml:lang="en">
             <![CDATA[ <h1>Javascript 中的内存管理</h1>
@@ -431,7 +560,7 @@ Steven</p>
         <title type="html"><![CDATA[Ath9k驱动在Arch中无法连接无线网的问题]]></title>
         <author><name>xiaoba</name><uri>http://blog.xiaoba.me</uri></author>
         <link href="http://blog.xiaoba.me/ath9k-under-archlinux.html"/>
-        <published>2013-04-11T19:38:38Z</published>
+        <published>2013-04-11T20:42:06Z</published>
         <id>http://blog.xiaoba.me/ath9k-under-archlinux.html</id>
         <content type="html" xml:base="" xml:lang="en">
             <![CDATA[ <p>自从弄好了校园网无线共享之后发现Arch的无线网络有问题，莫名其妙各种连不上，各种iw的命令放上去都是<code>Invalid argument</code>，真是郁闷= =</p>
@@ -464,7 +593,7 @@ Steven</p>
         <title type="html"><![CDATA[用Python生成特定频率的波形文件]]></title>
         <author><name>xiaoba</name><uri>http://blog.xiaoba.me</uri></author>
         <link href="http://blog.xiaoba.me/generate-simple-wave.html"/>
-        <published>2013-03-23T19:38:38Z</published>
+        <published>2013-03-23T20:42:06Z</published>
         <id>http://blog.xiaoba.me/generate-simple-wave.html</id>
         <content type="html" xml:base="" xml:lang="en">
             <![CDATA[ <p>好久不写流水帐了，这一次的流水帐还是代码笔记。</p>
@@ -485,7 +614,7 @@ Steven</p>
         <title type="html"><![CDATA[Node.js 和 express.js初体验]]></title>
         <author><name>xiaoba</name><uri>http://blog.xiaoba.me</uri></author>
         <link href="http://blog.xiaoba.me/node-and-express.html"/>
-        <published>2013-01-25T19:38:38Z</published>
+        <published>2013-01-25T20:42:06Z</published>
         <id>http://blog.xiaoba.me/node-and-express.html</id>
         <content type="html" xml:base="" xml:lang="en">
             <![CDATA[ <p>因为前几天有位朋友分手了,要删掉人人网的所有状态.看他在那一条一条点来点去挺麻烦的,何不写个脚本来自动删呢.于是便有了本文.</p>
@@ -520,7 +649,7 @@ Steven</p>
         <title type="html"><![CDATA[ansys解决平行传输线周围静电场分布]]></title>
         <author><name>xiaoba</name><uri>http://blog.xiaoba.me</uri></author>
         <link href="http://blog.xiaoba.me/ansys.html"/>
-        <published>2012-12-13T19:38:38Z</published>
+        <published>2012-12-13T20:42:06Z</published>
         <id>http://blog.xiaoba.me/ansys.html</id>
         <content type="html" xml:base="" xml:lang="en">
             <![CDATA[ <p>最近有一门电磁场的实验课要交一份实验报告内容如题.</p>
@@ -562,7 +691,7 @@ Steven</p>
         <title type="html"><![CDATA[A Byte of WSGI]]></title>
         <author><name>xiaoba</name><uri>http://blog.xiaoba.me</uri></author>
         <link href="http://blog.xiaoba.me/wsgi.html"/>
-        <published>2012-12-07T19:38:38Z</published>
+        <published>2012-12-07T20:42:06Z</published>
         <id>http://blog.xiaoba.me/wsgi.html</id>
         <content type="html" xml:base="" xml:lang="en">
             <![CDATA[ <p>If you have ever used some python frameworks like <em>tornado</em>, <em>flask</em>, you may hear about WSGI. But what's this?</p>
@@ -606,7 +735,7 @@ Steven</p>
         <title type="html"><![CDATA[Run Custom Scripts on boot under Systemd]]></title>
         <author><name>xiaoba</name><uri>http://blog.xiaoba.me</uri></author>
         <link href="http://blog.xiaoba.me/run_script_on_boot_under_systemd.html"/>
-        <published>2012-11-09T19:38:38Z</published>
+        <published>2012-11-09T20:42:06Z</published>
         <id>http://blog.xiaoba.me/run_script_on_boot_under_systemd.html</id>
         <content type="html" xml:base="" xml:lang="en">
             <![CDATA[ <p>As archlinux has replaced <em>initscripts</em> with <em>systemd</em> as default init system and <a href="https://www.archlinux.org/news/end-of-initscripts-support/">will start removing initscripts suppport</a>, I use systemd now.</p>
@@ -648,7 +777,7 @@ EXECUTE YOUR CUSTOM SCRIPT YOU WANT TO RUN ON STARTUP
         <title type="html"><![CDATA[arch试用手记]]></title>
         <author><name>xiaoba</name><uri>http://blog.xiaoba.me</uri></author>
         <link href="http://blog.xiaoba.me/first-byte-of-arch.html"/>
-        <published>2012-10-21T19:38:38Z</published>
+        <published>2012-10-21T20:42:06Z</published>
         <id>http://blog.xiaoba.me/first-byte-of-arch.html</id>
         <content type="html" xml:base="" xml:lang="en">
             <![CDATA[ <p>前段时间装了Arch，用了大概一周多了吧。</p>
@@ -700,7 +829,7 @@ EXECUTE YOUR CUSTOM SCRIPT YOU WANT TO RUN ON STARTUP
         <title type="html"><![CDATA[大二下]]></title>
         <author><name>xiaoba</name><uri>http://blog.xiaoba.me</uri></author>
         <link href="http://blog.xiaoba.me/grade2-2nd-term.html"/>
-        <published>2012-06-22T19:38:38Z</published>
+        <published>2012-06-22T20:42:06Z</published>
         <id>http://blog.xiaoba.me/grade2-2nd-term.html</id>
         <content type="html" xml:base="" xml:lang="en">
             <![CDATA[ <p>考完了大二下的最后一门，真是虚成狗了。昨晚看了一晚，趴了1个小时直接去考场——已经不知道第几次通宵复习了。</p>
@@ -718,7 +847,7 @@ EXECUTE YOUR CUSTOM SCRIPT YOU WANT TO RUN ON STARTUP
         <title type="html"><![CDATA[轉眼已過好多年]]></title>
         <author><name>xiaoba</name><uri>http://blog.xiaoba.me</uri></author>
         <link href="http://blog.xiaoba.me/memory.html"/>
-        <published>2012-01-24T19:38:38Z</published>
+        <published>2012-01-24T20:42:06Z</published>
         <id>http://blog.xiaoba.me/memory.html</id>
         <content type="html" xml:base="" xml:lang="en">
             <![CDATA[ <p>這一次高中班聚人數明顯少了許多，不知道下一次，下下次如何。</p>
@@ -799,7 +928,7 @@ EXECUTE YOUR CUSTOM SCRIPT YOU WANT TO RUN ON STARTUP
         <title type="html"><![CDATA[疯子哥再见]]></title>
         <author><name>xiaoba</name><uri>http://blog.xiaoba.me</uri></author>
         <link href="http://blog.xiaoba.me/andy-say-byebye.html"/>
-        <published>2012-01-06T19:38:38Z</published>
+        <published>2012-01-06T20:42:06Z</published>
         <id>http://blog.xiaoba.me/andy-say-byebye.html</id>
         <content type="html" xml:base="" xml:lang="en">
             <![CDATA[ <p>疯子哥今天出发了，离开了他热爱的城市，留恋的亲人朋友，乘坐搭载着充满期待和未知的航班，开始一段新的旅程。</p>
@@ -830,7 +959,7 @@ EXECUTE YOUR CUSTOM SCRIPT YOU WANT TO RUN ON STARTUP
         <title type="html"><![CDATA[梦蝶]]></title>
         <author><name>xiaoba</name><uri>http://blog.xiaoba.me</uri></author>
         <link href="http://blog.xiaoba.me/mengdie-say-byebye.html"/>
-        <published>2011-12-04T19:38:38Z</published>
+        <published>2011-12-04T20:42:06Z</published>
         <id>http://blog.xiaoba.me/mengdie-say-byebye.html</id>
         <content type="html" xml:base="" xml:lang="en">
             <![CDATA[ <p>在新图自习完毕,听说今晚两个中心总监换届,比平时早一个小时去办公室开部长会,半路一碗炒粉是晚餐.</p>
