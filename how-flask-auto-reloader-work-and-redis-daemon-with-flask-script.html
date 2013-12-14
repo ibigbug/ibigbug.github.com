@@ -3,7 +3,7 @@
     <head>
         <meta charset="UTF-8">
         <title>
-Flask中的auto reloader机制 -
+Flask中的auto reloader实现机制 -
  8D is Here</title>
         <meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1">
         <link media="all" rel="stylesheet" href="/static/default/css/reset.css" type="text/css" />
@@ -37,7 +37,7 @@ Flask中的auto reloader机制 -
         <div class="wrap typo">
             
 <div class="entry">
-    <h1 class="entry-title"><a href="/how-flask-auto-reloader-work-and-redis-daemon-with-flask-script.html">Flask中的Auto Reloader机制</a></h1>
+    <h1 class="entry-title"><a href="/how-flask-auto-reloader-work-and-redis-daemon-with-flask-script.html">Flask中的Auto Reloader实现机制</a></h1>
     <small class="entry-meta">
         Published on
         <time datetime="2013-12-13">2013-12-13</time>
@@ -46,7 +46,7 @@ Flask中的auto reloader机制 -
         
     </small>
     <div class="entry-content">
-        <p>起因是看到一篇文章讲<a href="http://flask.pocoo.org/snippets/73/">Flask中使用消息队列</a>的文章。很简单，不细说。但是其中有一步是需要单独起一条守护进程来处理队列里面的数据。由于我比较懒，不想每次要运行两个命令才能开启应用。首先想到的是在Makefile里面添加一条<code>redis-daemon</code>。但是这样没有成功，猜测是因为Flask的server和Redis的daemon都是要阻塞的，一旦启动之后便不能返回，于是下一条规则便没法执行。只好在Flask-Script里面做文章，翻了下Flask准确的说是<a href="http://werkzeug.pocoo.org/">werkzeug</a>的源码，找到了实现方法。</p>
+        <p>起因是看到一篇文章讲<a href="http://flask.pocoo.org/snippets/73/">Flask中使用消息队列</a>的文章。很简单，不细说。但是其中有一步是需要单独起一条守护进程来处理队列里面的数据。由于我比较懒，不想每次要运行两个命令才能开启应用。首先想到的是在Makefile里面添加一条<code>redis-daemon</code>。但是这样没有成功，猜测是因为Flask的server和Redis的daemon都是要阻塞的，一旦启动之后便不能返回，于是下一条规则便没法执行。只好在Flask-Script里面做文章，翻了下Flask准确的说是<a href="http://werkzeug.pocoo.org/">werkzeug</a>的源码，找到了实现方法。不过我还是想先说一下Flask中的auto reloader实现机制。</p>
 <h1>一、 Flask auto_reloader的实现</h1>
 <p>准确地说是werkzeug实现的这个功能，而Flask是基于werkzeug构建起来的。相关的代码在werkzeug.serving模块中。整个原理其实很简单，就是不停的检测目录下的文件更改，比较文件的<code>最近修改时间</code>，如果有更新，就重启服务。但是实现起来其实有点复杂。当使用<code>auto_reloader</code>启动服务时，实际上会按照当前命令行参数新开一条python解释器进程。也就是启动后是会有两条python进程的，一条是我们自己启动的，我暂且称为「主进程」；另一条是werkzeug开的，我暂且称为「从进程」。当主进程启动后，会用<code>while 1</code>的方式阻塞，在<code>while</code>内部开启从进程，从进程又在内部开一条新的线程来跑web服务，然后调用<code>reloader_loop</code>方法来监视文件改动。</p>
 <h2>1). <code>run_simple</code>方法</h2>
@@ -162,14 +162,14 @@ Flask中的auto reloader机制 -
 </pre></div>
 
 <h1>三、 后话</h1>
-<p>看完<code>auto_reload</code>的实现，感觉整个过程实现的非常巧妙，也非常严谨。而且整个代码写的逻辑非常清晰，注释非常完整。而且不知道你有没有注意到<code>restart_with_reloader</code>的最后两句判断<code>exit_code</code>：因为在整个serving模块里面，所有的exit code都是3，而3好像不是什么标准的exit status，werkzeug把3当作内部的常规exit code。如果在这里进行一次判断，可以保证进程的退出是werkzeug内部发起的正常退出；如果exit code不是3，说明进程退出有异常，便不再莽撞的重启服务，而是将exit code返回给「主进程」处理。对于需要频繁的退出和启动的程序，这样的处理便显得十分必要和严谨。开始慢慢的体会到大家说的「Pocco出品，必属精品」了。</p>
+<p>看完<code>auto_reload</code>的实现，感觉整个过程实现的非常巧妙，也非常严谨。而且整个代码写的逻辑非常清晰，注释非常完整。而且不知道你有没有注意到<code>restart_with_reloader</code>的最后两句判断<code>exit_code</code>：因为在整个serving模块里面，所有的exit code都是3，而3好像不是什么标准的exit status，werkzeug把3当作内部的常规exit code。如果在这里进行一次判断，可以保证进程的退出是werkzeug内部发起的正常退出；如果exit code不是3，说明进程退出有异常，便不再莽撞的重启服务，而是将exit code返回给「主进程」处理。对于需要频繁的退出和启动的程序，这样的处理便显得十分必要和严谨。开始慢慢的体会到大家说的「Pocoo出品，必属精品」了。</p>
     </div>
     
     
     <div id="disqus_thread"></div>
     <script type="text/javascript">
         var disqus_shortname = 'heheblog';
-        var disqus_title = 'Flask中的auto reloader机制';
+        var disqus_title = 'Flask中的auto reloader实现机制';
         (function() {
             var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
             dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
