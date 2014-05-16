@@ -1,0 +1,190 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1">
+    <title>SBlog Demo</title>
+    <link rel="stylesheet" href="/static/sblog.css" media="all">
+</head>
+<body>
+    <div class="flex-wrap yue">
+        <div class="flex-item sidebar-left">
+            <h1 class="site-name">
+    <a href="http://127.0.0.1:8000">SBlog Demo</a>
+</h1>
+<div class="profile">
+    <p>Hey! My name is  <em>Yuwei Ba</em>. My friends also call me <em>badi</em>. </p>
+<p>I am a student from Wuhan University(aka WHU).You can find me on <a href="https://twitter.com/ibigbug">Twitter</a> or Email me <a href="mailto:i@xiaoba.me">i@xiaoba.me</a>.</p>
+<p>I major in Electric Engineering and sometimes do some coding. All source can be found on <a href="https://github.com/ibigbug">Github</a>.</p>
+
+</div>
+<div class="about">
+    <p><small>Powered by SBlog &amp; LOVE.</small></p>
+
+</div>
+        </div>
+        <div class="flex-item main">
+            
+<h3>Flask中的auto reloader实现机制</h3>
+<div class="meta">Published on 2013-12-13 by ibigbug</div>
+
+<p>起因是看到一篇文章讲<a href="http://flask.pocoo.org/snippets/73/">Flask中使用消息队列</a>的文章。很简单，不细说。但是其中有一步是需要单独起一条守护进程来处理队列里面的数据。由于我比较懒，不想每次要运行两个命令才能开启应用。首先想到的是在Makefile里面添加一条<code>redis-daemon</code>。但是这样没有成功，猜测是因为Flask的server和Redis的daemon都是要阻塞的，一旦启动之后便不能返回，于是下一条规则便没法执行。只好在Flask-Script里面做文章，翻了下Flask准确的说是<a href="http://werkzeug.pocoo.org/">werkzeug</a>的源码，找到了实现方法。不过我还是想先说一下Flask中的auto reloader实现机制。</p>
+<h1>一、 Flask auto_reloader的实现</h1>
+<p>准确地说是werkzeug实现的这个功能，而Flask是基于werkzeug构建起来的。相关的代码在werkzeug.serving模块中。整个原理其实很简单，就是不停的检测目录下的文件更改，比较文件的<code>最近修改时间</code>，如果有更新，就重启服务。但是实现起来其实有点复杂。当使用<code>auto_reloader</code>启动服务时，实际上会按照当前命令行参数新开一条python解释器进程。也就是启动后是会有两条python进程的，一条是我们自己启动的，我暂且称为「主进程」；另一条是werkzeug开的，我暂且称为「从进程」。当主进程启动后，会用<code>while 1</code>的方式阻塞，在<code>while</code>内部开启从进程，从进程又在内部开一条新的线程来跑web服务，然后调用<code>reloader_loop</code>方法来监视文件改动。</p>
+<h2>1). <code>run_simple</code>方法</h2>
+<p>文档中给的示例是用<code>run_simple</code>方法来启动一个web服务。如果使用<code>use_reloader</code>，便会调用<code>run_with_realoder</code>来包装这个web服务。写成伪代码如下：</p>
+<div class="highlight"><pre><span class="k">def</span> <span class="nf">run_simple</span><span class="p">():</span>
+    <span class="k">def</span> <span class="nf">inner</span><span class="p">():</span>
+        <span class="n">start_http_server</span><span class="p">()</span>
+    <span class="k">if</span> <span class="n">use_reloader</span><span class="p">:</span>
+        <span class="n">run_with_realoder</span><span class="p">(</span><span class="n">inner</span><span class="p">)</span>  <span class="c"># 这个方法里面启动从进程</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">inner</span><span class="p">()</span>  <span class="c"># 这种情况比较简单，就不说了</span>
+</pre></div>
+<h2>2). <code>run_with_realoder</code>方法</h2>
+<p>这个方法源码不多，直接贴出来：</p>
+<div class="highlight"><pre><span class="k">def</span> <span class="nf">run_with_reloader</span><span class="p">(</span><span class="n">main_func</span><span class="p">,</span> <span class="n">extra_files</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">interval</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Run the given function in an independent python interpreter.&quot;&quot;&quot;</span>
+    <span class="kn">import</span> <span class="nn">signal</span>
+    <span class="n">signal</span><span class="o">.</span><span class="n">signal</span><span class="p">(</span><span class="n">signal</span><span class="o">.</span><span class="n">SIGTERM</span><span class="p">,</span> <span class="k">lambda</span> <span class="o">*</span><span class="n">args</span><span class="p">:</span> <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">0</span><span class="p">))</span>
+    <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;WERKZEUG_RUN_MAIN&#39;</span><span class="p">)</span> <span class="o">==</span> <span class="s">&#39;true&#39;</span><span class="p">:</span>
+        <span class="n">thread</span><span class="o">.</span><span class="n">start_new_thread</span><span class="p">(</span><span class="n">main_func</span><span class="p">,</span> <span class="p">())</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">reloader_loop</span><span class="p">(</span><span class="n">extra_files</span><span class="p">,</span> <span class="n">interval</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">KeyboardInterrupt</span><span class="p">:</span>
+            <span class="k">return</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="n">restart_with_reloader</span><span class="p">())</span>
+    <span class="k">except</span> <span class="ne">KeyboardInterrupt</span><span class="p">:</span>
+        <span class="k">pass</span>
+</pre></div>
+<p>这个方法里面有个<code>WERKZEUG_RUN_MAIN</code>，是在从进程启动之前添加的env里面的。因此当主进程启动后第一次调用这个方法时，不会进入这个分支，直接进入<code>sys.exit(restart_with_reloader())</code>。而这里调用<code>sys.exit()</code>是不会直接退出的，因为<code>restart_with_reloader()</code>将阻塞。</p>
+<p>至于进入方法时的signal处理，依据官方文档中关于<code>thread</code>模块的说明：</p>
+<blockquote><p>Threads interact strangely with interrupts: the KeyboardInterrupt exception will be received by an arbitrary thread. (When the signal module is available, interrupts always go to the main thread.)</p>
+
+</blockquote><p>可以保证当收到<code>KeyboardInterrupt</code>时能够被「主进程」截获。</p>
+<h2>3). <code>restart_with_reloader</code>方法</h2>
+<p>我们再来看比较有内涵的<code>restart_with_reloader</code>方法：</p>
+<div class="highlight"><pre><span class="k">def</span> <span class="nf">restart_with_reloader</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;Spawn a new Python interpreter with the same arguments as this one,</span>
+<span class="sd">    but running the reloader thread.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">while</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="n">_log</span><span class="p">(</span><span class="s">&#39;info&#39;</span><span class="p">,</span> <span class="s">&#39; * Restarting with reloader&#39;</span><span class="p">)</span>
+        <span class="n">args</span> <span class="o">=</span> <span class="p">[</span><span class="n">sys</span><span class="o">.</span><span class="n">executable</span><span class="p">]</span> <span class="o">+</span> <span class="n">sys</span><span class="o">.</span><span class="n">argv</span>
+        <span class="n">new_environ</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        <span class="n">new_environ</span><span class="p">[</span><span class="s">&#39;WERKZEUG_RUN_MAIN&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s">&#39;true&#39;</span>
+
+        <span class="c"># a weird bug on windows. sometimes unicode strings end up in the</span>
+        <span class="c"># environment and subprocess.call does not like this, encode them</span>
+        <span class="c"># to latin1 and continue.</span>
+        <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s">&#39;nt&#39;</span> <span class="ow">and</span> <span class="n">PY2</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">iteritems</span><span class="p">(</span><span class="n">new_environ</span><span class="p">):</span>
+                <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">text_type</span><span class="p">):</span>
+                    <span class="n">new_environ</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s">&#39;iso-8859-1&#39;</span><span class="p">)</span>
+
+        <span class="n">exit_code</span> <span class="o">=</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">call</span><span class="p">(</span><span class="n">args</span><span class="p">,</span> <span class="n">env</span><span class="o">=</span><span class="n">new_environ</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">exit_code</span> <span class="o">!=</span> <span class="mi">3</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">exit_code</span>
+</pre></div>
+<p>这个方法看起来很危险，在<code>while 1</code>里面不停的新开python解释器不会把系统拖垮么？不会的。因为<code>subprocess</code>执行的命令其实就是开一个新的python解释器重新运行一次我们的<code>python manager.py runserver</code>命令，也就是我们之前说的「从进程」。而web服务器是要阻塞的，所以在上一个python解释器退出之前，是不会开新的解释器的。</p>
+<p>但是这一次与第一次我们手动运行<code>runserver</code>时候的情况不同。因为这个方法开始时候在env里面添加了一个新的环境变量「WERKZEUG_RUN_MAIN」，还记得<code>run_with_reloader</code>方法里面的第一个<code>if</code>吧，就是为了这里准备的。当从进程执行到<code>run_with_reloader</code>时，便进入了条件分支，而不会再无限启新的「从进程」耗光资源。而分支内部可以看到，开了一条线程来跑<code>main_func</code>也就是启动web服务的方法，紧接着启动<code>reloader_loop</code>也就是监视文件改动的循环。</p>
+<p>至此，整个带有<code>auto_reloader</code>功能的Flask服务全部启动完毕。</p>
+<p>然而还没完。有文件改动怎么重启呢？我们来看监视文件改动的循环<code>reloader_loop</code>的实现。</p>
+<h2>4). <code>reloader_loop</code>方法</h2>
+<p>这个方法其实是<code>_reloader_stat_loop</code>的引用。猜测可能之前是使用<code>python-inotify</code>来提供这个功能的，因为注释里面有提到说<code>inotify</code>不能正确的响应添加的文件，而且非常的buggy并且API也很混乱，所以使用基于CherryPy中的autoreload.py的方法修改来实现了。但是提交太多了，没有翻到是哪一次做的改动。不过这个不重要，我们来看实现：</p>
+<div class="highlight"><pre><span class="k">def</span> <span class="nf">_reloader_stat_loop</span><span class="p">(</span><span class="n">extra_files</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">interval</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+<span class="kn">from</span> <span class="nn">itertools</span> <span class="kn">import</span> <span class="n">chain</span>
+    <span class="n">mtimes</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="k">while</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">filename</span> <span class="ow">in</span> <span class="n">chain</span><span class="p">(</span><span class="n">_iter_module_files</span><span class="p">(),</span> <span class="n">extra_files</span> <span class="ow">or</span> <span class="p">()):</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">mtime</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">stat</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span><span class="o">.</span><span class="n">st_mtime</span>
+            <span class="k">except</span> <span class="ne">OSError</span><span class="p">:</span>
+                <span class="k">continue</span>
+
+            <span class="n">old_time</span> <span class="o">=</span> <span class="n">mtimes</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">old_time</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+                <span class="n">mtimes</span><span class="p">[</span><span class="n">filename</span><span class="p">]</span> <span class="o">=</span> <span class="n">mtime</span>
+                <span class="k">continue</span>
+            <span class="k">elif</span> <span class="n">mtime</span> <span class="o">&gt;</span> <span class="n">old_time</span><span class="p">:</span>
+                <span class="n">_log</span><span class="p">(</span><span class="s">&#39;info&#39;</span><span class="p">,</span> <span class="s">&#39; * Detected change in </span><span class="si">%r</span><span class="s">, reloading&#39;</span> <span class="o">%</span> <span class="n">filename</span><span class="p">)</span>
+                <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+        <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="n">interval</span><span class="p">)</span>
+</pre></div>
+<p>这个方法还是在从进程启动了web服务线程之后才调用的。不停的来检测监视目录下文件的<code>st_mtime</code>也就是最新修改时间。如果有修改便使用一个exit code 3来退出自己。在这里退出之后，会返回到前面提到的<code>restart_with_reloader</code>，而那里是一个<code>while 1</code>，具体就不细说了。</p>
+<h1>二、 结合Flask-Script来运行Redis守护进程</h1>
+<p>说了半天，终于到了重点了。到底该如何在Flask-Script中同时开启两条进程又能保证web服务能够被正常的reload呢？其实可能方法有很多，我是这样实现的，如果你有其他的更好的方法，希望能够指点。</p>
+<div class="highlight"><pre><span class="k">def</span> <span class="nf">runserver</span><span class="p">(</span><span class="n">domain</span><span class="o">=</span><span class="s">&#39;localhost&#39;</span><span class="p">,</span> <span class="n">port</span><span class="o">=</span><span class="mi">3000</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;start a local server for development&quot;&quot;&quot;</span>
+
+    <span class="kn">from</span> <span class="nn">werkzeug.serving</span> <span class="kn">import</span> <span class="n">run_with_reloader</span>
+    <span class="kn">from</span> <span class="nn">werkzeug.serving</span> <span class="kn">import</span> <span class="n">make_server</span>
+    <span class="kn">from</span> <span class="nn">werkzeug.debug</span> <span class="kn">import</span> <span class="n">DebuggedApplication</span>
+    <span class="n">application</span> <span class="o">=</span> <span class="n">DebuggedApplication</span><span class="p">(</span><span class="n">app</span><span class="p">,</span> <span class="bp">True</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">inner</span><span class="p">():</span>
+        <span class="k">print</span> <span class="s">&#39; * Starting Redis daemon&#39;</span>
+        <span class="n">thread</span><span class="o">.</span><span class="n">start_new_thread</span><span class="p">(</span><span class="n">run_daemon</span><span class="p">,</span> <span class="p">())</span>
+        <span class="k">print</span> <span class="s">&#39;   * Redis daemon running&#39;</span>
+        <span class="k">print</span><span class="p">(</span><span class="s">&#39; * Running on http://</span><span class="si">%s</span><span class="s">:</span><span class="si">%d</span><span class="s">/&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">domain</span><span class="p">,</span> <span class="n">port</span><span class="p">))</span>
+        <span class="n">make_server</span><span class="p">(</span><span class="n">domain</span><span class="p">,</span> <span class="n">port</span><span class="p">,</span> <span class="n">app</span><span class="o">=</span><span class="n">application</span><span class="p">)</span><span class="o">.</span><span class="n">serve_forever</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">run_daemon</span><span class="p">():</span>
+        <span class="kn">from</span> <span class="nn">app.utils</span> <span class="kn">import</span> <span class="n">queue_daemon</span>
+        <span class="n">queue_daemon</span><span class="p">(</span><span class="n">app</span><span class="p">)</span>
+
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">run_with_reloader</span><span class="p">(</span><span class="n">inner</span><span class="p">)</span>
+    <span class="k">except</span> <span class="ne">KeyboardInterrupt</span><span class="p">:</span>
+        <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+</pre></div>
+<h1>三、 后话</h1>
+<p>看完<code>auto_reload</code>的实现，感觉整个过程实现的非常巧妙，也非常严谨。而且整个代码写的逻辑非常清晰，注释非常完整。而且不知道你有没有注意到<code>restart_with_reloader</code>的最后两句判断<code>exit_code</code>：因为在整个serving模块里面，所有的exit code都是3，而3好像不是什么标准的exit status，werkzeug把3当作内部的常规exit code。如果在这里进行一次判断，可以保证进程的退出是werkzeug内部发起的正常退出；如果exit code不是3，说明进程退出有异常，便不再莽撞的重启服务，而是将exit code返回给「主进程」处理。对于需要频繁的退出和启动的程序，这样的处理便显得十分必要和严谨。开始慢慢的体会到大家说的「Pocoo出品，必属精品」了。</p>
+
+
+
+
+
+<div class="disqus-area">
+    <div id="disqus_thread"></div>
+    <script type="text/javascript">
+        var disqus_shortname = 'heheblog';
+        var disqus_title = 'Flask中的auto reloader实现机制';
+        (function() {
+            var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+            dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        })();
+    </script>
+</div>
+
+
+        </div>
+        <div class="flex-item sidebar-right">
+            <div class="tags">
+    <h2>Tags</h2>
+    <ul>
+        
+        <li><a href="/tag.html#Python">Python</a></li>
+        
+        <li><a href="/tag.html#翻译">翻译</a></li>
+        
+    </ul>
+</div>
+        </div>
+    </div>
+    
+    <script type="text/javascript">
+        var _gaq = _gaq || [];
+        _gaq.push(['_setAccount', 'UA-20201958-3']);
+        _gaq.push(['_trackPageview']);
+        (function() {
+            var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+            ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+            var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+        })();
+    </script>
+    
+</body>
+</html>

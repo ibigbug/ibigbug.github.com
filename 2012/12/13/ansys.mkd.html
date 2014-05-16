@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1">
+    <title>SBlog Demo</title>
+    <link rel="stylesheet" href="/static/sblog.css" media="all">
+</head>
+<body>
+    <div class="flex-wrap yue">
+        <div class="flex-item sidebar-left">
+            <h1 class="site-name">
+    <a href="http://127.0.0.1:8000">SBlog Demo</a>
+</h1>
+<div class="profile">
+    <p>Hey! My name is  <em>Yuwei Ba</em>. My friends also call me <em>badi</em>. </p>
+<p>I am a student from Wuhan University(aka WHU).You can find me on <a href="https://twitter.com/ibigbug">Twitter</a> or Email me <a href="mailto:i@xiaoba.me">i@xiaoba.me</a>.</p>
+<p>I major in Electric Engineering and sometimes do some coding. All source can be found on <a href="https://github.com/ibigbug">Github</a>.</p>
+
+</div>
+<div class="about">
+    <p><small>Powered by SBlog &amp; LOVE.</small></p>
+
+</div>
+        </div>
+        <div class="flex-item main">
+            
+<h3>ansys解决平行传输线周围静电场分布</h3>
+<div class="meta">Published on 2012-12-13 by ibigbug</div>
+
+<p>最近有一门电磁场的实验课要交一份实验报告内容如题.</p>
+<p>由于没有去上课结果不会写.网上搜了几下,发现相关资料挺少的,更别提实例了.于是赶紧从图书馆借了一本ansys的书翻了整整一夜算是应付过去了.</p>
+<p>ansys是一个很强大的工程软件, 具体可以去看百科.这里只记录一些关于用有限元方法来处理电磁场的基本步骤,至于有限元算法本身,我不懂,此文也不涉及.</p>
+<p>大概分为以下几步:</p>
+<ul>
+<li><p>建立有限元模型</p>
+<ol>
+<li><p>建模其实就是应用Point,Line,Area来画出实际模型.这一步不多说.提一点就是ansys的大部分操作都提供两种实现方式:GUI操作或者命令行操作.由于GUI操作需要不停的点来点去,所以我个人比较倾向于直接打命令来操作.</p>
+</li>
+<li><p>之后定义单元类型,材料属性.这一步是告诉ansys你创建的是什么模型.</p>
+</li>
+<li><p>之后剖分模型:就是把模型分成若干个小格子(也就是有限元算法的实质).</p>
+</li>
+</ol>
+</li>
+<li><p>加载(载荷)和求解</p>
+<p>  载荷不多说,就是加上相应参数.这个例子里面就是告诉ansys每根导线电势多少,边界电势多少,等等.</p>
+</li>
+<li><p>后处理</p>
+<p>  当ansys按照上面的模型,载荷,计算出结果之后.提供了很多后处理方法,这个例子就用到了绘制电场云图,电位云图等功能.</p>
+</li>
+</ul>
+<p>以上是我对Ansys处理电磁学问题的关键步骤的入门级理解,记录下来希望与大家一起交流.有错误的地方希望各位及时指点,也希望能给像我一样刚入门ansys的新手提供一点思路,至于具体的实现可以参考相关书目或者查看ansys手册.</p>
+<p>PS:如果<code>/filname, filename, key</code>的最后一个参数是1的话,ansys是会用一个log的文本文件记录下每一步操作的,本来想把我的log贴出来不过发现不小心给搞丢了就算了吧.</p>
+
+
+
+
+
+<div class="disqus-area">
+    <div id="disqus_thread"></div>
+    <script type="text/javascript">
+        var disqus_shortname = 'heheblog';
+        var disqus_title = 'ansys解决平行传输线周围静电场分布';
+        (function() {
+            var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+            dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        })();
+    </script>
+</div>
+
+
+        </div>
+        <div class="flex-item sidebar-right">
+            <div class="tags">
+    <h2>Tags</h2>
+    <ul>
+        
+        <li><a href="/tag.html#Python">Python</a></li>
+        
+        <li><a href="/tag.html#翻译">翻译</a></li>
+        
+    </ul>
+</div>
+        </div>
+    </div>
+    
+    <script type="text/javascript">
+        var _gaq = _gaq || [];
+        _gaq.push(['_setAccount', 'UA-20201958-3']);
+        _gaq.push(['_trackPageview']);
+        (function() {
+            var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+            ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+            var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+        })();
+    </script>
+    
+</body>
+</html>
