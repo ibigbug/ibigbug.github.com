@@ -2,753 +2,14 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <title>8D is Here</title>
     <link href="http://blog.xiaoba.me" />
-    <updated>2014-05-16T11:10:54Z</updated>
+    <updated>2014-05-18T15:35:31Z</updated>
     <id>http://blog.xiaoba.me</id>
-    
-    <entry>
-        <title type="html"><![CDATA[疯子哥再见]]></title>
-        <author><name>ibigbug</name><uri>http://blog.xiaoba.me</uri></author>
-        <link href="http://blog.xiaoba.me/2012/1/6/andy-say-byebye.mkd.html"/>
-        <published>2012-01-06T11:10:54Z</published>
-        <id>http://blog.xiaoba.me/2012/1/6/andy-say-byebye.mkd.html</id>
-        <content type="html" xml:base="http://blog.xiaoba.me" xml:lang="en">
-            <![CDATA[ <p>疯子哥今天出发了，离开了他热爱的城市，留恋的亲人朋友，乘坐搭载着充满期待和未知的航班，开始一段新的旅程。</p>
-<blockquote><p>“年轻在于折腾”。</p>
-
-</blockquote><p>一切顺利。</p>
-<p>算起来来武大有一年半了，不过与疯子哥一起玩的时间不多，毕竟大我两届，但是可以说他是对我大学生活帮助和影响最大的人之一。</p>
-<p>要是没有认识疯子哥，就没有bayuwei2010–8GE_EB–fkbyw–lovebyw-ibigbug。</p>
-<p>要是没有认识疯子哥，转院到电气的决定说不定还要犹豫一下。</p>
-<p>要是没有认识疯子哥，即使加入了网络部也一定会跟现在有很大的不同。</p>
-<p>疯子哥是我来学校之后认识的第一位学长，第一次在阿里巴见面的时候好紧张好不安啊，以至于都没记住他长什么样，就记住他那看起来蛮Geek的发型，于是理发一直短平快的也想留跟他一样的发型。记得那天刚刚听完校会宣讲就急忙跑去阿里巴，目测还是让一哥跟疯子哥等了好久。当时说的什么也记不大清了，只记得后来加了自强技术中心还是疯子哥给的建议。至于自强对我的意义，那就是另外的故事了。</p>
-<p>大一下学期辗转反侧机缘巧合我来到了电气院，成了疯子哥的直系学弟。虽然心里非常舍不得在物院的兄弟朋友们，但是想到在电气我还认识疯子哥，也就不至于感到那么孤独和无助了。记得当时想急需一位老师的号码，于是想起了疯子哥，果然不一会就拿到了。后来一遇到什么解决不了的麻烦就习惯性的想起了疯子哥，什么电脑坏了啊，实验报告啊，包括后来生活感情问题。都给你添了许多麻烦呢。</p>
-<p>转眼来到电气也有一年时间了。虽然我来网络部时候你已经退休了，但是有困难的时候你依然会毫不保留的伸出援助之手。</p>
-<p>可以说没有crazyandytk，就没有现在的ibigbug。</p>
-<p>不过你走之前没请客= =！等明年毕业典礼时候你回来再见吧。</p>
-<p>再过一年，Daniel也要走了，然后是Sigma，都是一走之后就不知几年还能再见或者再也不见，但是这些记忆我会一生都记住，感谢你们陪我一起走过。夜蚊子应该不会走吧？要是搞网站的话别忘了叫我帮你测试安全漏洞哦。</p>
-<p>看Latitude疯子哥已经不在中国大陆境内了吧，一路保重。</p>
-<p>好好学习~</p>
-<p>天天开心~</p>
-<p>嘻嘻！</p>
- ]]>
-        </content>
-    </entry>
-    
-    <entry>
-        <title type="html"><![CDATA[ansys解决平行传输线周围静电场分布]]></title>
-        <author><name>ibigbug</name><uri>http://blog.xiaoba.me</uri></author>
-        <link href="http://blog.xiaoba.me/2012/12/13/ansys.mkd.html"/>
-        <published>2012-12-13T11:10:54Z</published>
-        <id>http://blog.xiaoba.me/2012/12/13/ansys.mkd.html</id>
-        <content type="html" xml:base="http://blog.xiaoba.me" xml:lang="en">
-            <![CDATA[ <p>最近有一门电磁场的实验课要交一份实验报告内容如题.</p>
-<p>由于没有去上课结果不会写.网上搜了几下,发现相关资料挺少的,更别提实例了.于是赶紧从图书馆借了一本ansys的书翻了整整一夜算是应付过去了.</p>
-<p>ansys是一个很强大的工程软件, 具体可以去看百科.这里只记录一些关于用有限元方法来处理电磁场的基本步骤,至于有限元算法本身,我不懂,此文也不涉及.</p>
-<p>大概分为以下几步:</p>
-<ul>
-<li><p>建立有限元模型</p>
-<ol>
-<li><p>建模其实就是应用Point,Line,Area来画出实际模型.这一步不多说.提一点就是ansys的大部分操作都提供两种实现方式:GUI操作或者命令行操作.由于GUI操作需要不停的点来点去,所以我个人比较倾向于直接打命令来操作.</p>
-</li>
-<li><p>之后定义单元类型,材料属性.这一步是告诉ansys你创建的是什么模型.</p>
-</li>
-<li><p>之后剖分模型:就是把模型分成若干个小格子(也就是有限元算法的实质).</p>
-</li>
-</ol>
-</li>
-<li><p>加载(载荷)和求解</p>
-<p>  载荷不多说,就是加上相应参数.这个例子里面就是告诉ansys每根导线电势多少,边界电势多少,等等.</p>
-</li>
-<li><p>后处理</p>
-<p>  当ansys按照上面的模型,载荷,计算出结果之后.提供了很多后处理方法,这个例子就用到了绘制电场云图,电位云图等功能.</p>
-</li>
-</ul>
-<p>以上是我对Ansys处理电磁学问题的关键步骤的入门级理解,记录下来希望与大家一起交流.有错误的地方希望各位及时指点,也希望能给像我一样刚入门ansys的新手提供一点思路,至于具体的实现可以参考相关书目或者查看ansys手册.</p>
-<p>PS:如果<code>/filname, filename, key</code>的最后一个参数是1的话,ansys是会用一个log的文本文件记录下每一步操作的,本来想把我的log贴出来不过发现不小心给搞丢了就算了吧.</p>
- ]]>
-        </content>
-    </entry>
-    
-    <entry>
-        <title type="html"><![CDATA[Ath9k驱动在Arch中无法连接无线网的问题]]></title>
-        <author><name>ibigbug</name><uri>http://blog.xiaoba.me</uri></author>
-        <link href="http://blog.xiaoba.me/2013/4/11/ath9k-under-archlinux.mkd.html"/>
-        <published>2013-04-11T11:10:54Z</published>
-        <id>http://blog.xiaoba.me/2013/4/11/ath9k-under-archlinux.mkd.html</id>
-        <content type="html" xml:base="http://blog.xiaoba.me" xml:lang="en">
-            <![CDATA[ <p>自从弄好了校园网无线共享之后发现Arch的无线网络有问题，莫名其妙各种连不上，各种iw的命令放上去都是<code>Invalid argument</code>，真是郁闷= =</p>
-<p>为什么这么确定是Arch问题呢，因为手机和Windows都没问题= =。</p>
-<p>折腾了两天，算是把问题解决了。</p>
-<p>最开始以为是更新内核之后驱动有问题，于是自己编译了Arch Wiki里面提到的<code>compat-wireless</code>。果不其然，现在可以操作无线网卡了！但是还是连不上网。</p>
-<p>继续翻手册，上面提到wicd可能造成无线不稳定，卸载之，不成。</p>
-<p>手册又提到了把无线网卡的电源管理关掉，也没有解决。</p>
-<p>不过此时虽然无线不能用，有线依然可以用得好好的啊。凑合着用了一下午的有线，但心里还是不爽。</p>
-<p>直到刚刚才想起可以用<code>dmesg</code>的，里面的相关记录的是<code>ctrl-event-disconnected reason=0</code>，放进去Google，好像好多人有这个问题。这下放心了肯定可以解决了。</p>
-<p>最终参考<a href="https://bbs.archlinux.org/viewtopic.php?id=137643">这个帖子</a>中一位老兄的办法：</p>
-<blockquote><p># sudo modprobe -rf ath9k<br># sudo modprobe -v ath9k nohwcrypt=1<br># sudo service network-manager restart # or wicd or whatever  </p>
-<h4>If it works, make it permanent:</h4>
-<p># echo "options ath9k nohwcrypt=1" | sudo tee /etc/modprobe.d/ath9k.conf  </p>
-
-</blockquote><p>至此，Ath9k驱动在Arch中无法连接无线网的问题已经解决了。</p>
-<p>好了，终于可以连上路由器了！激动！</p>
-<p>但是更令人激动的是虽然连上路由了但是竟然他妈的不能浏览网页！！更有甚者！！连路由都Ping不通！好吧我承认高兴太早了、、</p>
-<p>再dmesg，发现是一个跟IPv6有关的错误，猜想是openwrt的IPv6没有配置好的问题吧，于是先<a href="https://wiki.archlinux.org/index.php/IPv6#Disable_IPv6">把无线网卡的IPv6干掉</a>，现在已经可以正常使用无线网了。</p>
-<p>不过话说今天打球的时候崴脚了好他妈疼啊啊啊啊！高中毕业之后就没有崴脚过的印象了，没想到时隔多年竟然又遇到了好不爽啊、、疼的连路都不想走啊、、不过晚饭的时候部长帮我带了吃的，好幸福、</p>
- ]]>
-        </content>
-    </entry>
-    
-    <entry>
-        <title type="html"><![CDATA[Javascript中的debounce模式]]></title>
-        <author><name>ibigbug</name><uri>http://blog.xiaoba.me</uri></author>
-        <link href="http://blog.xiaoba.me/2013/7/26/debounce-in-javascript.mkd.html"/>
-        <published>2013-07-26T11:10:54Z</published>
-        <id>http://blog.xiaoba.me/2013/7/26/debounce-in-javascript.mkd.html</id>
-        <content type="html" xml:base="http://blog.xiaoba.me" xml:lang="en">
-            <![CDATA[ <h2>1.What——什么是debounce模式？</h2>
-<p>如果你写过单片机开发的键盘扫描，那么你一定知道要进行「去抖动」。没错，在JS处理页面交互事件时，往往也需要进行一些去抖处理，这就是debounce。当然这里只是借用了名字，其实与键盘扫描的去抖，还是有一点差别的。下面有个效果演示，如果你心急，直接拉下去看效果。</p>
-<h2>2.Why——为什么要debounce？</h2>
-<p>正如引言中所述，对于「猛击」的现象，我们需要使用<code>debounce</code>来让点击轻一点~比如用户在进行订单提交的时候，需要单击「提交」按钮，往往会有意或者无意的出现「双击」甚至「多击」的现象，如果JS对每次单击都相应一次，发出一个请求到后台，那么一方面，可能会造成逻辑错误，也就是造成「下了很多订单」;另一方面，对于「多击」的没一个请求，都会发送到后台，给web服务器增加了压力。</p>
-<h2>3.How——如何debounce？</h2>
-<p>underscore框架中有一个方法，叫做「debounce」，就是我们今天要介绍的。</p>
-<p>这个方法使用起来很简单：</p>
-<div class="highlight"><pre><span class="kd">var</span> <span class="nx">lazyLayout</span> <span class="o">=</span> <span class="nx">_</span><span class="p">.</span><span class="nx">debounce</span><span class="p">(</span><span class="nx">calculateLayout</span><span class="p">,</span> <span class="mi">300</span><span class="p">);</span>
-<span class="nx">$</span><span class="p">(</span><span class="nb">window</span><span class="p">).</span><span class="nx">resize</span><span class="p">(</span><span class="nx">lazyLayout</span><span class="p">);</span>
-</pre></div>
-<p>上面的代码来自<a href="http://underscorejs.org/##debounce">underscore</a><br>这样被<code>debounce</code>处理之后的lazyLayout有什么效果呢？</p>
-<p>这是underscore中debounce的原型</p>
-<div class="highlight"><pre><span class="nx">_</span><span class="p">.</span><span class="nx">debounce</span><span class="p">(</span><span class="kd">function</span><span class="p">,</span> <span class="nx">wait</span><span class="p">,</span> <span class="p">[</span><span class="nx">immediate</span><span class="p">])</span>
-</pre></div>
-<p>有三个参数：</p>
-<ul>
-<li>function —— 需要被处理的函数</li>
-<li>wait —— 等待时间，也就是说，在函数第一次触发之后，会有<code>wait</code>这么长的一个等待时间，这段时间里，所有对「被debounce过的函数」的调用，全部被丢弃。通俗一点说，你点击一次按钮之后，不论再快速的点多少次按钮，我都只当一次处理，直到你停下来，wait一段时间过后再点击，那才算第二次生效。</li>
-<li>[immediate] —— 这是一个很有趣的参数，默认是undefined也就是false，可以设置为true。当为false时，是当计时器计时结束后，执行函数，实际效果就是：你不停的点击，我不管你，当你停下来了，我再重新开始计时，过了设定的时间后，函数被执行;而设置为true时，就是计时器开始计时，就执行函数，之后无论你再怎么疯狂点击，我也不理你了。</li>
-</ul>
-<p>怎么样，是不是很简单实用？有了这个处理之后，就再也不怕有人误点击，或者疯狂点击按钮提交表单了。  </p>
-<p>下面是一个deboucne的演示，顺带还有个throttle对比，你可以不管：<br><a href="http://jsfiddle.net/amyseqmedia/dD99u/37/">Underscore.js throttle vs debounce example - jsFiddle</a></p>
-<p>那么这么好的方法，是如何实现呢？其实很简单，就是一个计时器，在计时器结束之前，如果发现新的点击（也就是函数调用）请求，将其丢弃，重置计时器。直到计时器结束后，执行函数(immediate为false);或者第一次点击之后，立即调用函数，同时启动计时器，再计时器结束之前，收到新的函数调用请求，丢弃，重置计时器(immediate为true)。下面是underscore的具体实现,我加了一点注释，方便理解：</p>
-<div class="highlight"><pre><span class="nx">_</span><span class="p">.</span><span class="nx">debounce</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">func</span><span class="p">,</span> <span class="nx">wait</span><span class="p">,</span> <span class="nx">immediate</span><span class="p">)</span> <span class="p">{</span>
-    <span class="kd">var</span> <span class="nx">result</span><span class="p">;</span>  <span class="c1">// 用户函数调用返回值</span>
-    <span class="kd">var</span> <span class="nx">timeout</span> <span class="o">=</span> <span class="kc">null</span><span class="p">;</span>  <span class="c1">// 初始化计时器 因为会被返回的闭包引用，所以会保持，不会被GC。有关Javascript中的GC，可以参考[Javascript中的垃圾回收机制](http://blog.xiaoba.me/garbage-collection-in-javascript.html)</span>
-    <span class="k">return</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>  <span class="c1">// 返回被处理的函数</span>
-      <span class="kd">var</span> <span class="nx">context</span> <span class="o">=</span> <span class="k">this</span><span class="p">,</span> <span class="nx">args</span> <span class="o">=</span> <span class="nx">arguments</span><span class="p">;</span>  <span class="c1">// 保存现场</span>
-      <span class="kd">var</span> <span class="nx">later</span> <span class="o">=</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>  <span class="c1">// 传给计时器，以便结束时候可以调用</span>
-        <span class="c1">// 计时器结束之后，会进入这里</span>
-        <span class="nx">timeout</span> <span class="o">=</span> <span class="kc">null</span><span class="p">;</span>  <span class="c1">// 计时结束，重置计时器，以便处理下一次请求</span>
-        <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">immediate</span><span class="p">)</span> <span class="nx">result</span> <span class="o">=</span> <span class="nx">func</span><span class="p">.</span><span class="nx">apply</span><span class="p">(</span><span class="nx">context</span><span class="p">,</span> <span class="nx">args</span><span class="p">);</span>  <span class="c1">// immediate为false的话，在这里执行函数</span>
-      <span class="p">};</span>
-      <span class="kd">var</span> <span class="nx">callNow</span> <span class="o">=</span> <span class="nx">immediate</span> <span class="o">&amp;&amp;</span> <span class="o">!</span><span class="nx">timeout</span><span class="p">;</span>  <span class="c1">// 根据immediate和计时器是否结束来判断是否到了调用函数的时机。 注意这里还没有启动计时器，也就是如果设置了immediate为true，那么callNow就是true</span>
-      <span class="nx">clearTimeout</span><span class="p">(</span><span class="nx">timeout</span><span class="p">);</span>  <span class="c1">// 这里！ 上面的都是一些变量的声明和赋值，这里开始到了关键，每一次调用请求，执行到这里都会重置计时器，不论immediate是true还是false</span>
-      <span class="nx">timeout</span> <span class="o">=</span> <span class="nx">setTimeout</span><span class="p">(</span><span class="nx">later</span><span class="p">,</span> <span class="nx">wait</span><span class="p">);</span>  <span class="c1">// 然后再这里重新开始计时</span>
-      <span class="k">if</span> <span class="p">(</span><span class="nx">callNow</span><span class="p">)</span> <span class="nx">result</span> <span class="o">=</span> <span class="nx">func</span><span class="p">.</span><span class="nx">apply</span><span class="p">(</span><span class="nx">context</span><span class="p">,</span> <span class="nx">args</span><span class="p">);</span>  <span class="c1">// 注意这里的callNow，是上面赋值的。如果有设置了immediate，那么立即执行函数;如果immediate为false，那么就等上面的计时器结束，执行later</span>
-      <span class="k">return</span> <span class="nx">result</span><span class="p">;</span>  <span class="c1">// 返回结果</span>
-    <span class="p">};</span>
-  <span class="p">};</span>
-</pre></div>
-<h2>4.Where —— 哪里用到debounce？</h2>
-<p>如上所述，一些类似表单提交，比如下订单，评论，等等有点击事件的地方，都可以用到～</p>
-<p><em>以上大部分是个人理解，如有错误，请不吝指出^_^</em></p>
- ]]>
-        </content>
-    </entry>
-    
-    <entry>
-        <title type="html"><![CDATA[水很脏，]]></title>
-        <author><name>ibigbug</name><uri>http://blog.xiaoba.me</uri></author>
-        <link href="http://blog.xiaoba.me/2013/5/17/dev-null.mkd.html"/>
-        <published>2013-05-17T11:10:54Z</published>
-        <id>http://blog.xiaoba.me/2013/5/17/dev-null.mkd.html</id>
-        <content type="html" xml:base="http://blog.xiaoba.me" xml:lang="en">
-            <![CDATA[ <blockquote><p>水很脏，喝了不会死，不喝会渴死</p>
-
-</blockquote><p>首先要感谢循环系统</p>
-<p>还维持着我组织液的成分</p>
-<p>身体里面到处流着的不完全是脏水</p>
-<p>昨天看了一场球赛</p>
-<p>很小的一场</p>
-<p>但是看得很投入</p>
-<p>因为我的两位好朋友各自支持一边，是非常好的朋友</p>
-<p>所以我也去看</p>
-<p>队员的表现最精彩</p>
-<p>不算裁判的话，啦啦队排第二</p>
-<p>不管结果如何，这场比赛是一场享受</p>
-<p>雨水，汗水，泪水</p>
-<p>结局圆满</p>
-<p>不过支持的球队输掉比赛的朋友赛后来跟我抱怨，裁判真鸡巴傻逼，裁判黑哨，裁判还有很多莫名其妙</p>
-<p>我说是啊，真鸡巴傻逼</p>
-<p>而赢了球赛的朋友跑过来跟我说，我操，真是鸡巴吓尿了，还好前面落后的比分给追了回来</p>
-<p>我说是啊，真鸡巴吓尿了</p>
-<p>其实根据往年情况，比赛结果提前可以大概猜出的</p>
-<p>两位朋友也都知道</p>
-<p>但是他们同时都很激动，用了绝对不止一个「鸡巴」来表达激动之情</p>
-<p>如果你去看了，并且你也喜欢用生殖器官表达感情，那么你可以要记得数一下要多少生殖器才够用来发泄当时的情绪</p>
-<p>后来我想，要是我两个朋友把赛后对比赛的看法互相沟通一下，他们会不会送给对方一个「傻逼」的标签</p>
-<p>不过应该不会的，因为他们都是文明人</p>
-<p>好在他们也确实都不知道对方在想什么</p>
-<p>恰恰可笑的也是一样</p>
-<p>就好像我一边写一边自我意识膨胀</p>
-<p>你一边看一边捧腹大笑傻逼</p>
-<p>又好像戴口罩的人觉得口罩的作用是防止吸入可吸入颗粒物</p>
-<p>而看戴口罩的人却有可能觉得戴口罩防的是别人看到脸上的「我是傻逼」这两个字和两个**</p>
-<p>戴口罩的人不知道看的人在想什么，然而他们也确实没有因为中了可吸入颗粒物的毒而死掉</p>
-<p>而不戴口罩的人运气也不差，也没有中毒死掉</p>
-<p>他们都活在同一个世界，也可能有同一个中国梦想，甚至同父异母亲兄弟</p>
-<p>但是至少有两点不同，他们对口罩的理解，和对「傻逼」的定义</p>
-<p>不戴口罩的没有把别个的口罩扯开，冲他大喊蠢货</p>
-<p>戴口罩的也说不定在心里庆幸，还好我戴了口罩，你看，昨天不是有个没戴口罩的人出了车祸</p>
-<p>晚上看到了一条新浪微博</p>
-<blockquote><p>你觉得很match， 对方却refuse， without response，所以还是写代码。</p>
-
-</blockquote><p>所以代码的世界很pure，你用了 <code>=</code> 绝对得不到你想要的 <code>==</code> 的效果，虽然他们看起来很像很match。</p>
-<p>如果没有ack就永远不会有established，因为恋爱并不是UDP</p>
-<p>话又说回到喝水上面来，农夫山泉运出产地之后有人就不太敢喝，因为记者们都说可能不安全</p>
-<p>我也很少喝农夫山泉，因为并没有一点点甜的感觉，我不能容忍受到欺骗</p>
-<p>安不安全我倒无所谓了，因为他看起来并不脏，当然这一点我也不敢保证，因为毕竟还要等专家出面，记者报道</p>
-<p>不过有一点我可以肯定，比农夫山泉脏的东西有很多，而且往往也确实比农夫山泉的「有点甜」不知道甜多少</p>
-<p>因为是甜的，贪婪的享受着，渐渐也就忘了脏</p>
-<p>最后我建议大家出门最好戴上口罩，因为最近空气质量确实不好，毕竟，世界很美好，活着最重要</p>
- ]]>
-        </content>
-    </entry>
-    
-    <entry>
-        <title type="html"><![CDATA[arch试用手记]]></title>
-        <author><name>ibigbug</name><uri>http://blog.xiaoba.me</uri></author>
-        <link href="http://blog.xiaoba.me/2012/10/21/first-byte-of-arch.mkd.html"/>
-        <published>2012-10-21T11:10:54Z</published>
-        <id>http://blog.xiaoba.me/2012/10/21/first-byte-of-arch.mkd.html</id>
-        <content type="html" xml:base="http://blog.xiaoba.me" xml:lang="en">
-            <![CDATA[ <p>前段时间装了Arch，用了大概一周多了吧。</p>
-<p>从接触linux到现在大概也算是有几年时间了，之前一直在用ubuntu，其间也尝试过cent啊，arch啊，gentoo啊，但都没有持久。因为受到了windows的影响吧。是从ubuntu里面慢慢熟悉了linux，才逐渐拜托了对windows的依赖（话说ubuntu可真是windows用户通向linux的一根非常平滑的管道）。</p>
-<p>记得第一次装arch的时候内心是有一种恐惧感的，虽然当时还有安装脚本。现在的安装步骤看起来变得繁琐了，不过我更喜欢现在的安装过程，因为既不像gentoo那样费时费力，又不像windows或者ubuntu那样简单无脑。其实在安装之前就就对arch有一份好感，正式见面之后便深深的喜欢上了它。还是简单记录一下安装步骤吧。</p>
-<p>我选择的是光盘安装：</p>
-<ol>
-<li><p>######备份</p>
-<p> 这个不用多说吧</p>
-</li>
-<li><p>######制作启动盘</p>
-<p> 下载那个几百兆的iso，刻到光盘就好了。如果没有光驱，也可以写进U盘。顺便抱怨一下我的人品：在windows里面用了N种XXX写入工具做的引导盘都有各种问题不能启动，最后还是被迫装了cgywin用dd写进去的。</p>
-</li>
-<li><p>######安装</p>
-<p> #vi install.txt即可。</p>
-<p> 如果你不知道之后做什么，那么建议你暂时先不要用arch。</p>
-<p> 当你执行arch-chroot的时候，那么恭喜你已经完成了arch的安装。紧接着你可以修改pacman的mirrorlist，选择你网络环境下速度最快的源。</p>
-<p> 接下来还有一些收尾工作。</p>
-</li>
-<li><p>######收尾</p>
-<ul>
-<li><p>安装引导</p>
-<p>  我选的是grub2，因为毕竟熟悉一些。不过有一点，装好了grub之后默认是只能识别arch操作系统的。如果你的硬盘上有windows 7等其他系   统，那么推荐你安装一个叫做os-prober的东西，可以节省手动写配置文件的时间。</p>
-</li>
-<li><p>其他</p>
-<p>  安装完引导之后，你就可以不用引导盘直接启动硬盘上的arch了。至于其他的一些本地化啊、图形啊、声音之类的配置就自由选择了。这里顺便强力推荐一个叫做“下拉式终端”的东西。</p>
-</li>
-</ul>
-</li>
-</ol>
-<p>下面谈一谈接触arch不长时间的感受吧。</p>
-<p>arch是一个容易让人一下子就喜欢上的系统，就像会对某个女孩子一见钟情一样。相比ubuntu，arch显得更清秀朴实，甚至连一个图形界面都没有——不像ubuntu那样集成了许多你需要或者不需要以及连名字都没听过甚至都不知道其存在的一些软件包。就像刚干燥好的的瓷器胚胎一样，可以认你雕刻喜欢的花纹图上你喜欢的颜色。不过这一点对于我这个丝毫没有艺术天分的人来说并不是特别诱人，而arch给我的一种一切从简的理念正好符合我这种有系统洁癖的人的口味。所以点进arch官网最先出现的一句话是</p>
-<blockquote><p>A simple, lightweight distribution</p>
-
-</blockquote><p>正如我一直想追求的：keep is simple，stupid。</p>
- ]]>
-        </content>
-    </entry>
-    
-    <entry>
-        <title type="html"><![CDATA[Javascript中的垃圾回收机制]]></title>
-        <author><name>ibigbug</name><uri>http://blog.xiaoba.me</uri></author>
-        <link href="http://blog.xiaoba.me/2013/5/7/garbage-collection-in-javascript.mkd.html"/>
-        <published>2013-05-07T11:10:54Z</published>
-        <id>http://blog.xiaoba.me/2013/5/7/garbage-collection-in-javascript.mkd.html</id>
-        <content type="html" xml:base="http://blog.xiaoba.me" xml:lang="en">
-            <![CDATA[ <h1>Javascript 中的内存管理</h1>
-<p>译自MDN，<a href="https://developer.mozilla.org/en-US/docs/JavaScript/Memory_Management">Memory Management</a></p>
-<h2>简介</h2>
-<p>在底层语言中，比如C，有专门的内存管理机制，比如<code>malloc()</code> 和 <code>free()</code>。而Javascript是有垃圾回收（<em>garbage collection</em>）机制的，也就是说JS解释器会自动分配和回收内存。这样就有人觉得，我用的是高级语言，就不用关心内存管理了，其实这是不对的。</p>
-<h2>内存的生命周期</h2>
-<p>尽管语言不尽相同，而每种语言中内存的生命周期都是相似的:</p>
-<ol>
-<li><p>当需要的时候分配内存</p>
-</li>
-<li><p>对内存进行读写操作</p>
-</li>
-<li><p>当上面分配的内存不再需要的时候，将他们释放掉</p>
-</li>
-</ol>
-<p>对于1,2两步，几乎所有语言操作起来都是明确地或者说很直观，没什么好说的。而在像Javascript一样的高级语言中，第三步操作就显得不那么直观。</p>
-<h2>Javascript中分配内存空间</h2>
-<h3>变量初始化</h3>
-<p>当变量初始化的时候，Javascript会自动分配相应的内存空间（注：这里MDN上关于这里用的是<code>Value initialization</code>，到底是声明，还是在赋值时候分配空间，还要再学习一下）</p>
-<div class="highlight"><pre><span class="kd">var</span> <span class="nx">n</span> <span class="o">=</span> <span class="mi">123</span><span class="p">;</span> <span class="c1">//  为数字分配空间</span>
-<span class="kd">var</span> <span class="nx">s</span> <span class="o">=</span> <span class="s2">&quot;azerty&quot;</span><span class="p">;</span> <span class="c1">// 字符串</span>
-
-<span class="kd">var</span> <span class="nx">o</span> <span class="o">=</span> <span class="p">{</span>
-  <span class="nx">a</span><span class="o">:</span> <span class="mi">1</span><span class="p">,</span>
-  <span class="nx">b</span><span class="o">:</span> <span class="kc">null</span>
-<span class="p">};</span> <span class="c1">// 为对象和它包含的属性分配内存空间</span>
-
-<span class="kd">var</span> <span class="nx">a</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="kc">null</span><span class="p">,</span> <span class="s2">&quot;abra&quot;</span><span class="p">];</span> <span class="c1">// （类似对象）给数组和它里面的元素分配空间</span>
-
-<span class="kd">function</span> <span class="nx">f</span><span class="p">(</span><span class="nx">a</span><span class="p">){</span>
-  <span class="k">return</span> <span class="nx">a</span> <span class="o">+</span> <span class="mi">2</span><span class="p">;</span>
-<span class="p">}</span> <span class="c1">// 为函数分配空间</span>
-
-<span class="c1">//  函数有时也会为分配对象空间</span>
-<span class="nx">someElement</span><span class="p">.</span><span class="nx">addEventListener</span><span class="p">(</span><span class="s1">&#39;click&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(){</span>
-  <span class="nx">someElement</span><span class="p">.</span><span class="nx">style</span><span class="p">.</span><span class="nx">backgroundColor</span> <span class="o">=</span> <span class="s1">&#39;blue&#39;</span><span class="p">;</span> <span class="c1">//个人补充，未考证，这里会为someElement分配空间，如注释所说，为对象分配空间</span>
-<span class="p">},</span> <span class="kc">false</span><span class="p">);</span>
-</pre></div>
-<h3>函数调用时候分配空间</h3>
-<p>有的函数调用，会产生上面说的那种 为对象分配空间</p>
-<div class="highlight"><pre><span class="kd">var</span> <span class="nx">d</span> <span class="o">=</span> <span class="k">new</span> <span class="nb">Date</span><span class="p">();</span>
-<span class="kd">var</span> <span class="nx">e</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">createElement</span><span class="p">(</span><span class="s1">&#39;div&#39;</span><span class="p">);</span> <span class="c1">// allocates an DOM element</span>
-</pre></div>
-<p>还有下面这种</p>
-<div class="highlight"><pre><span class="kd">var</span> <span class="nx">s</span> <span class="o">=</span> <span class="s2">&quot;azerty&quot;</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">s2</span> <span class="o">=</span> <span class="nx">s</span><span class="p">.</span><span class="nx">substr</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">3</span><span class="p">);</span> <span class="c1">// s2 is a new string</span>
-<span class="c1">// 由于Javascript中字符串是不可变的，所以Javascript也许并没有为s2中的字符串分配新空间，而是只存了[0, 3]的区间（用来索引）</span>
-
-<span class="kd">var</span> <span class="nx">a</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;ouais ouais&quot;</span><span class="p">,</span> <span class="s2">&quot;nan nan&quot;</span><span class="p">];</span>
-<span class="kd">var</span> <span class="nx">a2</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;generation&quot;</span><span class="p">,</span> <span class="s2">&quot;nan nan&quot;</span><span class="p">];</span>
-<span class="kd">var</span> <span class="nx">a3</span> <span class="o">=</span> <span class="nx">a</span><span class="p">.</span><span class="nx">concat</span><span class="p">(</span><span class="nx">a2</span><span class="p">);</span> <span class="c1">// 新的空间来存储数组a3</span>
-</pre></div>
-<h2>操作变量值</h2>
-<p>没什么好说的，读、写、函数调用。</p>
-<h2>内存不再被使用时，将它们释放掉</h2>
-<p>许多内存管理机制的问题都出现在这里。最麻烦的问题是确认“这块内存空间已经不需要了”。这往往需要程序员告知，这个程序中，这块内存已经不需要了，你们回收吧。</p>
-<p>而高级语言解释器中嵌入了一个叫做“垃圾回收（garbage collector）”的工具，用来跟踪内存分配和使用情况，以便在它们不需要的时候将其自动回收。然而有个问题，一块内存空间是不是还有用，是<a href="http://en.wikipedia.org/wiki/Decidability_%28logic%29">具有不确定性的</a>，也就是说，这个是没法用算法精确算出来的。</p>
-<h1>垃圾回收</h1>
-<p>如上所述原因，垃圾回收机制采取了一种有限的解决方案来处理上面的<em>不确定性</em>问题。下面介绍集中垃圾回收算法的思想以及相应的局限:</p>
-<h2>引用</h2>
-<p>这种方法，用到了一种<em>引用</em>的思想。当a能访问A时，就说A<em>引用</em>了a（不论是直接还是间接的）。比如，一个Javascript对象会<em>引用</em>他的原型（间接引用）和它的各个属性（直接引用）。</p>
-<p>这种情形下，对象就被扩展的更广义了，在原生对象的基础上，还包含了函数的作用域链（或者全局的词法作用域）。</p>
-<h2>引用计数</h2>
-<p>这种方法是最拿衣服（naive）的垃圾回收算法。它把“可以回收”的标准定义为“没有其他人引用这个对象”（原文：This algorithm reduces the definition of "an object is not needed anymore" to "an object has no other object referencing to it"）。也就是说，<em>只有</em>当对象没有被引用的时候，才会被当作垃圾回收掉。</p>
-<h3>举个栗子</h3>
-<div class="highlight"><pre><span class="kd">var</span> <span class="nx">o</span> <span class="o">=</span> <span class="p">{</span> <span class="c1">// 称之为外层对象</span>
-  <span class="nx">a</span><span class="o">:</span> <span class="p">{</span> <span class="c1">//称之为内层对象</span>
-    <span class="nx">b</span><span class="o">:</span><span class="mi">2</span>
-  <span class="p">}</span>
-<span class="p">};</span> <span class="c1">//  创建了两个对象 内层对象作为外层对象的属性而被引用</span>
-<span class="c1">// 而外层对象被变量o引用</span>
-<span class="c1">// 显然，没有人会被垃圾回收</span>
-
-
-<span class="kd">var</span> <span class="nx">o2</span> <span class="o">=</span> <span class="nx">o</span><span class="p">;</span> <span class="c1">// o2也引用了上面说的外层对象。好现在外层对象的引用计数为‘2’ (被o和o2引用)</span>
-<span class="nx">o</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span> <span class="c1">//  现在o不再引用外层对象，只有o2在引用，引用计数为 ‘1’</span>
-
-<span class="kd">var</span> <span class="nx">oa</span> <span class="o">=</span> <span class="nx">o2</span><span class="p">.</span><span class="nx">a</span><span class="p">;</span> <span class="c1">// oa 引用内层对象</span>
-<span class="c1">//  现在内层对象同时被作为外层对象的属性引用和被oa引用，引用计数为‘2’</span>
-
-<span class="nx">o2</span> <span class="o">=</span> <span class="s2">&quot;yo&quot;</span><span class="p">;</span> <span class="c1">//  好，现在o2也不引用外层对象了，外层对象引用计数为“0”</span>
-<span class="c1">// 意味着外层对象可以被“垃圾回收”了</span>
-<span class="c1">// 然而，内层对象还被oa引用着，因此还是没有被回收 （个人注释：这里有一点闭包的意味）</span>
-
-<span class="nx">oa</span> <span class="o">=</span> <span class="kc">null</span><span class="p">;</span> <span class="c1">//  现在oa不引用内层对象了</span>
-<span class="c1">// 内层对象也被垃圾回收</span>
-</pre></div>
-<h3>局限：循环引用</h3>
-<p>看下面代码：</p>
-<div class="highlight"><pre><span class="kd">function</span> <span class="nx">f</span><span class="p">(){</span>
-  <span class="kd">var</span> <span class="nx">o</span> <span class="o">=</span> <span class="p">{};</span>
-  <span class="kd">var</span> <span class="nx">o2</span> <span class="o">=</span> <span class="p">{};</span>
-  <span class="nx">o</span><span class="p">.</span><span class="nx">a</span> <span class="o">=</span> <span class="nx">o2</span><span class="p">;</span> <span class="c1">// o 引用 o2</span>
-  <span class="nx">o2</span><span class="p">.</span><span class="nx">a</span> <span class="o">=</span> <span class="nx">o</span><span class="p">;</span> <span class="c1">// o2 引用 o</span>
-
-  <span class="k">return</span> <span class="s2">&quot;azerty&quot;</span><span class="p">;</span>
-<span class="p">}</span>
-
-<span class="nx">f</span><span class="p">();</span>
-<span class="c1">// o o2两个对象构成了循环引用 </span>
-<span class="c1">// 当函数执行完毕的时候，他们就被关在了f的作用域里面，没有外面的人可以使用他们</span>
-<span class="c1">// 所以按理说，他们已经没有存在价值了，需要被垃圾回收，释放内存</span>
-<span class="c1">// 然而，他们的引用计数都不为“0”</span>
-<span class="c1">// 所以在这种引用计数的机制下，他们没有被回收</span>
-</pre></div>
-<h3>实际例子</h3>
-<p>在IE6,7版本的浏览器中，就是使用的引用计数机制。因此，下面的代码在IE6,7中可以稳稳地发生内存泄漏</p>
-<div class="highlight"><pre><span class="kd">var</span> <span class="nx">div</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">createElement</span><span class="p">(</span><span class="s2">&quot;div&quot;</span><span class="p">);</span>
-<span class="nx">div</span><span class="p">.</span><span class="nx">onclick</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(){</span>
-  <span class="nx">doSomething</span><span class="p">();</span>
-<span class="p">};</span> <span class="c1">// div的onclick属性，会引用 function</span>
-<span class="c1">// 然而这个 function 反过来又引用了这个div，因为div在handler的作用域里面。</span>
-<span class="c1">// 造成上述循环引用，导致内存泄漏。</span>
-</pre></div>
-<h2>标记清除算法</h2>
-<p>这种算法把“可以回收”定义成“对象不可达”，即访问不到。</p>
-<p>这种算法，会定义一个“根”，并且定期地从“根”出发，找出“根”下面的所有对象，看能不能从“根”找到一条路径引用到这个对象。从不同的“根”出发，垃圾回收程序就可以区分所有对象是不是“不可达”的，当对象“不可达”时候，便被回收。</p>
-<p>这种算法比引用计数算法要好些。因为 “一个对象的引用计数是0”可以推出“这个对象不可达”，逆命题则为假。也就是说这种算法扩充了垃圾回收的范围。</p>
-<h3>循环引用不再是困扰</h3>
-<p>在上面的循环引用例子中，当函数返回时，o 和 o2都已经不再被任何人引用，也就是“不可达”了，便顺理成章地被垃圾回收掉了。</p>
-<h3>局限：对象需要明确的“不可达”</h3>
-<p>虽然说是局限，然而这种情况在实际当中很少发生，因此很少有人关注这一点。</p>
-<p>原文：</p>
-<blockquote><p>Although this is marked as a limitation, it is one that is rarely reached in practice which is why no one usually cares that much about garbage collection.</p>
-
-</blockquote><p>受英语水平限制，这一点没太理解，还是把原文搬过来好了。</p>
-<h1>参考</h1>
-<ul>
-<li><a href="http://www.ibm.com/developerworks/web/library/wa-memleak/">IBM article on "Memory leak patterns in JavaScript" (2007)</a></li>
-<li><a href="http://msdn.microsoft.com/en-us/magazine/ff728624.aspx">Kangax article on how to register event handler and avoid memory leaks (2010)</a></li>
-</ul>
-<h1>说明</h1>
-<p>以上大部分文字来自<a href="https://developer.mozilla.org/en-US/docs/JavaScript/Memory_Management">Memory Management</a>。尽量在保证不出错的前提下，加上了一些个人的注释和理解。虽然被MDN标注了 <code>This article is in need of a technical review.</code>，但是对于理解垃圾回收还是有一点帮助的吧。</p>
- ]]>
-        </content>
-    </entry>
-    
-    <entry>
-        <title type="html"><![CDATA[用Python生成特定频率的波形文件]]></title>
-        <author><name>ibigbug</name><uri>http://blog.xiaoba.me</uri></author>
-        <link href="http://blog.xiaoba.me/2013/3/23/generate-simple-wave.mkd.html"/>
-        <published>2013-03-23T11:10:54Z</published>
-        <id>http://blog.xiaoba.me/2013/3/23/generate-simple-wave.mkd.html</id>
-        <content type="html" xml:base="http://blog.xiaoba.me" xml:lang="en">
-            <![CDATA[ <p>好久不写流水帐了，这一次的流水帐还是代码笔记。</p>
-<p>最近买了个耳机，不算太好，不过算是比那种10块钱的好用些吧。网上相关文章看了一些，无意间看到一个小工具，可以发出特定频率的声音来测试耳机和人耳对频率的反应。不过遗憾的是没有for Linux版本的。干脆自己学写一个好了。</p>
-<p>起初打算是把某个wav里面特定的频率过滤出来，好歹还学过一点傅里叶变换没有全忘记。要是用一个带通滤波器应该可以撸出来吧。没动手之前以为滤波器会很难写，然而不得不感叹Scipy的强大，什么FIR，IIR都只要直接设定参数便可以直接使用了！这个让我激动了一把，因为当时没有学原理，现在有了<code>scipy.signal</code>就不怕了！可是故事并没有因此而向好的方向发展，wav文件读进来的数据，不知道该怎么把设计好的滤波器应用上去，无论是python内置的wave还是scipy封装的<code>scipy.io.wavefile</code>都没法得到想要的结果，于是这个仅持续了两天的工程还是流产了。唉学艺不精啊！希望有相关经验的朋友能不吝指点一下。</p>
-<p>退而求其次，就有了本文。</p>
-<p>因为有了前面两天的基础，对wave文件有了一定了解，想实现题目讲的就不难了。加上搜资料一共用了10min就做好了。代码放在了<a href="https://gist.github.com/ibigbug/5227390">gist</a>。不过还有个问题就是产生的波形频率不是特别纯，在基波附近又很多的谐波，由于数学学得不好，也暂时不去考虑了，说不定哪一天可以忽然想清楚了呢。</p>
-<p><em>哦对了，测试的时候不要把频率撸的太低或者太高！！！第一是会很难受！！！第二会不会很危险（<a href="http://chinese.engadget.com/2008/12/09/Sonic-Nausea/">看这里不知真假！！！！</a>）！！！</em></p>
-<p>顺便记录一点最近的烦心事吧。感冒！！！！！！每天咳的要死，躺在床上就咳，怕影响室友睡觉，就去外面抽烟，外面又好冷啊，回到床上接着咳，这样折腾一两次就2，3点多了，早晨根本没精力起床TT。。。更别说去图书馆吵其他人了。。。</p>
-<p>看到知乎招聘，想试一试，随便写了50字简历过去没想到不到2个小时就有了回复，又激动了一把。是两道代码题目，一道是应该考状态机，一直没怎么了解过所以难度有点大;另一道是考web开发的，这一个还稍微了解一点。虽然不是专业班子，好赖不及两道题都写出了，还比deadline提前了3天发了回去。结果石沉大海去了。。。再TT。。。</p>
-<p>考研应该考不上吧。。。实习又撸不到。。。第三次TT。。。</p>
- ]]>
-        </content>
-    </entry>
-    
-    <entry>
-        <title type="html"><![CDATA[大二下]]></title>
-        <author><name>ibigbug</name><uri>http://blog.xiaoba.me</uri></author>
-        <link href="http://blog.xiaoba.me/2012/6/22/grade2-2nd-term.mkd.html"/>
-        <published>2012-06-22T11:10:54Z</published>
-        <id>http://blog.xiaoba.me/2012/6/22/grade2-2nd-term.mkd.html</id>
-        <content type="html" xml:base="http://blog.xiaoba.me" xml:lang="en">
-            <![CDATA[ <p>考完了大二下的最后一门，真是虚成狗了。昨晚看了一晚，趴了1个小时直接去考场——已经不知道第几次通宵复习了。</p>
-<p>交完卷出来，不知道是累还是困还是饿，反正就不是舒服的感觉。估计考研的感觉也就这B样吧，提前适应下子也好。</p>
-<p>绩点持续走低，现在真是只求过不求高分了。只求顺利毕业，爬爬电线杆搬搬变压器，是在不行就回家种韭菜放羊去。</p>
-<p>这学期课不多，但是据说都比较难。不过其实也没那么难。看了一两天几本都能过。当然还要感谢基友们考前给提供的情报，打击的时候精确了一些。就算不用作弊也凑合着能低分飘，知足。</p>
-<p>眼瞅着就大三了，大学就快过完了。学霸是做不成了。高分也基本渐行渐远遥不可及了。多写点代码，多读点书，开开心心跟基友们一起过完大学，顺利毕业。祝保研的被保研，粗国的顺利还不被爆菊，考研的一举成功，其他的都能找到自己喜欢的工作。</p>
-<p>废话一大把，只想记录一下。</p>
- ]]>
-        </content>
-    </entry>
-    
-    <entry>
-        <title type="html"><![CDATA[Flask中的auto reloader实现机制]]></title>
-        <author><name>ibigbug</name><uri>http://blog.xiaoba.me</uri></author>
-        <link href="http://blog.xiaoba.me/2013/12/13/how-flask-auto-reloader-work-and-redis-daemon-with-flask-script.mkd.html"/>
-        <published>2013-12-13T11:10:54Z</published>
-        <id>http://blog.xiaoba.me/2013/12/13/how-flask-auto-reloader-work-and-redis-daemon-with-flask-script.mkd.html</id>
-        <content type="html" xml:base="http://blog.xiaoba.me" xml:lang="en">
-            <![CDATA[ <p>起因是看到一篇文章讲<a href="http://flask.pocoo.org/snippets/73/">Flask中使用消息队列</a>的文章。很简单，不细说。但是其中有一步是需要单独起一条守护进程来处理队列里面的数据。由于我比较懒，不想每次要运行两个命令才能开启应用。首先想到的是在Makefile里面添加一条<code>redis-daemon</code>。但是这样没有成功，猜测是因为Flask的server和Redis的daemon都是要阻塞的，一旦启动之后便不能返回，于是下一条规则便没法执行。只好在Flask-Script里面做文章，翻了下Flask准确的说是<a href="http://werkzeug.pocoo.org/">werkzeug</a>的源码，找到了实现方法。不过我还是想先说一下Flask中的auto reloader实现机制。</p>
-<h1>一、 Flask auto_reloader的实现</h1>
-<p>准确地说是werkzeug实现的这个功能，而Flask是基于werkzeug构建起来的。相关的代码在werkzeug.serving模块中。整个原理其实很简单，就是不停的检测目录下的文件更改，比较文件的<code>最近修改时间</code>，如果有更新，就重启服务。但是实现起来其实有点复杂。当使用<code>auto_reloader</code>启动服务时，实际上会按照当前命令行参数新开一条python解释器进程。也就是启动后是会有两条python进程的，一条是我们自己启动的，我暂且称为「主进程」；另一条是werkzeug开的，我暂且称为「从进程」。当主进程启动后，会用<code>while 1</code>的方式阻塞，在<code>while</code>内部开启从进程，从进程又在内部开一条新的线程来跑web服务，然后调用<code>reloader_loop</code>方法来监视文件改动。</p>
-<h2>1). <code>run_simple</code>方法</h2>
-<p>文档中给的示例是用<code>run_simple</code>方法来启动一个web服务。如果使用<code>use_reloader</code>，便会调用<code>run_with_realoder</code>来包装这个web服务。写成伪代码如下：</p>
-<div class="highlight"><pre><span class="k">def</span> <span class="nf">run_simple</span><span class="p">():</span>
-    <span class="k">def</span> <span class="nf">inner</span><span class="p">():</span>
-        <span class="n">start_http_server</span><span class="p">()</span>
-    <span class="k">if</span> <span class="n">use_reloader</span><span class="p">:</span>
-        <span class="n">run_with_realoder</span><span class="p">(</span><span class="n">inner</span><span class="p">)</span>  <span class="c"># 这个方法里面启动从进程</span>
-    <span class="k">else</span><span class="p">:</span>
-        <span class="n">inner</span><span class="p">()</span>  <span class="c"># 这种情况比较简单，就不说了</span>
-</pre></div>
-<h2>2). <code>run_with_realoder</code>方法</h2>
-<p>这个方法源码不多，直接贴出来：</p>
-<div class="highlight"><pre><span class="k">def</span> <span class="nf">run_with_reloader</span><span class="p">(</span><span class="n">main_func</span><span class="p">,</span> <span class="n">extra_files</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">interval</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Run the given function in an independent python interpreter.&quot;&quot;&quot;</span>
-    <span class="kn">import</span> <span class="nn">signal</span>
-    <span class="n">signal</span><span class="o">.</span><span class="n">signal</span><span class="p">(</span><span class="n">signal</span><span class="o">.</span><span class="n">SIGTERM</span><span class="p">,</span> <span class="k">lambda</span> <span class="o">*</span><span class="n">args</span><span class="p">:</span> <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">0</span><span class="p">))</span>
-    <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;WERKZEUG_RUN_MAIN&#39;</span><span class="p">)</span> <span class="o">==</span> <span class="s">&#39;true&#39;</span><span class="p">:</span>
-        <span class="n">thread</span><span class="o">.</span><span class="n">start_new_thread</span><span class="p">(</span><span class="n">main_func</span><span class="p">,</span> <span class="p">())</span>
-        <span class="k">try</span><span class="p">:</span>
-            <span class="n">reloader_loop</span><span class="p">(</span><span class="n">extra_files</span><span class="p">,</span> <span class="n">interval</span><span class="p">)</span>
-        <span class="k">except</span> <span class="ne">KeyboardInterrupt</span><span class="p">:</span>
-            <span class="k">return</span>
-    <span class="k">try</span><span class="p">:</span>
-        <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="n">restart_with_reloader</span><span class="p">())</span>
-    <span class="k">except</span> <span class="ne">KeyboardInterrupt</span><span class="p">:</span>
-        <span class="k">pass</span>
-</pre></div>
-<p>这个方法里面有个<code>WERKZEUG_RUN_MAIN</code>，是在从进程启动之前添加的env里面的。因此当主进程启动后第一次调用这个方法时，不会进入这个分支，直接进入<code>sys.exit(restart_with_reloader())</code>。而这里调用<code>sys.exit()</code>是不会直接退出的，因为<code>restart_with_reloader()</code>将阻塞。</p>
-<p>至于进入方法时的signal处理，依据官方文档中关于<code>thread</code>模块的说明：</p>
-<blockquote><p>Threads interact strangely with interrupts: the KeyboardInterrupt exception will be received by an arbitrary thread. (When the signal module is available, interrupts always go to the main thread.)</p>
-
-</blockquote><p>可以保证当收到<code>KeyboardInterrupt</code>时能够被「主进程」截获。</p>
-<h2>3). <code>restart_with_reloader</code>方法</h2>
-<p>我们再来看比较有内涵的<code>restart_with_reloader</code>方法：</p>
-<div class="highlight"><pre><span class="k">def</span> <span class="nf">restart_with_reloader</span><span class="p">():</span>
-    <span class="sd">&quot;&quot;&quot;Spawn a new Python interpreter with the same arguments as this one,</span>
-<span class="sd">    but running the reloader thread.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">while</span> <span class="mi">1</span><span class="p">:</span>
-        <span class="n">_log</span><span class="p">(</span><span class="s">&#39;info&#39;</span><span class="p">,</span> <span class="s">&#39; * Restarting with reloader&#39;</span><span class="p">)</span>
-        <span class="n">args</span> <span class="o">=</span> <span class="p">[</span><span class="n">sys</span><span class="o">.</span><span class="n">executable</span><span class="p">]</span> <span class="o">+</span> <span class="n">sys</span><span class="o">.</span><span class="n">argv</span>
-        <span class="n">new_environ</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
-        <span class="n">new_environ</span><span class="p">[</span><span class="s">&#39;WERKZEUG_RUN_MAIN&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s">&#39;true&#39;</span>
-
-        <span class="c"># a weird bug on windows. sometimes unicode strings end up in the</span>
-        <span class="c"># environment and subprocess.call does not like this, encode them</span>
-        <span class="c"># to latin1 and continue.</span>
-        <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s">&#39;nt&#39;</span> <span class="ow">and</span> <span class="n">PY2</span><span class="p">:</span>
-            <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">iteritems</span><span class="p">(</span><span class="n">new_environ</span><span class="p">):</span>
-                <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">text_type</span><span class="p">):</span>
-                    <span class="n">new_environ</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s">&#39;iso-8859-1&#39;</span><span class="p">)</span>
-
-        <span class="n">exit_code</span> <span class="o">=</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">call</span><span class="p">(</span><span class="n">args</span><span class="p">,</span> <span class="n">env</span><span class="o">=</span><span class="n">new_environ</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">exit_code</span> <span class="o">!=</span> <span class="mi">3</span><span class="p">:</span>
-            <span class="k">return</span> <span class="n">exit_code</span>
-</pre></div>
-<p>这个方法看起来很危险，在<code>while 1</code>里面不停的新开python解释器不会把系统拖垮么？不会的。因为<code>subprocess</code>执行的命令其实就是开一个新的python解释器重新运行一次我们的<code>python manager.py runserver</code>命令，也就是我们之前说的「从进程」。而web服务器是要阻塞的，所以在上一个python解释器退出之前，是不会开新的解释器的。</p>
-<p>但是这一次与第一次我们手动运行<code>runserver</code>时候的情况不同。因为这个方法开始时候在env里面添加了一个新的环境变量「WERKZEUG_RUN_MAIN」，还记得<code>run_with_reloader</code>方法里面的第一个<code>if</code>吧，就是为了这里准备的。当从进程执行到<code>run_with_reloader</code>时，便进入了条件分支，而不会再无限启新的「从进程」耗光资源。而分支内部可以看到，开了一条线程来跑<code>main_func</code>也就是启动web服务的方法，紧接着启动<code>reloader_loop</code>也就是监视文件改动的循环。</p>
-<p>至此，整个带有<code>auto_reloader</code>功能的Flask服务全部启动完毕。</p>
-<p>然而还没完。有文件改动怎么重启呢？我们来看监视文件改动的循环<code>reloader_loop</code>的实现。</p>
-<h2>4). <code>reloader_loop</code>方法</h2>
-<p>这个方法其实是<code>_reloader_stat_loop</code>的引用。猜测可能之前是使用<code>python-inotify</code>来提供这个功能的，因为注释里面有提到说<code>inotify</code>不能正确的响应添加的文件，而且非常的buggy并且API也很混乱，所以使用基于CherryPy中的autoreload.py的方法修改来实现了。但是提交太多了，没有翻到是哪一次做的改动。不过这个不重要，我们来看实现：</p>
-<div class="highlight"><pre><span class="k">def</span> <span class="nf">_reloader_stat_loop</span><span class="p">(</span><span class="n">extra_files</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">interval</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
-<span class="kn">from</span> <span class="nn">itertools</span> <span class="kn">import</span> <span class="n">chain</span>
-    <span class="n">mtimes</span> <span class="o">=</span> <span class="p">{}</span>
-    <span class="k">while</span> <span class="mi">1</span><span class="p">:</span>
-        <span class="k">for</span> <span class="n">filename</span> <span class="ow">in</span> <span class="n">chain</span><span class="p">(</span><span class="n">_iter_module_files</span><span class="p">(),</span> <span class="n">extra_files</span> <span class="ow">or</span> <span class="p">()):</span>
-            <span class="k">try</span><span class="p">:</span>
-                <span class="n">mtime</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">stat</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span><span class="o">.</span><span class="n">st_mtime</span>
-            <span class="k">except</span> <span class="ne">OSError</span><span class="p">:</span>
-                <span class="k">continue</span>
-
-            <span class="n">old_time</span> <span class="o">=</span> <span class="n">mtimes</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
-            <span class="k">if</span> <span class="n">old_time</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
-                <span class="n">mtimes</span><span class="p">[</span><span class="n">filename</span><span class="p">]</span> <span class="o">=</span> <span class="n">mtime</span>
-                <span class="k">continue</span>
-            <span class="k">elif</span> <span class="n">mtime</span> <span class="o">&gt;</span> <span class="n">old_time</span><span class="p">:</span>
-                <span class="n">_log</span><span class="p">(</span><span class="s">&#39;info&#39;</span><span class="p">,</span> <span class="s">&#39; * Detected change in </span><span class="si">%r</span><span class="s">, reloading&#39;</span> <span class="o">%</span> <span class="n">filename</span><span class="p">)</span>
-                <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
-        <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="n">interval</span><span class="p">)</span>
-</pre></div>
-<p>这个方法还是在从进程启动了web服务线程之后才调用的。不停的来检测监视目录下文件的<code>st_mtime</code>也就是最新修改时间。如果有修改便使用一个exit code 3来退出自己。在这里退出之后，会返回到前面提到的<code>restart_with_reloader</code>，而那里是一个<code>while 1</code>，具体就不细说了。</p>
-<h1>二、 结合Flask-Script来运行Redis守护进程</h1>
-<p>说了半天，终于到了重点了。到底该如何在Flask-Script中同时开启两条进程又能保证web服务能够被正常的reload呢？其实可能方法有很多，我是这样实现的，如果你有其他的更好的方法，希望能够指点。</p>
-<div class="highlight"><pre><span class="k">def</span> <span class="nf">runserver</span><span class="p">(</span><span class="n">domain</span><span class="o">=</span><span class="s">&#39;localhost&#39;</span><span class="p">,</span> <span class="n">port</span><span class="o">=</span><span class="mi">3000</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;start a local server for development&quot;&quot;&quot;</span>
-
-    <span class="kn">from</span> <span class="nn">werkzeug.serving</span> <span class="kn">import</span> <span class="n">run_with_reloader</span>
-    <span class="kn">from</span> <span class="nn">werkzeug.serving</span> <span class="kn">import</span> <span class="n">make_server</span>
-    <span class="kn">from</span> <span class="nn">werkzeug.debug</span> <span class="kn">import</span> <span class="n">DebuggedApplication</span>
-    <span class="n">application</span> <span class="o">=</span> <span class="n">DebuggedApplication</span><span class="p">(</span><span class="n">app</span><span class="p">,</span> <span class="bp">True</span><span class="p">)</span>
-
-    <span class="k">def</span> <span class="nf">inner</span><span class="p">():</span>
-        <span class="k">print</span> <span class="s">&#39; * Starting Redis daemon&#39;</span>
-        <span class="n">thread</span><span class="o">.</span><span class="n">start_new_thread</span><span class="p">(</span><span class="n">run_daemon</span><span class="p">,</span> <span class="p">())</span>
-        <span class="k">print</span> <span class="s">&#39;   * Redis daemon running&#39;</span>
-        <span class="k">print</span><span class="p">(</span><span class="s">&#39; * Running on http://</span><span class="si">%s</span><span class="s">:</span><span class="si">%d</span><span class="s">/&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">domain</span><span class="p">,</span> <span class="n">port</span><span class="p">))</span>
-        <span class="n">make_server</span><span class="p">(</span><span class="n">domain</span><span class="p">,</span> <span class="n">port</span><span class="p">,</span> <span class="n">app</span><span class="o">=</span><span class="n">application</span><span class="p">)</span><span class="o">.</span><span class="n">serve_forever</span><span class="p">()</span>
-
-    <span class="k">def</span> <span class="nf">run_daemon</span><span class="p">():</span>
-        <span class="kn">from</span> <span class="nn">app.utils</span> <span class="kn">import</span> <span class="n">queue_daemon</span>
-        <span class="n">queue_daemon</span><span class="p">(</span><span class="n">app</span><span class="p">)</span>
-
-    <span class="k">try</span><span class="p">:</span>
-        <span class="n">run_with_reloader</span><span class="p">(</span><span class="n">inner</span><span class="p">)</span>
-    <span class="k">except</span> <span class="ne">KeyboardInterrupt</span><span class="p">:</span>
-        <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
-</pre></div>
-<h1>三、 后话</h1>
-<p>看完<code>auto_reload</code>的实现，感觉整个过程实现的非常巧妙，也非常严谨。而且整个代码写的逻辑非常清晰，注释非常完整。而且不知道你有没有注意到<code>restart_with_reloader</code>的最后两句判断<code>exit_code</code>：因为在整个serving模块里面，所有的exit code都是3，而3好像不是什么标准的exit status，werkzeug把3当作内部的常规exit code。如果在这里进行一次判断，可以保证进程的退出是werkzeug内部发起的正常退出；如果exit code不是3，说明进程退出有异常，便不再莽撞的重启服务，而是将exit code返回给「主进程」处理。对于需要频繁的退出和启动的程序，这样的处理便显得十分必要和严谨。开始慢慢的体会到大家说的「Pocoo出品，必属精品」了。</p>
- ]]>
-        </content>
-    </entry>
-    
-    <entry>
-        <title type="html"><![CDATA[轉眼已過好多年]]></title>
-        <author><name>ibigbug</name><uri>http://blog.xiaoba.me</uri></author>
-        <link href="http://blog.xiaoba.me/2012/1/24/memory.mkd.html"/>
-        <published>2012-01-24T11:10:54Z</published>
-        <id>http://blog.xiaoba.me/2012/1/24/memory.mkd.html</id>
-        <content type="html" xml:base="http://blog.xiaoba.me" xml:lang="en">
-            <![CDATA[ <p>這一次高中班聚人數明顯少了許多，不知道下一次，下下次如何。</p>
-<p>畢業了之後，即便是當初最親近的人如軟哥，小黑，還有所有的室友也只能一年見一兩次也就知足了。</p>
-<p>見到了老周，與我腦海中的印象是一樣的，沒有顯得蒼老，依然堆著滿臉笑容。</p>
-<p>只是如今不會再像從前那樣笑裏藏刀──突然間笑容不見接踵而至的是一陣狂風暴雨一般的說教。</p>
-<p>不過他說的很讓人信服，也確實很受用。</p>
-<p>那時候他喜歡說的一些話，依然印象深刻，也被多數高三十五班的同胞們奉為經典語錄吧。</p>
-<blockquote><p>“輕易別惹事，熱了事也不要怕事”</p>
-<p>“ 我的老師是最好的老師”</p>
-<p>“無為便無位”</p>
-<p>“活著最重要”（當然這一句要放在具體語境使用了）</p>
-<p>“本人高三十五班”（同上）</p>
-
-</blockquote><p>竟然多數已經記不起來了，唉。</p>
-<p>只記得當時不論是課間還是在睡覺前，誰都有可能模仿老周的樣子，冒出幾句老周語錄來娛樂一下。</p>
-<p>而他的專業課知識儲備自不必說了，絕對一流響當當。</p>
-<p>作為教師，他以豐富的知識讓人敬佩。</p>
-<p>作為長者，他以過人的智慧讓人更加敬重。</p>
-<p>語文老師一直沒見，對她的記憶也停留在那一張被稱為“鹹豬手”畢業照上了。</p>
-<p>總覺得該找個時間去探望她一下，但是一直沒有機會。</p>
-<p>從小就不喜歡學語文這一科，直到高中。</p>
-<p>那時候語文考的成績很爛，經常不能及格。</p>
-<p>作為她的首席科代表，自然要受到一點“特殊待遇”了。</p>
-<p>于是記得每天有空都會鑽到她的辦公室，去所謂的“額外輔導”。</p>
-<p>其實每次也基本上是做做樣子，實際上就是像與我媽媽聊天那樣，與她聊聊天而已。</p>
-<p>不過不論是平時上課也好，還是小屋子單獨聊天也好，從語文老師那裡也學到了許多比字音字形更有用的東西。</p>
-<p>當時剛好是夏天，還能有額外的“福利”，記得有一次還被她用筆敲過一次我的頭。</p>
-<p>現在想來那時候還真的是比較幼稚啊。</p>
-<p>不過後來學習語文有了興趣而且更加認真倒是真的。</p>
-<p>高考拿了個110幾分，不知道算不算是語文老師的功勞。</p>
-<p>同桌沒見到，是意料之內的。</p>
-<p>但還是在那一天早晨確認了一下她不會去，一陣莫名的小失落啊。</p>
-<p>不過剛剛與同桌聊了很多。</p>
-<p>與那時候一樣，還是囑咐我要少說臟話，少抽煙。</p>
-<p>她問我過得如何，我回答除了學術，其他都好。</p>
-<p>問我要不要考研，我說太累不考，她說我還是這個風格。</p>
-<p>問她畢業如何打算，她答計劃是要考研的，只是考哪一家大學還待定。</p>
-<p>高中時候她就比我有鬥志，現在依然如此。</p>
-<p>哪像我，中學時候就不想著好好讀書，有一點時間就去打球，泡網吧。（由于讀書的城市比較小，好像還不是蠻流行泡酒吧）</p>
-<p>大學了還是一樣，不讀書不看報，經常折騰一些不知道有沒有意義的事情。</p>
-<p>籃球也很少打，因為身體虛的很，技術又很菜，如此循環，已經沒辦法在與別人激烈的身體對抗了。</p>
-<p>大部分時間碼幾段代碼，算是讓時間不至于完全虛度。</p>
-<p>隨心情，去上上課，學一點不知道以後還用不用的上的知識，稍帶把考試給應付過去，通不過考試就比較難看了。</p>
-<p>到了大二稍稍好了一點，開始幹了一點正事。</p>
-<p>書讀了一兩本，不是很會讀，畢竟之前算是沒讀過什麽書，所以做起來還是有一點難度。</p>
-<p>不過凡事都有開始嘛，而且即使書籍沒有改變我的思想，至少可以豐富我的見識。</p>
-<p>不求什麽別的，只求做當下最好的自己。</p>
-<p>話又講多了。。。</p>
-<p>她現在的男友對她很好，而且不講臟話，也不抽煙，只是偶爾會因為打Dota而冷落她。</p>
-<p>見她為此發發小脾氣，抱怨男人不理她也稍稍夾帶這幾分秀恩愛的意思，也挺幸福的。</p>
-<p>少不了跟她講了幾句關于YT，問我為何分開了。</p>
-<p>我覺得分開了就是暫時不能繼續在一起了，一定要問個理由的話，那就是不合適。</p>
-<p>講了幾句沒有講清楚，她也不再追問。</p>
-<p>最後她塞給我這樣一句話：</p>
-<blockquote><p>時間長了，必然沒有太多新鮮感，但平平淡淡才是真，以後有合適的，好好珍惜。</p>
-
-</blockquote><p>雖然她說的挺對，但是我倒不覺得這樣非常好。</p>
-<p>趁大家還年輕還有機會有資本就多折騰幾下，等到折騰不動了，也就容不得再折騰了。</p>
-<p>如果以後到了該婚嫁的年紀，倒是希望可以與同桌一樣的女子一起。</p>
-<p>少算那也是要幾年之後的事情。</p>
-<p>歌詞裏面說，“六十年之後，但願能認得出你的子女。”</p>
-<p>盡管時間會改變我們，若未面目全非，一起找尋昨天的記憶應該也會很美好吧。</p>
-<p>還叫我遇到什麽事，網以後想想。她總是比我想的遠。</p>
-<p>看樣子她是做好與現在的男朋友打持久戰的准備了，我也看好你們。</p>
-<p>還有一點就是她依舊不肯承認對我很好，或者她也就跟本沒有對我很好，又或者是她對誰都那麽好。</p>
-<p>然而，這個已經不重要了。</p>
-<p>不是後記：</p>
-<p>由于最近情緒比較低落（一年前的我一定會用蛋疼來形容的），就寫了這一段既不普通，又不文藝的文字。用來記錄下那一些怕被忘掉的故事。我一直覺得平時我是一個比較二逼的人，沒輕沒重沒心沒肺的。但是改不了的就是這個喜歡蛋疼的習慣。不是放不下，而是不舍得放下。</p>
- ]]>
-        </content>
-    </entry>
-    
-    <entry>
-        <title type="html"><![CDATA[梦蝶]]></title>
-        <author><name>ibigbug</name><uri>http://blog.xiaoba.me</uri></author>
-        <link href="http://blog.xiaoba.me/2011/12/4/mengdie-say-byebye.mkd.html"/>
-        <published>2011-12-04T11:10:54Z</published>
-        <id>http://blog.xiaoba.me/2011/12/4/mengdie-say-byebye.mkd.html</id>
-        <content type="html" xml:base="http://blog.xiaoba.me" xml:lang="en">
-            <![CDATA[ <p>在新图自习完毕,听说今晚两个中心总监换届,比平时早一个小时去办公室开部长会,半路一碗炒粉是晚餐.</p>
-<p>来到网站,二会竟然因为拿不到钥匙没开门,于是十几位部长总监挤在小小的办公室里,见证两位总监的离去,当然,还有两位新生代的出现为两大中心注入新鲜的活力.</p>
-<p>第一次听说苏姐姐,还是因为梦蝶.programmers are shy又或者’希捷硬盘’那不堪回首的二三往事啊.那时贺欣怪阿姨还在,我还在物院,一起在物院的仓库里找展架,送她回去的樱花路上她教我’会做事,会装逼,会做PPT’.后来什么都没学会.那时候我只听浣熊的,一心一意在前端写着不能算作页面的页面.</p>
-<p>第一次见认识梦蝶,是属于"我有他人人"那种,头像粉嫩无比啊.后来知道原来周梦蝶–周迪那个带着棒球帽一脸正太相的就是我们的技术总监.</p>
-<p>梦蝶如今轻轻的走了,真的可以说是轻轻的走,在的时候,没听他说过做过什么轰轰烈烈的事情,但是机房刷夜维护服务器的事情他做的绝对不少.虽然不经常写代码,但是毕业墙的首页还是出自你手.临走了,你留下最后一句话:’每个部门自由自己的运行规律,不要给技术太大压力’.不过貌似一直没蹭过你请客吃饭.以后还有机会?</p>
-<p>走了个你,来了BD.</p>
-<p>跟BD渐渐熟悉起来,是去年一起做十大.现在回过头看那时候做的东西是有点好笑啊~没有git,没有需求文档.确硬是把十大做了下来.很怀念那段写自己想写的代码的日子.</p>
-<p>跟BD算是好基友,为什么说’算’呢?因为我们都不搅基.不多说,好基友是啥?就是有事了能在第一时间出现.</p>
-<p>其实跟BD的交情比跟梦蝶更深一点,今天虽然两个中心换届,但是最后只在人人上看到了大家对新闻总监的不舍.让本来就低调的梦蝶的离开显得更加冷清.技术中心的文艺青年门,你们又不出来写点什么,我就抛块砖头,也不指望能激起多少水花.至少梦蝶在技术中心这么久,就这么走了,我是舍不得的.虽然我们的工资你推迟发,虽然我们的经费你报销不及时.但是,我还是尊敬的叫一声梦蝶学长,一个技术青年.再见,走好.</p>
- ]]>
-        </content>
-    </entry>
-    
-    <entry>
-        <title type="html"><![CDATA[moto X 初体验]]></title>
-        <author><name>ibigbug</name><uri>http://blog.xiaoba.me</uri></author>
-        <link href="http://blog.xiaoba.me/2014/3/20/moto-X.mkd.html"/>
-        <published>2014-03-20T11:10:54Z</published>
-        <id>http://blog.xiaoba.me/2014/3/20/moto-X.mkd.html</id>
-        <content type="html" xml:base="http://blog.xiaoba.me" xml:lang="en">
-            <![CDATA[ <p>算起来入手moto X也已经有一段时间了。由于毕设需要一个Android机器做开发，恰逢Google的情人节优惠，有100刀的折扣，入moto G的就跟X比没什么优势了。于是，开始了艰难的外购之旅。由于moto那边只卖给美国信用卡，美国地址的用户，我的财付通运通卡下了两单全部悲剧，还害得一位学长的地址被moto拉进了黑名单。最后还是感谢<a href="https://twitter.com/jamesfjx">James Feng</a>学长友情直邮代购才顺利入手。</p>
-<p>感觉moto X最吸引人的地方就是木质后盖和moto maker定制了。可以在壳子上面刻字，在开机的时候显示自定的欢迎信息，包括机身颜色、按键颜色都可以通过moto maker来自己选择。尤其是木质后盖，简直惊艳。配置信息在官网可查。起码是新机，在流畅度上还是有所保证的。其实网上的专业测评也很多，我只谈一下我用了一段时间的感受。</p>
-<p>机身方面，据说采集了庞大的手掌数据库，进行3D模拟话和优化适配，设计了机身背面的弧线，满足不同人群的手感体验。我个人感觉，握起来确实手感很棒。白色机身、金色按键搭配木质后盖，看起来的确非常有质感。可惜美中不足的两点：屏幕略大，难以单手操作，比如新浪微博官方客户端的「撰写」按钮，很难通过一只手点到；其次，屏幕四周边框的设计，让人有一种屏幕凹陷进去的感觉，影响美观。</p>
-<p>软件方面，有一个很贴心的设计，当用户拿起手机时，会自动将屏幕点亮，并且将最近的消息显示在屏幕上。从技术上来讲，可能就是采用机器内部陀螺仪来实现的，这一个功能的方便之处不言而喻。虽然偶尔会有误判对续航造成影响，但依然无法掩盖其带来的方便与贴心。</p>
-<p>对于安卓系统，比起前几年已经有了非常大的进步。各个APP的界面和交互都有了比较强的一致性。翻墙后用Google Play也没什么压力，因此我也没有使用任何国内的「应用市场」。至于Google Now没怎么仔细研究，因为我连Siri也比较少用。买的是GSM Unlock版的，貌似支持的TD-LTE频段跟国内的移动频段有一丝丝的重合，不知到时能不能体验一下移动的4G。系统自带没有中文，也没有去刷。</p>
-<p>暂时就这么多。最后引用一波专业测评：</p>
-<blockquote><p>虽然并没有你想象中的高端旗舰，不过雪藏许久之后的Moto依然实力不俗；第一感觉是Android当中少有的流畅度媲美甚至超过iOS的机型；双核CPU 四核GPU的性能也并不比目前的四核旗舰弱多少。另外对于DSP的应用相信也会由此越来越广泛，苹果M7的跟进就是很好的例子，这种低功耗的专职部分相对 于高功耗的全能CPU来说，能够更加灵活的应对未来智能机可能越来越多的配件。除了国内Google Now偶尔有不便和可能不便的购买渠 道，Moto X不失为一款忠于纯粹Android体验的优秀产品。</p>
-
-</blockquote> ]]>
-        </content>
-    </entry>
-    
-    <entry>
-        <title type="html"><![CDATA[Node.js 和 express.js初体验]]></title>
-        <author><name>ibigbug</name><uri>http://blog.xiaoba.me</uri></author>
-        <link href="http://blog.xiaoba.me/2013/1/25/node-and-express.mkd.html"/>
-        <published>2013-01-25T11:10:54Z</published>
-        <id>http://blog.xiaoba.me/2013/1/25/node-and-express.mkd.html</id>
-        <content type="html" xml:base="http://blog.xiaoba.me" xml:lang="en">
-            <![CDATA[ <p>因为前几天有位朋友分手了,要删掉人人网的所有状态.看他在那一条一条点来点去挺麻烦的,何不写个脚本来自动删呢.于是便有了本文.</p>
-<p>其实脚本不难写,因为3g.renren.com的登录验证是不麻烦的.返回的html结构也不复杂,请求过程也都很直白,用python的话应该不是什么难题.可是既然node最近这么火,就正好借机会试一下吧.嘿嘿^^.</p>
-<p>跟复习专业课一样,学一种新的工具流程也都差不多.无非是:</p>
-<ol>
-<li><p>简单google一下,了解个大概(如果要是专业课复习,就是看一遍目录);</p>
-</li>
-<li><p>如果手册有Overview之类的什么东西抄一份(看一遍例题);</p>
-</li>
-<li><p>开始写,过程中多翻手册,如果不赶时间,最后把手册粗略的过一遍,做到对工具支持的特性心中有数(做题,看书,记公式);</p>
-</li>
-<li><p>重复3.</p>
-</li>
-</ol>
-<p>唉写到这里又不免感叹我这个学渣的悲哀TT,可是无论如何,既然生命要继续,我还是要把东西写完.</p>
-<p>Node是什么我就不抄百科了.Express就是Node平台下面的一个web框架.对应起来就像Tornado是Python的一个web框架一样.但又不完全等价:因为Python是一门语言,而Node是一个平台,跑的是喜闻乐见的JavaScript语言,用的Google的V8引擎.</p>
-<p>因为Node是以异步出名的,所以刚开始上手的时候真是有点不习惯.比如从数据库读一个User,然后渲染到前台.如果是在python里面,只要依次执行两个函数就好了.可是到这里,我前台页面都渲染完了,控制台显示User还没读出来(当然是夸张了,不过应该是这个道理).没错,要用回调的方式来解决了.至于具体的解决方案和手册教程,网上的前辈们早已总结好了.随便一搜就搜得到.</p>
-<p>对Node大概有个了解之后,就开始之前提到的那个脚本.这里采用了Express.js+jsdom+request三个库来处理,除了jsdom这个库有memory leak的bug之外,这个bug我要mark一下,因为当时是部署到heroku的,采集状态不一会程序就crash了- =.log里面显示的是定位到jsdom那一行内存不足了(开始完全想不到会是这个库的问题,以为Node的性能好差啊,随便写个类爬虫应用就内存不足),后来网上搜了搜,好多人有同样的问题,就是要在jsdom的任务执行完毕之后用<code>window.close()</code>来关掉对应的env(其实看起来也不算是bug了,使用不得当而已),其他过程都问题不大,按照手册按部就班把这个小应用写了出来.放到了鄙人的<a href="https://github.com/ibigbug/nodetest">github</a>上面了.</p>
-<p>不过还是遗留了一个问题就是:目前的状态采集和处理操作是顺序执行的(这个专业词叫什么来着我给搞忘记了),也就是说目前,在采集的时候,程序是阻塞掉的,不能同时删除.也是网上简单搜了一下,因为node的是异步执行的所以不用多线程的概念还是怎么回事.反正要把采集和处理能够并行执行才好,不知道node在这个问题上一般是怎么处理.改天再研究一下好了.记得好像是可以用setTimeout来避免主线程被阻塞掉的,但是setTimeout的原理看过又给搞忘记了,改天再翻下书好了.</p>
-<p>嗯嗯就这样了要睡觉去了好困啊...</p>
- ]]>
-        </content>
-    </entry>
-    
-    <entry>
-        <title type="html"><![CDATA[Run Custom Scripts on boot under Systemd]]></title>
-        <author><name>ibigbug</name><uri>http://blog.xiaoba.me</uri></author>
-        <link href="http://blog.xiaoba.me/2012/11/9/run_script_on_boot_under_systemd.mkd.html"/>
-        <published>2012-11-09T11:10:54Z</published>
-        <id>http://blog.xiaoba.me/2012/11/9/run_script_on_boot_under_systemd.mkd.html</id>
-        <content type="html" xml:base="http://blog.xiaoba.me" xml:lang="en">
-            <![CDATA[ <p>As archlinux has replaced <em>initscripts</em> with <em>systemd</em> as default init system and <a href="https://www.archlinux.org/news/end-of-initscripts-support/">will start removing initscripts suppport</a>, I use systemd now.</p>
-<p>To be different from <em>initscripts</em>, <em>rc scripts</em> are no longer available. However it's complicated to write a very  <em>.service</em> boot script for each program. So solusion like this may be useful:</p>
-<ol>
-<li><p>Create a systemd-service-script which start a normal script and run it on boot.</p>
-</li>
-<li><p>You can execute any command via the script mentioned in step 1.</p>
-</li>
-</ol>
-<p>In fact we are emulating the <em>rc.local</em> script which only works under <em>initscripts</em>.</p>
-<p>The demo may look like this:</p>
-<h4>custom.service:</h4>
-<div class="highlight"><pre><span class="p">[</span><span class="nx">Unit</span><span class="p">]</span>
-<span class="nx">Description</span><span class="o">=</span><span class="nx">Custom</span> <span class="nx">startup</span><span class="o">-</span><span class="nx">scripts</span>
-
-<span class="p">[</span><span class="nx">Service</span><span class="p">]</span>
-<span class="nx">ExecStart</span><span class="o">=</span><span class="err">/usr/bin/systemd_scripts_on_boot</span>
-
-<span class="p">[</span><span class="nx">Install</span><span class="p">]</span>
-<span class="nx">WantedBy</span><span class="o">=</span><span class="nx">multi</span><span class="o">-</span><span class="nx">user</span><span class="p">.</span><span class="nx">target</span>
-</pre></div>
-<h4>systemd_scripts_on_boot:</h4>
-<div class="highlight"><pre><span class="err">#</span><span class="o">!</span><span class="err">/bin/bash</span>
-
-<span class="nx">EXECUTE</span> <span class="nx">YOUR</span> <span class="nx">CUSTOM</span> <span class="nx">SCRIPT</span> <span class="nx">YOU</span> <span class="nx">WANT</span> <span class="nx">TO</span> <span class="nx">RUN</span> <span class="nx">ON</span> <span class="nx">STARTUP</span>
-</pre></div>
-<p>I'm a newbie on linux, systemd and English. Please let me know if any bugs ^^</p>
- ]]>
-        </content>
-    </entry>
     
     <entry>
         <title type="html"><![CDATA[Understanding Python by breaking it]]></title>
         <author><name>ibigbug</name><uri>http://blog.xiaoba.me</uri></author>
         <link href="http://blog.xiaoba.me/2014/4/5/trans-understanding-python-by-breaking-it.mkd.html"/>
-        <published>2014-04-05T11:10:54Z</published>
+        <published>2014-04-05T15:35:31Z</published>
         <id>http://blog.xiaoba.me/2014/4/5/trans-understanding-python-by-breaking-it.mkd.html</id>
         <content type="html" xml:base="http://blog.xiaoba.me" xml:lang="en">
             <![CDATA[ <blockquote><p>这篇文章是从Python Weekly里面看到的，刚好最近在学C。记录分享一下。<a href="http://blog.hakril.net/articles/0-understanding-python-by-breaking-it.html?utm_term=0_9e26887fc5-42441d6a58-312705645">点击这里查看原文</a></p>
@@ -1074,10 +335,174 @@
     </entry>
     
     <entry>
+        <title type="html"><![CDATA[moto X 初体验]]></title>
+        <author><name>ibigbug</name><uri>http://blog.xiaoba.me</uri></author>
+        <link href="http://blog.xiaoba.me/2014/3/20/moto-X.mkd.html"/>
+        <published>2014-03-20T15:35:31Z</published>
+        <id>http://blog.xiaoba.me/2014/3/20/moto-X.mkd.html</id>
+        <content type="html" xml:base="http://blog.xiaoba.me" xml:lang="en">
+            <![CDATA[ <p>算起来入手moto X也已经有一段时间了。由于毕设需要一个Android机器做开发，恰逢Google的情人节优惠，有100刀的折扣，入moto G的就跟X比没什么优势了。于是，开始了艰难的外购之旅。由于moto那边只卖给美国信用卡，美国地址的用户，我的财付通运通卡下了两单全部悲剧，还害得一位学长的地址被moto拉进了黑名单。最后还是感谢<a href="https://twitter.com/jamesfjx">James Feng</a>学长友情直邮代购才顺利入手。</p>
+<p>感觉moto X最吸引人的地方就是木质后盖和moto maker定制了。可以在壳子上面刻字，在开机的时候显示自定的欢迎信息，包括机身颜色、按键颜色都可以通过moto maker来自己选择。尤其是木质后盖，简直惊艳。配置信息在官网可查。起码是新机，在流畅度上还是有所保证的。其实网上的专业测评也很多，我只谈一下我用了一段时间的感受。</p>
+<p>机身方面，据说采集了庞大的手掌数据库，进行3D模拟话和优化适配，设计了机身背面的弧线，满足不同人群的手感体验。我个人感觉，握起来确实手感很棒。白色机身、金色按键搭配木质后盖，看起来的确非常有质感。可惜美中不足的两点：屏幕略大，难以单手操作，比如新浪微博官方客户端的「撰写」按钮，很难通过一只手点到；其次，屏幕四周边框的设计，让人有一种屏幕凹陷进去的感觉，影响美观。</p>
+<p>软件方面，有一个很贴心的设计，当用户拿起手机时，会自动将屏幕点亮，并且将最近的消息显示在屏幕上。从技术上来讲，可能就是采用机器内部陀螺仪来实现的，这一个功能的方便之处不言而喻。虽然偶尔会有误判对续航造成影响，但依然无法掩盖其带来的方便与贴心。</p>
+<p>对于安卓系统，比起前几年已经有了非常大的进步。各个APP的界面和交互都有了比较强的一致性。翻墙后用Google Play也没什么压力，因此我也没有使用任何国内的「应用市场」。至于Google Now没怎么仔细研究，因为我连Siri也比较少用。买的是GSM Unlock版的，貌似支持的TD-LTE频段跟国内的移动频段有一丝丝的重合，不知到时能不能体验一下移动的4G。系统自带没有中文，也没有去刷。</p>
+<p>暂时就这么多。最后引用一波专业测评：</p>
+<blockquote><p>虽然并没有你想象中的高端旗舰，不过雪藏许久之后的Moto依然实力不俗；第一感觉是Android当中少有的流畅度媲美甚至超过iOS的机型；双核CPU 四核GPU的性能也并不比目前的四核旗舰弱多少。另外对于DSP的应用相信也会由此越来越广泛，苹果M7的跟进就是很好的例子，这种低功耗的专职部分相对 于高功耗的全能CPU来说，能够更加灵活的应对未来智能机可能越来越多的配件。除了国内Google Now偶尔有不便和可能不便的购买渠 道，Moto X不失为一款忠于纯粹Android体验的优秀产品。</p>
+
+</blockquote> ]]>
+        </content>
+    </entry>
+    
+    <entry>
+        <title type="html"><![CDATA[Flask中的auto reloader实现机制]]></title>
+        <author><name>ibigbug</name><uri>http://blog.xiaoba.me</uri></author>
+        <link href="http://blog.xiaoba.me/2013/12/13/how-flask-auto-reloader-work-and-redis-daemon-with-flask-script.mkd.html"/>
+        <published>2013-12-13T15:35:31Z</published>
+        <id>http://blog.xiaoba.me/2013/12/13/how-flask-auto-reloader-work-and-redis-daemon-with-flask-script.mkd.html</id>
+        <content type="html" xml:base="http://blog.xiaoba.me" xml:lang="en">
+            <![CDATA[ <p>起因是看到一篇文章讲<a href="http://flask.pocoo.org/snippets/73/">Flask中使用消息队列</a>的文章。很简单，不细说。但是其中有一步是需要单独起一条守护进程来处理队列里面的数据。由于我比较懒，不想每次要运行两个命令才能开启应用。首先想到的是在Makefile里面添加一条<code>redis-daemon</code>。但是这样没有成功，猜测是因为Flask的server和Redis的daemon都是要阻塞的，一旦启动之后便不能返回，于是下一条规则便没法执行。只好在Flask-Script里面做文章，翻了下Flask准确的说是<a href="http://werkzeug.pocoo.org/">werkzeug</a>的源码，找到了实现方法。不过我还是想先说一下Flask中的auto reloader实现机制。</p>
+<h1>一、 Flask auto_reloader的实现</h1>
+<p>准确地说是werkzeug实现的这个功能，而Flask是基于werkzeug构建起来的。相关的代码在werkzeug.serving模块中。整个原理其实很简单，就是不停的检测目录下的文件更改，比较文件的<code>最近修改时间</code>，如果有更新，就重启服务。但是实现起来其实有点复杂。当使用<code>auto_reloader</code>启动服务时，实际上会按照当前命令行参数新开一条python解释器进程。也就是启动后是会有两条python进程的，一条是我们自己启动的，我暂且称为「主进程」；另一条是werkzeug开的，我暂且称为「从进程」。当主进程启动后，会用<code>while 1</code>的方式阻塞，在<code>while</code>内部开启从进程，从进程又在内部开一条新的线程来跑web服务，然后调用<code>reloader_loop</code>方法来监视文件改动。</p>
+<h2>1). <code>run_simple</code>方法</h2>
+<p>文档中给的示例是用<code>run_simple</code>方法来启动一个web服务。如果使用<code>use_reloader</code>，便会调用<code>run_with_realoder</code>来包装这个web服务。写成伪代码如下：</p>
+<div class="highlight"><pre><span class="k">def</span> <span class="nf">run_simple</span><span class="p">():</span>
+    <span class="k">def</span> <span class="nf">inner</span><span class="p">():</span>
+        <span class="n">start_http_server</span><span class="p">()</span>
+    <span class="k">if</span> <span class="n">use_reloader</span><span class="p">:</span>
+        <span class="n">run_with_realoder</span><span class="p">(</span><span class="n">inner</span><span class="p">)</span>  <span class="c"># 这个方法里面启动从进程</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">inner</span><span class="p">()</span>  <span class="c"># 这种情况比较简单，就不说了</span>
+</pre></div>
+<h2>2). <code>run_with_realoder</code>方法</h2>
+<p>这个方法源码不多，直接贴出来：</p>
+<div class="highlight"><pre><span class="k">def</span> <span class="nf">run_with_reloader</span><span class="p">(</span><span class="n">main_func</span><span class="p">,</span> <span class="n">extra_files</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">interval</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Run the given function in an independent python interpreter.&quot;&quot;&quot;</span>
+    <span class="kn">import</span> <span class="nn">signal</span>
+    <span class="n">signal</span><span class="o">.</span><span class="n">signal</span><span class="p">(</span><span class="n">signal</span><span class="o">.</span><span class="n">SIGTERM</span><span class="p">,</span> <span class="k">lambda</span> <span class="o">*</span><span class="n">args</span><span class="p">:</span> <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">0</span><span class="p">))</span>
+    <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;WERKZEUG_RUN_MAIN&#39;</span><span class="p">)</span> <span class="o">==</span> <span class="s">&#39;true&#39;</span><span class="p">:</span>
+        <span class="n">thread</span><span class="o">.</span><span class="n">start_new_thread</span><span class="p">(</span><span class="n">main_func</span><span class="p">,</span> <span class="p">())</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">reloader_loop</span><span class="p">(</span><span class="n">extra_files</span><span class="p">,</span> <span class="n">interval</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">KeyboardInterrupt</span><span class="p">:</span>
+            <span class="k">return</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="n">restart_with_reloader</span><span class="p">())</span>
+    <span class="k">except</span> <span class="ne">KeyboardInterrupt</span><span class="p">:</span>
+        <span class="k">pass</span>
+</pre></div>
+<p>这个方法里面有个<code>WERKZEUG_RUN_MAIN</code>，是在从进程启动之前添加的env里面的。因此当主进程启动后第一次调用这个方法时，不会进入这个分支，直接进入<code>sys.exit(restart_with_reloader())</code>。而这里调用<code>sys.exit()</code>是不会直接退出的，因为<code>restart_with_reloader()</code>将阻塞。</p>
+<p>至于进入方法时的signal处理，依据官方文档中关于<code>thread</code>模块的说明：</p>
+<blockquote><p>Threads interact strangely with interrupts: the KeyboardInterrupt exception will be received by an arbitrary thread. (When the signal module is available, interrupts always go to the main thread.)</p>
+
+</blockquote><p>可以保证当收到<code>KeyboardInterrupt</code>时能够被「主进程」截获。</p>
+<h2>3). <code>restart_with_reloader</code>方法</h2>
+<p>我们再来看比较有内涵的<code>restart_with_reloader</code>方法：</p>
+<div class="highlight"><pre><span class="k">def</span> <span class="nf">restart_with_reloader</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;Spawn a new Python interpreter with the same arguments as this one,</span>
+<span class="sd">    but running the reloader thread.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">while</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="n">_log</span><span class="p">(</span><span class="s">&#39;info&#39;</span><span class="p">,</span> <span class="s">&#39; * Restarting with reloader&#39;</span><span class="p">)</span>
+        <span class="n">args</span> <span class="o">=</span> <span class="p">[</span><span class="n">sys</span><span class="o">.</span><span class="n">executable</span><span class="p">]</span> <span class="o">+</span> <span class="n">sys</span><span class="o">.</span><span class="n">argv</span>
+        <span class="n">new_environ</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        <span class="n">new_environ</span><span class="p">[</span><span class="s">&#39;WERKZEUG_RUN_MAIN&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s">&#39;true&#39;</span>
+
+        <span class="c"># a weird bug on windows. sometimes unicode strings end up in the</span>
+        <span class="c"># environment and subprocess.call does not like this, encode them</span>
+        <span class="c"># to latin1 and continue.</span>
+        <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s">&#39;nt&#39;</span> <span class="ow">and</span> <span class="n">PY2</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">iteritems</span><span class="p">(</span><span class="n">new_environ</span><span class="p">):</span>
+                <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">text_type</span><span class="p">):</span>
+                    <span class="n">new_environ</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s">&#39;iso-8859-1&#39;</span><span class="p">)</span>
+
+        <span class="n">exit_code</span> <span class="o">=</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">call</span><span class="p">(</span><span class="n">args</span><span class="p">,</span> <span class="n">env</span><span class="o">=</span><span class="n">new_environ</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">exit_code</span> <span class="o">!=</span> <span class="mi">3</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">exit_code</span>
+</pre></div>
+<p>这个方法看起来很危险，在<code>while 1</code>里面不停的新开python解释器不会把系统拖垮么？不会的。因为<code>subprocess</code>执行的命令其实就是开一个新的python解释器重新运行一次我们的<code>python manager.py runserver</code>命令，也就是我们之前说的「从进程」。而web服务器是要阻塞的，所以在上一个python解释器退出之前，是不会开新的解释器的。</p>
+<p>但是这一次与第一次我们手动运行<code>runserver</code>时候的情况不同。因为这个方法开始时候在env里面添加了一个新的环境变量「WERKZEUG_RUN_MAIN」，还记得<code>run_with_reloader</code>方法里面的第一个<code>if</code>吧，就是为了这里准备的。当从进程执行到<code>run_with_reloader</code>时，便进入了条件分支，而不会再无限启新的「从进程」耗光资源。而分支内部可以看到，开了一条线程来跑<code>main_func</code>也就是启动web服务的方法，紧接着启动<code>reloader_loop</code>也就是监视文件改动的循环。</p>
+<p>至此，整个带有<code>auto_reloader</code>功能的Flask服务全部启动完毕。</p>
+<p>然而还没完。有文件改动怎么重启呢？我们来看监视文件改动的循环<code>reloader_loop</code>的实现。</p>
+<h2>4). <code>reloader_loop</code>方法</h2>
+<p>这个方法其实是<code>_reloader_stat_loop</code>的引用。猜测可能之前是使用<code>python-inotify</code>来提供这个功能的，因为注释里面有提到说<code>inotify</code>不能正确的响应添加的文件，而且非常的buggy并且API也很混乱，所以使用基于CherryPy中的autoreload.py的方法修改来实现了。但是提交太多了，没有翻到是哪一次做的改动。不过这个不重要，我们来看实现：</p>
+<div class="highlight"><pre><span class="k">def</span> <span class="nf">_reloader_stat_loop</span><span class="p">(</span><span class="n">extra_files</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">interval</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+<span class="kn">from</span> <span class="nn">itertools</span> <span class="kn">import</span> <span class="n">chain</span>
+    <span class="n">mtimes</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="k">while</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">filename</span> <span class="ow">in</span> <span class="n">chain</span><span class="p">(</span><span class="n">_iter_module_files</span><span class="p">(),</span> <span class="n">extra_files</span> <span class="ow">or</span> <span class="p">()):</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">mtime</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">stat</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span><span class="o">.</span><span class="n">st_mtime</span>
+            <span class="k">except</span> <span class="ne">OSError</span><span class="p">:</span>
+                <span class="k">continue</span>
+
+            <span class="n">old_time</span> <span class="o">=</span> <span class="n">mtimes</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">old_time</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+                <span class="n">mtimes</span><span class="p">[</span><span class="n">filename</span><span class="p">]</span> <span class="o">=</span> <span class="n">mtime</span>
+                <span class="k">continue</span>
+            <span class="k">elif</span> <span class="n">mtime</span> <span class="o">&gt;</span> <span class="n">old_time</span><span class="p">:</span>
+                <span class="n">_log</span><span class="p">(</span><span class="s">&#39;info&#39;</span><span class="p">,</span> <span class="s">&#39; * Detected change in </span><span class="si">%r</span><span class="s">, reloading&#39;</span> <span class="o">%</span> <span class="n">filename</span><span class="p">)</span>
+                <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+        <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="n">interval</span><span class="p">)</span>
+</pre></div>
+<p>这个方法还是在从进程启动了web服务线程之后才调用的。不停的来检测监视目录下文件的<code>st_mtime</code>也就是最新修改时间。如果有修改便使用一个exit code 3来退出自己。在这里退出之后，会返回到前面提到的<code>restart_with_reloader</code>，而那里是一个<code>while 1</code>，具体就不细说了。</p>
+<h1>二、 结合Flask-Script来运行Redis守护进程</h1>
+<p>说了半天，终于到了重点了。到底该如何在Flask-Script中同时开启两条进程又能保证web服务能够被正常的reload呢？其实可能方法有很多，我是这样实现的，如果你有其他的更好的方法，希望能够指点。</p>
+<div class="highlight"><pre><span class="k">def</span> <span class="nf">runserver</span><span class="p">(</span><span class="n">domain</span><span class="o">=</span><span class="s">&#39;localhost&#39;</span><span class="p">,</span> <span class="n">port</span><span class="o">=</span><span class="mi">3000</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;start a local server for development&quot;&quot;&quot;</span>
+
+    <span class="kn">from</span> <span class="nn">werkzeug.serving</span> <span class="kn">import</span> <span class="n">run_with_reloader</span>
+    <span class="kn">from</span> <span class="nn">werkzeug.serving</span> <span class="kn">import</span> <span class="n">make_server</span>
+    <span class="kn">from</span> <span class="nn">werkzeug.debug</span> <span class="kn">import</span> <span class="n">DebuggedApplication</span>
+    <span class="n">application</span> <span class="o">=</span> <span class="n">DebuggedApplication</span><span class="p">(</span><span class="n">app</span><span class="p">,</span> <span class="bp">True</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">inner</span><span class="p">():</span>
+        <span class="k">print</span> <span class="s">&#39; * Starting Redis daemon&#39;</span>
+        <span class="n">thread</span><span class="o">.</span><span class="n">start_new_thread</span><span class="p">(</span><span class="n">run_daemon</span><span class="p">,</span> <span class="p">())</span>
+        <span class="k">print</span> <span class="s">&#39;   * Redis daemon running&#39;</span>
+        <span class="k">print</span><span class="p">(</span><span class="s">&#39; * Running on http://</span><span class="si">%s</span><span class="s">:</span><span class="si">%d</span><span class="s">/&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">domain</span><span class="p">,</span> <span class="n">port</span><span class="p">))</span>
+        <span class="n">make_server</span><span class="p">(</span><span class="n">domain</span><span class="p">,</span> <span class="n">port</span><span class="p">,</span> <span class="n">app</span><span class="o">=</span><span class="n">application</span><span class="p">)</span><span class="o">.</span><span class="n">serve_forever</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">run_daemon</span><span class="p">():</span>
+        <span class="kn">from</span> <span class="nn">app.utils</span> <span class="kn">import</span> <span class="n">queue_daemon</span>
+        <span class="n">queue_daemon</span><span class="p">(</span><span class="n">app</span><span class="p">)</span>
+
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">run_with_reloader</span><span class="p">(</span><span class="n">inner</span><span class="p">)</span>
+    <span class="k">except</span> <span class="ne">KeyboardInterrupt</span><span class="p">:</span>
+        <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+</pre></div>
+<h1>三、 后话</h1>
+<p>看完<code>auto_reload</code>的实现，感觉整个过程实现的非常巧妙，也非常严谨。而且整个代码写的逻辑非常清晰，注释非常完整。而且不知道你有没有注意到<code>restart_with_reloader</code>的最后两句判断<code>exit_code</code>：因为在整个serving模块里面，所有的exit code都是3，而3好像不是什么标准的exit status，werkzeug把3当作内部的常规exit code。如果在这里进行一次判断，可以保证进程的退出是werkzeug内部发起的正常退出；如果exit code不是3，说明进程退出有异常，便不再莽撞的重启服务，而是将exit code返回给「主进程」处理。对于需要频繁的退出和启动的程序，这样的处理便显得十分必要和严谨。开始慢慢的体会到大家说的「Pocoo出品，必属精品」了。</p>
+ ]]>
+        </content>
+    </entry>
+    
+    <entry>
+        <title type="html"><![CDATA[为什么我使用Linux]]></title>
+        <author><name>ibigbug</name><uri>http://blog.xiaoba.me</uri></author>
+        <link href="http://blog.xiaoba.me/2013/12/8/why-i-use-linux.mkd.html"/>
+        <published>2013-12-08T15:35:31Z</published>
+        <id>http://blog.xiaoba.me/2013/12/8/why-i-use-linux.mkd.html</id>
+        <content type="html" xml:base="http://blog.xiaoba.me" xml:lang="en">
+            <![CDATA[ <p>前段时间有以为新的follower在twitter上问我算不算是Arch用户，把我问了一愣（后来简单通过id了解一下，发现好像是人人网跪圈的某位大牛之类的吧）。由于最近一次定期维护系统时，我一狠心把Arch的分区也给格掉了，所以我回答他说曾经算是。想起之前<a href="https://twitter.com/cndaniel">Daniel</a>也问过我为什么要用Linux，刚好最近有时间，我就想了一下。</p>
+<p>不用掰手指算，我用Linux不久，也就两三年时间吧。对Linux文化了解的也不多，还不知道<a href="http://zh.wikipedia.org/wiki/GNU/Linux%E5%91%BD%E5%90%8D%E7%88%AD%E8%AD%B0">Linux与GNU/Linux命名之争</a>该如何站队；Linus的名言也背不出几条拿出来装腔；因为开源？没用Linux之前我是连安装软件之前的协议直接下一步跳过的，更别提什么版权意识开源精神了，即使用到现在也还是分不清各个License之间的细微区别，不过也有观点认为那是给商人们准备的，我们只要用就好了，所以才会出现像<a href="http://www.wtfpl.net/">WTFPL(Do What the Fuck You Want to Public License)</a>这样的License吧；至于有人说的比Windows好用，网上两者对比的文章也很容易搜到，在我看来，对于非程序员类职业来说，根本就是扯淡的观点。而且操作系统之争，编辑器之争，编程语言之争这类的「圣战」，连大牛们战个几天几夜，也战不出个孰优孰劣，所以我也只就我自己的经历来说说为什么我要使用Linux。</p>
+<p>第一次听说Linux大概是初中时候。那时喜欢去3800hk看一些「刷钻」、「盗号」之类的教学视频。应该有一次的视频里讲到通过TTL来判断主机OS时第一次了解到，原来除了Windows之外还有那么多「高级」的操作系统。那时好奇心也强，就攒了几块零钱，去找我们那里唯一一家卖电脑的商店找那位小哥刻了一张红旗Linux的安装包，给我盘的时候他说我肯定装不好。后来果然没装好。当时倒不是因为不知道怎么装，而是怕装好之后被我老爸发现又在乱搞一些没用的东西骂我一顿。也就作罢。</p>
+<p>再一次接触Linux，也是真正接触并使用Linux，已经是大一时候加入学校的某个社团之后了。那个社团技术部门招新的网站上写了很多我当时还没听过的东西，什么MySQL、Python、Javascript之类的。唯一听过名字的就是Linux了。来大学之后有了自己的电脑，第一件事就是给它装上了一个Ubuntu。当时看到这样的部门介绍，感觉就像空的水杯遇见了水龙头一样，心想大学果然是个好地方，我一定要加入这个社团来学习如何使用我电脑里面新鲜的Ubuntu操作系统。虽然当时对写代码一无所知，不过高中毕业暑假里面学的搭建twip代理，搭建wordpress博客，初中时候用「135批量扫描工具」抓肉鸡之类的经历，还有面试时候跟正在恢复被误删的数据库的两位大牛说的「哪怕就让我进来帮你们买买水，买买面包也行啊」这样的表现让他们觉得我还行吧，所以也就进了技术部门。便正式开始在「工作」中使用Linux了。而Ubuntu，和其他大多数新手一样，是我使用的第一个「发行版」。</p>
+<p>Ubuntu这个名字看起来很像乌托邦，其实读作「乌班图」。是一个很适合Windows用户转向Linux使用的发行版，安装过程与Windows基本无异。如果你愿意，也完全可以像Windows那样使用，因为是有图形界面的。我也正是在Ubuntu的使用过程中，接触了terminal、vim、python、markdown，并且习惯了能用键盘就不用鼠标。但毕竟是新手，对这些东西了解的并不深入，不过就像各种圈子一样，我也还是因此认识了一群跟我一样喜欢这些东西的朋友。</p>
+<p>然而折腾是停不下来的，用了没多久Ubuntu，我顺理成章地听说了Gentoo这个可以满足折腾欲，用现在的话来讲就是逼格很高的发行版。如你所知，宅男是管不住自己手的。于是就开始没日没夜的装Gentoo。Gentoo跟Ubuntu不同，所有东西都要自己定制，编译安装的，而我的机器又不好，编译一个内核记得差不多要一个多钟头，对我这个菜鸟来说，编译失败就意味着要完全从头再来，已保证跟手册是同步的。而图形界面用的时间就更久了。那时为了这个，课也不上了。夜里室友在睡觉，我就静静的盯着屏幕，看着一行一行的编译语句执行，就像黑客帝国里面的那种黑底绿字的字符雨闪过一样。我没生过孩子，不过当第一次编译出的内核可以正常启动时，我推测那种感觉就像多数男人看到自己的小蝌蚪被孕育到世界里面来一样吧。而看到自己编译出的图形界面的感觉可能就跟自己的儿子考上了清华或者娶了个富婆一样吧。也是从那个时候开始，我不大怎么上课了，也不会像正常人一样好好睡觉了。</p>
+<p>不过我发现Gentoo并不适合我，因为Gentoo安装软件包，都要自己动手编译，每次等这个编译的过程都很麻烦，很累。就像那些费劲千辛万苦追到女神之后发现两个人活在同一片蓝天，却不在同一个世界一样。我把Gentoo也格了，装了ArchLinux。在经历过Gentoo之后，我发觉Arch还是蛮适合我的。安装比Gentoo容易的多，可以按照自己的需求定制，又不用麻烦到事事都要自己动手设置好。用不到的一个不多，该有的一个不少。一切都很自然。所以这个也是我用得时间最长的发行版。直到我有了Mac，便很少再用了，在上一次定期维护系统时候，也给忍痛格掉了。</p>
+<p>有人调侃Arch用户有一个特点，升级时候把系统滚挂了，不会怪系统不稳定，而是怪自己没有去看首页公告。其实对我来说，用Linux对我最大的影响也恰恰是在这里。为什么别人升级没问题，就你的挂了？如果用词语来总结的话，Linux培养了我「动手」而不是「伸手」或者「动嘴」的习惯。确实在Linux使用的过程中，会经常遇到一些这样那样的问题。抱怨系统不稳定啊，怎么没人告诉我啊之类的往往是没什么太大帮助的。而且一般情况下，问题往往不会自己消失。所以，自己找原因，自己动手解决问题。</p>
+<p>今年暑假实习的时候，考虑到以后自己可能就要告别大学所学的专业课，成为一个职业码农了，干脆买了个MBA，正式加入了OS X阵营。Mac OS X其实跟Linux是有着相同祖先的，对我来说几乎没什么学习成本，我基本可以像使用Linux一样来使用Mac。但是毕竟是有钱来驱动的，Mac的图形界面要比每一个Linux发行版都优秀得多。在Mac里，我还是使用vim来编程，使用git来管理代码，使用dropbox和iCloud来同步文档，使用github来同步配置文件，使用号称最先进的「鼠须管」输入法，使用markdown和自己制作的SBlog程序来写博客，使用homebrew来管理安装一些开源软件。最近又买了一个Alfred 2来增强spotlight，感觉自己好像自己越来越像一个程序员了，就像小时候想象的一样。不过我毕竟算不上一个真正意义上合格的程序员。因为真正的程序员，是有创造力的，有能力改变世界的。每每想到这一点，总会点上一根忧伤的烟。</p>
+<p>所以要问我为什么要用Linux，我也确实不能优雅的谢邀然后再写个1，2，3条出来。用了就是用了，而且一直在用，已经养成一种习惯，就是觉得不在电脑上面打游戏的时候，键盘就比鼠标好用的多，terminal就比图形界面舒服的多。就像有些高中同学说我，你从学物理的改行到学电气去，最后不去电力部门怎么跑去当了个码农，我也不知道怎么回答，可能就像钓了一根大骨架的桑地亚哥那样吧。</p>
+ ]]>
+        </content>
+    </entry>
+    
+    <entry>
         <title type="html"><![CDATA[什么时候该使用assert]]></title>
         <author><name>ibigbug</name><uri>http://blog.xiaoba.me</uri></author>
         <link href="http://blog.xiaoba.me/2013/11/19/when-to-use-assert.mkd.html"/>
-        <published>2013-11-19T11:10:54Z</published>
+        <published>2013-11-19T15:35:31Z</published>
         <id>http://blog.xiaoba.me/2013/11/19/when-to-use-assert.mkd.html</id>
         <content type="html" xml:base="http://blog.xiaoba.me" xml:lang="en">
             <![CDATA[ <p><em>【本文译自<a href="https://mail.python.org/pipermail/python-list/2013-November/660401.html">When to use assert</a>】</em></p>
@@ -1184,22 +609,372 @@
     </entry>
     
     <entry>
-        <title type="html"><![CDATA[title: 为什么我使用Linux]]></title>
+        <title type="html"><![CDATA[Javascript中的debounce模式]]></title>
         <author><name>ibigbug</name><uri>http://blog.xiaoba.me</uri></author>
-        <link href="http://blog.xiaoba.me/2013/12/8/why-i-use-linux.mkd.html"/>
-        <published>2013-12-08T11:10:54Z</published>
-        <id>http://blog.xiaoba.me/2013/12/8/why-i-use-linux.mkd.html</id>
+        <link href="http://blog.xiaoba.me/2013/7/26/debounce-in-javascript.mkd.html"/>
+        <published>2013-07-26T15:35:31Z</published>
+        <id>http://blog.xiaoba.me/2013/7/26/debounce-in-javascript.mkd.html</id>
         <content type="html" xml:base="http://blog.xiaoba.me" xml:lang="en">
-            <![CDATA[ <p>前段时间有以为新的follower在twitter上问我算不算是Arch用户，把我问了一愣（后来简单通过id了解一下，发现好像是人人网跪圈的某位大牛之类的吧）。由于最近一次定期维护系统时，我一狠心把Arch的分区也给格掉了，所以我回答他说曾经算是。想起之前<a href="https://twitter.com/cndaniel">Daniel</a>也问过我为什么要用Linux，刚好最近有时间，我就想了一下。</p>
-<p>不用掰手指算，我用Linux不久，也就两三年时间吧。对Linux文化了解的也不多，还不知道<a href="http://zh.wikipedia.org/wiki/GNU/Linux%E5%91%BD%E5%90%8D%E7%88%AD%E8%AD%B0">Linux与GNU/Linux命名之争</a>该如何站队；Linus的名言也背不出几条拿出来装腔；因为开源？没用Linux之前我是连安装软件之前的协议直接下一步跳过的，更别提什么版权意识开源精神了，即使用到现在也还是分不清各个License之间的细微区别，不过也有观点认为那是给商人们准备的，我们只要用就好了，所以才会出现像<a href="http://www.wtfpl.net/">WTFPL(Do What the Fuck You Want to Public License)</a>这样的License吧；至于有人说的比Windows好用，网上两者对比的文章也很容易搜到，在我看来，对于非程序员类职业来说，根本就是扯淡的观点。而且操作系统之争，编辑器之争，编程语言之争这类的「圣战」，连大牛们战个几天几夜，也战不出个孰优孰劣，所以我也只就我自己的经历来说说为什么我要使用Linux。</p>
-<p>第一次听说Linux大概是初中时候。那时喜欢去3800hk看一些「刷钻」、「盗号」之类的教学视频。应该有一次的视频里讲到通过TTL来判断主机OS时第一次了解到，原来除了Windows之外还有那么多「高级」的操作系统。那时好奇心也强，就攒了几块零钱，去找我们那里唯一一家卖电脑的商店找那位小哥刻了一张红旗Linux的安装包，给我盘的时候他说我肯定装不好。后来果然没装好。当时倒不是因为不知道怎么装，而是怕装好之后被我老爸发现又在乱搞一些没用的东西骂我一顿。也就作罢。</p>
-<p>再一次接触Linux，也是真正接触并使用Linux，已经是大一时候加入学校的某个社团之后了。那个社团技术部门招新的网站上写了很多我当时还没听过的东西，什么MySQL、Python、Javascript之类的。唯一听过名字的就是Linux了。来大学之后有了自己的电脑，第一件事就是给它装上了一个Ubuntu。当时看到这样的部门介绍，感觉就像空的水杯遇见了水龙头一样，心想大学果然是个好地方，我一定要加入这个社团来学习如何使用我电脑里面新鲜的Ubuntu操作系统。虽然当时对写代码一无所知，不过高中毕业暑假里面学的搭建twip代理，搭建wordpress博客，初中时候用「135批量扫描工具」抓肉鸡之类的经历，还有面试时候跟正在恢复被误删的数据库的两位大牛说的「哪怕就让我进来帮你们买买水，买买面包也行啊」这样的表现让他们觉得我还行吧，所以也就进了技术部门。便正式开始在「工作」中使用Linux了。而Ubuntu，和其他大多数新手一样，是我使用的第一个「发行版」。</p>
-<p>Ubuntu这个名字看起来很像乌托邦，其实读作「乌班图」。是一个很适合Windows用户转向Linux使用的发行版，安装过程与Windows基本无异。如果你愿意，也完全可以像Windows那样使用，因为是有图形界面的。我也正是在Ubuntu的使用过程中，接触了terminal、vim、python、markdown，并且习惯了能用键盘就不用鼠标。但毕竟是新手，对这些东西了解的并不深入，不过就像各种圈子一样，我也还是因此认识了一群跟我一样喜欢这些东西的朋友。</p>
-<p>然而折腾是停不下来的，用了没多久Ubuntu，我顺理成章地听说了Gentoo这个可以满足折腾欲，用现在的话来讲就是逼格很高的发行版。如你所知，宅男是管不住自己手的。于是就开始没日没夜的装Gentoo。Gentoo跟Ubuntu不同，所有东西都要自己定制，编译安装的，而我的机器又不好，编译一个内核记得差不多要一个多钟头，对我这个菜鸟来说，编译失败就意味着要完全从头再来，已保证跟手册是同步的。而图形界面用的时间就更久了。那时为了这个，课也不上了。夜里室友在睡觉，我就静静的盯着屏幕，看着一行一行的编译语句执行，就像黑客帝国里面的那种黑底绿字的字符雨闪过一样。我没生过孩子，不过当第一次编译出的内核可以正常启动时，我推测那种感觉就像多数男人看到自己的小蝌蚪被孕育到世界里面来一样吧。而看到自己编译出的图形界面的感觉可能就跟自己的儿子考上了清华或者娶了个富婆一样吧。也是从那个时候开始，我不大怎么上课了，也不会像正常人一样好好睡觉了。</p>
-<p>不过我发现Gentoo并不适合我，因为Gentoo安装软件包，都要自己动手编译，每次等这个编译的过程都很麻烦，很累。就像那些费劲千辛万苦追到女神之后发现两个人活在同一片蓝天，却不在同一个世界一样。我把Gentoo也格了，装了ArchLinux。在经历过Gentoo之后，我发觉Arch还是蛮适合我的。安装比Gentoo容易的多，可以按照自己的需求定制，又不用麻烦到事事都要自己动手设置好。用不到的一个不多，该有的一个不少。一切都很自然。所以这个也是我用得时间最长的发行版。直到我有了Mac，便很少再用了，在上一次定期维护系统时候，也给忍痛格掉了。</p>
-<p>有人调侃Arch用户有一个特点，升级时候把系统滚挂了，不会怪系统不稳定，而是怪自己没有去看首页公告。其实对我来说，用Linux对我最大的影响也恰恰是在这里。为什么别人升级没问题，就你的挂了？如果用词语来总结的话，Linux培养了我「动手」而不是「伸手」或者「动嘴」的习惯。确实在Linux使用的过程中，会经常遇到一些这样那样的问题。抱怨系统不稳定啊，怎么没人告诉我啊之类的往往是没什么太大帮助的。而且一般情况下，问题往往不会自己消失。所以，自己找原因，自己动手解决问题。</p>
-<p>今年暑假实习的时候，考虑到以后自己可能就要告别大学所学的专业课，成为一个职业码农了，干脆买了个MBA，正式加入了OS X阵营。Mac OS X其实跟Linux是有着相同祖先的，对我来说几乎没什么学习成本，我基本可以像使用Linux一样来使用Mac。但是毕竟是有钱来驱动的，Mac的图形界面要比每一个Linux发行版都优秀得多。在Mac里，我还是使用vim来编程，使用git来管理代码，使用dropbox和iCloud来同步文档，使用github来同步配置文件，使用号称最先进的「鼠须管」输入法，使用markdown和自己制作的SBlog程序来写博客，使用homebrew来管理安装一些开源软件。最近又买了一个Alfred 2来增强spotlight，感觉自己好像自己越来越像一个程序员了，就像小时候想象的一样。不过我毕竟算不上一个真正意义上合格的程序员。因为真正的程序员，是有创造力的，有能力改变世界的。每每想到这一点，总会点上一根忧伤的烟。</p>
-<p>所以要问我为什么要用Linux，我也确实不能优雅的谢邀然后再写个1，2，3条出来。用了就是用了，而且一直在用，已经养成一种习惯，就是觉得不在电脑上面打游戏的时候，键盘就比鼠标好用的多，terminal就比图形界面舒服的多。就像有些高中同学说我，你从学物理的改行到学电气去，最后不去电力部门怎么跑去当了个码农，我也不知道怎么回答，可能就像钓了一根大骨架的桑地亚哥那样吧。</p>
+            <![CDATA[ <h2>1.What——什么是debounce模式？</h2>
+<p>如果你写过单片机开发的键盘扫描，那么你一定知道要进行「去抖动」。没错，在JS处理页面交互事件时，往往也需要进行一些去抖处理，这就是debounce。当然这里只是借用了名字，其实与键盘扫描的去抖，还是有一点差别的。下面有个效果演示，如果你心急，直接拉下去看效果。</p>
+<h2>2.Why——为什么要debounce？</h2>
+<p>正如引言中所述，对于「猛击」的现象，我们需要使用<code>debounce</code>来让点击轻一点~比如用户在进行订单提交的时候，需要单击「提交」按钮，往往会有意或者无意的出现「双击」甚至「多击」的现象，如果JS对每次单击都相应一次，发出一个请求到后台，那么一方面，可能会造成逻辑错误，也就是造成「下了很多订单」;另一方面，对于「多击」的没一个请求，都会发送到后台，给web服务器增加了压力。</p>
+<h2>3.How——如何debounce？</h2>
+<p>underscore框架中有一个方法，叫做「debounce」，就是我们今天要介绍的。</p>
+<p>这个方法使用起来很简单：</p>
+<div class="highlight"><pre><span class="kd">var</span> <span class="nx">lazyLayout</span> <span class="o">=</span> <span class="nx">_</span><span class="p">.</span><span class="nx">debounce</span><span class="p">(</span><span class="nx">calculateLayout</span><span class="p">,</span> <span class="mi">300</span><span class="p">);</span>
+<span class="nx">$</span><span class="p">(</span><span class="nb">window</span><span class="p">).</span><span class="nx">resize</span><span class="p">(</span><span class="nx">lazyLayout</span><span class="p">);</span>
+</pre></div>
+<p>上面的代码来自<a href="http://underscorejs.org/##debounce">underscore</a><br>这样被<code>debounce</code>处理之后的lazyLayout有什么效果呢？</p>
+<p>这是underscore中debounce的原型</p>
+<div class="highlight"><pre><span class="nx">_</span><span class="p">.</span><span class="nx">debounce</span><span class="p">(</span><span class="kd">function</span><span class="p">,</span> <span class="nx">wait</span><span class="p">,</span> <span class="p">[</span><span class="nx">immediate</span><span class="p">])</span>
+</pre></div>
+<p>有三个参数：</p>
+<ul>
+<li>function —— 需要被处理的函数</li>
+<li>wait —— 等待时间，也就是说，在函数第一次触发之后，会有<code>wait</code>这么长的一个等待时间，这段时间里，所有对「被debounce过的函数」的调用，全部被丢弃。通俗一点说，你点击一次按钮之后，不论再快速的点多少次按钮，我都只当一次处理，直到你停下来，wait一段时间过后再点击，那才算第二次生效。</li>
+<li>[immediate] —— 这是一个很有趣的参数，默认是undefined也就是false，可以设置为true。当为false时，是当计时器计时结束后，执行函数，实际效果就是：你不停的点击，我不管你，当你停下来了，我再重新开始计时，过了设定的时间后，函数被执行;而设置为true时，就是计时器开始计时，就执行函数，之后无论你再怎么疯狂点击，我也不理你了。</li>
+</ul>
+<p>怎么样，是不是很简单实用？有了这个处理之后，就再也不怕有人误点击，或者疯狂点击按钮提交表单了。  </p>
+<p>下面是一个deboucne的演示，顺带还有个throttle对比，你可以不管：<br><a href="http://jsfiddle.net/amyseqmedia/dD99u/37/">Underscore.js throttle vs debounce example - jsFiddle</a></p>
+<p>那么这么好的方法，是如何实现呢？其实很简单，就是一个计时器，在计时器结束之前，如果发现新的点击（也就是函数调用）请求，将其丢弃，重置计时器。直到计时器结束后，执行函数(immediate为false);或者第一次点击之后，立即调用函数，同时启动计时器，再计时器结束之前，收到新的函数调用请求，丢弃，重置计时器(immediate为true)。下面是underscore的具体实现,我加了一点注释，方便理解：</p>
+<div class="highlight"><pre><span class="nx">_</span><span class="p">.</span><span class="nx">debounce</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">func</span><span class="p">,</span> <span class="nx">wait</span><span class="p">,</span> <span class="nx">immediate</span><span class="p">)</span> <span class="p">{</span>
+    <span class="kd">var</span> <span class="nx">result</span><span class="p">;</span>  <span class="c1">// 用户函数调用返回值</span>
+    <span class="kd">var</span> <span class="nx">timeout</span> <span class="o">=</span> <span class="kc">null</span><span class="p">;</span>  <span class="c1">// 初始化计时器 因为会被返回的闭包引用，所以会保持，不会被GC。有关Javascript中的GC，可以参考[Javascript中的垃圾回收机制](http://blog.xiaoba.me/garbage-collection-in-javascript.html)</span>
+    <span class="k">return</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>  <span class="c1">// 返回被处理的函数</span>
+      <span class="kd">var</span> <span class="nx">context</span> <span class="o">=</span> <span class="k">this</span><span class="p">,</span> <span class="nx">args</span> <span class="o">=</span> <span class="nx">arguments</span><span class="p">;</span>  <span class="c1">// 保存现场</span>
+      <span class="kd">var</span> <span class="nx">later</span> <span class="o">=</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>  <span class="c1">// 传给计时器，以便结束时候可以调用</span>
+        <span class="c1">// 计时器结束之后，会进入这里</span>
+        <span class="nx">timeout</span> <span class="o">=</span> <span class="kc">null</span><span class="p">;</span>  <span class="c1">// 计时结束，重置计时器，以便处理下一次请求</span>
+        <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">immediate</span><span class="p">)</span> <span class="nx">result</span> <span class="o">=</span> <span class="nx">func</span><span class="p">.</span><span class="nx">apply</span><span class="p">(</span><span class="nx">context</span><span class="p">,</span> <span class="nx">args</span><span class="p">);</span>  <span class="c1">// immediate为false的话，在这里执行函数</span>
+      <span class="p">};</span>
+      <span class="kd">var</span> <span class="nx">callNow</span> <span class="o">=</span> <span class="nx">immediate</span> <span class="o">&amp;&amp;</span> <span class="o">!</span><span class="nx">timeout</span><span class="p">;</span>  <span class="c1">// 根据immediate和计时器是否结束来判断是否到了调用函数的时机。 注意这里还没有启动计时器，也就是如果设置了immediate为true，那么callNow就是true</span>
+      <span class="nx">clearTimeout</span><span class="p">(</span><span class="nx">timeout</span><span class="p">);</span>  <span class="c1">// 这里！ 上面的都是一些变量的声明和赋值，这里开始到了关键，每一次调用请求，执行到这里都会重置计时器，不论immediate是true还是false</span>
+      <span class="nx">timeout</span> <span class="o">=</span> <span class="nx">setTimeout</span><span class="p">(</span><span class="nx">later</span><span class="p">,</span> <span class="nx">wait</span><span class="p">);</span>  <span class="c1">// 然后再这里重新开始计时</span>
+      <span class="k">if</span> <span class="p">(</span><span class="nx">callNow</span><span class="p">)</span> <span class="nx">result</span> <span class="o">=</span> <span class="nx">func</span><span class="p">.</span><span class="nx">apply</span><span class="p">(</span><span class="nx">context</span><span class="p">,</span> <span class="nx">args</span><span class="p">);</span>  <span class="c1">// 注意这里的callNow，是上面赋值的。如果有设置了immediate，那么立即执行函数;如果immediate为false，那么就等上面的计时器结束，执行later</span>
+      <span class="k">return</span> <span class="nx">result</span><span class="p">;</span>  <span class="c1">// 返回结果</span>
+    <span class="p">};</span>
+  <span class="p">};</span>
+</pre></div>
+<h2>4.Where —— 哪里用到debounce？</h2>
+<p>如上所述，一些类似表单提交，比如下订单，评论，等等有点击事件的地方，都可以用到～</p>
+<p><em>以上大部分是个人理解，如有错误，请不吝指出^_^</em></p>
+ ]]>
+        </content>
+    </entry>
+    
+    <entry>
+        <title type="html"><![CDATA[水很脏，]]></title>
+        <author><name>ibigbug</name><uri>http://blog.xiaoba.me</uri></author>
+        <link href="http://blog.xiaoba.me/2013/5/17/dev-null.mkd.html"/>
+        <published>2013-05-17T15:35:31Z</published>
+        <id>http://blog.xiaoba.me/2013/5/17/dev-null.mkd.html</id>
+        <content type="html" xml:base="http://blog.xiaoba.me" xml:lang="en">
+            <![CDATA[ <blockquote><p>水很脏，喝了不会死，不喝会渴死</p>
+
+</blockquote><p>首先要感谢循环系统</p>
+<p>还维持着我组织液的成分</p>
+<p>身体里面到处流着的不完全是脏水</p>
+<p>昨天看了一场球赛</p>
+<p>很小的一场</p>
+<p>但是看得很投入</p>
+<p>因为我的两位好朋友各自支持一边，是非常好的朋友</p>
+<p>所以我也去看</p>
+<p>队员的表现最精彩</p>
+<p>不算裁判的话，啦啦队排第二</p>
+<p>不管结果如何，这场比赛是一场享受</p>
+<p>雨水，汗水，泪水</p>
+<p>结局圆满</p>
+<p>不过支持的球队输掉比赛的朋友赛后来跟我抱怨，裁判真鸡巴傻逼，裁判黑哨，裁判还有很多莫名其妙</p>
+<p>我说是啊，真鸡巴傻逼</p>
+<p>而赢了球赛的朋友跑过来跟我说，我操，真是鸡巴吓尿了，还好前面落后的比分给追了回来</p>
+<p>我说是啊，真鸡巴吓尿了</p>
+<p>其实根据往年情况，比赛结果提前可以大概猜出的</p>
+<p>两位朋友也都知道</p>
+<p>但是他们同时都很激动，用了绝对不止一个「鸡巴」来表达激动之情</p>
+<p>如果你去看了，并且你也喜欢用生殖器官表达感情，那么你可以要记得数一下要多少生殖器才够用来发泄当时的情绪</p>
+<p>后来我想，要是我两个朋友把赛后对比赛的看法互相沟通一下，他们会不会送给对方一个「傻逼」的标签</p>
+<p>不过应该不会的，因为他们都是文明人</p>
+<p>好在他们也确实都不知道对方在想什么</p>
+<p>恰恰可笑的也是一样</p>
+<p>就好像我一边写一边自我意识膨胀</p>
+<p>你一边看一边捧腹大笑傻逼</p>
+<p>又好像戴口罩的人觉得口罩的作用是防止吸入可吸入颗粒物</p>
+<p>而看戴口罩的人却有可能觉得戴口罩防的是别人看到脸上的「我是傻逼」这两个字和两个**</p>
+<p>戴口罩的人不知道看的人在想什么，然而他们也确实没有因为中了可吸入颗粒物的毒而死掉</p>
+<p>而不戴口罩的人运气也不差，也没有中毒死掉</p>
+<p>他们都活在同一个世界，也可能有同一个中国梦想，甚至同父异母亲兄弟</p>
+<p>但是至少有两点不同，他们对口罩的理解，和对「傻逼」的定义</p>
+<p>不戴口罩的没有把别个的口罩扯开，冲他大喊蠢货</p>
+<p>戴口罩的也说不定在心里庆幸，还好我戴了口罩，你看，昨天不是有个没戴口罩的人出了车祸</p>
+<p>晚上看到了一条新浪微博</p>
+<blockquote><p>你觉得很match， 对方却refuse， without response，所以还是写代码。</p>
+
+</blockquote><p>所以代码的世界很pure，你用了 <code>=</code> 绝对得不到你想要的 <code>==</code> 的效果，虽然他们看起来很像很match。</p>
+<p>如果没有ack就永远不会有established，因为恋爱并不是UDP</p>
+<p>话又说回到喝水上面来，农夫山泉运出产地之后有人就不太敢喝，因为记者们都说可能不安全</p>
+<p>我也很少喝农夫山泉，因为并没有一点点甜的感觉，我不能容忍受到欺骗</p>
+<p>安不安全我倒无所谓了，因为他看起来并不脏，当然这一点我也不敢保证，因为毕竟还要等专家出面，记者报道</p>
+<p>不过有一点我可以肯定，比农夫山泉脏的东西有很多，而且往往也确实比农夫山泉的「有点甜」不知道甜多少</p>
+<p>因为是甜的，贪婪的享受着，渐渐也就忘了脏</p>
+<p>最后我建议大家出门最好戴上口罩，因为最近空气质量确实不好，毕竟，世界很美好，活着最重要</p>
+ ]]>
+        </content>
+    </entry>
+    
+    <entry>
+        <title type="html"><![CDATA[Javascript中的垃圾回收机制]]></title>
+        <author><name>ibigbug</name><uri>http://blog.xiaoba.me</uri></author>
+        <link href="http://blog.xiaoba.me/2013/5/7/garbage-collection-in-javascript.mkd.html"/>
+        <published>2013-05-07T15:35:31Z</published>
+        <id>http://blog.xiaoba.me/2013/5/7/garbage-collection-in-javascript.mkd.html</id>
+        <content type="html" xml:base="http://blog.xiaoba.me" xml:lang="en">
+            <![CDATA[ <h1>Javascript 中的内存管理</h1>
+<p>译自MDN，<a href="https://developer.mozilla.org/en-US/docs/JavaScript/Memory_Management">Memory Management</a></p>
+<h2>简介</h2>
+<p>在底层语言中，比如C，有专门的内存管理机制，比如<code>malloc()</code> 和 <code>free()</code>。而Javascript是有垃圾回收（<em>garbage collection</em>）机制的，也就是说JS解释器会自动分配和回收内存。这样就有人觉得，我用的是高级语言，就不用关心内存管理了，其实这是不对的。</p>
+<h2>内存的生命周期</h2>
+<p>尽管语言不尽相同，而每种语言中内存的生命周期都是相似的:</p>
+<ol>
+<li><p>当需要的时候分配内存</p>
+</li>
+<li><p>对内存进行读写操作</p>
+</li>
+<li><p>当上面分配的内存不再需要的时候，将他们释放掉</p>
+</li>
+</ol>
+<p>对于1,2两步，几乎所有语言操作起来都是明确地或者说很直观，没什么好说的。而在像Javascript一样的高级语言中，第三步操作就显得不那么直观。</p>
+<h2>Javascript中分配内存空间</h2>
+<h3>变量初始化</h3>
+<p>当变量初始化的时候，Javascript会自动分配相应的内存空间（注：这里MDN上关于这里用的是<code>Value initialization</code>，到底是声明，还是在赋值时候分配空间，还要再学习一下）</p>
+<div class="highlight"><pre><span class="kd">var</span> <span class="nx">n</span> <span class="o">=</span> <span class="mi">123</span><span class="p">;</span> <span class="c1">//  为数字分配空间</span>
+<span class="kd">var</span> <span class="nx">s</span> <span class="o">=</span> <span class="s2">&quot;azerty&quot;</span><span class="p">;</span> <span class="c1">// 字符串</span>
+
+<span class="kd">var</span> <span class="nx">o</span> <span class="o">=</span> <span class="p">{</span>
+  <span class="nx">a</span><span class="o">:</span> <span class="mi">1</span><span class="p">,</span>
+  <span class="nx">b</span><span class="o">:</span> <span class="kc">null</span>
+<span class="p">};</span> <span class="c1">// 为对象和它包含的属性分配内存空间</span>
+
+<span class="kd">var</span> <span class="nx">a</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="kc">null</span><span class="p">,</span> <span class="s2">&quot;abra&quot;</span><span class="p">];</span> <span class="c1">// （类似对象）给数组和它里面的元素分配空间</span>
+
+<span class="kd">function</span> <span class="nx">f</span><span class="p">(</span><span class="nx">a</span><span class="p">){</span>
+  <span class="k">return</span> <span class="nx">a</span> <span class="o">+</span> <span class="mi">2</span><span class="p">;</span>
+<span class="p">}</span> <span class="c1">// 为函数分配空间</span>
+
+<span class="c1">//  函数有时也会为分配对象空间</span>
+<span class="nx">someElement</span><span class="p">.</span><span class="nx">addEventListener</span><span class="p">(</span><span class="s1">&#39;click&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(){</span>
+  <span class="nx">someElement</span><span class="p">.</span><span class="nx">style</span><span class="p">.</span><span class="nx">backgroundColor</span> <span class="o">=</span> <span class="s1">&#39;blue&#39;</span><span class="p">;</span> <span class="c1">//个人补充，未考证，这里会为someElement分配空间，如注释所说，为对象分配空间</span>
+<span class="p">},</span> <span class="kc">false</span><span class="p">);</span>
+</pre></div>
+<h3>函数调用时候分配空间</h3>
+<p>有的函数调用，会产生上面说的那种 为对象分配空间</p>
+<div class="highlight"><pre><span class="kd">var</span> <span class="nx">d</span> <span class="o">=</span> <span class="k">new</span> <span class="nb">Date</span><span class="p">();</span>
+<span class="kd">var</span> <span class="nx">e</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">createElement</span><span class="p">(</span><span class="s1">&#39;div&#39;</span><span class="p">);</span> <span class="c1">// allocates an DOM element</span>
+</pre></div>
+<p>还有下面这种</p>
+<div class="highlight"><pre><span class="kd">var</span> <span class="nx">s</span> <span class="o">=</span> <span class="s2">&quot;azerty&quot;</span><span class="p">;</span>
+<span class="kd">var</span> <span class="nx">s2</span> <span class="o">=</span> <span class="nx">s</span><span class="p">.</span><span class="nx">substr</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">3</span><span class="p">);</span> <span class="c1">// s2 is a new string</span>
+<span class="c1">// 由于Javascript中字符串是不可变的，所以Javascript也许并没有为s2中的字符串分配新空间，而是只存了[0, 3]的区间（用来索引）</span>
+
+<span class="kd">var</span> <span class="nx">a</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;ouais ouais&quot;</span><span class="p">,</span> <span class="s2">&quot;nan nan&quot;</span><span class="p">];</span>
+<span class="kd">var</span> <span class="nx">a2</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;generation&quot;</span><span class="p">,</span> <span class="s2">&quot;nan nan&quot;</span><span class="p">];</span>
+<span class="kd">var</span> <span class="nx">a3</span> <span class="o">=</span> <span class="nx">a</span><span class="p">.</span><span class="nx">concat</span><span class="p">(</span><span class="nx">a2</span><span class="p">);</span> <span class="c1">// 新的空间来存储数组a3</span>
+</pre></div>
+<h2>操作变量值</h2>
+<p>没什么好说的，读、写、函数调用。</p>
+<h2>内存不再被使用时，将它们释放掉</h2>
+<p>许多内存管理机制的问题都出现在这里。最麻烦的问题是确认“这块内存空间已经不需要了”。这往往需要程序员告知，这个程序中，这块内存已经不需要了，你们回收吧。</p>
+<p>而高级语言解释器中嵌入了一个叫做“垃圾回收（garbage collector）”的工具，用来跟踪内存分配和使用情况，以便在它们不需要的时候将其自动回收。然而有个问题，一块内存空间是不是还有用，是<a href="http://en.wikipedia.org/wiki/Decidability_%28logic%29">具有不确定性的</a>，也就是说，这个是没法用算法精确算出来的。</p>
+<h1>垃圾回收</h1>
+<p>如上所述原因，垃圾回收机制采取了一种有限的解决方案来处理上面的<em>不确定性</em>问题。下面介绍集中垃圾回收算法的思想以及相应的局限:</p>
+<h2>引用</h2>
+<p>这种方法，用到了一种<em>引用</em>的思想。当a能访问A时，就说A<em>引用</em>了a（不论是直接还是间接的）。比如，一个Javascript对象会<em>引用</em>他的原型（间接引用）和它的各个属性（直接引用）。</p>
+<p>这种情形下，对象就被扩展的更广义了，在原生对象的基础上，还包含了函数的作用域链（或者全局的词法作用域）。</p>
+<h2>引用计数</h2>
+<p>这种方法是最拿衣服（naive）的垃圾回收算法。它把“可以回收”的标准定义为“没有其他人引用这个对象”（原文：This algorithm reduces the definition of "an object is not needed anymore" to "an object has no other object referencing to it"）。也就是说，<em>只有</em>当对象没有被引用的时候，才会被当作垃圾回收掉。</p>
+<h3>举个栗子</h3>
+<div class="highlight"><pre><span class="kd">var</span> <span class="nx">o</span> <span class="o">=</span> <span class="p">{</span> <span class="c1">// 称之为外层对象</span>
+  <span class="nx">a</span><span class="o">:</span> <span class="p">{</span> <span class="c1">//称之为内层对象</span>
+    <span class="nx">b</span><span class="o">:</span><span class="mi">2</span>
+  <span class="p">}</span>
+<span class="p">};</span> <span class="c1">//  创建了两个对象 内层对象作为外层对象的属性而被引用</span>
+<span class="c1">// 而外层对象被变量o引用</span>
+<span class="c1">// 显然，没有人会被垃圾回收</span>
+
+
+<span class="kd">var</span> <span class="nx">o2</span> <span class="o">=</span> <span class="nx">o</span><span class="p">;</span> <span class="c1">// o2也引用了上面说的外层对象。好现在外层对象的引用计数为‘2’ (被o和o2引用)</span>
+<span class="nx">o</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span> <span class="c1">//  现在o不再引用外层对象，只有o2在引用，引用计数为 ‘1’</span>
+
+<span class="kd">var</span> <span class="nx">oa</span> <span class="o">=</span> <span class="nx">o2</span><span class="p">.</span><span class="nx">a</span><span class="p">;</span> <span class="c1">// oa 引用内层对象</span>
+<span class="c1">//  现在内层对象同时被作为外层对象的属性引用和被oa引用，引用计数为‘2’</span>
+
+<span class="nx">o2</span> <span class="o">=</span> <span class="s2">&quot;yo&quot;</span><span class="p">;</span> <span class="c1">//  好，现在o2也不引用外层对象了，外层对象引用计数为“0”</span>
+<span class="c1">// 意味着外层对象可以被“垃圾回收”了</span>
+<span class="c1">// 然而，内层对象还被oa引用着，因此还是没有被回收 （个人注释：这里有一点闭包的意味）</span>
+
+<span class="nx">oa</span> <span class="o">=</span> <span class="kc">null</span><span class="p">;</span> <span class="c1">//  现在oa不引用内层对象了</span>
+<span class="c1">// 内层对象也被垃圾回收</span>
+</pre></div>
+<h3>局限：循环引用</h3>
+<p>看下面代码：</p>
+<div class="highlight"><pre><span class="kd">function</span> <span class="nx">f</span><span class="p">(){</span>
+  <span class="kd">var</span> <span class="nx">o</span> <span class="o">=</span> <span class="p">{};</span>
+  <span class="kd">var</span> <span class="nx">o2</span> <span class="o">=</span> <span class="p">{};</span>
+  <span class="nx">o</span><span class="p">.</span><span class="nx">a</span> <span class="o">=</span> <span class="nx">o2</span><span class="p">;</span> <span class="c1">// o 引用 o2</span>
+  <span class="nx">o2</span><span class="p">.</span><span class="nx">a</span> <span class="o">=</span> <span class="nx">o</span><span class="p">;</span> <span class="c1">// o2 引用 o</span>
+
+  <span class="k">return</span> <span class="s2">&quot;azerty&quot;</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="nx">f</span><span class="p">();</span>
+<span class="c1">// o o2两个对象构成了循环引用 </span>
+<span class="c1">// 当函数执行完毕的时候，他们就被关在了f的作用域里面，没有外面的人可以使用他们</span>
+<span class="c1">// 所以按理说，他们已经没有存在价值了，需要被垃圾回收，释放内存</span>
+<span class="c1">// 然而，他们的引用计数都不为“0”</span>
+<span class="c1">// 所以在这种引用计数的机制下，他们没有被回收</span>
+</pre></div>
+<h3>实际例子</h3>
+<p>在IE6,7版本的浏览器中，就是使用的引用计数机制。因此，下面的代码在IE6,7中可以稳稳地发生内存泄漏</p>
+<div class="highlight"><pre><span class="kd">var</span> <span class="nx">div</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">createElement</span><span class="p">(</span><span class="s2">&quot;div&quot;</span><span class="p">);</span>
+<span class="nx">div</span><span class="p">.</span><span class="nx">onclick</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(){</span>
+  <span class="nx">doSomething</span><span class="p">();</span>
+<span class="p">};</span> <span class="c1">// div的onclick属性，会引用 function</span>
+<span class="c1">// 然而这个 function 反过来又引用了这个div，因为div在handler的作用域里面。</span>
+<span class="c1">// 造成上述循环引用，导致内存泄漏。</span>
+</pre></div>
+<h2>标记清除算法</h2>
+<p>这种算法把“可以回收”定义成“对象不可达”，即访问不到。</p>
+<p>这种算法，会定义一个“根”，并且定期地从“根”出发，找出“根”下面的所有对象，看能不能从“根”找到一条路径引用到这个对象。从不同的“根”出发，垃圾回收程序就可以区分所有对象是不是“不可达”的，当对象“不可达”时候，便被回收。</p>
+<p>这种算法比引用计数算法要好些。因为 “一个对象的引用计数是0”可以推出“这个对象不可达”，逆命题则为假。也就是说这种算法扩充了垃圾回收的范围。</p>
+<h3>循环引用不再是困扰</h3>
+<p>在上面的循环引用例子中，当函数返回时，o 和 o2都已经不再被任何人引用，也就是“不可达”了，便顺理成章地被垃圾回收掉了。</p>
+<h3>局限：对象需要明确的“不可达”</h3>
+<p>虽然说是局限，然而这种情况在实际当中很少发生，因此很少有人关注这一点。</p>
+<p>原文：</p>
+<blockquote><p>Although this is marked as a limitation, it is one that is rarely reached in practice which is why no one usually cares that much about garbage collection.</p>
+
+</blockquote><p>受英语水平限制，这一点没太理解，还是把原文搬过来好了。</p>
+<h1>参考</h1>
+<ul>
+<li><a href="http://www.ibm.com/developerworks/web/library/wa-memleak/">IBM article on "Memory leak patterns in JavaScript" (2007)</a></li>
+<li><a href="http://msdn.microsoft.com/en-us/magazine/ff728624.aspx">Kangax article on how to register event handler and avoid memory leaks (2010)</a></li>
+</ul>
+<h1>说明</h1>
+<p>以上大部分文字来自<a href="https://developer.mozilla.org/en-US/docs/JavaScript/Memory_Management">Memory Management</a>。尽量在保证不出错的前提下，加上了一些个人的注释和理解。虽然被MDN标注了 <code>This article is in need of a technical review.</code>，但是对于理解垃圾回收还是有一点帮助的吧。</p>
+ ]]>
+        </content>
+    </entry>
+    
+    <entry>
+        <title type="html"><![CDATA[Ath9k驱动在Arch中无法连接无线网的问题]]></title>
+        <author><name>ibigbug</name><uri>http://blog.xiaoba.me</uri></author>
+        <link href="http://blog.xiaoba.me/2013/4/11/ath9k-under-archlinux.mkd.html"/>
+        <published>2013-04-11T15:35:31Z</published>
+        <id>http://blog.xiaoba.me/2013/4/11/ath9k-under-archlinux.mkd.html</id>
+        <content type="html" xml:base="http://blog.xiaoba.me" xml:lang="en">
+            <![CDATA[ <p>自从弄好了校园网无线共享之后发现Arch的无线网络有问题，莫名其妙各种连不上，各种iw的命令放上去都是<code>Invalid argument</code>，真是郁闷= =</p>
+<p>为什么这么确定是Arch问题呢，因为手机和Windows都没问题= =。</p>
+<p>折腾了两天，算是把问题解决了。</p>
+<p>最开始以为是更新内核之后驱动有问题，于是自己编译了Arch Wiki里面提到的<code>compat-wireless</code>。果不其然，现在可以操作无线网卡了！但是还是连不上网。</p>
+<p>继续翻手册，上面提到wicd可能造成无线不稳定，卸载之，不成。</p>
+<p>手册又提到了把无线网卡的电源管理关掉，也没有解决。</p>
+<p>不过此时虽然无线不能用，有线依然可以用得好好的啊。凑合着用了一下午的有线，但心里还是不爽。</p>
+<p>直到刚刚才想起可以用<code>dmesg</code>的，里面的相关记录的是<code>ctrl-event-disconnected reason=0</code>，放进去Google，好像好多人有这个问题。这下放心了肯定可以解决了。</p>
+<p>最终参考<a href="https://bbs.archlinux.org/viewtopic.php?id=137643">这个帖子</a>中一位老兄的办法：</p>
+<blockquote><p># sudo modprobe -rf ath9k<br># sudo modprobe -v ath9k nohwcrypt=1<br># sudo service network-manager restart # or wicd or whatever  </p>
+<h4>If it works, make it permanent:</h4>
+<p># echo "options ath9k nohwcrypt=1" | sudo tee /etc/modprobe.d/ath9k.conf  </p>
+
+</blockquote><p>至此，Ath9k驱动在Arch中无法连接无线网的问题已经解决了。</p>
+<p>好了，终于可以连上路由器了！激动！</p>
+<p>但是更令人激动的是虽然连上路由了但是竟然他妈的不能浏览网页！！更有甚者！！连路由都Ping不通！好吧我承认高兴太早了、、</p>
+<p>再dmesg，发现是一个跟IPv6有关的错误，猜想是openwrt的IPv6没有配置好的问题吧，于是先<a href="https://wiki.archlinux.org/index.php/IPv6#Disable_IPv6">把无线网卡的IPv6干掉</a>，现在已经可以正常使用无线网了。</p>
+<p>不过话说今天打球的时候崴脚了好他妈疼啊啊啊啊！高中毕业之后就没有崴脚过的印象了，没想到时隔多年竟然又遇到了好不爽啊、、疼的连路都不想走啊、、不过晚饭的时候部长帮我带了吃的，好幸福、</p>
+ ]]>
+        </content>
+    </entry>
+    
+    <entry>
+        <title type="html"><![CDATA[用Python生成特定频率的波形文件]]></title>
+        <author><name>ibigbug</name><uri>http://blog.xiaoba.me</uri></author>
+        <link href="http://blog.xiaoba.me/2013/3/23/generate-simple-wave.mkd.html"/>
+        <published>2013-03-23T15:35:31Z</published>
+        <id>http://blog.xiaoba.me/2013/3/23/generate-simple-wave.mkd.html</id>
+        <content type="html" xml:base="http://blog.xiaoba.me" xml:lang="en">
+            <![CDATA[ <p>好久不写流水帐了，这一次的流水帐还是代码笔记。</p>
+<p>最近买了个耳机，不算太好，不过算是比那种10块钱的好用些吧。网上相关文章看了一些，无意间看到一个小工具，可以发出特定频率的声音来测试耳机和人耳对频率的反应。不过遗憾的是没有for Linux版本的。干脆自己学写一个好了。</p>
+<p>起初打算是把某个wav里面特定的频率过滤出来，好歹还学过一点傅里叶变换没有全忘记。要是用一个带通滤波器应该可以撸出来吧。没动手之前以为滤波器会很难写，然而不得不感叹Scipy的强大，什么FIR，IIR都只要直接设定参数便可以直接使用了！这个让我激动了一把，因为当时没有学原理，现在有了<code>scipy.signal</code>就不怕了！可是故事并没有因此而向好的方向发展，wav文件读进来的数据，不知道该怎么把设计好的滤波器应用上去，无论是python内置的wave还是scipy封装的<code>scipy.io.wavefile</code>都没法得到想要的结果，于是这个仅持续了两天的工程还是流产了。唉学艺不精啊！希望有相关经验的朋友能不吝指点一下。</p>
+<p>退而求其次，就有了本文。</p>
+<p>因为有了前面两天的基础，对wave文件有了一定了解，想实现题目讲的就不难了。加上搜资料一共用了10min就做好了。代码放在了<a href="https://gist.github.com/ibigbug/5227390">gist</a>。不过还有个问题就是产生的波形频率不是特别纯，在基波附近又很多的谐波，由于数学学得不好，也暂时不去考虑了，说不定哪一天可以忽然想清楚了呢。</p>
+<p><em>哦对了，测试的时候不要把频率撸的太低或者太高！！！第一是会很难受！！！第二会不会很危险（<a href="http://chinese.engadget.com/2008/12/09/Sonic-Nausea/">看这里不知真假！！！！</a>）！！！</em></p>
+<p>顺便记录一点最近的烦心事吧。感冒！！！！！！每天咳的要死，躺在床上就咳，怕影响室友睡觉，就去外面抽烟，外面又好冷啊，回到床上接着咳，这样折腾一两次就2，3点多了，早晨根本没精力起床TT。。。更别说去图书馆吵其他人了。。。</p>
+<p>看到知乎招聘，想试一试，随便写了50字简历过去没想到不到2个小时就有了回复，又激动了一把。是两道代码题目，一道是应该考状态机，一直没怎么了解过所以难度有点大;另一道是考web开发的，这一个还稍微了解一点。虽然不是专业班子，好赖不及两道题都写出了，还比deadline提前了3天发了回去。结果石沉大海去了。。。再TT。。。</p>
+<p>考研应该考不上吧。。。实习又撸不到。。。第三次TT。。。</p>
+ ]]>
+        </content>
+    </entry>
+    
+    <entry>
+        <title type="html"><![CDATA[Node.js 和 express.js初体验]]></title>
+        <author><name>ibigbug</name><uri>http://blog.xiaoba.me</uri></author>
+        <link href="http://blog.xiaoba.me/2013/1/25/node-and-express.mkd.html"/>
+        <published>2013-01-25T15:35:31Z</published>
+        <id>http://blog.xiaoba.me/2013/1/25/node-and-express.mkd.html</id>
+        <content type="html" xml:base="http://blog.xiaoba.me" xml:lang="en">
+            <![CDATA[ <p>因为前几天有位朋友分手了,要删掉人人网的所有状态.看他在那一条一条点来点去挺麻烦的,何不写个脚本来自动删呢.于是便有了本文.</p>
+<p>其实脚本不难写,因为3g.renren.com的登录验证是不麻烦的.返回的html结构也不复杂,请求过程也都很直白,用python的话应该不是什么难题.可是既然node最近这么火,就正好借机会试一下吧.嘿嘿^^.</p>
+<p>跟复习专业课一样,学一种新的工具流程也都差不多.无非是:</p>
+<ol>
+<li><p>简单google一下,了解个大概(如果要是专业课复习,就是看一遍目录);</p>
+</li>
+<li><p>如果手册有Overview之类的什么东西抄一份(看一遍例题);</p>
+</li>
+<li><p>开始写,过程中多翻手册,如果不赶时间,最后把手册粗略的过一遍,做到对工具支持的特性心中有数(做题,看书,记公式);</p>
+</li>
+<li><p>重复3.</p>
+</li>
+</ol>
+<p>唉写到这里又不免感叹我这个学渣的悲哀TT,可是无论如何,既然生命要继续,我还是要把东西写完.</p>
+<p>Node是什么我就不抄百科了.Express就是Node平台下面的一个web框架.对应起来就像Tornado是Python的一个web框架一样.但又不完全等价:因为Python是一门语言,而Node是一个平台,跑的是喜闻乐见的JavaScript语言,用的Google的V8引擎.</p>
+<p>因为Node是以异步出名的,所以刚开始上手的时候真是有点不习惯.比如从数据库读一个User,然后渲染到前台.如果是在python里面,只要依次执行两个函数就好了.可是到这里,我前台页面都渲染完了,控制台显示User还没读出来(当然是夸张了,不过应该是这个道理).没错,要用回调的方式来解决了.至于具体的解决方案和手册教程,网上的前辈们早已总结好了.随便一搜就搜得到.</p>
+<p>对Node大概有个了解之后,就开始之前提到的那个脚本.这里采用了Express.js+jsdom+request三个库来处理,除了jsdom这个库有memory leak的bug之外,这个bug我要mark一下,因为当时是部署到heroku的,采集状态不一会程序就crash了- =.log里面显示的是定位到jsdom那一行内存不足了(开始完全想不到会是这个库的问题,以为Node的性能好差啊,随便写个类爬虫应用就内存不足),后来网上搜了搜,好多人有同样的问题,就是要在jsdom的任务执行完毕之后用<code>window.close()</code>来关掉对应的env(其实看起来也不算是bug了,使用不得当而已),其他过程都问题不大,按照手册按部就班把这个小应用写了出来.放到了鄙人的<a href="https://github.com/ibigbug/nodetest">github</a>上面了.</p>
+<p>不过还是遗留了一个问题就是:目前的状态采集和处理操作是顺序执行的(这个专业词叫什么来着我给搞忘记了),也就是说目前,在采集的时候,程序是阻塞掉的,不能同时删除.也是网上简单搜了一下,因为node的是异步执行的所以不用多线程的概念还是怎么回事.反正要把采集和处理能够并行执行才好,不知道node在这个问题上一般是怎么处理.改天再研究一下好了.记得好像是可以用setTimeout来避免主线程被阻塞掉的,但是setTimeout的原理看过又给搞忘记了,改天再翻下书好了.</p>
+<p>嗯嗯就这样了要睡觉去了好困啊...</p>
+ ]]>
+        </content>
+    </entry>
+    
+    <entry>
+        <title type="html"><![CDATA[ansys解决平行传输线周围静电场分布]]></title>
+        <author><name>ibigbug</name><uri>http://blog.xiaoba.me</uri></author>
+        <link href="http://blog.xiaoba.me/2012/12/13/ansys.mkd.html"/>
+        <published>2012-12-13T15:35:31Z</published>
+        <id>http://blog.xiaoba.me/2012/12/13/ansys.mkd.html</id>
+        <content type="html" xml:base="http://blog.xiaoba.me" xml:lang="en">
+            <![CDATA[ <p>最近有一门电磁场的实验课要交一份实验报告内容如题.</p>
+<p>由于没有去上课结果不会写.网上搜了几下,发现相关资料挺少的,更别提实例了.于是赶紧从图书馆借了一本ansys的书翻了整整一夜算是应付过去了.</p>
+<p>ansys是一个很强大的工程软件, 具体可以去看百科.这里只记录一些关于用有限元方法来处理电磁场的基本步骤,至于有限元算法本身,我不懂,此文也不涉及.</p>
+<p>大概分为以下几步:</p>
+<ul>
+<li><p>建立有限元模型</p>
+<ol>
+<li><p>建模其实就是应用Point,Line,Area来画出实际模型.这一步不多说.提一点就是ansys的大部分操作都提供两种实现方式:GUI操作或者命令行操作.由于GUI操作需要不停的点来点去,所以我个人比较倾向于直接打命令来操作.</p>
+</li>
+<li><p>之后定义单元类型,材料属性.这一步是告诉ansys你创建的是什么模型.</p>
+</li>
+<li><p>之后剖分模型:就是把模型分成若干个小格子(也就是有限元算法的实质).</p>
+</li>
+</ol>
+</li>
+<li><p>加载(载荷)和求解</p>
+<p>  载荷不多说,就是加上相应参数.这个例子里面就是告诉ansys每根导线电势多少,边界电势多少,等等.</p>
+</li>
+<li><p>后处理</p>
+<p>  当ansys按照上面的模型,载荷,计算出结果之后.提供了很多后处理方法,这个例子就用到了绘制电场云图,电位云图等功能.</p>
+</li>
+</ul>
+<p>以上是我对Ansys处理电磁学问题的关键步骤的入门级理解,记录下来希望与大家一起交流.有错误的地方希望各位及时指点,也希望能给像我一样刚入门ansys的新手提供一点思路,至于具体的实现可以参考相关书目或者查看ansys手册.</p>
+<p>PS:如果<code>/filname, filename, key</code>的最后一个参数是1的话,ansys是会用一个log的文本文件记录下每一步操作的,本来想把我的log贴出来不过发现不小心给搞丢了就算了吧.</p>
  ]]>
         </content>
     </entry>
@@ -1208,7 +983,7 @@
         <title type="html"><![CDATA[A Byte of WSGI]]></title>
         <author><name>ibigbug</name><uri>http://blog.xiaoba.me</uri></author>
         <link href="http://blog.xiaoba.me/2012/12/7/wsgi.mkd.html"/>
-        <published>2012-12-07T11:10:54Z</published>
+        <published>2012-12-07T15:35:31Z</published>
         <id>http://blog.xiaoba.me/2012/12/7/wsgi.mkd.html</id>
         <content type="html" xml:base="http://blog.xiaoba.me" xml:lang="en">
             <![CDATA[ <p>If you have ever used some python frameworks like <em>tornado</em>, <em>flask</em>, you may hear about WSGI. But what's this?</p>
@@ -1239,6 +1014,231 @@
 </pre></div>
 <p>Both app and server above are WSGI compliant and the two function just explain how the python frameworks work.</p>
 <p>If you want to dive into WSGI, go to <a href="http://www.python.org/dev/peps/pep-3333/#the-start-response-callable">PEP3333</a> :).</p>
+ ]]>
+        </content>
+    </entry>
+    
+    <entry>
+        <title type="html"><![CDATA[Run Custom Scripts on boot under Systemd]]></title>
+        <author><name>ibigbug</name><uri>http://blog.xiaoba.me</uri></author>
+        <link href="http://blog.xiaoba.me/2012/11/9/run_script_on_boot_under_systemd.mkd.html"/>
+        <published>2012-11-09T15:35:31Z</published>
+        <id>http://blog.xiaoba.me/2012/11/9/run_script_on_boot_under_systemd.mkd.html</id>
+        <content type="html" xml:base="http://blog.xiaoba.me" xml:lang="en">
+            <![CDATA[ <p>As archlinux has replaced <em>initscripts</em> with <em>systemd</em> as default init system and <a href="https://www.archlinux.org/news/end-of-initscripts-support/">will start removing initscripts suppport</a>, I use systemd now.</p>
+<p>To be different from <em>initscripts</em>, <em>rc scripts</em> are no longer available. However it's complicated to write a very  <em>.service</em> boot script for each program. So solusion like this may be useful:</p>
+<ol>
+<li><p>Create a systemd-service-script which start a normal script and run it on boot.</p>
+</li>
+<li><p>You can execute any command via the script mentioned in step 1.</p>
+</li>
+</ol>
+<p>In fact we are emulating the <em>rc.local</em> script which only works under <em>initscripts</em>.</p>
+<p>The demo may look like this:</p>
+<h4>custom.service:</h4>
+<div class="highlight"><pre><span class="p">[</span><span class="nx">Unit</span><span class="p">]</span>
+<span class="nx">Description</span><span class="o">=</span><span class="nx">Custom</span> <span class="nx">startup</span><span class="o">-</span><span class="nx">scripts</span>
+
+<span class="p">[</span><span class="nx">Service</span><span class="p">]</span>
+<span class="nx">ExecStart</span><span class="o">=</span><span class="err">/usr/bin/systemd_scripts_on_boot</span>
+
+<span class="p">[</span><span class="nx">Install</span><span class="p">]</span>
+<span class="nx">WantedBy</span><span class="o">=</span><span class="nx">multi</span><span class="o">-</span><span class="nx">user</span><span class="p">.</span><span class="nx">target</span>
+</pre></div>
+<h4>systemd_scripts_on_boot:</h4>
+<div class="highlight"><pre><span class="err">#</span><span class="o">!</span><span class="err">/bin/bash</span>
+
+<span class="nx">EXECUTE</span> <span class="nx">YOUR</span> <span class="nx">CUSTOM</span> <span class="nx">SCRIPT</span> <span class="nx">YOU</span> <span class="nx">WANT</span> <span class="nx">TO</span> <span class="nx">RUN</span> <span class="nx">ON</span> <span class="nx">STARTUP</span>
+</pre></div>
+<p>I'm a newbie on linux, systemd and English. Please let me know if any bugs ^^</p>
+ ]]>
+        </content>
+    </entry>
+    
+    <entry>
+        <title type="html"><![CDATA[arch试用手记]]></title>
+        <author><name>ibigbug</name><uri>http://blog.xiaoba.me</uri></author>
+        <link href="http://blog.xiaoba.me/2012/10/21/first-byte-of-arch.mkd.html"/>
+        <published>2012-10-21T15:35:31Z</published>
+        <id>http://blog.xiaoba.me/2012/10/21/first-byte-of-arch.mkd.html</id>
+        <content type="html" xml:base="http://blog.xiaoba.me" xml:lang="en">
+            <![CDATA[ <p>前段时间装了Arch，用了大概一周多了吧。</p>
+<p>从接触linux到现在大概也算是有几年时间了，之前一直在用ubuntu，其间也尝试过cent啊，arch啊，gentoo啊，但都没有持久。因为受到了windows的影响吧。是从ubuntu里面慢慢熟悉了linux，才逐渐拜托了对windows的依赖（话说ubuntu可真是windows用户通向linux的一根非常平滑的管道）。</p>
+<p>记得第一次装arch的时候内心是有一种恐惧感的，虽然当时还有安装脚本。现在的安装步骤看起来变得繁琐了，不过我更喜欢现在的安装过程，因为既不像gentoo那样费时费力，又不像windows或者ubuntu那样简单无脑。其实在安装之前就就对arch有一份好感，正式见面之后便深深的喜欢上了它。还是简单记录一下安装步骤吧。</p>
+<p>我选择的是光盘安装：</p>
+<ol>
+<li><p>######备份</p>
+<p> 这个不用多说吧</p>
+</li>
+<li><p>######制作启动盘</p>
+<p> 下载那个几百兆的iso，刻到光盘就好了。如果没有光驱，也可以写进U盘。顺便抱怨一下我的人品：在windows里面用了N种XXX写入工具做的引导盘都有各种问题不能启动，最后还是被迫装了cgywin用dd写进去的。</p>
+</li>
+<li><p>######安装</p>
+<p> #vi install.txt即可。</p>
+<p> 如果你不知道之后做什么，那么建议你暂时先不要用arch。</p>
+<p> 当你执行arch-chroot的时候，那么恭喜你已经完成了arch的安装。紧接着你可以修改pacman的mirrorlist，选择你网络环境下速度最快的源。</p>
+<p> 接下来还有一些收尾工作。</p>
+</li>
+<li><p>######收尾</p>
+<ul>
+<li><p>安装引导</p>
+<p>  我选的是grub2，因为毕竟熟悉一些。不过有一点，装好了grub之后默认是只能识别arch操作系统的。如果你的硬盘上有windows 7等其他系   统，那么推荐你安装一个叫做os-prober的东西，可以节省手动写配置文件的时间。</p>
+</li>
+<li><p>其他</p>
+<p>  安装完引导之后，你就可以不用引导盘直接启动硬盘上的arch了。至于其他的一些本地化啊、图形啊、声音之类的配置就自由选择了。这里顺便强力推荐一个叫做“下拉式终端”的东西。</p>
+</li>
+</ul>
+</li>
+</ol>
+<p>下面谈一谈接触arch不长时间的感受吧。</p>
+<p>arch是一个容易让人一下子就喜欢上的系统，就像会对某个女孩子一见钟情一样。相比ubuntu，arch显得更清秀朴实，甚至连一个图形界面都没有——不像ubuntu那样集成了许多你需要或者不需要以及连名字都没听过甚至都不知道其存在的一些软件包。就像刚干燥好的的瓷器胚胎一样，可以认你雕刻喜欢的花纹图上你喜欢的颜色。不过这一点对于我这个丝毫没有艺术天分的人来说并不是特别诱人，而arch给我的一种一切从简的理念正好符合我这种有系统洁癖的人的口味。所以点进arch官网最先出现的一句话是</p>
+<blockquote><p>A simple, lightweight distribution</p>
+
+</blockquote><p>正如我一直想追求的：keep is simple，stupid。</p>
+ ]]>
+        </content>
+    </entry>
+    
+    <entry>
+        <title type="html"><![CDATA[大二下]]></title>
+        <author><name>ibigbug</name><uri>http://blog.xiaoba.me</uri></author>
+        <link href="http://blog.xiaoba.me/2012/6/22/grade2-2nd-term.mkd.html"/>
+        <published>2012-06-22T15:35:31Z</published>
+        <id>http://blog.xiaoba.me/2012/6/22/grade2-2nd-term.mkd.html</id>
+        <content type="html" xml:base="http://blog.xiaoba.me" xml:lang="en">
+            <![CDATA[ <p>考完了大二下的最后一门，真是虚成狗了。昨晚看了一晚，趴了1个小时直接去考场——已经不知道第几次通宵复习了。</p>
+<p>交完卷出来，不知道是累还是困还是饿，反正就不是舒服的感觉。估计考研的感觉也就这B样吧，提前适应下子也好。</p>
+<p>绩点持续走低，现在真是只求过不求高分了。只求顺利毕业，爬爬电线杆搬搬变压器，是在不行就回家种韭菜放羊去。</p>
+<p>这学期课不多，但是据说都比较难。不过其实也没那么难。看了一两天几本都能过。当然还要感谢基友们考前给提供的情报，打击的时候精确了一些。就算不用作弊也凑合着能低分飘，知足。</p>
+<p>眼瞅着就大三了，大学就快过完了。学霸是做不成了。高分也基本渐行渐远遥不可及了。多写点代码，多读点书，开开心心跟基友们一起过完大学，顺利毕业。祝保研的被保研，粗国的顺利还不被爆菊，考研的一举成功，其他的都能找到自己喜欢的工作。</p>
+<p>废话一大把，只想记录一下。</p>
+ ]]>
+        </content>
+    </entry>
+    
+    <entry>
+        <title type="html"><![CDATA[轉眼已過好多年]]></title>
+        <author><name>ibigbug</name><uri>http://blog.xiaoba.me</uri></author>
+        <link href="http://blog.xiaoba.me/2012/1/24/memory.mkd.html"/>
+        <published>2012-01-24T15:35:31Z</published>
+        <id>http://blog.xiaoba.me/2012/1/24/memory.mkd.html</id>
+        <content type="html" xml:base="http://blog.xiaoba.me" xml:lang="en">
+            <![CDATA[ <p>這一次高中班聚人數明顯少了許多，不知道下一次，下下次如何。</p>
+<p>畢業了之後，即便是當初最親近的人如軟哥，小黑，還有所有的室友也只能一年見一兩次也就知足了。</p>
+<p>見到了老周，與我腦海中的印象是一樣的，沒有顯得蒼老，依然堆著滿臉笑容。</p>
+<p>只是如今不會再像從前那樣笑裏藏刀──突然間笑容不見接踵而至的是一陣狂風暴雨一般的說教。</p>
+<p>不過他說的很讓人信服，也確實很受用。</p>
+<p>那時候他喜歡說的一些話，依然印象深刻，也被多數高三十五班的同胞們奉為經典語錄吧。</p>
+<blockquote><p>“輕易別惹事，熱了事也不要怕事”</p>
+<p>“ 我的老師是最好的老師”</p>
+<p>“無為便無位”</p>
+<p>“活著最重要”（當然這一句要放在具體語境使用了）</p>
+<p>“本人高三十五班”（同上）</p>
+
+</blockquote><p>竟然多數已經記不起來了，唉。</p>
+<p>只記得當時不論是課間還是在睡覺前，誰都有可能模仿老周的樣子，冒出幾句老周語錄來娛樂一下。</p>
+<p>而他的專業課知識儲備自不必說了，絕對一流響當當。</p>
+<p>作為教師，他以豐富的知識讓人敬佩。</p>
+<p>作為長者，他以過人的智慧讓人更加敬重。</p>
+<p>語文老師一直沒見，對她的記憶也停留在那一張被稱為“鹹豬手”畢業照上了。</p>
+<p>總覺得該找個時間去探望她一下，但是一直沒有機會。</p>
+<p>從小就不喜歡學語文這一科，直到高中。</p>
+<p>那時候語文考的成績很爛，經常不能及格。</p>
+<p>作為她的首席科代表，自然要受到一點“特殊待遇”了。</p>
+<p>于是記得每天有空都會鑽到她的辦公室，去所謂的“額外輔導”。</p>
+<p>其實每次也基本上是做做樣子，實際上就是像與我媽媽聊天那樣，與她聊聊天而已。</p>
+<p>不過不論是平時上課也好，還是小屋子單獨聊天也好，從語文老師那裡也學到了許多比字音字形更有用的東西。</p>
+<p>當時剛好是夏天，還能有額外的“福利”，記得有一次還被她用筆敲過一次我的頭。</p>
+<p>現在想來那時候還真的是比較幼稚啊。</p>
+<p>不過後來學習語文有了興趣而且更加認真倒是真的。</p>
+<p>高考拿了個110幾分，不知道算不算是語文老師的功勞。</p>
+<p>同桌沒見到，是意料之內的。</p>
+<p>但還是在那一天早晨確認了一下她不會去，一陣莫名的小失落啊。</p>
+<p>不過剛剛與同桌聊了很多。</p>
+<p>與那時候一樣，還是囑咐我要少說臟話，少抽煙。</p>
+<p>她問我過得如何，我回答除了學術，其他都好。</p>
+<p>問我要不要考研，我說太累不考，她說我還是這個風格。</p>
+<p>問她畢業如何打算，她答計劃是要考研的，只是考哪一家大學還待定。</p>
+<p>高中時候她就比我有鬥志，現在依然如此。</p>
+<p>哪像我，中學時候就不想著好好讀書，有一點時間就去打球，泡網吧。（由于讀書的城市比較小，好像還不是蠻流行泡酒吧）</p>
+<p>大學了還是一樣，不讀書不看報，經常折騰一些不知道有沒有意義的事情。</p>
+<p>籃球也很少打，因為身體虛的很，技術又很菜，如此循環，已經沒辦法在與別人激烈的身體對抗了。</p>
+<p>大部分時間碼幾段代碼，算是讓時間不至于完全虛度。</p>
+<p>隨心情，去上上課，學一點不知道以後還用不用的上的知識，稍帶把考試給應付過去，通不過考試就比較難看了。</p>
+<p>到了大二稍稍好了一點，開始幹了一點正事。</p>
+<p>書讀了一兩本，不是很會讀，畢竟之前算是沒讀過什麽書，所以做起來還是有一點難度。</p>
+<p>不過凡事都有開始嘛，而且即使書籍沒有改變我的思想，至少可以豐富我的見識。</p>
+<p>不求什麽別的，只求做當下最好的自己。</p>
+<p>話又講多了。。。</p>
+<p>她現在的男友對她很好，而且不講臟話，也不抽煙，只是偶爾會因為打Dota而冷落她。</p>
+<p>見她為此發發小脾氣，抱怨男人不理她也稍稍夾帶這幾分秀恩愛的意思，也挺幸福的。</p>
+<p>少不了跟她講了幾句關于YT，問我為何分開了。</p>
+<p>我覺得分開了就是暫時不能繼續在一起了，一定要問個理由的話，那就是不合適。</p>
+<p>講了幾句沒有講清楚，她也不再追問。</p>
+<p>最後她塞給我這樣一句話：</p>
+<blockquote><p>時間長了，必然沒有太多新鮮感，但平平淡淡才是真，以後有合適的，好好珍惜。</p>
+
+</blockquote><p>雖然她說的挺對，但是我倒不覺得這樣非常好。</p>
+<p>趁大家還年輕還有機會有資本就多折騰幾下，等到折騰不動了，也就容不得再折騰了。</p>
+<p>如果以後到了該婚嫁的年紀，倒是希望可以與同桌一樣的女子一起。</p>
+<p>少算那也是要幾年之後的事情。</p>
+<p>歌詞裏面說，“六十年之後，但願能認得出你的子女。”</p>
+<p>盡管時間會改變我們，若未面目全非，一起找尋昨天的記憶應該也會很美好吧。</p>
+<p>還叫我遇到什麽事，網以後想想。她總是比我想的遠。</p>
+<p>看樣子她是做好與現在的男朋友打持久戰的准備了，我也看好你們。</p>
+<p>還有一點就是她依舊不肯承認對我很好，或者她也就跟本沒有對我很好，又或者是她對誰都那麽好。</p>
+<p>然而，這個已經不重要了。</p>
+<p>不是後記：</p>
+<p>由于最近情緒比較低落（一年前的我一定會用蛋疼來形容的），就寫了這一段既不普通，又不文藝的文字。用來記錄下那一些怕被忘掉的故事。我一直覺得平時我是一個比較二逼的人，沒輕沒重沒心沒肺的。但是改不了的就是這個喜歡蛋疼的習慣。不是放不下，而是不舍得放下。</p>
+ ]]>
+        </content>
+    </entry>
+    
+    <entry>
+        <title type="html"><![CDATA[疯子哥再见]]></title>
+        <author><name>ibigbug</name><uri>http://blog.xiaoba.me</uri></author>
+        <link href="http://blog.xiaoba.me/2012/1/6/andy-say-byebye.mkd.html"/>
+        <published>2012-01-06T15:35:31Z</published>
+        <id>http://blog.xiaoba.me/2012/1/6/andy-say-byebye.mkd.html</id>
+        <content type="html" xml:base="http://blog.xiaoba.me" xml:lang="en">
+            <![CDATA[ <p>疯子哥今天出发了，离开了他热爱的城市，留恋的亲人朋友，乘坐搭载着充满期待和未知的航班，开始一段新的旅程。</p>
+<blockquote><p>“年轻在于折腾”。</p>
+
+</blockquote><p>一切顺利。</p>
+<p>算起来来武大有一年半了，不过与疯子哥一起玩的时间不多，毕竟大我两届，但是可以说他是对我大学生活帮助和影响最大的人之一。</p>
+<p>要是没有认识疯子哥，就没有bayuwei2010–8GE_EB–fkbyw–lovebyw-ibigbug。</p>
+<p>要是没有认识疯子哥，转院到电气的决定说不定还要犹豫一下。</p>
+<p>要是没有认识疯子哥，即使加入了网络部也一定会跟现在有很大的不同。</p>
+<p>疯子哥是我来学校之后认识的第一位学长，第一次在阿里巴见面的时候好紧张好不安啊，以至于都没记住他长什么样，就记住他那看起来蛮Geek的发型，于是理发一直短平快的也想留跟他一样的发型。记得那天刚刚听完校会宣讲就急忙跑去阿里巴，目测还是让一哥跟疯子哥等了好久。当时说的什么也记不大清了，只记得后来加了自强技术中心还是疯子哥给的建议。至于自强对我的意义，那就是另外的故事了。</p>
+<p>大一下学期辗转反侧机缘巧合我来到了电气院，成了疯子哥的直系学弟。虽然心里非常舍不得在物院的兄弟朋友们，但是想到在电气我还认识疯子哥，也就不至于感到那么孤独和无助了。记得当时想急需一位老师的号码，于是想起了疯子哥，果然不一会就拿到了。后来一遇到什么解决不了的麻烦就习惯性的想起了疯子哥，什么电脑坏了啊，实验报告啊，包括后来生活感情问题。都给你添了许多麻烦呢。</p>
+<p>转眼来到电气也有一年时间了。虽然我来网络部时候你已经退休了，但是有困难的时候你依然会毫不保留的伸出援助之手。</p>
+<p>可以说没有crazyandytk，就没有现在的ibigbug。</p>
+<p>不过你走之前没请客= =！等明年毕业典礼时候你回来再见吧。</p>
+<p>再过一年，Daniel也要走了，然后是Sigma，都是一走之后就不知几年还能再见或者再也不见，但是这些记忆我会一生都记住，感谢你们陪我一起走过。夜蚊子应该不会走吧？要是搞网站的话别忘了叫我帮你测试安全漏洞哦。</p>
+<p>看Latitude疯子哥已经不在中国大陆境内了吧，一路保重。</p>
+<p>好好学习~</p>
+<p>天天开心~</p>
+<p>嘻嘻！</p>
+ ]]>
+        </content>
+    </entry>
+    
+    <entry>
+        <title type="html"><![CDATA[梦蝶]]></title>
+        <author><name>ibigbug</name><uri>http://blog.xiaoba.me</uri></author>
+        <link href="http://blog.xiaoba.me/2011/12/4/mengdie-say-byebye.mkd.html"/>
+        <published>2011-12-04T15:35:31Z</published>
+        <id>http://blog.xiaoba.me/2011/12/4/mengdie-say-byebye.mkd.html</id>
+        <content type="html" xml:base="http://blog.xiaoba.me" xml:lang="en">
+            <![CDATA[ <p>在新图自习完毕,听说今晚两个中心总监换届,比平时早一个小时去办公室开部长会,半路一碗炒粉是晚餐.</p>
+<p>来到网站,二会竟然因为拿不到钥匙没开门,于是十几位部长总监挤在小小的办公室里,见证两位总监的离去,当然,还有两位新生代的出现为两大中心注入新鲜的活力.</p>
+<p>第一次听说苏姐姐,还是因为梦蝶.programmers are shy又或者’希捷硬盘’那不堪回首的二三往事啊.那时贺欣怪阿姨还在,我还在物院,一起在物院的仓库里找展架,送她回去的樱花路上她教我’会做事,会装逼,会做PPT’.后来什么都没学会.那时候我只听浣熊的,一心一意在前端写着不能算作页面的页面.</p>
+<p>第一次见认识梦蝶,是属于"我有他人人"那种,头像粉嫩无比啊.后来知道原来周梦蝶–周迪那个带着棒球帽一脸正太相的就是我们的技术总监.</p>
+<p>梦蝶如今轻轻的走了,真的可以说是轻轻的走,在的时候,没听他说过做过什么轰轰烈烈的事情,但是机房刷夜维护服务器的事情他做的绝对不少.虽然不经常写代码,但是毕业墙的首页还是出自你手.临走了,你留下最后一句话:’每个部门自由自己的运行规律,不要给技术太大压力’.不过貌似一直没蹭过你请客吃饭.以后还有机会?</p>
+<p>走了个你,来了BD.</p>
+<p>跟BD渐渐熟悉起来,是去年一起做十大.现在回过头看那时候做的东西是有点好笑啊~没有git,没有需求文档.确硬是把十大做了下来.很怀念那段写自己想写的代码的日子.</p>
+<p>跟BD算是好基友,为什么说’算’呢?因为我们都不搅基.不多说,好基友是啥?就是有事了能在第一时间出现.</p>
+<p>其实跟BD的交情比跟梦蝶更深一点,今天虽然两个中心换届,但是最后只在人人上看到了大家对新闻总监的不舍.让本来就低调的梦蝶的离开显得更加冷清.技术中心的文艺青年门,你们又不出来写点什么,我就抛块砖头,也不指望能激起多少水花.至少梦蝶在技术中心这么久,就这么走了,我是舍不得的.虽然我们的工资你推迟发,虽然我们的经费你报销不及时.但是,我还是尊敬的叫一声梦蝶学长,一个技术青年.再见,走好.</p>
  ]]>
         </content>
     </entry>
