@@ -4,10 +4,10 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>8D is Here</title>
+    <title>Run Custom Scripts on boot under Systemd</title>
     <meta name="viewport" content="width=device-width">
     <meta name="description" content="8D is Here —— 用心生活，用心编程。">
-    <link rel="canonical" href="http://blog.xiaoba.me/">
+    <link rel="canonical" href="http://blog.xiaoba.me/work/2012/11/09/run-script-on-boot-under-systemd.html">
 
     <!-- Custom CSS -->
     <link rel="stylesheet" href="/css/main.css">
@@ -53,110 +53,64 @@
 
     <div class="page-content">
       <div class="wrap">
-      <div class="home">
+      <div class="post">
 
-  <h1>Posts</h1>
+  <header class="post-header">
+    <h1>Run Custom Scripts on boot under Systemd</h1>
+    <p class="meta">Nov 9, 2012</p>
+  </header>
 
-  <ul class="posts">
-    
-      <li>
-        <span class="post-date">Apr 5, 2014</span>
-        <a class="post-link" href="/work/2014/04/05/trans-understanding-python-by-breaking-it.html">Understanding Python by breaking it</a>
-      </li>
-    
-      <li>
-        <span class="post-date">Mar 20, 2014</span>
-        <a class="post-link" href="/life/2014/03/20/moto-x.html">moto X 初体验</a>
-      </li>
-    
-      <li>
-        <span class="post-date">Dec 13, 2013</span>
-        <a class="post-link" href="/work/2013/12/13/how-flask-auto-reloader-work-and-redis-daemon-with-flask-script.html">Flask中的auto reloader实现机制</a>
-      </li>
-    
-      <li>
-        <span class="post-date">Dec 8, 2013</span>
-        <a class="post-link" href="/life/2013/12/08/why-i-use-linux.html">为什么我使用Linux</a>
-      </li>
-    
-      <li>
-        <span class="post-date">Nov 19, 2013</span>
-        <a class="post-link" href="/work/2013/11/19/when-to-use-assert.html">什么时候该使用assert</a>
-      </li>
-    
-      <li>
-        <span class="post-date">Jul 26, 2013</span>
-        <a class="post-link" href="/work/2013/07/26/debounce-in-javascript.html">Javascript中的debounce模式</a>
-      </li>
-    
-      <li>
-        <span class="post-date">May 17, 2013</span>
-        <a class="post-link" href="/life/2013/05/17/dev-null.html">水很脏，</a>
-      </li>
-    
-      <li>
-        <span class="post-date">May 7, 2013</span>
-        <a class="post-link" href="/work/2013/05/07/garbage-collection-in-javascript.html">Javascript中的垃圾回收机制</a>
-      </li>
-    
-      <li>
-        <span class="post-date">Apr 11, 2013</span>
-        <a class="post-link" href="/2013/04/11/ath9k-under-archlinux.html">Ath9k驱动在Arch中无法连接无线网的问题</a>
-      </li>
-    
-      <li>
-        <span class="post-date">Mar 23, 2013</span>
-        <a class="post-link" href="/work/2013/03/23/generate-simple-wave.html">用Python生成特定频率的波形文件</a>
-      </li>
-    
-      <li>
-        <span class="post-date">Jan 25, 2013</span>
-        <a class="post-link" href="/work/2013/01/25/node-and-express.html">Node.js 和 express.js初体验</a>
-      </li>
-    
-      <li>
-        <span class="post-date">Dec 13, 2012</span>
-        <a class="post-link" href="/work/2012/12/13/ansys.html">ansys解决平行传输线周围静电场分布</a>
-      </li>
-    
-      <li>
-        <span class="post-date">Dec 7, 2012</span>
-        <a class="post-link" href="/work/2012/12/07/wsgi.html">A Byte of WSGI</a>
-      </li>
-    
-      <li>
-        <span class="post-date">Nov 9, 2012</span>
-        <a class="post-link" href="/work/2012/11/09/run-script-on-boot-under-systemd.html">Run Custom Scripts on boot under Systemd</a>
-      </li>
-    
-      <li>
-        <span class="post-date">Oct 21, 2012</span>
-        <a class="post-link" href="/work/2012/10/21/first-byte-of-arch.html">arch试用手记</a>
-      </li>
-    
-      <li>
-        <span class="post-date">Jun 22, 2012</span>
-        <a class="post-link" href="/life/2012/06/22/grade2-2nd-term.html">大二下</a>
-      </li>
-    
-      <li>
-        <span class="post-date">Jan 24, 2012</span>
-        <a class="post-link" href="/life/2012/01/24/memory.html">轉眼已過好多年</a>
-      </li>
-    
-      <li>
-        <span class="post-date">Jan 6, 2012</span>
-        <a class="post-link" href="/life/2012/01/06/andy-say-byebye.html">疯子哥再见</a>
-      </li>
-    
-      <li>
-        <span class="post-date">Dec 4, 2011</span>
-        <a class="post-link" href="/life/2011/12/04/mengdie-say-byebye.html">梦蝶</a>
-      </li>
-    
-  </ul>
+  <article class="post-content">
+  <p>As archlinux has replaced <em>initscripts</em> with <em>systemd</em> as default init system and <a href="https://www.archlinux.org/news/end-of-initscripts-support/">will start removing initscripts suppport</a>, I use systemd now.</p>
 
-  <p class="rss-subscribe">subscribe <a href="/feed.xml">via RSS</a></p>
+<p>To be different from <em>initscripts</em>, <em>rc scripts</em> are no longer available. However it’s complicated to write a very  <em>.service</em> boot script for each program. So solusion like this may be useful:</p>
+
+<ol>
+  <li>
+    <p>Create a systemd-service-script which start a normal script and run it on boot.</p>
+  </li>
+  <li>
+    <p>You can execute any command via the script mentioned in step 1.</p>
+  </li>
+</ol>
+
+<p>In fact we are emulating the <em>rc.local</em> script which only works under <em>initscripts</em>.</p>
+
+<p>The demo may look like this:</p>
+
+<h4 id="customservice">custom.service:</h4>
+
+<div class="highlight"><pre><code class="language-c" data-lang="c"><span class="p">[</span><span class="n">Unit</span><span class="p">]</span><span class="n">Description</span><span class="o">=</span><span class="n">Custom</span> <span class="n">startup</span><span class="o">-</span><span class="n">scripts</span>
+
+<span class="p">[</span><span class="n">Service</span><span class="p">]</span><span class="n">ExecStart</span><span class="o">=/</span><span class="n">usr</span><span class="o">/</span><span class="n">bin</span><span class="o">/</span><span class="n">systemd_scripts_on_boot</span>
+
+<span class="p">[</span><span class="n">Install</span><span class="p">]</span><span class="n">WantedBy</span><span class="o">=</span><span class="n">multi</span><span class="o">-</span><span class="n">user</span><span class="p">.</span><span class="n">target</span></code></pre></div>
+
+<h4 id="systemdscriptsonboot">systemd_scripts_on_boot:</h4>
+
+<div class="highlight"><pre><code class="language-c" data-lang="c"><span class="cp">#!/bin/bash</span>
+
+<span class="n">EXECUTE</span> <span class="n">YOUR</span> <span class="n">CUSTOM</span> <span class="n">SCRIPT</span> <span class="n">YOU</span> <span class="n">WANT</span> <span class="n">TO</span> <span class="n">RUN</span> <span class="n">ON</span> <span class="n">STARTUP</span></code></pre></div>
+
+<p>I’m a newbie on linux, systemd and English. Please let me know if any bugs ^^</p>
+
+  </article>
+
+    <div id="disqus_thread"></div>
+    <script type="text/javascript">
+        /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+        var disqus_shortname = 'heheblog'; // required: replace example with your forum shortname
+
+        /* * * DON'T EDIT BELOW THIS LINE * * */
+        (function() {
+            var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+    
 
 </div>
 

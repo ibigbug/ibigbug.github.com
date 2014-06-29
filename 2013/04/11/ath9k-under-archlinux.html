@@ -4,10 +4,10 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>8D is Here</title>
+    <title>Ath9k驱动在Arch中无法连接无线网的问题</title>
     <meta name="viewport" content="width=device-width">
     <meta name="description" content="8D is Here —— 用心生活，用心编程。">
-    <link rel="canonical" href="http://blog.xiaoba.me/">
+    <link rel="canonical" href="http://blog.xiaoba.me/2013/04/11/ath9k-under-archlinux.html">
 
     <!-- Custom CSS -->
     <link rel="stylesheet" href="/css/main.css">
@@ -53,110 +53,78 @@
 
     <div class="page-content">
       <div class="wrap">
-      <div class="home">
+      <div class="post">
 
-  <h1>Posts</h1>
+  <header class="post-header">
+    <h1>Ath9k驱动在Arch中无法连接无线网的问题</h1>
+    <p class="meta">Apr 11, 2013</p>
+  </header>
 
-  <ul class="posts">
-    
-      <li>
-        <span class="post-date">Apr 5, 2014</span>
-        <a class="post-link" href="/work/2014/04/05/trans-understanding-python-by-breaking-it.html">Understanding Python by breaking it</a>
-      </li>
-    
-      <li>
-        <span class="post-date">Mar 20, 2014</span>
-        <a class="post-link" href="/life/2014/03/20/moto-x.html">moto X 初体验</a>
-      </li>
-    
-      <li>
-        <span class="post-date">Dec 13, 2013</span>
-        <a class="post-link" href="/work/2013/12/13/how-flask-auto-reloader-work-and-redis-daemon-with-flask-script.html">Flask中的auto reloader实现机制</a>
-      </li>
-    
-      <li>
-        <span class="post-date">Dec 8, 2013</span>
-        <a class="post-link" href="/life/2013/12/08/why-i-use-linux.html">为什么我使用Linux</a>
-      </li>
-    
-      <li>
-        <span class="post-date">Nov 19, 2013</span>
-        <a class="post-link" href="/work/2013/11/19/when-to-use-assert.html">什么时候该使用assert</a>
-      </li>
-    
-      <li>
-        <span class="post-date">Jul 26, 2013</span>
-        <a class="post-link" href="/work/2013/07/26/debounce-in-javascript.html">Javascript中的debounce模式</a>
-      </li>
-    
-      <li>
-        <span class="post-date">May 17, 2013</span>
-        <a class="post-link" href="/life/2013/05/17/dev-null.html">水很脏，</a>
-      </li>
-    
-      <li>
-        <span class="post-date">May 7, 2013</span>
-        <a class="post-link" href="/work/2013/05/07/garbage-collection-in-javascript.html">Javascript中的垃圾回收机制</a>
-      </li>
-    
-      <li>
-        <span class="post-date">Apr 11, 2013</span>
-        <a class="post-link" href="/2013/04/11/ath9k-under-archlinux.html">Ath9k驱动在Arch中无法连接无线网的问题</a>
-      </li>
-    
-      <li>
-        <span class="post-date">Mar 23, 2013</span>
-        <a class="post-link" href="/work/2013/03/23/generate-simple-wave.html">用Python生成特定频率的波形文件</a>
-      </li>
-    
-      <li>
-        <span class="post-date">Jan 25, 2013</span>
-        <a class="post-link" href="/work/2013/01/25/node-and-express.html">Node.js 和 express.js初体验</a>
-      </li>
-    
-      <li>
-        <span class="post-date">Dec 13, 2012</span>
-        <a class="post-link" href="/work/2012/12/13/ansys.html">ansys解决平行传输线周围静电场分布</a>
-      </li>
-    
-      <li>
-        <span class="post-date">Dec 7, 2012</span>
-        <a class="post-link" href="/work/2012/12/07/wsgi.html">A Byte of WSGI</a>
-      </li>
-    
-      <li>
-        <span class="post-date">Nov 9, 2012</span>
-        <a class="post-link" href="/work/2012/11/09/run-script-on-boot-under-systemd.html">Run Custom Scripts on boot under Systemd</a>
-      </li>
-    
-      <li>
-        <span class="post-date">Oct 21, 2012</span>
-        <a class="post-link" href="/work/2012/10/21/first-byte-of-arch.html">arch试用手记</a>
-      </li>
-    
-      <li>
-        <span class="post-date">Jun 22, 2012</span>
-        <a class="post-link" href="/life/2012/06/22/grade2-2nd-term.html">大二下</a>
-      </li>
-    
-      <li>
-        <span class="post-date">Jan 24, 2012</span>
-        <a class="post-link" href="/life/2012/01/24/memory.html">轉眼已過好多年</a>
-      </li>
-    
-      <li>
-        <span class="post-date">Jan 6, 2012</span>
-        <a class="post-link" href="/life/2012/01/06/andy-say-byebye.html">疯子哥再见</a>
-      </li>
-    
-      <li>
-        <span class="post-date">Dec 4, 2011</span>
-        <a class="post-link" href="/life/2011/12/04/mengdie-say-byebye.html">梦蝶</a>
-      </li>
-    
-  </ul>
+  <article class="post-content">
+  <p>自从弄好了校园网无线共享之后发现Arch的无线网络有问题，莫名其妙各种连不上，各种iw的命令放上去都是<code>Invalid argument</code>，真是郁闷= =</p>
 
-  <p class="rss-subscribe">subscribe <a href="/feed.xml">via RSS</a></p>
+<p>为什么这么确定是Arch问题呢，因为手机和Windows都没问题= =。</p>
+
+<p>折腾了两天，算是把问题解决了。</p>
+
+<p>最开始以为是更新内核之后驱动有问题，于是自己编译了Arch Wiki里面提到的<code>compat-wireless</code>。果不其然，现在可以操作无线网卡了！但是还是连不上网。</p>
+
+<p>继续翻手册，上面提到wicd可能造成无线不稳定，卸载之，不成。</p>
+
+<p>手册又提到了把无线网卡的电源管理关掉，也没有解决。</p>
+
+<p>不过此时虽然无线不能用，有线依然可以用得好好的啊。凑合着用了一下午的有线，但心里还是不爽。</p>
+
+<p>直到刚刚才想起可以用<code>dmesg</code>的，里面的相关记录的是<code>ctrl-event-disconnected reason=0</code>，放进去Google，好像好多人有这个问题。这下放心了肯定可以解决了。</p>
+
+<p>最终参考<a href="https://bbs.archlinux.org/viewtopic.php?id=137643">这个帖子</a>中一位老兄的办法：</p>
+
+<blockquote>
+  <p># sudo modprobe -rf ath9k  # sudo modprobe -v ath9k nohwcrypt=1  # sudo service network-manager restart # or wicd or whatever  </p>
+</blockquote>
+
+<blockquote>
+  <h4 id="if-it-works-make-it-permanent">If it works, make it permanent:</h4>
+</blockquote>
+
+<blockquote>
+  <table>
+    <tbody>
+      <tr>
+        <td># echo “options ath9k nohwcrypt=1”</td>
+        <td>sudo tee /etc/modprobe.d/ath9k.conf</td>
+      </tr>
+    </tbody>
+  </table>
+</blockquote>
+
+<p>至此，Ath9k驱动在Arch中无法连接无线网的问题已经解决了。</p>
+
+<p>好了，终于可以连上路由器了！激动！</p>
+
+<p>但是更令人激动的是虽然连上路由了但是竟然他妈的不能浏览网页！！更有甚者！！连路由都Ping不通！好吧我承认高兴太早了、、</p>
+
+<p>再dmesg，发现是一个跟IPv6有关的错误，猜想是openwrt的IPv6没有配置好的问题吧，于是先<a href="https://wiki.archlinux.org/index.php/IPv6#Disable_IPv6">把无线网卡的IPv6干掉</a>，现在已经可以正常使用无线网了。</p>
+
+<p>不过话说今天打球的时候崴脚了好他妈疼啊啊啊啊！高中毕业之后就没有崴脚过的印象了，没想到时隔多年竟然又遇到了好不爽啊、、疼的连路都不想走啊、、不过晚饭的时候部长帮我带了吃的，好幸福、</p>
+
+  </article>
+
+    <div id="disqus_thread"></div>
+    <script type="text/javascript">
+        /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+        var disqus_shortname = 'heheblog'; // required: replace example with your forum shortname
+
+        /* * * DON'T EDIT BELOW THIS LINE * * */
+        (function() {
+            var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+    
 
 </div>
 
