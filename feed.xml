@@ -5,9 +5,9 @@
     <description>8D is Here —— 用心生活，用心编程。</description>
     <link>http://blog.xiaoba.me/</link>
     <atom:link href="http://blog.xiaoba.me/feed.xml" rel="self" type="application/rss+xml" />
-    <pubDate>Mon, 30 Jun 2014 22:24:36 +0800</pubDate>
-    <lastBuildDate>Mon, 30 Jun 2014 22:24:36 +0800</lastBuildDate>
-    <generator>Jekyll v2.1.0</generator>
+    <pubDate>Sat, 26 Jul 2014 16:18:04 +0800</pubDate>
+    <lastBuildDate>Sat, 26 Jul 2014 16:18:04 +0800</lastBuildDate>
+    <generator>Jekyll v2.1.1</generator>
     
       <item>
         <title>毕业了</title>
@@ -32,8 +32,8 @@
 &lt;p&gt;武大再见&lt;/p&gt;
 </description>
         <pubDate>Mon, 30 Jun 2014 00:00:00 +0800</pubDate>
-        <link>http://blog.xiaoba.me/life/2014/06/30/whu-bye.html</link>
-        <guid isPermaLink="true">http://blog.xiaoba.me/life/2014/06/30/whu-bye.html</guid>
+        <link>http://blog.xiaoba.me/2014/06/30/whu-bye.html</link>
+        <guid isPermaLink="true">http://blog.xiaoba.me/2014/06/30/whu-bye.html</guid>
         
         
         <category>life</category>
@@ -413,8 +413,8 @@
 
 </description>
         <pubDate>Sat, 05 Apr 2014 00:00:00 +0800</pubDate>
-        <link>http://blog.xiaoba.me/work/2014/04/05/trans-understanding-python-by-breaking-it.html</link>
-        <guid isPermaLink="true">http://blog.xiaoba.me/work/2014/04/05/trans-understanding-python-by-breaking-it.html</guid>
+        <link>http://blog.xiaoba.me/2014/04/05/trans-understanding-python-by-breaking-it.html</link>
+        <guid isPermaLink="true">http://blog.xiaoba.me/2014/04/05/trans-understanding-python-by-breaking-it.html</guid>
         
         
         <category>work</category>
@@ -440,8 +440,8 @@
 &lt;/blockquote&gt;
 </description>
         <pubDate>Thu, 20 Mar 2014 00:00:00 +0800</pubDate>
-        <link>http://blog.xiaoba.me/life/2014/03/20/moto-x.html</link>
-        <guid isPermaLink="true">http://blog.xiaoba.me/life/2014/03/20/moto-x.html</guid>
+        <link>http://blog.xiaoba.me/2014/03/20/moto-x.html</link>
+        <guid isPermaLink="true">http://blog.xiaoba.me/2014/03/20/moto-x.html</guid>
         
         
         <category>life</category>
@@ -585,8 +585,8 @@
 &lt;p&gt;看完&lt;code&gt;auto_reload&lt;/code&gt;的实现，感觉整个过程实现的非常巧妙，也非常严谨。而且整个代码写的逻辑非常清晰，注释非常完整。而且不知道你有没有注意到&lt;code&gt;restart_with_reloader&lt;/code&gt;的最后两句判断&lt;code&gt;exit_code&lt;/code&gt;：因为在整个serving模块里面，所有的exit code都是3，而3好像不是什么标准的exit status，werkzeug把3当作内部的常规exit code。如果在这里进行一次判断，可以保证进程的退出是werkzeug内部发起的正常退出；如果exit code不是3，说明进程退出有异常，便不再莽撞的重启服务，而是将exit code返回给「主进程」处理。对于需要频繁的退出和启动的程序，这样的处理便显得十分必要和严谨。开始慢慢的体会到大家说的「Pocoo出品，必属精品」了。&lt;/p&gt;
 </description>
         <pubDate>Fri, 13 Dec 2013 00:00:00 +0800</pubDate>
-        <link>http://blog.xiaoba.me/work/2013/12/13/how-flask-auto-reloader-work-and-redis-daemon-with-flask-script.html</link>
-        <guid isPermaLink="true">http://blog.xiaoba.me/work/2013/12/13/how-flask-auto-reloader-work-and-redis-daemon-with-flask-script.html</guid>
+        <link>http://blog.xiaoba.me/2013/12/13/how-flask-auto-reloader-work-and-redis-daemon-with-flask-script.html</link>
+        <guid isPermaLink="true">http://blog.xiaoba.me/2013/12/13/how-flask-auto-reloader-work-and-redis-daemon-with-flask-script.html</guid>
         
         
         <category>work</category>
@@ -616,8 +616,8 @@
 &lt;p&gt;所以要问我为什么要用Linux，我也确实不能优雅的谢邀然后再写个1，2，3条出来。用了就是用了，而且一直在用，已经养成一种习惯，就是觉得不在电脑上面打游戏的时候，键盘就比鼠标好用的多，terminal就比图形界面舒服的多。就像有些高中同学说我，你从学物理的改行到学电气去，最后不去电力部门怎么跑去当了个码农，我也不知道怎么回答，可能就像钓了一根大骨架的桑地亚哥那样吧。&lt;/p&gt;
 </description>
         <pubDate>Sun, 08 Dec 2013 00:00:00 +0800</pubDate>
-        <link>http://blog.xiaoba.me/life/2013/12/08/why-i-use-linux.html</link>
-        <guid isPermaLink="true">http://blog.xiaoba.me/life/2013/12/08/why-i-use-linux.html</guid>
+        <link>http://blog.xiaoba.me/2013/12/08/why-i-use-linux.html</link>
+        <guid isPermaLink="true">http://blog.xiaoba.me/2013/12/08/why-i-use-linux.html</guid>
         
         
         <category>life</category>
@@ -754,8 +754,8 @@
 &lt;p&gt;&lt;a href=&quot;https://github.com/facebook/tornado/pull/937/files&quot;&gt;https://github.com/facebook/tornado/pull/937/files&lt;/a&gt;&lt;/p&gt;
 </description>
         <pubDate>Tue, 19 Nov 2013 00:00:00 +0800</pubDate>
-        <link>http://blog.xiaoba.me/work/2013/11/19/when-to-use-assert.html</link>
-        <guid isPermaLink="true">http://blog.xiaoba.me/work/2013/11/19/when-to-use-assert.html</guid>
+        <link>http://blog.xiaoba.me/2013/11/19/when-to-use-assert.html</link>
+        <guid isPermaLink="true">http://blog.xiaoba.me/2013/11/19/when-to-use-assert.html</guid>
         
         <category>Python</category>
         
@@ -830,8 +830,8 @@
 &lt;p&gt;&lt;em&gt;以上大部分是个人理解，如有错误，请不吝指出^_^&lt;/em&gt;&lt;/p&gt;
 </description>
         <pubDate>Fri, 26 Jul 2013 00:00:00 +0800</pubDate>
-        <link>http://blog.xiaoba.me/work/2013/07/26/debounce-in-javascript.html</link>
-        <guid isPermaLink="true">http://blog.xiaoba.me/work/2013/07/26/debounce-in-javascript.html</guid>
+        <link>http://blog.xiaoba.me/2013/07/26/debounce-in-javascript.html</link>
+        <guid isPermaLink="true">http://blog.xiaoba.me/2013/07/26/debounce-in-javascript.html</guid>
         
         
         <category>work</category>
@@ -937,8 +937,8 @@
 &lt;p&gt;最后我建议大家出门最好戴上口罩，因为最近空气质量确实不好，毕竟，世界很美好，活着最重要&lt;/p&gt;
 </description>
         <pubDate>Fri, 17 May 2013 00:00:00 +0800</pubDate>
-        <link>http://blog.xiaoba.me/life/2013/05/17/dev-null.html</link>
-        <guid isPermaLink="true">http://blog.xiaoba.me/life/2013/05/17/dev-null.html</guid>
+        <link>http://blog.xiaoba.me/2013/05/17/dev-null.html</link>
+        <guid isPermaLink="true">http://blog.xiaoba.me/2013/05/17/dev-null.html</guid>
         
         
         <category>life</category>
@@ -1107,8 +1107,8 @@
 &lt;p&gt;以上大部分文字来自&lt;a href=&quot;https://developer.mozilla.org/en-US/docs/JavaScript/Memory_Management&quot;&gt;Memory Management&lt;/a&gt;。尽量在保证不出错的前提下，加上了一些个人的注释和理解。虽然被MDN标注了 &lt;code&gt;This article is in need of a technical review.&lt;/code&gt;，但是对于理解垃圾回收还是有一点帮助的吧。&lt;/p&gt;
 </description>
         <pubDate>Tue, 07 May 2013 00:00:00 +0800</pubDate>
-        <link>http://blog.xiaoba.me/work/2013/05/07/garbage-collection-in-javascript.html</link>
-        <guid isPermaLink="true">http://blog.xiaoba.me/work/2013/05/07/garbage-collection-in-javascript.html</guid>
+        <link>http://blog.xiaoba.me/2013/05/07/garbage-collection-in-javascript.html</link>
+        <guid isPermaLink="true">http://blog.xiaoba.me/2013/05/07/garbage-collection-in-javascript.html</guid>
         
         
         <category>work</category>
