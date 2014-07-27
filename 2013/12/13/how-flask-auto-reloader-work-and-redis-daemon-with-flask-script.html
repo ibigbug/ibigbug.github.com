@@ -9,15 +9,26 @@
 <a class="page-link" href="/about/">Résumé</a>
 
 <a class="page-link" href="/feed.xml">Feed</a>
-</div></div></div><div class="main-wrapper"><div class="inner-wrapper"><div class="logo"><a href="/">8D is Here</a></div><div class="page-meta">
+</div></div><div class="inner-header-iphone"><div class="nav"><?xml version="1.0" encoding="utf-8"?><!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd"><svg version="1.1" id="图形" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="32px" height="32px" viewBox="0 0 1000 1024" enable-background="new 15.167 -16.333 1000 1024" xml:space="preserve"><path fill="#272636" d="M872 675q28 0 47.5 -19.5t19.5 -47.5v-51q0 -28 -19.5 -47.5t-47.5 -19.5h-742q-28 0 -47.5 19.5t-19.5 47.5v51q0 28 19.5 47.5t47.5 19.5h742zM872 362q28 0 47.5 -19.5t19.5 -47.5v-51q0 -28 -19.5 -47.5t-47.5 -19.5h-742q-28 0 -47.5 19.5t-19.5 47.5v51 q0 28 19.5 47.5t47.5 19.5h742zM872 49q28 0 47.5 -19.5t19.5 -47.5v-51q0 -28 -19.5 -47.5t-47.5 -19.5h-742q-28 0 -47.5 19.5t-19.5 47.5v51q0 28 19.5 47.5t47.5 19.5h742z" transform="translate(0, 800) scale(1, -1)"/></svg><ul class="nav-list">
+
+
+
+<li><a href="/" class="page-link">Home</a></li>
+
+<li><a href="/archives/" class="page-link">Archives</a></li>
+
+<li><a href="/about/" class="page-link">Résumé</a></li>
+
+<li><a href="/feed.xml" class="page-link">Feed</a></li>
+</ul></div></div></div><div class="main-wrapper"><div class="inner-wrapper"><div class="logo"><a href="/">8D is Here</a></div><div class="page-meta">
 天青色等烟雨，而我在等你
 </div><div class="main-area"><div class="post-entry"><h1 class="entry-title">Flask中的auto reloader实现机制</h1><div class="entry-meta"><time class="updated">Dec 13, 2013</time></div><div class="entry-content"><p>起因是看到一篇文章讲<a href="http://flask.pocoo.org/snippets/73/">Flask中使用消息队列</a>的文章。很简单，不细说。但是其中有一步是需要单独起一条守护进程来处理队列里面的数据。由于我比较懒，不想每次要运行两个命令才能开启应用。首先想到的是在Makefile里面添加一条<code>redis-daemon</code>。但是这样没有成功，猜测是因为Flask的server和Redis的daemon都是要阻塞的，一旦启动之后便不能返回，于是下一条规则便没法执行。只好在Flask-Script里面做文章，翻了下Flask准确的说是<a href="http://werkzeug.pocoo.org/">werkzeug</a>的源码，找到了实现方法。不过我还是想先说一下Flask中的auto reloader实现机制。</p>
 
-<h1 id="flask-autoreloader">一、 Flask auto_reloader的实现</h1>
+<h2 id="flask-autoreloader">一、 Flask auto_reloader的实现</h2>
 
 <p>准确地说是werkzeug实现的这个功能，而Flask是基于werkzeug构建起来的。相关的代码在werkzeug.serving模块中。整个原理其实很简单，就是不停的检测目录下的文件更改，比较文件的<code>最近修改时间</code>，如果有更新，就重启服务。但是实现起来其实有点复杂。当使用<code>auto_reloader</code>启动服务时，实际上会按照当前命令行参数新开一条python解释器进程。也就是启动后是会有两条python进程的，一条是我们自己启动的，我暂且称为「主进程」；另一条是werkzeug开的，我暂且称为「从进程」。当主进程启动后，会用<code>while 1</code>的方式阻塞，在<code>while</code>内部开启从进程，从进程又在内部开一条新的线程来跑web服务，然后调用<code>reloader_loop</code>方法来监视文件改动。</p>
 
-<h2 id="runsimple">1). <code>run_simple</code>方法</h2>
+<h3 id="runsimple">1). <code>run_simple</code>方法</h3>
 
 <p>文档中给的示例是用<code>run_simple</code>方法来启动一个web服务。如果使用<code>use_reloader</code>，便会调用<code>run_with_realoder</code>来包装这个web服务。写成伪代码如下：</p>
 
@@ -29,7 +40,7 @@
     <span class="k">else</span><span class="p">:</span>
         <span class="n">inner</span><span class="p">()</span>  <span class="c"># 这种情况比较简单，就不说了</span></code></pre></div>
 
-<h2 id="runwithrealoder">2). <code>run_with_realoder</code>方法</h2>
+<h3 id="runwithrealoder">2). <code>run_with_realoder</code>方法</h3>
 
 <p>这个方法源码不多，直接贴出来：</p>
 
@@ -54,7 +65,7 @@
 
 <p>可以保证当收到<code>KeyboardInterrupt</code>时能够被「主进程」截获。</p>
 
-<h2 id="restartwithreloader">3). <code>restart_with_reloader</code>方法</h2>
+<h3 id="restartwithreloader">3). <code>restart_with_reloader</code>方法</h3>
 
 <p>我们再来看比较有内涵的<code>restart_with_reloader</code>方法：</p>
 
@@ -88,7 +99,7 @@
 
 <p>然而还没完。有文件改动怎么重启呢？我们来看监视文件改动的循环<code>reloader_loop</code>的实现。</p>
 
-<h2 id="reloaderloop">4). <code>reloader_loop</code>方法</h2>
+<h3 id="reloaderloop">4). <code>reloader_loop</code>方法</h3>
 
 <p>这个方法其实是<code>_reloader_stat_loop</code>的引用。猜测可能之前是使用<code>python-inotify</code>来提供这个功能的，因为注释里面有提到说<code>inotify</code>不能正确的响应添加的文件，而且非常的buggy并且API也很混乱，所以使用基于CherryPy中的autoreload.py的方法修改来实现了。但是提交太多了，没有翻到是哪一次做的改动。不过这个不重要，我们来看实现：</p>
 
@@ -113,7 +124,7 @@
 
 <p>这个方法还是在从进程启动了web服务线程之后才调用的。不停的来检测监视目录下文件的<code>st_mtime</code>也就是最新修改时间。如果有修改便使用一个exit code 3来退出自己。在这里退出之后，会返回到前面提到的<code>restart_with_reloader</code>，而那里是一个<code>while 1</code>，具体就不细说了。</p>
 
-<h1 id="flask-scriptredis">二、 结合Flask-Script来运行Redis守护进程</h1>
+<h2 id="flask-scriptredis">二、 结合Flask-Script来运行Redis守护进程</h2>
 
 <p>说了半天，终于到了重点了。到底该如何在Flask-Script中同时开启两条进程又能保证web服务能够被正常的reload呢？其实可能方法有很多，我是这样实现的，如果你有其他的更好的方法，希望能够指点。</p>
 
@@ -141,7 +152,7 @@
     <span class="k">except</span> <span class="ne">KeyboardInterrupt</span><span class="p">:</span>
         <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span></code></pre></div>
 
-<h1 id="section">三、 后话</h1>
+<h2 id="section">三、 后话</h2>
 
 <p>看完<code>auto_reload</code>的实现，感觉整个过程实现的非常巧妙，也非常严谨。而且整个代码写的逻辑非常清晰，注释非常完整。而且不知道你有没有注意到<code>restart_with_reloader</code>的最后两句判断<code>exit_code</code>：因为在整个serving模块里面，所有的exit code都是3，而3好像不是什么标准的exit status，werkzeug把3当作内部的常规exit code。如果在这里进行一次判断，可以保证进程的退出是werkzeug内部发起的正常退出；如果exit code不是3，说明进程退出有异常，便不再莽撞的重启服务，而是将exit code返回给「主进程」处理。对于需要频繁的退出和启动的程序，这样的处理便显得十分必要和严谨。开始慢慢的体会到大家说的「Pocoo出品，必属精品」了。</p>
 </div><div class="comment-area">

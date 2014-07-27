@@ -5,8 +5,8 @@
     <description>8D is Here —— 用心生活，用心编程。</description>
     <link>http://blog.xiaoba.me/</link>
     <atom:link href="http://blog.xiaoba.me/feed.xml" rel="self" type="application/rss+xml" />
-    <pubDate>Sat, 26 Jul 2014 16:18:04 +0800</pubDate>
-    <lastBuildDate>Sat, 26 Jul 2014 16:18:04 +0800</lastBuildDate>
+    <pubDate>Sun, 27 Jul 2014 18:32:47 +0800</pubDate>
+    <lastBuildDate>Sun, 27 Jul 2014 18:32:47 +0800</lastBuildDate>
     <generator>Jekyll v2.1.1</generator>
     
       <item>
@@ -452,11 +452,11 @@
         <title>Flask中的auto reloader实现机制</title>
         <description>&lt;p&gt;起因是看到一篇文章讲&lt;a href=&quot;http://flask.pocoo.org/snippets/73/&quot;&gt;Flask中使用消息队列&lt;/a&gt;的文章。很简单，不细说。但是其中有一步是需要单独起一条守护进程来处理队列里面的数据。由于我比较懒，不想每次要运行两个命令才能开启应用。首先想到的是在Makefile里面添加一条&lt;code&gt;redis-daemon&lt;/code&gt;。但是这样没有成功，猜测是因为Flask的server和Redis的daemon都是要阻塞的，一旦启动之后便不能返回，于是下一条规则便没法执行。只好在Flask-Script里面做文章，翻了下Flask准确的说是&lt;a href=&quot;http://werkzeug.pocoo.org/&quot;&gt;werkzeug&lt;/a&gt;的源码，找到了实现方法。不过我还是想先说一下Flask中的auto reloader实现机制。&lt;/p&gt;
 
-&lt;h1 id=&quot;flask-autoreloader&quot;&gt;一、 Flask auto_reloader的实现&lt;/h1&gt;
+&lt;h2 id=&quot;flask-autoreloader&quot;&gt;一、 Flask auto_reloader的实现&lt;/h2&gt;
 
 &lt;p&gt;准确地说是werkzeug实现的这个功能，而Flask是基于werkzeug构建起来的。相关的代码在werkzeug.serving模块中。整个原理其实很简单，就是不停的检测目录下的文件更改，比较文件的&lt;code&gt;最近修改时间&lt;/code&gt;，如果有更新，就重启服务。但是实现起来其实有点复杂。当使用&lt;code&gt;auto_reloader&lt;/code&gt;启动服务时，实际上会按照当前命令行参数新开一条python解释器进程。也就是启动后是会有两条python进程的，一条是我们自己启动的，我暂且称为「主进程」；另一条是werkzeug开的，我暂且称为「从进程」。当主进程启动后，会用&lt;code&gt;while 1&lt;/code&gt;的方式阻塞，在&lt;code&gt;while&lt;/code&gt;内部开启从进程，从进程又在内部开一条新的线程来跑web服务，然后调用&lt;code&gt;reloader_loop&lt;/code&gt;方法来监视文件改动。&lt;/p&gt;
 
-&lt;h2 id=&quot;runsimple&quot;&gt;1). &lt;code&gt;run_simple&lt;/code&gt;方法&lt;/h2&gt;
+&lt;h3 id=&quot;runsimple&quot;&gt;1). &lt;code&gt;run_simple&lt;/code&gt;方法&lt;/h3&gt;
 
 &lt;p&gt;文档中给的示例是用&lt;code&gt;run_simple&lt;/code&gt;方法来启动一个web服务。如果使用&lt;code&gt;use_reloader&lt;/code&gt;，便会调用&lt;code&gt;run_with_realoder&lt;/code&gt;来包装这个web服务。写成伪代码如下：&lt;/p&gt;
 
@@ -468,7 +468,7 @@
     &lt;span class=&quot;k&quot;&gt;else&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;
         &lt;span class=&quot;n&quot;&gt;inner&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;  &lt;span class=&quot;c&quot;&gt;# 这种情况比较简单，就不说了&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
-&lt;h2 id=&quot;runwithrealoder&quot;&gt;2). &lt;code&gt;run_with_realoder&lt;/code&gt;方法&lt;/h2&gt;
+&lt;h3 id=&quot;runwithrealoder&quot;&gt;2). &lt;code&gt;run_with_realoder&lt;/code&gt;方法&lt;/h3&gt;
 
 &lt;p&gt;这个方法源码不多，直接贴出来：&lt;/p&gt;
 
@@ -493,7 +493,7 @@
 
 &lt;p&gt;可以保证当收到&lt;code&gt;KeyboardInterrupt&lt;/code&gt;时能够被「主进程」截获。&lt;/p&gt;
 
-&lt;h2 id=&quot;restartwithreloader&quot;&gt;3). &lt;code&gt;restart_with_reloader&lt;/code&gt;方法&lt;/h2&gt;
+&lt;h3 id=&quot;restartwithreloader&quot;&gt;3). &lt;code&gt;restart_with_reloader&lt;/code&gt;方法&lt;/h3&gt;
 
 &lt;p&gt;我们再来看比较有内涵的&lt;code&gt;restart_with_reloader&lt;/code&gt;方法：&lt;/p&gt;
 
@@ -527,7 +527,7 @@
 
 &lt;p&gt;然而还没完。有文件改动怎么重启呢？我们来看监视文件改动的循环&lt;code&gt;reloader_loop&lt;/code&gt;的实现。&lt;/p&gt;
 
-&lt;h2 id=&quot;reloaderloop&quot;&gt;4). &lt;code&gt;reloader_loop&lt;/code&gt;方法&lt;/h2&gt;
+&lt;h3 id=&quot;reloaderloop&quot;&gt;4). &lt;code&gt;reloader_loop&lt;/code&gt;方法&lt;/h3&gt;
 
 &lt;p&gt;这个方法其实是&lt;code&gt;_reloader_stat_loop&lt;/code&gt;的引用。猜测可能之前是使用&lt;code&gt;python-inotify&lt;/code&gt;来提供这个功能的，因为注释里面有提到说&lt;code&gt;inotify&lt;/code&gt;不能正确的响应添加的文件，而且非常的buggy并且API也很混乱，所以使用基于CherryPy中的autoreload.py的方法修改来实现了。但是提交太多了，没有翻到是哪一次做的改动。不过这个不重要，我们来看实现：&lt;/p&gt;
 
@@ -552,7 +552,7 @@
 
 &lt;p&gt;这个方法还是在从进程启动了web服务线程之后才调用的。不停的来检测监视目录下文件的&lt;code&gt;st_mtime&lt;/code&gt;也就是最新修改时间。如果有修改便使用一个exit code 3来退出自己。在这里退出之后，会返回到前面提到的&lt;code&gt;restart_with_reloader&lt;/code&gt;，而那里是一个&lt;code&gt;while 1&lt;/code&gt;，具体就不细说了。&lt;/p&gt;
 
-&lt;h1 id=&quot;flask-scriptredis&quot;&gt;二、 结合Flask-Script来运行Redis守护进程&lt;/h1&gt;
+&lt;h2 id=&quot;flask-scriptredis&quot;&gt;二、 结合Flask-Script来运行Redis守护进程&lt;/h2&gt;
 
 &lt;p&gt;说了半天，终于到了重点了。到底该如何在Flask-Script中同时开启两条进程又能保证web服务能够被正常的reload呢？其实可能方法有很多，我是这样实现的，如果你有其他的更好的方法，希望能够指点。&lt;/p&gt;
 
@@ -580,7 +580,7 @@
     &lt;span class=&quot;k&quot;&gt;except&lt;/span&gt; &lt;span class=&quot;ne&quot;&gt;KeyboardInterrupt&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;
         &lt;span class=&quot;n&quot;&gt;sys&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;exit&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
-&lt;h1 id=&quot;section&quot;&gt;三、 后话&lt;/h1&gt;
+&lt;h2 id=&quot;section&quot;&gt;三、 后话&lt;/h2&gt;
 
 &lt;p&gt;看完&lt;code&gt;auto_reload&lt;/code&gt;的实现，感觉整个过程实现的非常巧妙，也非常严谨。而且整个代码写的逻辑非常清晰，注释非常完整。而且不知道你有没有注意到&lt;code&gt;restart_with_reloader&lt;/code&gt;的最后两句判断&lt;code&gt;exit_code&lt;/code&gt;：因为在整个serving模块里面，所有的exit code都是3，而3好像不是什么标准的exit status，werkzeug把3当作内部的常规exit code。如果在这里进行一次判断，可以保证进程的退出是werkzeug内部发起的正常退出；如果exit code不是3，说明进程退出有异常，便不再莽撞的重启服务，而是将exit code返回给「主进程」处理。对于需要频繁的退出和启动的程序，这样的处理便显得十分必要和严谨。开始慢慢的体会到大家说的「Pocoo出品，必属精品」了。&lt;/p&gt;
 </description>
