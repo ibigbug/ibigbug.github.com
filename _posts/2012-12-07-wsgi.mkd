@@ -1,0 +1,50 @@
+---
+layout: post
+title: A Byte of WSGI
+date: 2012-12-7
+category: work
+---
+
+If you have ever used some python frameworks like *tornado*, *flask*, you may hear about WSGI. But what's this?
+
+WSGI means Web Server Gateway Interface. What it is **NOT**:a server, a python module, a framework, an API or any kind of software. What it is: What it is: an interface specification by which server and application communicate. WSGI is just a kind of protocol who makes web app and web server communicate friendly.
+
+A simple WSGI application(meaning WSGI compliant) may look like this:
+
+{% highlight python %}
+
+def application(environ, start_respone):
+    start_respone('200 OK', [('Content-Type', 'text/plain')])
+    yield 'Hello World\n'
+
+{% endhighlight %}
+
+It's a callable and takes two parameters environ and start_respone. `environ` is a dictionary containing [environment variables in CGI](http://en.wikipedia.org/wiki/Common_Gateway_Interface#Environment_variables).`start_respone` is a callable taking two required parameters `status(200 OK)` and `response_headers(['Content-Type', 'text/plain'])`.
+
+And a simple WSGI server may look like this:
+
+{% highlight python %}
+
+def call_application(app, environ):
+    body = []
+    status_headers = [None, None]
+    def start_response(status, headers):
+        status_headers[:] = [status, headers]
+            return body.append
+    app_iter = app(environ, start_response)
+    try:
+        for item in app_iter:
+            body.append(item)
+    finally:
+        if hasattr(app_iter, 'close'):
+            app_iter.close()
+    return status_headers[0], status_headers[1], ''.join(body)
+
+status, headers, body = call_application(app, {...environ...})
+
+{% endhighlight %}
+
+
+Both app and server above are WSGI compliant and the two function just explain how the python frameworks work.
+
+If you want to dive into WSGI, go to [PEP3333](http://www.python.org/dev/peps/pep-3333/#the-start-response-callable) :).

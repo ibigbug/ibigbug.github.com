@@ -1,0 +1,43 @@
+---
+layout: post
+title: Run Custom Scripts on boot under Systemd
+date: 2012-11-09
+category: work
+---
+
+As archlinux has replaced *initscripts* with *systemd* as default init system and [will start removing initscripts suppport](https://www.archlinux.org/news/end-of-initscripts-support/), I use systemd now.
+
+To be different from *initscripts*, _rc scripts_ are no longer available. However it's complicated to write a very  _.service_ boot script for each program. So solusion like this may be useful:
+
+1. Create a systemd-service-script which start a normal script and run it on boot.
+
+2. You can execute any command via the script mentioned in step 1.
+
+In fact we are emulating the _rc.local_ script which only works under *initscripts*.
+
+The demo may look like this:
+
+####custom.service:
+
+{% highlight c %}
+
+[Unit]Description=Custom startup-scripts
+
+[Service]ExecStart=/usr/bin/systemd_scripts_on_boot
+
+[Install]WantedBy=multi-user.target
+
+{% endhighlight %}
+
+
+####systemd_scripts_on_boot:
+
+{% highlight c %}
+
+#!/bin/bash
+
+EXECUTE YOUR CUSTOM SCRIPT YOU WANT TO RUN ON STARTUP
+
+{% endhighlight %}
+
+I'm a newbie on linux, systemd and English. Please let me know if any bugs ^^

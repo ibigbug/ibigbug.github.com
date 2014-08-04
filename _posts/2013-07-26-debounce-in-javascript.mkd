@@ -1,0 +1,79 @@
+---
+layout: post
+title: Javascript中的debounce模式
+date: 2013-07-26
+category: work
+---
+
+## 1.What——什么是debounce模式？
+
+如果你写过单片机开发的键盘扫描，那么你一定知道要进行「去抖动」。没错，在JS处理页面交互事件时，往往也需要进行一些去抖处理，这就是debounce。当然这里只是借用了名字，其实与键盘扫描的去抖，还是有一点差别的。下面有个效果演示，如果你心急，直接拉下去看效果。
+
+## 2.Why——为什么要debounce？
+
+正如引言中所述，对于「猛击」的现象，我们需要使用`debounce`来让点击轻一点~比如用户在进行订单提交的时候，需要单击「提交」按钮，往往会有意或者无意的出现「双击」甚至「多击」的现象，如果JS对每次单击都相应一次，发出一个请求到后台，那么一方面，可能会造成逻辑错误，也就是造成「下了很多订单」;另一方面，对于「多击」的没一个请求，都会发送到后台，给web服务器增加了压力。
+
+## 3.How——如何debounce？
+
+underscore框架中有一个方法，叫做「debounce」，就是我们今天要介绍的。
+
+这个方法使用起来很简单：
+
+{% highlight javascript %}
+
+var lazyLayout = _.debounce(calculateLayout, 300);
+$(window).resize(lazyLayout);
+
+{% endhighlight %}
+
+
+上面的代码来自[underscore](http://underscorejs.org/##debounce)  这样被`debounce`处理之后的lazyLayout有什么效果呢？
+
+这是underscore中debounce的原型
+
+{% highlight javascript %}
+
+_.debounce(function, wait, [immediate]) 
+
+{% endhighlight %}
+
+
+有三个参数：
+
+* function —— 需要被处理的函数
+* wait —— 等待时间，也就是说，在函数第一次触发之后，会有`wait`这么长的一个等待时间，这段时间里，所有对「被debounce过的函数」的调用，全部被丢弃。通俗一点说，你点击一次按钮之后，不论再快速的点多少次按钮，我都只当一次处理，直到你停下来，wait一段时间过后再点击，那才算第二次生效。
+* [immediate] —— 这是一个很有趣的参数，默认是undefined也就是false，可以设置为true。当为false时，是当计时器计时结束后，执行函数，实际效果就是：你不停的点击，我不管你，当你停下来了，我再重新开始计时，过了设定的时间后，函数被执行;而设置为true时，就是计时器开始计时，就执行函数，之后无论你再怎么疯狂点击，我也不理你了。
+
+怎么样，是不是很简单实用？有了这个处理之后，就再也不怕有人误点击，或者疯狂点击按钮提交表单了。  
+
+下面是一个deboucne的演示，顺带还有个throttle对比，你可以不管：   
+[Underscore.js throttle vs debounce example - jsFiddle](http://jsfiddle.net/amyseqmedia/dD99u/37/)
+
+那么这么好的方法，是如何实现呢？其实很简单，就是一个计时器，在计时器结束之前，如果发现新的点击（也就是函数调用）请求，将其丢弃，重置计时器。直到计时器结束后，执行函数(immediate为false);或者第一次点击之后，立即调用函数，同时启动计时器，再计时器结束之前，收到新的函数调用请求，丢弃，重置计时器(immediate为true)。下面是underscore的具体实现,我加了一点注释，方便理解：
+
+{% highlight javascript %}
+ _.debounce = function(func, wait, immediate) {
+    var result;  // 用户函数调用返回值
+    var timeout = null;  // 初始化计时器 因为会被返回的闭包引用，所以会保持，不会被GC。
+    return function() {  // 返回被处理的函数
+        var context = this, args = arguments;  // 保存现场
+        var later = function() {  // 传给计时器，以便结束时候可以调用 
+        // 计时器结束之后，会进入这里   
+        timeout = null;  // 计时结束，重置计时器，以便处理下一次请求                if (!immediate) result = func.apply(context, args);  // immediate为false的话，在这里执行函数
+    };      
+    var callNow = immediate && !timeout;  // 根据immediate和计时器是否结束来判断是否到了调用函数的时机。 注意这里还没有启动计时器，也就是如果设置了immediate为true，那么callNow就是true      
+    clearTimeout(timeout);  // 这里！ 上面的都是一些变量的声明和赋值，这里开始到了关键，每一次调用请求，执行到这里都会重置计时器，不论immediate是true还是false      
+    timeout = setTimeout(later, wait);  // 然后再这里重新开始计时      
+    if (callNow) result = func.apply(context, args);  // 注意这里的callNow，是上面赋值的。如果有设置了immediate，那么立即执行函数;如果immediate为false，那么就等上面的计时器结束，执行later      
+    return result;  // 返回结果    
+    };
+};
+
+{% endhighlight %}
+
+
+## 4.Where —— 哪里用到debounce？
+
+如上所述，一些类似表单提交，比如下订单，评论，等等有点击事件的地方，都可以用到～
+
+*以上大部分是个人理解，如有错误，请不吝指出^_^*

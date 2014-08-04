@@ -1,0 +1,457 @@
+---
+layout: post
+title: Understanding Python by breaking it
+date: 2014-04-05
+category: work
+---
+
+> 这篇文章是从Python Weekly里面看到的，刚好最近在学C。记录分享一下。[点击这里查看原文](http://blog.hakril.net/articles/0-understanding-python-by-breaking-it.html?utm_term=0_9e26887fc5-42441d6a58-312705645)
+
+【译文开始】
+
+我最近发现了`ctype`，打算通过它来用一种不应该的方式操作Python。目的就是直接从Python解释器来了解*Python内部*是如何工作的。  这篇文章研究的是CPython在Python2.7下的实现。
+
+#引用计数和垃圾回收
+
+关于Python首先要知道的是它的垃圾回收机制是采用引用计数的方式。也就是说，每一个Python对象都有一个*ref counter*来记录有多少个引用指向这个对象。   我们首个目标是在Python解释器里面把任何一个对象的*ref counter*暴露出来。
+
+我们将要用的重要工具是：
+
+* `ctypes._CData.from_address`，通过他我们可以在任何地址创建一个ctypes的映射：例如（一个不好的例子）
+
+{% highlight python %}
+import ctypes
+ctypes.c_size_t.from_address(0)
+# segfault! ( to dereference 0 is not a good idea)
+{% endhighlight %}
+
+
+现在我们可以从我们的地址空间里面任意地取值了。下一步是取一个对象的地址。为此，我们需要用到一个内置的方法：
+
+* `id()`: 返回一个对象的「标识」。在这个对象的生命周期内，这是一个保证唯一确定的integer（或者 long integer）。    CPython 实现细节：这实际就是对象在内存中的地址。
+
+我们现在要做的是取到一个Python对象的*ref counter*的偏移地址：
+
+{% highlight c %}
+
+/** My own comments begin by '**' **/
+/** From: Includes/object.h **/
+
+typedef struct _object {
+    PyObject_HEAD
+} PyObject;
+
+/* PyObject_HEAD defines the initial segment of every PyObject. */
+#define PyObject_HEAD    \
+    _PyObject_HEAD_EXTRA   /** empty in standard build **/ \
+    Py_ssize_t ob_refcnt;  /**ref counter **/ \
+    struct _typeobject *ob_type; /** pointer to the type **/
+
+{% endhighlight %}
+
+
+从上面我们可以看到 `ob_refcnt` 是结构体的第一个成员，因此 addr(ob_refcnt) == addr(object) == id(object)
+
+所以我们可以轻松的写出函数：
+
+{% highlight python %}
+
+def get_ref(obj):
+    """ returns a c_size_t, which is the refcount of obj """
+    return ctypes.c_size_t.from_address(id(obj))
+
+{% endhighlight %}
+
+
+来试一下！
+
+{% highlight python %}
+
+>>> import ctypes
+>>> def get_ref(obj):
+...     """ returns a c_size_t, which is the refcount of obj """
+...     return ctypes.c_size_t.from_address(id(obj))
+...
+# the c_ulong is not a copy of the address
+# so any modification of the ob_refcnt are directly visible
+>>> l = [1,2,3,4]
+>>> l_ref = get_ref(l)
+>>> l_ref 
+c_ulong(1L) # there is just one reference on the list (l)
+
+>>> l2 = l
+>>> l_ref 
+c_ulong(2L)# two references on the list (l and l2)
+
+>>> del l
+>>> l_ref
+c_ulong(1L)
+
+>>> del l2
+>>> l_ref
+c_ulong(0L) # no more reference!
+
+>>> another_list = [0, 0, 7]
+>>> l_ref
+c_ulong(1L) # woot : old list's ob_refcnt have changed
+
+{% endhighlight %}
+
+
+这个例子非常的直白，不过最后两行需要解释一下。为什么创建一个新的list会改变原有list的*ref counting*？  这是垃圾回收干的！当`old_list`的*ref count*变为0的时候，GC 「清理」这个list，然后把它送进一个unused list的池，当下次创建list的时候，就会被重新使用。
+
+证明：
+
+{% highlight python %}
+
+>>> l1 = [1,2,3]
+>>> l2 = [1,2,3]
+>>> hex(id(l1))
+'0xa367e8'
+>>> hex(id(l2))
+'0xa36d40'  # not the same address as l1 (hopefully)
+>>> del l1  # l1 is garbage collected
+>>> l3 = [8,0,0,8,5]
+>>> hex(id(l3))
+'0xa367e8'  # l1 address is reused for the new list
+
+{% endhighlight %}
+
+
+#特例： `int` 和 `str`
+
+在CPython的int实现中，从[-5； 256]这个区间的的引用是共享的。我们有办法来验证！
+
+{% highlight python %}
+
+# with "non-shared" int
+>>> x1 = 257
+>>> x2 = 257
+>>> get_ref(x1)
+c_ulong(1L)
+>>> get_ref(x2)
+c_ulong(1L)
+>>> id(x1) == id(x2)
+False  # logic : differents objects
+
+>>> x3 = 0
+>>> get_ref(x3)
+c_ulong(409L) #  all ref to "0" point the the same "int(0)" object
+
+{% endhighlight %}
+
+
+对于字符串也是一样！
+
+{% highlight python %}
+
+>>> p = "python"
+>>> get_ref(p)
+c_ulong(8L)
+>>> p2 = "python"
+>>> get_ref(p2)
+c_ulong(9L)
+>>> id(p) == id(p2)
+True  # the two variables are references to the same string object!
+
+{% endhighlight %}
+
+
+# 破坏引用计数
+
+到目前为止，我们还知识读取`ob_refcnt`的值。如果我们改变它会怎么样？   我们可以改写`ob_refcnt`强制提前进行垃圾回收！
+
+{% highlight python %}
+
+>>> x = [1,2,3,4]
+>>> x_ref = get_ref(x)
+>>> xx = x
+>>> x_ref
+c_ulong(2L)
+>>> x_ref.value = 1 # GC now thinks that we have just one reference to the list
+>>> del xx # ob_refcnt == 0 -> garbage collection!
+>>> x
+[] # garbage collection of a list sets its size to 0
+>>> another_list = [0, 4, 8, 15 ,16, 23, 42]
+>>> x
+[0, 4, 8, 15 ,16, 23, 42]  # always the same "reuse list" tricks!
+
+{% endhighlight %}
+
+
+当然：这种写法会使解释器进入不稳定的状态并且很可能导致崩溃！
+
+# 干扰 `tuple`
+
+干扰`tuple`是很有意思并且比较容易的事情。文档里面讲「`tuple`是一类不可变的序列」：我们来试着改变它！
+
+如果你查看CPython的实现你会发现：
+
+{% highlight c %}
+
+/** From: Includes/tupleobject.h **/
+typedef struct {
+    PyObject_VAR_HEAD
+    PyObject *ob_item[1]; /** An array of pointer to PyObject **/
+} PyTupleObject;
+
+/** From: Includes/object.h **/
+#define PyObject_VAR_HEAD     \
+    PyObject_HEAD    /** See: part 1 **/ \
+    Py_ssize_t ob_size; /* Number of items in variable part */
+
+{% endhighlight %}
+
+
+所以对于元组，比较重要的两点是：
+
+* 元组本质上就是指向`PyObject`的指针组成的数组并且，
+* 元组由三个`size_t`(ref_count, ob_type, ob_size)和刚刚提到的指针数组构成。
+
+基于`ctype`中的`memmove`实现，我们可以构造一个`tuplecopy`函数：
+
+{% highlight python %}
+
+def tuplecpy(dst, src, begin_offset):
+    """
+       Of course this function should NEVER be used in real code
+       It  will probably result in segfaults/crashes
+       - copy tuple(src) to dst[begin_offset:] tuple
+       - remember id(x) -> addressof(x)
+    """
+    OFFSET = ctypes.sizeof(ctypes.c_size_t) * 3
+    PTR_SIZE = ctypes.sizeof(ctypes.c_size_t)
+    dst_addr = id(dst) + OFFSET + PTR_SIZE * begin_offset
+    src_addr = id(src) + OFFSET
+    ctypes.memmove(dst_addr, src_addr, len(src) * PTR_SIZE)
+
+{% endhighlight %}
+
+
+我们来试下新玩具！
+
+{% highlight python %}
+
+>>> x1 = tuple("A" * 4)
+>>> x2 = tuple("B" * 2)
+
+>>> print ("BEFORE -> x1 = {0} | x2  = {1}".format(x1, x2))
+>>> tuplecpy(x1, x2, 2)
+>>> print ("AFTER  -> x1 = {0} | x2  = {1}".format(x1, x2))
+
+#Result:
+#    BEFORE -> x1 = ('A', 'A', 'A', 'A') | x2  = ('B', 'B')
+#    AFTER  -> x1 = ('A', 'A', 'B', 'B') | x2  = ('B', 'B')
+
+{% endhighlight %}
+
+
+It works! 但是为什么说这种写法本质上是不好的（抛开修改元组来说）？   答案在第一部分中：我们创建了很多对象的引用（在`src` tuple 中的那些）却没有增加他们的*ref count*
+
+{% highlight python %}
+
+>>> x1 = tuple("B" * 4)
+>>> x2 = ([1,2,3,4],)
+
+# problem is : 
+>>> t = get_ref(x2[0])
+>>> t
+c_ulong(1L)
+>>> del x2 # no more references
+>>> x1
+('B', 'B', 'B', <refcnt 0 at 0xacac68>)  # nice printing of an object with ob_refcnt == 0 :)
+
+>>> l = [0, 42, 69]
+>>> x1 # GC IN ACTION \o/
+('B', 'B', 'B', [0, 42, 69]) # Same principle as before
+
+{% endhighlight %}
+
+
+我们可以修改一下函数让它增加引用计数（但这并不意味着你可以在实际编码中这么使用。。）
+
+{% highlight python %}
+
+def tuplecpy(dst, src, begin_offset):
+    """
+       Of course this function should NEVER be used in real code
+       It  will probably result in segfaults/crashes
+       - copy tuple(src) to dst[begin_offset:] tuple
+       - remember id(x) -> addressof(x)
+    """
+    OFFSET = ctypes.sizeof(ctypes.c_size_t) * 3
+    PTR_SIZE = ctypes.sizeof(ctypes.c_size_t)
+    for obj in src:
+        x = get_ref(obj)
+        x.value = x.value + 1 # manually update ob_refcnt
+    dst_addr = id(dst) + OFFSET + PTR_SIZE * begin_offset
+    src_addr = id(src) + OFFSET
+    ctypes.memmove(dst_addr, src_addr, len(src) * PTR_SIZE)
+
+{% endhighlight %}
+
+
+# 深入函数和编码对象
+
+现在我们可以修改元组了，我们来看下修改函数和编码对象中的一些重要元组有什么影响
+
+## 编码对象（Code object）
+
+文档中是这样解释的：「Code objects 表示的是编译成的可执行的 Python 代码」  在Python 2中，编码对象存在一个函数的`func_code`变量中。
+
+{% highlight python %}
+
+>>> import dis  # bytecode disassembler module
+>>> def time_2(x):
+...     return 2 * x
+... 
+>>> time_2.func_code
+<code object time_2 at 0x9ee230, file "<stdin>", line 1>
+>>> time_2(x=4)
+8
+>>> dis.dis(time_2)
+          0 LOAD_CONST               1 (2)
+          3 LOAD_FAST                0 (x)
+          6 BINARY_MULTIPLY
+          7 RETURN_VALUE
+
+{% endhighlight %}
+
+
+如果我们查看那个函数（很简单的一个函数）的反编译结果，我们会发现这个函数：
+
+* 载入常量 (2)，
+* 载入变量 (x)，
+* 讲两个值相乘，
+* 返回结果
+
+如果我们仔细观察下第一步（LOAD_CONST）我们会发现下面的结果：
+
+* LOAD_CONST 被调用的时候，传入了参数1
+* 这个参数指向的是常数 2
+
+事实上，1 就是编码对象拥有的常量tuple的一个偏移。
+
+{% highlight python %}
+
+>>> time_2.func_code.co_consts  # tuple of constants of our code object
+(None, 2)
+>>> time_2.func_code.co_consts[1]
+2 # yep we were right!
+# So what if we change this value ?
+>>> tuplecpy(time_2.func_code.co_consts, (10,), 1)
+>>> time_2.func_code.co_consts # tuple of constants of our code object
+(None, 10)
+>>> time_2(4)
+40 # woot! It works!
+
+{% endhighlight %}
+
+
+所以说我们可以修改函数中的常量。   那么我们能不能对`LOAD_FAST`也做同样的事情呢？
+
+{% highlight python %}
+
+>>> time_2(4) # works on the modified function!
+40
+>>> time_2(x=4) # call by dict
+40
+>>> time_2.func_code.co_varnames # tuple of local variables and argnames
+('x',)
+>>> tuplecpy(time_2.func_code.co_varnames, ('new_arg_name',), 0)
+>>> time_2(x=4)
+# x is not the argument name anymore!
+TypeError: time_2() got an unexpected keyword argument 'x'
+>>> time_2(new_arg_name=4)
+40
+>>> dis.dis(time_2) # see the function changes:
+          0 LOAD_CONST               1 (10) # const changed
+          3 LOAD_FAST                0 (new_arg_name) # arg name changed
+          6 BINARY_MULTIPLY
+          7 RETURN_VALUE
+
+{% endhighlight %}
+
+
+所以，是的，我们可以很好地修改函数的表现！
+
+这是最后一个例子我觉得非常有趣：
+
+{% highlight python %}
+
+>>> def nop(): pass  # the function that does nothing
+...
+>>> dis.dis(nop)
+         0 LOAD_CONST               0 (None)
+         3 RETURN_VALUE
+>>> nop.func_code.func_consts
+(None,)
+>>> l = []
+>>> tuplecpy(nop.func_code.func_consts, (l,), 0)  # the function will always return the same list!
+>>> nop()
+[]
+>>> l.append(2)
+>>> nop()
+[2]
+>>> dis.dis(nop)
+         0 LOAD_CONST               0 ([2])
+         3 RETURN_VALUE
+
+{% endhighlight %}
+
+
+# 函数闭包
+
+最后，我们来玩一下闭包！一个函数生成另外的函数的时候就会出现闭包。[维基的解释](http://en.wikipedia.org/wiki/Closure_%28computer_programming%29)
+
+{% highlight python %}
+
+>>> def gen_return_function(x):
+...     def f():
+...         return x  # in f(): x is going to be a closure
+...     return f
+... 
+>>> ret_42 = gen_return_function(42)
+>>> ret_42()
+42
+>>> dis.dis(ret_42)
+          0 LOAD_DEREF               0 (x)
+          3 RETURN_VALUE
+
+{% endhighlight %}
+
+
+新出现的步骤 `LOAD_DEREF` 是用来处理闭包的。问题是：闭包保存在哪里？  答案很简单：闭包就保存在`ret_42.func_closure`里面。为什么不是在对象编码中？因为这样可以允许所有被生成的函数共享同样的对象代码和不同的闭包！
+
+{% highlight python %}
+
+>>> ret_23 = gen_return_function(23)
+>>> ret_42 = gen_return_function(42)
+>>> ret_42.func_code is ret_23.func_code
+True
+>>> ret_42.func_closure
+(<cell at 0xa54398: int object at 0x95d748>,) # closures are always inside a cell object
+>>> ret_42.func_closure[0].cell_contents
+42
+
+# We are not going to rewrite the tuple but directly the contents of the cell instead.
+# We will still use tuplecpy but with an offset of (-1) because cell have no ob_size.
+
+>>> x = 1337
+>>> tuplecpy(ret_42.func_closure[0], (x,), -1)
+>>> ret_42()
+1337 # closure modified :)
+
+{% endhighlight %}
+
+
+就这么多！
+
+# 总结
+
+我非常喜欢打乱Python（不止一次）并且我希望你也一样。我认为这是一个可以快速方便地了解Python内部结构和它们工作方式的途径。
+
+最后，`ctypes`在处理正常工作的时候也是一个非常强大的模块，并且它提供了载入共享库和调用C函数的能力。如果你还没有用过`ctypes`，我强烈建议你阅读[ctypes的Python文档](https://docs.python.org/2/library/ctypes.html)，然后试一下！
+
+【译文完】
+

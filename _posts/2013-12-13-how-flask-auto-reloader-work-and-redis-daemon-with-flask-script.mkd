@@ -1,0 +1,159 @@
+---
+layout: post
+title: Flask中的auto reloader实现机制
+date: 2013-12-13
+category: work
+---
+
+起因是看到一篇文章讲[Flask中使用消息队列](http://flask.pocoo.org/snippets/73/)的文章。很简单，不细说。但是其中有一步是需要单独起一条守护进程来处理队列里面的数据。由于我比较懒，不想每次要运行两个命令才能开启应用。首先想到的是在Makefile里面添加一条`redis-daemon`。但是这样没有成功，猜测是因为Flask的server和Redis的daemon都是要阻塞的，一旦启动之后便不能返回，于是下一条规则便没法执行。只好在Flask-Script里面做文章，翻了下Flask准确的说是[werkzeug](http://werkzeug.pocoo.org/)的源码，找到了实现方法。不过我还是想先说一下Flask中的auto reloader实现机制。
+
+## 一、 Flask auto\_reloader的实现
+
+准确地说是werkzeug实现的这个功能，而Flask是基于werkzeug构建起来的。相关的代码在werkzeug.serving模块中。整个原理其实很简单，就是不停的检测目录下的文件更改，比较文件的`最近修改时间`，如果有更新，就重启服务。但是实现起来其实有点复杂。当使用`auto_reloader`启动服务时，实际上会按照当前命令行参数新开一条python解释器进程。也就是启动后是会有两条python进程的，一条是我们自己启动的，我暂且称为「主进程」；另一条是werkzeug开的，我暂且称为「从进程」。当主进程启动后，会用`while 1`的方式阻塞，在`while`内部开启从进程，从进程又在内部开一条新的线程来跑web服务，然后调用`reloader_loop`方法来监视文件改动。
+
+### 1). `run_simple`方法
+
+文档中给的示例是用`run_simple`方法来启动一个web服务。如果使用`use_reloader`，便会调用`run_with_realoder`来包装这个web服务。写成伪代码如下：
+
+{% highlight python %}
+def run_simple():
+    def inner():
+        start_http_server()
+    if use_reloader:
+        run_with_realoder(inner)  # 这个方法里面启动从进程
+    else:
+        inner()  # 这种情况比较简单，就不说了
+{% endhighlight %}
+
+
+### 2). `run_with_realoder`方法
+
+这个方法源码不多，直接贴出来：
+{% highlight python %}
+
+def run_with_reloader(main_func, extra_files=None, interval=1):
+    """Run the given function in an independent python interpreter."""
+    import signal
+    signal.signal(signal.SIGTERM, lambda *args: sys.exit(0))
+    if os.environ.get('WERKZEUG_RUN_MAIN') == 'true':
+        thread.start_new_thread(main_func, ())
+        try:
+            reloader_loop(extra_files, interval)
+        except KeyboardInterrupt:
+            return
+    try:
+        sys.exit(restart_with_reloader())
+    except KeyboardInterrupt:
+        pass
+
+{% endhighlight %}
+
+
+这个方法里面有个`WERKZEUG_RUN_MAIN`，是在从进程启动之前添加的env里面的。因此当主进程启动后第一次调用这个方法时，不会进入这个分支，直接进入`sys.exit(restart_with_reloader())`。而这里调用`sys.exit()`是不会直接退出的，因为`restart_with_reloader()`将阻塞。
+
+至于进入方法时的signal处理，依据官方文档中关于`thread`模块的说明：> Threads interact strangely with interrupts: the KeyboardInterrupt exception will be received by an arbitrary thread. (When the signal module is available, interrupts always go to the main thread.)
+
+可以保证当收到`KeyboardInterrupt`时能够被「主进程」截获。
+
+### 3). `restart_with_reloader`方法
+
+我们再来看比较有内涵的`restart_with_reloader`方法：
+
+{% highlight python %}
+
+def restart_with_reloader():
+    """Spawn a new Python interpreter with the same arguments as this one,
+    but running the reloader thread.
+    """
+    while 1:
+        _log('info', ' * Restarting with reloader')
+        args = [sys.executable] + sys.argv
+        new_environ = os.environ.copy()
+        new_environ['WERKZEUG_RUN_MAIN'] = 'true'
+
+        # a weird bug on windows. sometimes unicode strings end up in the
+        # environment and subprocess.call does not like this, encode them
+        # to latin1 and continue.
+        if os.name == 'nt' and PY2:
+            for key, value in iteritems(new_environ):
+                if isinstance(value, text_type):
+                    new_environ[key] = value.encode('iso-8859-1')
+
+        exit_code = subprocess.call(args, env=new_environ)
+        if exit_code != 3:
+            return exit_code
+{% endhighlight %}
+
+
+这个方法看起来很危险，在`while 1`里面不停的新开python解释器不会把系统拖垮么？不会的。因为`subprocess`执行的命令其实就是开一个新的python解释器重新运行一次我们的`python manager.py runserver`命令，也就是我们之前说的「从进程」。而web服务器是要阻塞的，所以在上一个python解释器退出之前，是不会开新的解释器的。
+
+但是这一次与第一次我们手动运行`runserver`时候的情况不同。因为这个方法开始时候在env里面添加了一个新的环境变量「WERKZEUG\_RUN\_MAIN」，还记得`run_with_reloader`方法里面的第一个`if`吧，就是为了这里准备的。当从进程执行到`run_with_reloader`时，便进入了条件分支，而不会再无限启新的「从进程」耗光资源。而分支内部可以看到，开了一条线程来跑`main_func`也就是启动web服务的方法，紧接着启动`reloader_loop`也就是监视文件改动的循环。
+
+至此，整个带有`auto_reloader`功能的Flask服务全部启动完毕。
+
+然而还没完。有文件改动怎么重启呢？我们来看监视文件改动的循环`reloader_loop`的实现。
+
+### 4). `reloader_loop`方法
+
+这个方法其实是`_reloader_stat_loop`的引用。猜测可能之前是使用`python-inotify`来提供这个功能的，因为注释里面有提到说`inotify`不能正确的响应添加的文件，而且非常的buggy并且API也很混乱，所以使用基于CherryPy中的autoreload.py的方法修改来实现了。但是提交太多了，没有翻到是哪一次做的改动。不过这个不重要，我们来看实现：
+
+{% highlight python %}
+def _reloader_stat_loop(extra_files=None, interval=1):
+    from itertools import chain
+    mtimes = {}
+    while 1:
+        for filename in chain(_iter_module_files(), extra_files or ()):
+            try:
+                mtime = os.stat(filename).st_mtime
+            except OSError:
+                continue
+
+            old_time = mtimes.get(filename)
+            if old_time is None:
+                mtimes[filename] = mtime
+                continue
+            elif mtime > old_time:
+                _log('info', ' * Detected change in %r, reloading' % filename)
+                sys.exit(3)
+        time.sleep(interval)
+{% endhighlight %}
+
+
+这个方法还是在从进程启动了web服务线程之后才调用的。不停的来检测监视目录下文件的`st_mtime`也就是最新修改时间。如果有修改便使用一个exit code 3来退出自己。在这里退出之后，会返回到前面提到的`restart_with_reloader`，而那里是一个`while 1`，具体就不细说了。
+
+## 二、 结合Flask-Script来运行Redis守护进程
+
+说了半天，终于到了重点了。到底该如何在Flask-Script中同时开启两条进程又能保证web服务能够被正常的reload呢？其实可能方法有很多，我是这样实现的，如果你有其他的更好的方法，希望能够指点。
+
+{% highlight python %}
+
+def runserver(domain='localhost', port=3000):
+    """start a local server for development"""
+
+    from werkzeug.serving import run_with_reloader
+    from werkzeug.serving import make_server
+    from werkzeug.debug import DebuggedApplication
+    application = DebuggedApplication(app, True)
+
+    def inner():
+        print ' * Starting Redis daemon'
+        thread.start_new_thread(run_daemon, ())
+        print '   * Redis daemon running'
+        print(' * Running on http://%s:%d/' % (domain, port))
+        make_server(domain, port, app=application).serve_forever()
+
+    def run_daemon():
+        from app.utils import queue_daemon
+        queue_daemon(app)
+
+    try:
+        run_with_reloader(inner)
+    except KeyboardInterrupt:
+        sys.exit(0)
+
+{% endhighlight %}
+
+
+## 三、 后话
+
+看完`auto_reload`的实现，感觉整个过程实现的非常巧妙，也非常严谨。而且整个代码写的逻辑非常清晰，注释非常完整。而且不知道你有没有注意到`restart_with_reloader`的最后两句判断`exit_code`：因为在整个serving模块里面，所有的exit code都是3，而3好像不是什么标准的exit status，werkzeug把3当作内部的常规exit code。如果在这里进行一次判断，可以保证进程的退出是werkzeug内部发起的正常退出；如果exit code不是3，说明进程退出有异常，便不再莽撞的重启服务，而是将exit code返回给「主进程」处理。对于需要频繁的退出和启动的程序，这样的处理便显得十分必要和严谨。开始慢慢的体会到大家说的「Pocoo出品，必属精品」了。
