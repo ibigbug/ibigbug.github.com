@@ -2,7 +2,7 @@
 layout: page
 title: Résumé
 meta: About Yuwei Ba
-weight: 1
+weight: 2
 permalink: /about/
 ---
 
