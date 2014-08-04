@@ -1,0 +1,4 @@
+---
+layout: default
+---
+<div class="post-entry"><h1 class="entry-title">{{ page.title }}</h1><div class="entry-meta"><time class="updated">{{ page.date | date: "%b %-d, %Y" }}</time></div><div class="entry-content">{{ content }}</div>{% if site.comments %}<div class="comment-area">{% include comments.html %}</div>{% endif %}</div>

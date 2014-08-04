@@ -1,0 +1,9 @@
+---
+layout: page
+title: Archives
+weight: 1
+permalink: /archives/
+---
+<ul class="entry-list">
+{% for post in site.posts %}<li class="entry-item"><div class="entry-meta"><time>{{ post.date | date: "%Y-%m-%d" }}</time></div><div class="detail"><h2><a href="{{ post.url | prepend: site.baseurl }}">{{ post.title }}</a></h2><a href="{{ post.url | prepend: site.baseurl }}" class="description">{{ post.description }}</a></div></li>
+{% endfor %}</ul>

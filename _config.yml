@@ -1,0 +1,17 @@
+# Site settings
+title: 8D is Here
+email: i@xiaoba.me
+meta: 天青色等烟雨，而我在等你
+description: 8D is Here —— 用心生活，用心编程。
+baseurl: ""
+url: http://blog.xiaoba.me
+twitter_username: ibigbug
+github_username:  ibigbug
+comments: true
+disqus: heheblog
+analytics: true
+ga: UA-53224060-1
+
+# Build settings
+markdown: kramdown
+permalink: /:year/:month/:day/:title.html
