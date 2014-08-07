@@ -1,9 +1,9 @@
 ---
 layout: page
-title: Penguin
+title: Thoughts
 meta: 「山水一程，三生有幸」
 weight: 3
-permalink: /love/
+permalink: /thoughts/
 ---
 
 爱企鹅
