@@ -2,7 +2,7 @@
 layout: page
 title: Thoughts
 meta: 「山水一程，三生有幸」
-weight: 3
+weight: 2
 permalink: /thoughts/
 ---
 
