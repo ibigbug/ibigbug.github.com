@@ -1,0 +1,110 @@
+---
+layout: post
+title: AngularJS 源码剖析：injector.js(上)
+date: 2014-08-12
+meta: AngularJS 中的 $injector 机制
+category: work
+---
+
+
+### 前言
+
+最近由于工作需要用到 AngularJS，所以干脆一边学一边用一边读读源码好了。也算不上是剖析，看到哪里写到哪里。
+
+这一篇主要是 AngularJS 中的依赖注入的实现。源码在 `auto/injector.js`。
+
+依赖注入(Dependency Injection) 是一种软件设计模式，用来处理组件如何维护他们的依赖关系。
+
+Angular 中的依赖注入系统是为了创建组件，解析他们的依赖关系，并将自身提供给其他组件依赖的。
+
+### DI is a Nutshell
+
+有三种方法，可以实现组件(对象或者函数) 维护他们所需的依赖：
+
+1. 组件内部可以创建依赖，典型的直接调用 `new` 来生成
+2. 组件可以从全局变量中查找依赖
+3. 组件可以在需要依赖的地方将依赖传入
+
+前两种创建和查找依赖的方式都不够优雅，因为需要在组件内部将依赖*硬编码*。这种写法不说不可能，至少也很难来修改组件的依赖关系。这种情况在测试用例中往往是有问题的，因为为了测试环境的隔离，往往需要模拟依赖关系。
+
+第三种写法是可行的。这种写法不需要在组件内部确定依赖，而是可以将依赖从外部传入。而 AngularJS 内部采用的也是这种实现。
+
+### 直接上代码
+
+{% highlight javascript %}
+
+/* 这几个正则表达式很好懂。 */
+var FN_ARGS = /^function\s*[^\(]*\(\s*([^\)]*)\)/m;
+var FN_ARG_SPLIT = /,/;
+var FN_ARG = /^\s*(_?)(\S+?)\1\s*$/;
+var STRIP_COMMENTS = /((\/\/.*$)|(\/\*[\s\S]*?\*\/))/mg;
+var $injectorMinErr = minErr('$injector');  // 不重要
+
+function anonFn(fn) {
+  /* 这个函数返回的是函数所带的形参列表 */
+
+  // For anonymous functions, showing at the very least the function signature can help in
+  // debugging.
+  var fnText = fn.toString().replace(STRIP_COMMENTS, ''),
+      args = fnText.match(FN_ARGS);
+  if (args) {
+    return 'function(' + (args[1] || '').replace(/[\s\r\n]+/, ' ') + ')';
+  }
+  return 'fn';
+}
+
+function annotate(fn, strictDi, name) {
+  /* 这个函数是 Angular 分析依赖的主要实现部分 */
+  /* 功能是在给传入的 fn 函数上附加一个 $inject 数组，保存所需的依赖 */
+  var $inject,
+      fnText,
+      argDecl,
+      last;
+
+  if (typeof fn === 'function') { 
+    /* 对应 function($scope, $http, ...) 形式的依赖声明 */
+    if (!($inject = fn.$inject)) {  // 确保 fn 尚未被注入
+      $inject = [];
+      if (fn.length) {
+        if (strictDi) {  /* ngStrictDi */
+          if (!isString(name) || !name) {
+            name = fn.name || anonFn(fn);
+          }
+          /* 直接抛异常，因为在 strict-di 模式下，是不允许这种方式的依赖声明的，会被 JS 压缩或者混淆工具破坏 */
+          throw $injectorMinErr('strictdi',
+            '{0} is not using explicit annotation and cannot be invoked in strict mode', name);
+        }
+        // 取出函数定义
+        fnText = fn.toString().replace(STRIP_COMMENTS, '');
+        // 取出函数的形参声明
+        argDecl = fnText.match(FN_ARGS);
+        // 去除每个形参的第一个 `_`
+        forEach(argDecl[1].split(FN_ARG_SPLIT), function(arg) {
+          arg.replace(FN_ARG, function(all, underscore, name) {
+            // 将形参保存在 `$inject` 数组
+            $inject.push(name);
+          });
+        });
+      }
+      // 将依赖保存在需要依赖注入的 fn 上面
+      fn.$inject = $inject;
+
+      // 这个分支实际上就是将 function Controller($scope, $http, ...) 这种形式的声明的函数的形参列表作为函数的依赖，保存在 Controller.$inject 数组中，作为 Controller 被 `annotate` 过的证据。
+    }
+  } else if (isArray(fn)) {
+    /* 这种对应 ['$scope', '$http', function(scope, http) {}] */
+    last = fn.length - 1;
+    assertArgFn(fn[last], 'fn');  // 确保最后一个参数是个 `function`
+    // 将最后一个参数移除之后，剩下的就是依赖声明。
+    $inject = fn.slice(0, last);
+  } else {
+    // 暂时无法得到 $inject，等待 fn.$inject = ['$scope', '$http'] 这种声明
+    assertArgFn(fn, 'fn', true);
+  }
+  return $inject;
+}
+{% endhighlight %}
+
+
+### 总结
+这里只是 `$inject` 的准备工作，主要工作还在下面的 `createInjector`。明天继续。
