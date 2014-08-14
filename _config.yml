@@ -9,6 +9,7 @@ comments: true
 disqus: heheblog
 analytics: true
 ga: UA-53224060-1
+cdn: http://yuwei-cdn.b0.upaiyun.com/blog/images
 
 # Build settings
 markdown: kramdown

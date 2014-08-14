@@ -1,0 +1,65 @@
+---
+layout: post
+title: AngularJS 源码剖析：injector.js(下)
+date: 2014-08-14
+meta: AngularJS 中的 $injector 机制
+category: work
+---
+
+[上一篇文章]({% post_url 2014-08-12-angular-source-auto-injector-1 %})解析了 Angular 如何分析依赖注入。这篇分析如何根据分析好的依赖注入创建`injector`。
+
+### 什么是 `injector`
+
+很简单，这就是 `injector`：
+
+![angular injector]({{ site.cdn }}/angular1.png)
+
+一个 `injector` 以下几个方法：
+
+* invoke: 将传入的 `fn` 进行依赖分析并调用 `get` 方法根据依赖名(如，$scope)获取对应的工厂方法
+* instantiate: 实例化一个工厂函数
+* get：根据依赖字符串获取对应的实现
+* annotate: 依赖分析
+* has：从缓存中获取相应的依赖
+
+### createInjector
+
+根据传入的 `modulesToLoad` 对象，创建一个 `injector`。在这个函数里面，声明了几个私有方法：
+
+* provider
+* factory
+* service
+* value
+* constant
+
+可以看到，这就是我们时常使用的几个方法。其中比较重要的是 `provider()` 这一个。这个方法定义两个形参 `name` 和 `provider_`。根据传入的 `provider_` 在内部调用 `instantiate()` 方法，进行相关的实例化工作。最后在 `providerCache` 中创建 `name` -> `provider_` 键值对进行保存。
+
+在源码中可以看到，如果 `provider_` 没有 `$get` 属性，直接抛出异常。
+
+而 `factory()` 方法就是将传入的工厂函数封装成一个 `provider_` 传给 `provider()` 方法
+
+
+### bootstrap
+
+以上就是 Angular 内部核心的依赖分析和依赖注入过程。由于代码比较复杂，就不逐行分析了。
+下面看下 Angular 是如何启动进行 `bootstrap()` 的。
+
+在 Angular 源码的最后几行可以看到，在进行一些预备工作之后，会调用 `angularInit(document, bootstrap)` 方法对 Angular 进行初始化。`angularInit()` 内部会遍历 `document`，找到启动 `bootstrap()` 方法的标识(`[names = ['ng:app', 'ng-app', 'x-ng-app', 'data-ng-app']]`)。如果找到对应的 element，对其进行 `bootstrap()`，并传入 `module` name。
+
+再来看 `bootstrap()` 方法。`bootstrap()` 方法内部首先初始化一个 `injector`，依赖 `$provide` 和 `ng`。然后再对这个 `injector` 进行依赖注入。注入以下几个依赖：
+
+* $rootScope
+* $rootElement
+* $compile
+* $injector
+* $animate
+
+之后在 `$rootScope` 内对 `element` 和 `scope` 进行 `compile()`。至此 Angular 启动完成。
+
+### 总结
+
+Angular 启动流程：
+
+1. 遍历 document，寻找启动指令
+2. 找到之后进行 `bootstrap()`，创建 `$rootScope` 和相应的 `injector`
+3. 执行其他工作(后面再进行分析)
