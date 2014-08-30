@@ -8,11 +8,11 @@ permalink: /about/
 
 ## About
 
-Hi! My name is **Yuwei Ba**. My friends also all me **8D**(sounds like *buddy* in Chinese).
+Hi! My name is **Yuwei Ba**. My friends also all me **8D** (sounds like *buddy* in Chinese).
 
 I love computer and programming and study them on my own.
 
-Life lover.
+Life Lover.
 
 ## Projects
 
