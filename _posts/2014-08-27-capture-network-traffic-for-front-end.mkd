@@ -86,7 +86,7 @@ HTTP 协议，在 [rfc2616](https://www.ietf.org/rfc/rfc2616.txt) 中详细定�
 </figure>
 <figure>
 Multipart HTTP 表单 POST：
-<img src="{{site.cdn}}/wireshark-normal-form.png" />
+<img src="{{site.cdn}}/wireshark-multipart.png" />
 </figure>
 <figure>
 jQuery 默认 Ajax 请求：
