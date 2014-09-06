@@ -8,6 +8,9 @@ keywords: Javascript, Python, Life, Thoughts
 favicon: /favicon.png
 baseurl: ""
 url: http://blog.xiaoba.me
+
+# Third party
+twitter: "@ibigbug"
 comments: true
 disqus: heheblog
 analytics: true
