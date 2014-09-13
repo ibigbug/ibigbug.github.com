@@ -20,24 +20,25 @@ I believe in that coding makes life easier and better. I write something I think
 
 
 ## Skills
-I write:
+I am familiar with:
 
 * Python
 * Javascript
+* Java
 * CSS / HTML
+* Unix
 
-I know a little about:
+I also know something about:
 
 * C
+* Data Structures
+* Programming Languages
 * Objective-C
 * Git
 * MySQL
 
 I want to learn:
 
-* OS
-* Data Structures
-* Programming Languages
 * Things I don't know
 
 ## Experiences
