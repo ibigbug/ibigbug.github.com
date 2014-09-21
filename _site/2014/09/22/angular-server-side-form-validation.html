@@ -1,0 +1,103 @@
+<!DOCTYPE html><html lang="en"><head><title>AngularJS 中进行服务端表单校验 — 8D is Here</title><link rel="prev" href="http://blog.xiaoba.me"><link rel="stylesheet" href="/css/site.css"><meta name="viewport" content="width=device-width"><meta name="author" content="Yuwei Ba"><meta name="keywords" content="Javascript, Python, Life, Thoughts"><meta name="description" content="Programming makes life easier and better. Life Lover."><link rel="icon" href="/favicon.png" type="image/png"><link rel="canonical" href="http://blog.xiaoba.me/2014/09/22/angular-server-side-form-validation.html"><meta property="twitter:card" content="summary"><meta property="twitter:site" content="@ibigbug"><meta property="twitter:creator" content="@ibigbug"><meta property="twitter:title" content="AngularJS 中进行服务端表单校验 — 8D is Here"><meta property="twitter:description" content=" Programming makes life easier and better. Life Lover. "><meta property="twitter:url" content="http://blog.xiaoba.me/2014/09/22/angular-server-side-form-validation.html"><meta property="twitter:domain" content="8D is Here"></head><body class="yue"><div class="header"><div class="inner-header"><div class="nav">
+
+
+
+<a class="page-link" href="/">Home</a>
+
+<a class="page-link" href="/archives/">Archives</a>
+
+<a class="page-link" href="/thoughts/">Thoughts</a>
+
+<a class="page-link" href="/about/">Résumé</a>
+
+<a class="page-link" href="/feed.xml">Feed</a>
+</div></div><div class="inner-header-iphone"><div class="nav"><?xml version="1.0" encoding="utf-8"?><!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd"><svg version="1.1" id="图形" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="32px" height="32px" viewBox="0 0 1000 1024" enable-background="new 15.167 -16.333 1000 1024" xml:space="preserve"><path fill="#272636" d="M872 675q28 0 47.5 -19.5t19.5 -47.5v-51q0 -28 -19.5 -47.5t-47.5 -19.5h-742q-28 0 -47.5 19.5t-19.5 47.5v51q0 28 19.5 47.5t47.5 19.5h742zM872 362q28 0 47.5 -19.5t19.5 -47.5v-51q0 -28 -19.5 -47.5t-47.5 -19.5h-742q-28 0 -47.5 19.5t-19.5 47.5v51 q0 28 19.5 47.5t47.5 19.5h742zM872 49q28 0 47.5 -19.5t19.5 -47.5v-51q0 -28 -19.5 -47.5t-47.5 -19.5h-742q-28 0 -47.5 19.5t-19.5 47.5v51q0 28 19.5 47.5t47.5 19.5h742z" transform="translate(0, 800) scale(1, -1)"/></svg><ul class="nav-list">
+
+
+
+<li><a href="/" class="page-link">Home</a></li>
+
+<li><a href="/archives/" class="page-link">Archives</a></li>
+
+<li><a href="/thoughts/" class="page-link">Thoughts</a></li>
+
+<li><a href="/about/" class="page-link">Résumé</a></li>
+
+<li><a href="/feed.xml" class="page-link">Feed</a></li>
+</ul></div></div></div><div class="main-wrapper"><div class="inner-wrapper"><div class="logo"><a href="/">8D is Here</a></div><div class="page-meta">
+在 AngularJS 中利用 Directive 和 Service 进行 服务端表单校验
+</div><div class="main-area"><div class="post-entry"><h1 class="entry-title">AngularJS 中进行服务端表单校验</h1><div class="entry-meta"><time class="updated">Sep 22, 2014</time></div><div class="entry-content"><h2 id="section">前言</h2>
+
+<p>AngularJS 自带的表单校验功能还是很弱的，但是定制性很强。本文实现了利用 Directive 配合 Service 给出了一种简单的服务端表单校验解决方案。功能实现主要分为两部分：</p>
+
+<ul>
+  <li>向服务端发送请求获取校验结果</li>
+  <li>表单校验 Directive 实现 (主要)</li>
+</ul>
+
+<p>不多说直接上代码。</p>
+
+<h2 id="section-1">向服务端发送请求</h2>
+
+<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="nx">app</span><span class="p">.</span><span class="nx">factory</span><span class="p">(</span><span class="s1">&#39;service&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">$q</span><span class="p">,</span> <span class="nx">$http</span><span class="p">){</span>
+  <span class="k">return</span> <span class="p">{</span>
+    <span class="nx">get</span><span class="o">:</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">v</span><span class="p">){</span>
+      <span class="kd">var</span> <span class="nx">d</span> <span class="o">=</span> <span class="nx">$q</span><span class="p">.</span><span class="nx">defer</span><span class="p">();</span>
+      <span class="nx">$http</span><span class="p">.</span><span class="nx">post</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">,</span> <span class="p">{</span><span class="nx">q</span><span class="o">:</span><span class="nx">v</span><span class="p">}).</span><span class="nx">success</span><span class="p">(</span><span class="nx">d</span><span class="p">.</span><span class="nx">resolve</span><span class="p">).</span><span class="nx">error</span><span class="p">(</span><span class="nx">d</span><span class="p">.</span><span class="nx">reject</span><span class="p">);</span>
+      <span class="k">return</span> <span class="nx">d</span><span class="p">.</span><span class="nx">promise</span><span class="p">;</span>
+    <span class="p">}</span>
+  <span class="p">};</span>
+<span class="p">})</span></code></pre></div>
+
+<p>很简单，提供一个 <code>get()</code> 方法接受要校验的值返回校验结果。</p>
+
+<h2 id="directive-">表单校验 Directive 实现</h2>
+
+<p>从文档中可以推测出 <em>formCtroller</em> 维护一个 <em>VALIDATOR</em> 队列，要自定义表单校验，只需向该队列中加入一个自定义校验方法即可。</p>
+
+<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="nx">app</span><span class="p">.</span><span class="nx">directive</span><span class="p">(</span><span class="s1">&#39;unique&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">service</span><span class="p">){</span>
+  <span class="k">return</span> <span class="p">{</span>
+    <span class="nx">require</span><span class="o">:</span> <span class="s1">&#39;ngModel&#39;</span><span class="p">,</span>
+    <span class="nx">link</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">scope</span><span class="p">,</span> <span class="nx">ele</span><span class="p">,</span> <span class="nx">attrs</span><span class="p">,</span> <span class="nx">ctrl</span><span class="p">)</span> <span class="p">{</span>
+      <span class="nx">ctrl</span><span class="p">.</span><span class="nx">$parsers</span><span class="p">.</span><span class="nx">unshift</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">viewValue</span><span class="p">){</span>
+        <span class="nx">service</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="nx">viewValue</span><span class="p">).</span><span class="nx">then</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">resp</span><span class="p">){</span>
+          <span class="nx">ctrl</span><span class="p">.</span><span class="nx">$setValidity</span><span class="p">(</span><span class="s1">&#39;unique&#39;</span><span class="p">,</span> <span class="nx">resp</span><span class="p">.</span><span class="nx">data</span><span class="p">);</span>
+        <span class="p">});</span>
+        <span class="k">return</span> <span class="nx">viewValue</span><span class="p">;</span>
+      <span class="p">});</span>
+    <span class="p">}</span>
+  <span class="p">};</span>
+<span class="p">})</span></code></pre></div>
+
+<p>与文档中给出的实现差别不大，但是有个<strong>坑</strong>。其实也不算坑了，所谓的坑无非是经验或者能力不足。就是由于网络请求是异步的，所以返回 <code>viewValue</code> 一定要放在回调函数的外面！否则会断掉 <code>ngModel</code> 的绑定。也就是说自定义的 validator 必须要返回 <code>viewValue</code> 值。而回调函数虽然用 Promise 对象封装成了链式写法但终究还是异步的，想要在里面直接返回数据给外部依旧是天方夜谭。</p>
+
+<p>当然还有一种写法就是在回调里面根据 <code>attrs.ngModel</code> 给 <code>$scope</code> 赋值，可以符合官方文档给出的自定义校验的逻辑(成功返回 viewVale，否则返回 undefined)，但是感觉违背了 validator-chain 的意思，总觉得不够优雅。</p>
+
+<p>目前这种写法还没遇到什么问题，如果以后发现问题再来改进看看有没有更好的写法。</p>
+</div><div class="comment-area">
+   <div id="disqus_thread"></div>
+   <script type="text/javascript">
+       /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+       var disqus_shortname = 'heheblog'; // required: replace example with your forum shortname
+       /* * * DON'T EDIT BELOW THIS LINE * * */
+       (function() {
+           var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+           dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+           (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+       })();
+   </script>
+   <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+   <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+   
+</div></div></div></div></div><div class="footer"><div class="inner-footer"><p>&copy; Copyright 2014 by Yuwei Ba</p></div></div>
+
+<script>
+ (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+ (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+ m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+ })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+ ga('create', 'UA-53224060-1', 'auto');
+ ga('send', 'pageview');
+</script>
+
+</body></html>

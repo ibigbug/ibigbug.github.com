@@ -1,0 +1,58 @@
+---
+layout: post
+title: AngularJS 中进行服务端表单校验
+date: 2014-09-22
+meta: 在 AngularJS 中利用 Directive 和 Service 进行 服务端表单校验
+category: work
+---
+
+## 前言
+
+AngularJS 自带的表单校验功能还是很弱的，但是定制性很强。本文实现了利用 Directive 配合 Service 给出了一种简单的服务端表单校验解决方案。功能实现主要分为两部分：
+
+* 向服务端发送请求获取校验结果
+* 表单校验 Directive 实现 (主要)
+
+不多说直接上代码。
+
+## 向服务端发送请求
+
+{% highlight javascript %}
+app.factory('service', function($q, $http){
+  return {
+    get: function (v){
+      var d = $q.defer();
+      $http.post('/', {q:v}).success(d.resolve).error(d.reject);
+      return d.promise;
+    }
+  };
+})
+{% endhighlight %}
+
+很简单，提供一个 `get()` 方法接受要校验的值返回校验结果。
+
+## 表单校验 Directive 实现
+
+从文档中可以推测出 *formCtroller* 维护一个 *VALIDATOR* 队列，要自定义表单校验，只需向该队列中加入一个自定义校验方法即可。
+
+{% highlight javascript %}
+app.directive('unique', function(service){
+  return {
+    require: 'ngModel',
+    link: function(scope, ele, attrs, ctrl) {
+      ctrl.$parsers.unshift(function(viewValue){
+        service.get(viewValue).then(function(resp){
+          ctrl.$setValidity('unique', resp.data);
+        });
+        return viewValue;
+      });
+    }
+  };
+})
+{% endhighlight %}
+
+与文档中给出的实现差别不大，但是有个**坑**。其实也不算坑了，所谓的坑无非是经验或者能力不足。就是由于网络请求是异步的，所以返回 `viewValue` 一定要放在回调函数的外面！否则会断掉 `ngModel` 的绑定。也就是说自定义的 validator 必须要返回 `viewValue` 值。而回调函数虽然用 Promise 对象封装成了链式写法但终究还是异步的，想要在里面直接返回数据给外部依旧是天方夜谭。
+
+当然还有一种写法就是在回调里面根据 `attrs.ngModel` 给 `$scope` 赋值，可以符合官方文档给出的自定义校验的逻辑(成功返回 viewVale，否则返回 undefined)，但是感觉违背了 validator-chain 的意思，总觉得不够优雅。
+
+目前这种写法还没遇到什么问题，如果以后发现问题再来改进看看有没有更好的写法。

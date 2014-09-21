@@ -5,9 +5,69 @@
     <description>Programming makes life easier and better. Life Lover.</description>
     <link>http://blog.xiaoba.me/</link>
     <atom:link href="http://blog.xiaoba.me/feed.xml" rel="self" type="application/rss+xml" />
-    <pubDate>Sun, 07 Sep 2014 00:32:30 +0800</pubDate>
-    <lastBuildDate>Sun, 07 Sep 2014 00:32:30 +0800</lastBuildDate>
+    <pubDate>Mon, 22 Sep 2014 00:42:36 +0800</pubDate>
+    <lastBuildDate>Mon, 22 Sep 2014 00:42:36 +0800</lastBuildDate>
     <generator>Jekyll v2.2.0</generator>
+    
+      <item>
+        <title>AngularJS 中进行服务端表单校验</title>
+        <description>&lt;h2 id=&quot;section&quot;&gt;前言&lt;/h2&gt;
+
+&lt;p&gt;AngularJS 自带的表单校验功能还是很弱的，但是定制性很强。本文实现了利用 Directive 配合 Service 给出了一种简单的服务端表单校验解决方案。功能实现主要分为两部分：&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;向服务端发送请求获取校验结果&lt;/li&gt;
+  &lt;li&gt;表单校验 Directive 实现 (主要)&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;不多说直接上代码。&lt;/p&gt;
+
+&lt;h2 id=&quot;section-1&quot;&gt;向服务端发送请求&lt;/h2&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-javascript&quot; data-lang=&quot;javascript&quot;&gt;&lt;span class=&quot;nx&quot;&gt;app&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;factory&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&amp;#39;service&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;$q&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;$http&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;){&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;nx&quot;&gt;get&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;v&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;){&lt;/span&gt;
+      &lt;span class=&quot;kd&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;d&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;$q&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;defer&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
+      &lt;span class=&quot;nx&quot;&gt;$http&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;post&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&amp;#39;/&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;q&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;v&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}).&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;success&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;d&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;resolve&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;error&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;d&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;reject&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+      &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;d&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;promise&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+  &lt;span class=&quot;p&quot;&gt;};&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;})&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;很简单，提供一个 &lt;code&gt;get()&lt;/code&gt; 方法接受要校验的值返回校验结果。&lt;/p&gt;
+
+&lt;h2 id=&quot;directive-&quot;&gt;表单校验 Directive 实现&lt;/h2&gt;
+
+&lt;p&gt;从文档中可以推测出 &lt;em&gt;formCtroller&lt;/em&gt; 维护一个 &lt;em&gt;VALIDATOR&lt;/em&gt; 队列，要自定义表单校验，只需向该队列中加入一个自定义校验方法即可。&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-javascript&quot; data-lang=&quot;javascript&quot;&gt;&lt;span class=&quot;nx&quot;&gt;app&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;directive&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&amp;#39;unique&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;service&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;){&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;nx&quot;&gt;require&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&amp;#39;ngModel&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+    &lt;span class=&quot;nx&quot;&gt;link&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;scope&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;ele&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;attrs&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;ctrl&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+      &lt;span class=&quot;nx&quot;&gt;ctrl&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;$parsers&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;unshift&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;viewValue&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;){&lt;/span&gt;
+        &lt;span class=&quot;nx&quot;&gt;service&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;get&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;viewValue&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;then&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;resp&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;){&lt;/span&gt;
+          &lt;span class=&quot;nx&quot;&gt;ctrl&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;$setValidity&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&amp;#39;unique&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;resp&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;data&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+        &lt;span class=&quot;p&quot;&gt;});&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;viewValue&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+      &lt;span class=&quot;p&quot;&gt;});&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+  &lt;span class=&quot;p&quot;&gt;};&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;})&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;与文档中给出的实现差别不大，但是有个&lt;strong&gt;坑&lt;/strong&gt;。其实也不算坑了，所谓的坑无非是经验或者能力不足。就是由于网络请求是异步的，所以返回 &lt;code&gt;viewValue&lt;/code&gt; 一定要放在回调函数的外面！否则会断掉 &lt;code&gt;ngModel&lt;/code&gt; 的绑定。也就是说自定义的 validator 必须要返回 &lt;code&gt;viewValue&lt;/code&gt; 值。而回调函数虽然用 Promise 对象封装成了链式写法但终究还是异步的，想要在里面直接返回数据给外部依旧是天方夜谭。&lt;/p&gt;
+
+&lt;p&gt;当然还有一种写法就是在回调里面根据 &lt;code&gt;attrs.ngModel&lt;/code&gt; 给 &lt;code&gt;$scope&lt;/code&gt; 赋值，可以符合官方文档给出的自定义校验的逻辑(成功返回 viewVale，否则返回 undefined)，但是感觉违背了 validator-chain 的意思，总觉得不够优雅。&lt;/p&gt;
+
+&lt;p&gt;目前这种写法还没遇到什么问题，如果以后发现问题再来改进看看有没有更好的写法。&lt;/p&gt;
+</description>
+        <pubDate>Mon, 22 Sep 2014 00:00:00 +0800</pubDate>
+        <link>http://blog.xiaoba.me/2014/09/22/angular-server-side-form-validation.html</link>
+        <guid isPermaLink="true">http://blog.xiaoba.me/2014/09/22/angular-server-side-form-validation.html</guid>
+        
+        
+        <category>work</category>
+        
+      </item>
     
       <item>
         <title>Wireshark 与 HTTP 协议</title>
@@ -1003,148 +1063,6 @@ jQuery 默认 Ajax 请求：
         
         
         <category>life</category>
-        
-      </item>
-    
-      <item>
-        <title>什么时候该使用assert</title>
-        <description>&lt;p&gt;&lt;em&gt;【本文译自&lt;a href=&quot;https://mail.python.org/pipermail/python-list/2013-November/660401.html&quot;&gt;When to use assert&lt;/a&gt;】&lt;/em&gt;&lt;/p&gt;
-
-&lt;p&gt;什么情况下该使用&lt;code&gt;assert&lt;/code&gt;语句的问题很常见，经常有人误用它，因此我写了这篇文章来介绍什么时候、为什么要使用断言语句&lt;code&gt;assert&lt;/code&gt;，什么时候不该用。&lt;/p&gt;
-
-&lt;p&gt;为不熟悉的人简单说明一下，Python中的&lt;code&gt;assert&lt;/code&gt;语句用来验证一个条件。如果条件为真，什么都不发生；相反，便会触发一个&lt;code&gt;AssertionError&lt;/code&gt;，带有一个可选的错误信息。例如：&lt;/p&gt;
-
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-python&quot; data-lang=&quot;python&quot;&gt;&lt;span class=&quot;n&quot;&gt;py&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;x&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;23&lt;/span&gt;
-&lt;span class=&quot;n&quot;&gt;py&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;assert&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;x&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;quot;x is not zero or negative&amp;quot;&lt;/span&gt;
-&lt;span class=&quot;n&quot;&gt;py&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;assert&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;x&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;%&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;==&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;quot;x is not an even number&amp;quot;&lt;/span&gt;
-&lt;span class=&quot;n&quot;&gt;Traceback&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;most&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;recent&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;call&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;last&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;File&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;quot;&amp;lt;stdin&amp;gt;&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;line&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;ow&quot;&gt;in&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;module&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; 
-    &lt;span class=&quot;ne&quot;&gt;AssertionError&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;x&lt;/span&gt; &lt;span class=&quot;ow&quot;&gt;is&lt;/span&gt; &lt;span class=&quot;ow&quot;&gt;not&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;an&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;even&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;number&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-
-&lt;p&gt;很多人用&lt;code&gt;assert&lt;/code&gt;语句来快速方便地在输入参数不正确的时候触发异常。但这是错误，而且是一个很危险的错误的做法，有两个原因。其一，&lt;code&gt;AssertionError&lt;/code&gt;不是用来测试函数参数时候该给出的错误类型。你不应该像下面这样写代码：&lt;/p&gt;
-
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-python&quot; data-lang=&quot;python&quot;&gt;&lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;ow&quot;&gt;not&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;isinstance&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;x&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;int&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
-    &lt;span class=&quot;k&quot;&gt;raise&lt;/span&gt; &lt;span class=&quot;ne&quot;&gt;AssertionError&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;not an int&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-
-&lt;p&gt;这里应该触发&lt;code&gt;TypeError&lt;/code&gt;异常而不是&lt;code&gt;AssertionError&lt;/code&gt;。&lt;code&gt;assert&lt;/code&gt;触发了错误的异常类型。&lt;/p&gt;
-
-&lt;p&gt;然而，更加危险的是，有一种情况[?]：当带着&lt;code&gt;-O&lt;/code&gt;或者&lt;code&gt;-OO&lt;/code&gt;优化参数来运行脚本时，&lt;code&gt;assert&lt;/code&gt;语句在编译的时候将被忽略，因此不能保证&lt;code&gt;assert&lt;/code&gt;语句一定会执行。这是正常使用&lt;code&gt;assert&lt;/code&gt;语句的一个特性，但是当使用不恰当时，便会导致亿&lt;code&gt;-O&lt;/code&gt;参数运行的程序崩溃。&lt;/p&gt;
-
-&lt;p&gt;那么什么时候该使用&lt;code&gt;assert&lt;/code&gt;？以下几种场景可以使用，排名不分先后：&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;防卫式编程* 运行时的程序逻辑检查* 契约式检查（比如：先验条件和后验条件）* 程序不变量* 测试注释&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;（在测试代码的时候使用&lt;code&gt;assert&lt;/code&gt;也是可以的，作为一种&lt;em&gt;快速丑陋&lt;/em&gt;的懒人的测试用例，如果你接受当程序以&lt;code&gt;-O&lt;/code&gt;参数运行时，&lt;code&gt;assert&lt;/code&gt;将不会起任何作用。我有时也会用&lt;code&gt;assert False&lt;/code&gt;来标记代码分支中尚未完成的部分，我希望这一部分会断言失败。如果写的更多一些，&lt;code&gt;rasie NotImplementError&lt;/code&gt;可能会显得更恰当）&lt;/p&gt;
-
-&lt;p&gt;断言的情形有很多，因为这是用来检验代码的正确性的语句。如果你确信某一部分代码是正确的，那么&lt;code&gt;assert&lt;/code&gt;便没有意义了，因为这里永远不会断言失败你可以安全的删除这一处断言。如果你担心断言可能会失败（例如测试用户输入的数据），那么你不敢放心的使用&lt;code&gt;assert&lt;/code&gt;因为它有可能会在编译时被忽略，那么你的检测就被跳过了。&lt;/p&gt;
-
-&lt;p&gt;有一种有趣的情形介于上面两种之间，有时你认为某段代码是正确的但又不是&lt;em&gt;100%&lt;/em&gt;的确信。也许你曾经忽视过一些奇怪的边界情形（毕竟我们只是人类）。这种情况下，附加运行时的检查会让你安心一些，这样错误会在发生是被尽快的捕获而不是在程序已经运行了一段时间之后。&lt;/p&gt;
-
-&lt;p&gt;（这也是为什么&lt;code&gt;assert&lt;/code&gt;的使用会出现分歧。每个人对自己代码的自信力不同，有的人觉得某一处&lt;code&gt;assert&lt;/code&gt;是有必要的别人可能觉得是多余的）&lt;/p&gt;
-
-&lt;p&gt;还有一种好的实践是用&lt;code&gt;assert&lt;/code&gt;来检测程序不变量。程序不变量是指你可以依赖的始终不变的条件，除非代码出了bug导致条件发生变化。如果程序有bug，最好今早的发现，所以我们做了测试，但是我们不希望这种测试拖慢我们的程序运行。因此，可以在开发的时候开启&lt;code&gt;assert&lt;/code&gt;测试，在生产环境下去掉他们。&lt;/p&gt;
-
-&lt;p&gt;一个不变量的例子，你的某个函数，在开始执行的时候需要一个数据库连接并且确保在函数执行期间连接始终有效直到函数返回，那么这个数据库连接可以看作这个函数内部的不变量：&lt;/p&gt;
-
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-python&quot; data-lang=&quot;python&quot;&gt;&lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;some_function&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;arg&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt; 
-    &lt;span class=&quot;k&quot;&gt;assert&lt;/span&gt; &lt;span class=&quot;ow&quot;&gt;not&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;DB&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;closed&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;    
-    &lt;span class=&quot;o&quot;&gt;...&lt;/span&gt; &lt;span class=&quot;c&quot;&gt;# code goes here    &lt;/span&gt;
-    &lt;span class=&quot;k&quot;&gt;assert&lt;/span&gt; &lt;span class=&quot;ow&quot;&gt;not&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;DB&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;closed&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;    
-    &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;result&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-
-&lt;p&gt;断言也可以作为不错的测试注释。对于下面这种注释：&lt;/p&gt;
-
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-python&quot; data-lang=&quot;python&quot;&gt;&lt;span class=&quot;c&quot;&gt;# when we reach here, we know that n &amp;gt; 2&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-
-&lt;p&gt;你可以通过如下断言确保这个注释已经测试通过，来取代上面的注释写法：&lt;/p&gt;
-
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-python&quot; data-lang=&quot;python&quot;&gt;&lt;span class=&quot;k&quot;&gt;assert&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;n&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-
-&lt;p&gt;在防卫式编程中使用断言也是不错的方式。你可能没有对代码中可能出现的错误采取立即的保护手段，而是在后面对可能出现错误的变化情况做保护。理想情况下，测试用例会查处这些错误，不过让我们来面对他们，即使是有测试用例的情况下，也不一定保证测试完整。开发的查错机器人可能会崩溃并且连续好几周没人注意到，或者程序员在提交代码之前忘记执行测试。在内部做检查是另一层防止错误溜入的方式，除了那种使程序功能出错返回错误结果但并不致程序崩溃的错误。&lt;/p&gt;
-
-&lt;p&gt;假设你知道某一个变量会有哪几种可能的取值，你要写一系列的&lt;code&gt;if...elif&lt;/code&gt;代码段：&lt;/p&gt;
-
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-python&quot; data-lang=&quot;python&quot;&gt;&lt;span class=&quot;c&quot;&gt;# target is expected to be one of x, y, or z, and nothing else.&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;target&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;==&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;x&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; 
-    &lt;span class=&quot;n&quot;&gt;run_x_code&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;elif&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;target&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;==&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;y&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;run_y_code&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;else&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;run_z_code&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-
-&lt;p&gt;假象上面的代码现在是正确的。但是会保证一直正确么？需求变更。代码发生变化。如果需求变化导致当&lt;code&gt;target = w&lt;/code&gt;时运行&lt;code&gt;run_w_code&lt;/code&gt;会怎么样？如果我们改变了代码，给&lt;code&gt;target&lt;/code&gt;变量赋值，却忘记修改上面这一块代码，就回错误的执行&lt;code&gt;run_z_code()&lt;/code&gt;导致不好的事情发生。所以上述代码最好写成防卫式，这样要么正确执行，要么理解抛出异常，即使日后可能会发生变化。&lt;/p&gt;
-
-&lt;p&gt;在这一块开始之前写上注释是个不错的第一步，但是众人皆知人们可能不会去阅读和更新注释。会导致注释失效。不过如果是个断言，则既起到这一块的注释作用又显得很整洁，并且如果注释条件被违反，程序会立即抛错：&lt;/p&gt;
-
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-python&quot; data-lang=&quot;python&quot;&gt;&lt;span class=&quot;k&quot;&gt;assert&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;target&lt;/span&gt; &lt;span class=&quot;ow&quot;&gt;in&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;x&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;y&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;z&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;target&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;==&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;x&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;    
-    &lt;span class=&quot;n&quot;&gt;run_x_code&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;elif&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;target&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;==&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;y&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;    
-    &lt;span class=&quot;n&quot;&gt;run_y_code&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;else&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;   
-    &lt;span class=&quot;k&quot;&gt;assert&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;target&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;==&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;z&lt;/span&gt;    
-        &lt;span class=&quot;n&quot;&gt;run_z_code&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-
-&lt;p&gt;这里，断言既是一种防卫式编程又是一个测试文档。我认为这是比下面更优雅的一种解决方案：&lt;/p&gt;
-
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-python&quot; data-lang=&quot;python&quot;&gt;&lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;target&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;==&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;x&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;run_x_code&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;elif&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;target&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;==&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;y&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;run_y_code&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;elif&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;target&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;==&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;z&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;run_z_code&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;else&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;
-    &lt;span class=&quot;c&quot;&gt;# This can never happen. But just in case it does...&lt;/span&gt;
-    &lt;span class=&quot;k&quot;&gt;raise&lt;/span&gt; &lt;span class=&quot;ne&quot;&gt;RuntimeError&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;an unexpected error occurred&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-
-&lt;p&gt;这种方法去掉了不必要的&lt;code&gt;value = c&lt;/code&gt;的判断，帮助开发者使代码变得简洁，并且去掉了&lt;code&gt;RuntimeError&lt;/code&gt;这一块&lt;a href=&quot;http://en.wikipedia.org/wiki/Dead_code&quot;&gt;死代码&lt;/a&gt;。另外，发生「unexpected error」（未知错误）也会显得很尴尬，而且他们也确实会发生。&lt;/p&gt;
-
-&lt;p&gt;&lt;a href=&quot;http://zh.wikipedia.org/wiki/%E5%A5%91%E7%BA%A6%E5%BC%8F%E8%AE%BE%E8%AE%A1&quot;&gt;契约式设计&lt;/a&gt;也是对断言的合理使用。在契约式设计中，我们认为函数与他的调用者之间签了契约。像下面这样：&lt;/p&gt;
-
-&lt;p&gt;「如果你传给我一个非空字符串，我一定会返回给你这个字符串首字母的大写模式。」&lt;/p&gt;
-
-&lt;p&gt;如果这个契约被函数或者调用函数的代码破坏，程序就会出现bug。我们说函数有「先验条件」（限制必须要有参数）和后置条件（限制必须要有返回值）。因此这个函数可能会这样编写：&lt;/p&gt;
-
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-python&quot; data-lang=&quot;python&quot;&gt;&lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;first_upper&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;astring&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
-    &lt;span class=&quot;k&quot;&gt;assert&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;isinstance&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;astring&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;str&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;ow&quot;&gt;and&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;len&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;astring&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;result&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;astring&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;upper&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
-    &lt;span class=&quot;k&quot;&gt;assert&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;isinstance&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;result&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;str&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;ow&quot;&gt;and&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;len&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;result&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;==&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;
-    &lt;span class=&quot;k&quot;&gt;assert&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;result&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;==&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;result&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;upper&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
-    &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;result&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-
-&lt;p&gt;&lt;code&gt;契约式设计&lt;/code&gt;的目标是，在正确的程序中，一直要保证先验条件和后验条件。始终断言，直到（断言一直在）我们发布没有bug的代码并将它们投入生产环境时，程序将会正常运行，我们也可以放心的移除断言测试。&lt;/p&gt;
-
-&lt;p&gt;下面是我的建议，什么情况下&lt;em&gt;不该&lt;/em&gt;使用断言：&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;永远不要用断言来测试用户输入的数据，或者任何其他必须要测试的情形。&lt;/li&gt;
-  &lt;li&gt;不要使用断言来测试程序正常运行时可能会出现的错误。断言是用在不正常的出错条件的。永远不要让你的用户看到&lt;code&gt;AssertionError&lt;/code&gt;；如果他们看到了，修复这个bug。&lt;/li&gt;
-  &lt;li&gt;特别的，不要只是仅为&lt;code&gt;assert&lt;/code&gt;比起正常的抛出异常的测试书写起来短一些就使用它。&lt;code&gt;assert&lt;/code&gt;不是专门给懒人程序员使用的快捷方法。&lt;/li&gt;
-  &lt;li&gt;不要用&lt;code&gt;assert&lt;/code&gt;来测试公共库函数的输入参数（私有的库函数没问题）因为你无法控制函数调用也无法保证断言不会破坏函数之间的契约。&lt;/li&gt;
-  &lt;li&gt;不要把&lt;code&gt;assert&lt;/code&gt;用在你要修复的错误上面。换句话说，这样你便需要在生产环境中来处理&lt;code&gt;AssertionError&lt;/code&gt;异常&lt;/li&gt;
-  &lt;li&gt;别用太多断言导致代码变得复杂&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;–  Steven&lt;/p&gt;
-
-&lt;p&gt;【译文完】&lt;/p&gt;
-
-&lt;p&gt;最后附加一份&lt;a href=&quot;http://lepture.com&quot;&gt;lepture&lt;/a&gt;提交给Tornado的有关&lt;code&gt;assert&lt;/code&gt;的PR：&lt;/p&gt;
-
-&lt;p&gt;&lt;a href=&quot;https://github.com/facebook/tornado/pull/937/files&quot;&gt;https://github.com/facebook/tornado/pull/937/files&lt;/a&gt;&lt;/p&gt;
-</description>
-        <pubDate>Tue, 19 Nov 2013 00:00:00 +0800</pubDate>
-        <link>http://blog.xiaoba.me/2013/11/19/when-to-use-assert.html</link>
-        <guid isPermaLink="true">http://blog.xiaoba.me/2013/11/19/when-to-use-assert.html</guid>
-        
-        <category>Python</category>
-        
-        <category>翻译</category>
-        
-        
-        <category>work</category>
         
       </item>
     
