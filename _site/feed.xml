@@ -5,8 +5,8 @@
     <description>Programming makes life easier and better. Life Lover.</description>
     <link>http://blog.xiaoba.me/</link>
     <atom:link href="http://blog.xiaoba.me/feed.xml" rel="self" type="application/rss+xml" />
-    <pubDate>Wed, 01 Oct 2014 11:59:23 +0800</pubDate>
-    <lastBuildDate>Wed, 01 Oct 2014 11:59:23 +0800</lastBuildDate>
+    <pubDate>Wed, 01 Oct 2014 12:17:04 +0800</pubDate>
+    <lastBuildDate>Wed, 01 Oct 2014 12:17:04 +0800</lastBuildDate>
     <generator>Jekyll v2.2.0</generator>
     
       <item>
@@ -23,7 +23,7 @@
 
 &lt;h2 id=&quot;make-data-visible&quot;&gt;Make data visible&lt;/h2&gt;
 
-&lt;p&gt;When I was uing Linux, I have to type &lt;code&gt;mysql -u blahblah&lt;/code&gt; and &lt;code&gt;select * from blah blah&lt;/code&gt;. Of course I show know what is being done when doing a query, but, simple is better than complex, using Navicat makes it super easily geting database visible. Just click click click :)&lt;/p&gt;
+&lt;p&gt;When I was uing Linux, I have to type &lt;code&gt;mysql -u blahblah&lt;/code&gt; and &lt;code&gt;select * from blah blah&lt;/code&gt;. Of course I should know what is being done when doing a query, but, 「simple is better than complex」, using Navicat feasibly makes the contents in database visible. Just click click click :)&lt;/p&gt;
 
 &lt;h2 id=&quot;most-important&quot;&gt;Most important&lt;/h2&gt;
 

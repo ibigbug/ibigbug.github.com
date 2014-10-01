@@ -19,7 +19,7 @@ Navicat was born with a beautiful and user friendly UI. Users can easily find th
 
 ## Make data visible
 
-When I was uing Linux, I have to type `mysql -u blahblah` and `select * from blah blah`. Of course I show know what is being done when doing a query, but, simple is better than complex, using Navicat makes it super easily geting database visible. Just click click click :)
+When I was uing Linux, I have to type `mysql -u blahblah` and `select * from blah blah`. Of course I should know what is being done when doing a query, but, 「simple is better than complex」, using Navicat feasibly makes the contents in database visible. Just click click click :)
 
 ## Most important
 
