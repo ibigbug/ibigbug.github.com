@@ -5,9 +5,44 @@
     <description>Programming makes life easier and better. Life Lover.</description>
     <link>http://blog.xiaoba.me/</link>
     <atom:link href="http://blog.xiaoba.me/feed.xml" rel="self" type="application/rss+xml" />
-    <pubDate>Mon, 22 Sep 2014 00:42:36 +0800</pubDate>
-    <lastBuildDate>Mon, 22 Sep 2014 00:42:36 +0800</lastBuildDate>
+    <pubDate>Wed, 01 Oct 2014 11:59:23 +0800</pubDate>
+    <lastBuildDate>Wed, 01 Oct 2014 11:59:23 +0800</lastBuildDate>
     <generator>Jekyll v2.2.0</generator>
+    
+      <item>
+        <title>Navicat Premium on Mac</title>
+        <description>&lt;h2 id=&quot;navicat&quot;&gt;Navicat&lt;/h2&gt;
+
+&lt;p&gt;Navicat is a powerful database management application available on all plaforms including iOS. Since I’ve used Mac, I have been finding an DB managing application with beautiful GUI and powerful features and Navicat is the one.&lt;/p&gt;
+
+&lt;h2 id=&quot;beautiful-ui&quot;&gt;Beautiful UI&lt;/h2&gt;
+
+&lt;p&gt;Navicat was born with a beautiful and user friendly UI. Users can easily find the feature they want.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://yuwei-cdn.b0.upaiyun.com/blog/images/navicat-ui.png&quot; alt=&quot;ui&quot; /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;make-data-visible&quot;&gt;Make data visible&lt;/h2&gt;
+
+&lt;p&gt;When I was uing Linux, I have to type &lt;code&gt;mysql -u blahblah&lt;/code&gt; and &lt;code&gt;select * from blah blah&lt;/code&gt;. Of course I show know what is being done when doing a query, but, simple is better than complex, using Navicat makes it super easily geting database visible. Just click click click :)&lt;/p&gt;
+
+&lt;h2 id=&quot;most-important&quot;&gt;Most important&lt;/h2&gt;
+
+&lt;p&gt;Navicat is able to generate a Entity-Relationship Diagram from an existing database. It helped me a lot when I was writing my bachelor’s degree thesis !&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://yuwei-cdn.b0.upaiyun.com/blog/images/navicat-er.png&quot; alt=&quot;er&quot; /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;other-features&quot;&gt;Other features&lt;/h2&gt;
+
+&lt;p&gt;Unlike phpMyadmin or MySQL workbench, navicat is a ALL-in-ONE application and supports any type of DB engine you use. Once you used Navicat, you wouldn’t want to use any other db manager anymore !&lt;/p&gt;
+</description>
+        <pubDate>Wed, 01 Oct 2014 00:00:00 +0800</pubDate>
+        <link>http://blog.xiaoba.me/2014/10/01/navicat-on-mac.html</link>
+        <guid isPermaLink="true">http://blog.xiaoba.me/2014/10/01/navicat-on-mac.html</guid>
+        
+        
+        <category>work</category>
+        
+      </item>
     
       <item>
         <title>AngularJS 中进行服务端表单校验</title>
@@ -1032,37 +1067,6 @@ jQuery 默认 Ajax 请求：
         
         
         <category>work</category>
-        
-      </item>
-    
-      <item>
-        <title>为什么我使用Linux</title>
-        <description>&lt;p&gt;前段时间有以为新的follower在twitter上问我算不算是Arch用户，把我问了一愣（后来简单通过id了解一下，发现好像是人人网跪圈的某位大牛之类的吧）。由于最近一次定期维护系统时，我一狠心把Arch的分区也给格掉了，所以我回答他说曾经算是。想起之前&lt;a href=&quot;https://twitter.com/cndaniel&quot;&gt;Daniel&lt;/a&gt;也问过我为什么要用Linux，刚好最近有时间，我就想了一下。&lt;/p&gt;
-
-&lt;p&gt;不用掰手指算，我用Linux不久，也就两三年时间吧。对Linux文化了解的也不多，还不知道&lt;a href=&quot;http://zh.wikipedia.org/wiki/GNU/Linux%E5%91%BD%E5%90%8D%E7%88%AD%E8%AD%B0&quot;&gt;Linux与GNU/Linux命名之争&lt;/a&gt;该如何站队；Linus的名言也背不出几条拿出来装腔；因为开源？没用Linux之前我是连安装软件之前的协议直接下一步跳过的，更别提什么版权意识开源精神了，即使用到现在也还是分不清各个License之间的细微区别，不过也有观点认为那是给商人们准备的，我们只要用就好了，所以才会出现像&lt;a href=&quot;http://www.wtfpl.net/&quot;&gt;WTFPL(Do What the Fuck You Want to Public License)&lt;/a&gt;这样的License吧；至于有人说的比Windows好用，网上两者对比的文章也很容易搜到，在我看来，对于非程序员类职业来说，根本就是扯淡的观点。而且操作系统之争，编辑器之争，编程语言之争这类的「圣战」，连大牛们战个几天几夜，也战不出个孰优孰劣，所以我也只就我自己的经历来说说为什么我要使用Linux。&lt;/p&gt;
-
-&lt;p&gt;第一次听说Linux大概是初中时候。那时喜欢去3800hk看一些「刷钻」、「盗号」之类的教学视频。应该有一次的视频里讲到通过TTL来判断主机OS时第一次了解到，原来除了Windows之外还有那么多「高级」的操作系统。那时好奇心也强，就攒了几块零钱，去找我们那里唯一一家卖电脑的商店找那位小哥刻了一张红旗Linux的安装包，给我盘的时候他说我肯定装不好。后来果然没装好。当时倒不是因为不知道怎么装，而是怕装好之后被我老爸发现又在乱搞一些没用的东西骂我一顿。也就作罢。&lt;/p&gt;
-
-&lt;p&gt;再一次接触Linux，也是真正接触并使用Linux，已经是大一时候加入学校的某个社团之后了。那个社团技术部门招新的网站上写了很多我当时还没听过的东西，什么MySQL、Python、Javascript之类的。唯一听过名字的就是Linux了。来大学之后有了自己的电脑，第一件事就是给它装上了一个Ubuntu。当时看到这样的部门介绍，感觉就像空的水杯遇见了水龙头一样，心想大学果然是个好地方，我一定要加入这个社团来学习如何使用我电脑里面新鲜的Ubuntu操作系统。虽然当时对写代码一无所知，不过高中毕业暑假里面学的搭建twip代理，搭建wordpress博客，初中时候用「135批量扫描工具」抓肉鸡之类的经历，还有面试时候跟正在恢复被误删的数据库的两位大牛说的「哪怕就让我进来帮你们买买水，买买面包也行啊」这样的表现让他们觉得我还行吧，所以也就进了技术部门。便正式开始在「工作」中使用Linux了。而Ubuntu，和其他大多数新手一样，是我使用的第一个「发行版」。&lt;/p&gt;
-
-&lt;p&gt;Ubuntu这个名字看起来很像乌托邦，其实读作「乌班图」。是一个很适合Windows用户转向Linux使用的发行版，安装过程与Windows基本无异。如果你愿意，也完全可以像Windows那样使用，因为是有图形界面的。我也正是在Ubuntu的使用过程中，接触了terminal、vim、python、markdown，并且习惯了能用键盘就不用鼠标。但毕竟是新手，对这些东西了解的并不深入，不过就像各种圈子一样，我也还是因此认识了一群跟我一样喜欢这些东西的朋友。&lt;/p&gt;
-
-&lt;p&gt;然而折腾是停不下来的，用了没多久Ubuntu，我顺理成章地听说了Gentoo这个可以满足折腾欲，用现在的话来讲就是逼格很高的发行版。如你所知，宅男是管不住自己手的。于是就开始没日没夜的装Gentoo。Gentoo跟Ubuntu不同，所有东西都要自己定制，编译安装的，而我的机器又不好，编译一个内核记得差不多要一个多钟头，对我这个菜鸟来说，编译失败就意味着要完全从头再来，已保证跟手册是同步的。而图形界面用的时间就更久了。那时为了这个，课也不上了。夜里室友在睡觉，我就静静的盯着屏幕，看着一行一行的编译语句执行，就像黑客帝国里面的那种黑底绿字的字符雨闪过一样。我没生过孩子，不过当第一次编译出的内核可以正常启动时，我推测那种感觉就像多数男人看到自己的小蝌蚪被孕育到世界里面来一样吧。而看到自己编译出的图形界面的感觉可能就跟自己的儿子考上了清华或者娶了个富婆一样吧。也是从那个时候开始，我不大怎么上课了，也不会像正常人一样好好睡觉了。&lt;/p&gt;
-
-&lt;p&gt;不过我发现Gentoo并不适合我，因为Gentoo安装软件包，都要自己动手编译，每次等这个编译的过程都很麻烦，很累。就像那些费劲千辛万苦追到女神之后发现两个人活在同一片蓝天，却不在同一个世界一样。我把Gentoo也格了，装了ArchLinux。在经历过Gentoo之后，我发觉Arch还是蛮适合我的。安装比Gentoo容易的多，可以按照自己的需求定制，又不用麻烦到事事都要自己动手设置好。用不到的一个不多，该有的一个不少。一切都很自然。所以这个也是我用得时间最长的发行版。直到我有了Mac，便很少再用了，在上一次定期维护系统时候，也给忍痛格掉了。&lt;/p&gt;
-
-&lt;p&gt;有人调侃Arch用户有一个特点，升级时候把系统滚挂了，不会怪系统不稳定，而是怪自己没有去看首页公告。其实对我来说，用Linux对我最大的影响也恰恰是在这里。为什么别人升级没问题，就你的挂了？如果用词语来总结的话，Linux培养了我「动手」而不是「伸手」或者「动嘴」的习惯。确实在Linux使用的过程中，会经常遇到一些这样那样的问题。抱怨系统不稳定啊，怎么没人告诉我啊之类的往往是没什么太大帮助的。而且一般情况下，问题往往不会自己消失。所以，自己找原因，自己动手解决问题。&lt;/p&gt;
-
-&lt;p&gt;今年暑假实习的时候，考虑到以后自己可能就要告别大学所学的专业课，成为一个职业码农了，干脆买了个MBA，正式加入了OS X阵营。Mac OS X其实跟Linux是有着相同祖先的，对我来说几乎没什么学习成本，我基本可以像使用Linux一样来使用Mac。但是毕竟是有钱来驱动的，Mac的图形界面要比每一个Linux发行版都优秀得多。在Mac里，我还是使用vim来编程，使用git来管理代码，使用dropbox和iCloud来同步文档，使用github来同步配置文件，使用号称最先进的「鼠须管」输入法，使用markdown和自己制作的SBlog程序来写博客，使用homebrew来管理安装一些开源软件。最近又买了一个Alfred 2来增强spotlight，感觉自己好像自己越来越像一个程序员了，就像小时候想象的一样。不过我毕竟算不上一个真正意义上合格的程序员。因为真正的程序员，是有创造力的，有能力改变世界的。每每想到这一点，总会点上一根忧伤的烟。&lt;/p&gt;
-
-&lt;p&gt;所以要问我为什么要用Linux，我也确实不能优雅的谢邀然后再写个1，2，3条出来。用了就是用了，而且一直在用，已经养成一种习惯，就是觉得不在电脑上面打游戏的时候，键盘就比鼠标好用的多，terminal就比图形界面舒服的多。就像有些高中同学说我，你从学物理的改行到学电气去，最后不去电力部门怎么跑去当了个码农，我也不知道怎么回答，可能就像钓了一根大骨架的桑地亚哥那样吧。&lt;/p&gt;
-</description>
-        <pubDate>Sun, 08 Dec 2013 00:00:00 +0800</pubDate>
-        <link>http://blog.xiaoba.me/2013/12/08/why-i-use-linux.html</link>
-        <guid isPermaLink="true">http://blog.xiaoba.me/2013/12/08/why-i-use-linux.html</guid>
-        
-        
-        <category>life</category>
         
       </item>
     
