@@ -1,0 +1,32 @@
+---
+layout: post
+title: Navicat Premium on Mac
+date: 2014-10-01
+meta: Using Navicat Premium on Mac OS X
+category: work
+---
+
+## Navicat
+
+Navicat is a powerful database management application available on all plaforms including iOS. Since I've used Mac, I have been finding an DB managing application with beautiful GUI and powerful features and Navicat is the one.
+
+## Beautiful UI
+
+Navicat was born with a beautiful and user friendly UI. Users can easily find the feature they want.
+
+![ui]({{ site.cdn }}/navicat-ui.png)
+
+
+## Make data visible
+
+When I was uing Linux, I have to type `mysql -u blahblah` and `select * from blah blah`. Of course I should know what is being done when doing a query, but, 「simple is better than complex」, using Navicat feasibly makes the contents in database visible. Just click click click :)
+
+## Most important
+
+Navicat is able to generate a Entity-Relationship Diagram from an existing database. It helped me a lot when I was writing my bachelor's degree thesis !
+
+![er]({{ site.cdn }}/navicat-er.png)
+
+## Other features
+
+Unlike phpMyadmin or MySQL workbench, navicat is a ALL-in-ONE application and supports any type of DB engine you use. Once you used Navicat, you wouldn't want to use any other db manager anymore !

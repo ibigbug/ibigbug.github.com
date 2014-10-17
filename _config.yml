@@ -1,10 +1,16 @@
 # Site settings
 title: 8D is Here
 email: i@xiaoba.me
+author: Yuwei Ba
 meta: 天青色等烟雨，而我在等你。
-description: 8D is Here —— 快乐编程，认真生活。
+description: Programming makes life easier and better. Life Lover.
+keywords: Javascript, Python, Life, Thoughts
+favicon: /favicon.png
 baseurl: ""
 url: http://blog.xiaoba.me
+
+# Third party
+twitter: "@ibigbug"
 comments: true
 disqus: heheblog
 analytics: true
