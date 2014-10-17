@@ -1,0 +1,128 @@
+------
+
+layout: post
+title: 译文:Understanding Asynchronous IO with Python 3.4's Asyncio and Node.js
+date: 2014-10-17
+category: work
+
+------
+
+## 介绍
+
+今年夏天我都在开发运行于 Node.js 的 Web 平台。这是我第一次全职在写 Node.js，然后几周之后问题明显的暴露出来，就是好多开发者，包括我，缺乏对 Node.js 中异步特性的清晰认识以及在底层是如何实现的。因为我确信要想高效使用一个平台需要清楚的理解它是如何工作的，所以我决定深入研究一下。这份好奇心让我开始研究其他语言中的异步特性是如何实现的，尤其是 Python，是我每次学习和试验用的语言。这让我去研究 Python 3.4 中的异步 IO 库 `asyncio` ，跟我之前研究的 coroutines (看我之前的文章 [combinatorial generation using coroutines in Python](http://sahandsaba.com/combinatorial-generation-using-coroutines-in-python.html))。这篇文章探讨了一些我在学习这块主题时候遇到的问题和解答，我希望能够帮助大家理解和回答一些问题。
+
+所有的 Python 代码需要 Python 3.4 环境。这主要是因为 Python 3.4 中介绍了 `selectors` 和 `asyncio` 模块。对于一些 Python 的早期版本中，类似 Twisted，gevent，tornado 等库也提供了类似的功能。
+
+在下面的一些例子中，我决定几乎完全忽略了错误和异常处理。这主要是为了简单起见，但是需要注意的是适当的异常处理在下面的编码设计方式中也很重要。我会在最后用一些例子展示 Python 3.4 的 `asyncio` 模块中如果对异常进行处理。
+
+## Getting Sarted: 重访 Hello World
+
+让我们从编写一个解决非常简单的问题的代码开始。我们从头到尾都将以这个问题和它的细微变化来展示概念。
+
+> Write a program to print "Hello world!" every three seconds, and at the same time wait for input from the user. Each line of user input will contain a single positive number n. As soon as input is entered, calculate and output the Fibonacci number F(n) and continue to wait for more input.
+
+注意当用户输入的时候，周期性的「Hello World!」将会有可能出现，但是我们不关心这点。
+
+熟悉 Node.js 和 JavaScript 的人可能已经想出了解决方案，可能看起来是这样:
+
+{% highlight javascript %}
+
+log_execution_time = require('./utils').log_execution_time;
+
+var fib = function fib(n) {
+    if (n < 2) return n;
+    return fib(n - 1) + fib(n - 2);
+};
+
+var timed_fib = log_execution_time(fib);
+
+var sayHello = function sayHello() {
+    console.log(Math.floor((new Date()).getTime() / 1000) + " - Hello world!");
+};
+
+var handleInput = function handleInput(data) {
+    n = parseInt(data.toString());
+    console.log('fib(' + n + ') = ' + timed_fib(n));
+};
+
+process.stdin.on('data', handleInput);
+setInterval(sayHello, 3000);
+
+{% end highlight %}
+
+大家可以看到，在 Node.js 中很容易实现。我们只需要设置一个间隔计时器来打印 「Hello World!」然后在吗`process.stdin` 上 attach 一个 `data` evnet handler，就做完了。在抽象层面很容易理解，并且也很容易使用。It just works!。But how? 为了回答这个问题，我们在 Python 里面做些同样的事情。
+
+同样需要注意的，我们使用了一个 `log_execution_time` 的修饰符来输出计算 Fibonacci 数用掉的时间。
+
+在这里我们用来计算 Fibonacci 数的算法我们有意选择了所有算法中最慢的一种(指数增长)。这是由于本篇文章不是关于 Fibonacci 数的(关于这个话题，参考[这篇文章](http://sahandsaba.com/five-ways-to-calculate-fibonacci-numbers-with-python-code.html), 里面讲了一种对数时间复杂度的算法) 并且我就是想让代码运算得慢些来展示一些概念。这是 Python 实现，会用上几倍的时间。
+
+{% highlight python %}
+
+from log_execution_time import log_execution_time
+
+
+def fib(n):
+    return fib(n - 1) + fib(n - 2) if n > 1 else n
+
+
+    timed_fib = log_execution_time(fib)
+
+{% end highlight %}
+
+现在回到手上的问题。我们是怎么开始的? Python 没用提供内置的 `setInterval` 或者 `setTimeout`。所以第一种可能的解决方案是使用系统级别的并发来解决。我们来使用两条线程来实现。我们需要对线程的细节多些了解。
+
+{% highlight python %}
+
+from threading import Thread
+from time import sleep
+from time import time
+from fib import timed_fib
+
+
+def print_hello():
+    while True:
+        print("{} - Hello world!".format(int(time())))
+        sleep(3)
+
+
+def read_and_process_input():
+    while True:
+        n = int(input())
+        print('fib({}) = {}'.format(n, timed_fib(n)))
+
+
+def main():
+    # Second thread will print the hello message. Starting as a daemon means
+    # the thread will not prevent the process from exiting.
+    t = Thread(target=print_hello)
+    t.daemon = True
+    t.start()
+    # Main thread will read and process input
+    read_and_process_input()
+
+if __name__ == '__main__':
+    main()
+
+{% end highlight %}
+
+也很简单。那么基于线程的 Python 实现与 Node.js 中的实现相同吗? 我们来做个试验。像我们之前讨论过的，我们的 Fibonacci 数的计算代码非常的慢，让我们试一个非常大的数字，比如 Python 中用 37，Node.js 用45(JavaScript 在数字计算中确实比 Python 快些)。
+
+{% highlight shell %}
+
+$ python3.4 hello_threads.py
+1412360472 - Hello world!
+37
+1412360475 - Hello world!
+1412360478 - Hello world!
+1412360481 - Hello world!
+Executing fib took 8.96 seconds.
+fib(37) = 24157817
+1412360484 - Hello world!
+
+{% end highlight %}
+
+在 Node.js 中，当计算 Fibbonacci 数时候，打印 「Hello World!」消息就停止了。让我们看看这是怎么回事。
+
+## Event Loops 和 Threads
+
+为了理解前面部分
