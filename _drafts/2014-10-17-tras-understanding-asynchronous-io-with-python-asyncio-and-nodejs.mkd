@@ -123,6 +123,494 @@ fib(37) = 24157817
 
 在 Node.js 中，当计算 Fibbonacci 数时候，打印 「Hello World!」消息就停止了。让我们看看这是怎么回事。
 
-## Event Loops 和 Threads
+## 事件循环和线程 
 
-为了理解前面部分
+为了理解前面部分中出现的两种解决方案之间的区别，我们需要简单的了解一下线程和事件循环。首先，我们从线程开始。线程被认为是一个单一的操作序列和 CPU 的执行它们的当前状态(CPU 状态指的是例如寄存器中的值，特别是下一条指令的地址)。
+
+简单的同步程序通常在一条单一的线程中运行，这就是为什么有的操作需要等待，比如等待 IO 操作或者计时器，程序的执行会被暂停直到阻塞操作结束。最简单的阻塞操作之一就是`sleep`。事实上，`sleep`所做的全部事情，也就是按照给定的时间长度阻塞当前执行的线程。一个建成可以运行许多线程。在同一条进程里面的线程共享进程级的资源，比如内存和它的地址空间，文件描述符等等。
+
+操作系统会控制操作线程，系统内部的调度器会关心进程内部的线程切换(和进程切换，但是我们在这里不太关心它，因为它不在本文的讨论范围)。操作系统的调度器会选择什么时候暂停一条线程然后把 CPU 的控制权交给另外一条线程执行。这个叫做上下文切换，需要关系到当前线程上下文的保存(比如，CPU 寄存器的值)然后载入目标线程的上下文。上下文切换的代价会比较大因为需要 CPU 的循环。
+
+有很多原因可以让 CPU 决定切换到下一条线程。比如高优先级的进程或者线程需要立即执行(比如，处理硬件中断的代码)，或者线程自己要求暂定一会(比如调用`sleep`)，或者线程的执行超过了为它分配的时间(也被称作「量子时间」(时间片?，译者注))然后必须回到等待队列等待下一次被调度继续执行。
+
+回到我们之前的解决方案，Python 解法明显是基于多线程的。这也解释了为什么两个任务可以同时执行，以及为什么计算大的 Fibonacci 数这种 CPU 密集型操作没有阻塞另一条线程执行。
+
+那么 Node.js 是怎么样的呢? 事实证明，计算是阻塞了另外一个任务的，也就是说我们的代码是单线程执行的。这也是事实上 Node.js 是如何实现的。至于操作系统方面，你的程序也是运行在单线程的(这里我稍微简化了一些东西，以为基于 libuv 平台可能会对一些 IO 事件应用到线程池，但是这不影响你的 Javascript 代码还是运行在单线程的)。
+
+有很多原因需要你在一些场景避免使用多线程。其中之一就是线程在计算机和资源方面是昂贵的，另外真正的基于线程的并行带来的内存共享问题会牵扯到比如死锁和竞争条件，需要在编程是考虑保持线程安全，是代码更加复杂。(当然，这些都是相对的，线程有自己的时间和空间(这里每太看懂，译者)。但是这不是本文的重点!)
+
+让我们看看如果我们不用多线程解决这个问题。这样我们需要模仿 Node.js 背后的场景:事件循环。首先，我们需要一个办法来查询`stdin`来保持输入，也就是一个系统调用来等待一个文件描述符(这里就是`stdin`)是否有可读的输入。基于操作系统，有很多系统调用来实现比如`poll`，`select`，`kqueue`等待。在 Python 3.4 中，`selectors` 模块提供了这些系统调用的一个抽象，你可以安全地(在某种意义上)在不同的机器上面使用它。
+
+当我们有了查询功能，我们的事件循环将会非常简单:在每次循环迭代中，我们查询是否有可读输入，如果有，把它读进来处理。然后，我们检查是不是距离上次打印「Hello World!」是不是已经过了三秒钟，如果是，我们再打印。来看下。
+
+{% highlight python %}
+
+import selectors
+import sys
+from time import time
+from fib import timed_fib
+
+
+def process_input(stream):
+    text = stream.readline()
+    n = int(text.strip())
+    print('fib({}) = {}'.format(n, timed_fib(n)))
+
+
+def print_hello():
+    print("{} - Hello world!".format(int(time())))
+
+
+def main():
+    selector = selectors.DefaultSelector()
+    # Register the selector to poll for "read" readiness on stdin
+    selector.register(sys.stdin, selectors.EVENT_READ)
+    last_hello = 0  # Setting to 0 means the timer will start right away
+    while True:
+        # Wait at most 10 milliseconds for input to be available
+        for event, mask in selector.select(0.1):
+            process_input(event.fileobj)
+        if time() - last_hello > 3:
+            last_hello = time()
+            print_hello()
+
+
+if __name__ == '__main__':
+    main()
+
+{% end highlight %}
+
+这是输出结果:
+
+{% highlight shell %}
+
+$ python3.4 hello_eventloop.py
+1412376429 - Hello world!
+1412376432 - Hello world!
+1412376435 - Hello world!
+37
+Executing fib took 9.7 seconds.
+fib(37) = 24157817
+1412376447 - Hello world!
+1412376450 - Hello world!
+
+{% end highlight %}
+
+正如我们所料，由于我们使用了单线程，程序表现的跟 Node.js 一样，就是说，计算操作阻塞了打印操作。好的，优雅! 但是我们的解决是针对某种情形的硬编码。下面的部分，我们会关注通用化我们的事件循环代码来让它更强大和容易编写，首先应用回调，然后应用协程。
+
+## 基于回调的事件循环
+
+对于前面部分的事件循环的一个自然通用概括就是支持通用事件处理。使用回调可以相对容易的得到:对于每种事件类型(在我们的例子中，我们只有两种，`stdin`上面的输入和计时器计时)，让用户可以添加任意的方法作为事件处理。代码很简单，我们直接跳过了。只有一点稍微有些复杂，就是应用`bisect.insort`来处理计时事件。这里的算法是维护一个有序的计时器事件，最早的计时器事件先执行。这样，在每次的循环迭代中，我们只需检查是否有计时器，如果有，在开始的时候执行然后执行所有过期的计时器。`bisect.insort`简化了列表的正确插入。有很多方法实现这一点，这里我选择了这种。
+
+{% highlight python %}
+
+from bisect import insort
+from fib import timed_fib
+from time import time
+import selectors
+import sys
+
+
+class EventLoop(object):
+    """
+    Implements a callback based single-threaded event loop as a simple
+    demonstration.
+    """
+    def __init__(self, *tasks):
+        self._running = False
+        self._stdin_handlers = []
+        self._timers = []
+        self._selector = selectors.DefaultSelector()
+        self._selector.register(sys.stdin, selectors.EVENT_READ)
+
+    def run_forever(self):
+        self._running = True
+        while self._running:
+            # First check for available IO input
+            for key, mask in self._selector.select(0):
+                line = key.fileobj.readline().strip()
+                for callback in self._stdin_handlers:
+                    callback(line)
+
+            # Handle timer events
+            while self._timers and self._timers[0][0] < time():
+                handler = self._timers[0][1]
+                del self._timers[0]
+                handler()
+
+    def add_stdin_handler(self, callback):
+        self._stdin_handlers.append(callback)
+
+    def add_timer(self, wait_time, callback):
+        insort(self._timers, (time() + wait_time, callback))
+
+    def stop(self):
+        self._running = False
+
+
+def main():
+    loop = EventLoop()
+
+    def on_stdin_input(line):
+        if line == 'exit':
+            loop.stop()
+            return
+        n = int(line)
+        print("fib({}) = {}", n, timed_fib(n))
+
+    def print_hello():
+        print("{} - Hello world!".format(int(time())))
+        loop.add_timer(3, print_hello)
+
+    def f(x):
+        def g():
+            print(x)
+        return g
+
+    loop.add_stdin_handler(on_stdin_input)
+    loop.add_timer(0, print_hello)
+    loop.run_forever()
+
+
+if __name__ == '__main__':
+    main()
+
+{% end highlight %}
+
+这个看起来很简单，在实践中，这也是 Node.js 中常用的方法。然而，在更复杂的程序中，这种书写异步代码的方式，特别是加入了异常处理之后，将会成为所谓的 `callback hell`。引用 Guido van Rossum 关于回调的说法:
+
+> It requires super human discipline to write readable code in callbacks and if you don’t believe me look at any piece of JavaScript code. - Guido van Rossum
+
+有好多种其他的方案可以实现，比如 promises 和协程(已经有无数的 NPM 库做了对应的实现)。我更偏向的是(不是密码，我觉得[协程很酷!](http://sahandsaba.com/combinatorial-generation-using-coroutines-in-python.html))使用协程。下一部分我们基于协程实现了一个类似的事件循环。
+
+##  基于协程的事件循环
+
+协程就是当一个函数「返回」时仍然保存它返回时的状态(局部作用域的变量，以及下一步要执行的操作)。这样允许协程下一次被调用时直接进入它上次放回时的状态。这种形式的「返回」通常称为**yielding**。我在我的文章[combinatorial generation using coroutines article](http://sahandsaba.com/combinatorial-generation-using-coroutines-in-python.html)中研究过许多协程的细节和他们在 Python 中的实现。下面在我们应用它之前，我提供了一个非常简要的介绍。
+
+在 Python 中，`yield`关键字可以用来创建协程。当简单地被当作一条语句使用时，比如 `yield value`，给出的值将会被产出，控制权交还给调用者。想要从 `yield` 语句下一步继续执行协程，调用者需要调用内置的 `next` 函数。当作为表达式使用时，比如 `y = yield x`，`x`被产出，当需要继续协程时，可以调用协程的 `send` 方法，这样传给 `send` 方法的值会被发送回去赋给协程的返回表达式的返回值(这个例子中是 `y`)。
+
+这意味着我们可以利用协程编写异步代码，当我们需要等待异步操作时，简单的调用 yield。这样，我们可以 yield 需要继续执行的任务或者协程。这样代码看起来会非常有序而且看上去很像同步代码。这是一个产生 Fibonocci 数一部分的例子:
+
+{% highlight python %}
+
+def read_input():
+    while True:
+        line = yield sys.stdin
+        n = int(line)
+        print("fib({}) = {}", n, timed_fib(n))
+
+{% end highlight %}
+
+当然，为此我们需要一个事件循环来处理协程。为此，我们需要维护一个任务队列，在事件循环中执行。当有输入或者定时器到时(或者更通用一些，任何其他我们关心的事件)，我们维护一个需要继续执行的协程列表(可能还有需要传入的值)。对于每一个任务，我们维护一个绑定的 `stack` 变量来跟踪协程的栈，保持他们链式执行，各自根据下一个协程完毕。这是基于 [PEP342](http://legacy.python.org/dev/peps/pep-0342/) 中给出的 「Trampoline」的例子实现。我还用到了 Python 当中的 `functools.partial`，等价于 Javascript 中的 `Function.prototyp.bind`，也就是[函数柯里化](http://en.wikipedia.org/wiki/Currying)。
+
+像这样:
+
+{% highlight python %}
+
+from bisect import insort
+from collections import deque
+from fib import timed_fib
+from functools import partial
+from time import time
+import selectors
+import sys
+import types
+
+
+class sleep_for_seconds(object):
+    """
+    Yield and object of this type from a coroutine to have it "sleep" for the
+    given number of seconds.
+    """
+    def __init__(self, wait_time):
+        self._wait_time = wait_time
+
+
+class EventLoop(object):
+    """
+    Implements a simplified coroutine-based event loop as a demonstration.
+    Very similar to the "Trampoline" example in PEP 342, with exception
+    handling taken out for simplicity, and selectors added to handle file IO
+    """
+    def __init__(self, *tasks):
+        self._running = False
+        self._selector = selectors.DefaultSelector()
+
+        # Queue of functions scheduled to run
+        self._tasks = deque(tasks)
+
+        # (coroutine, stack) pair of tasks waiting for input from stdin
+        self._tasks_waiting_on_stdin = []
+
+        # List of (time_to_run, task) pairs, in sorted order
+        self._timers = []
+
+        # Register for polling stdin for input to read
+        self._selector.register(sys.stdin, selectors.EVENT_READ)
+
+    def resume_task(self, coroutine, value=None, stack=()):
+        result = coroutine.send(value)
+        if isinstance(result, types.GeneratorType):
+            self.schedule(result, None, (coroutine, stack))
+        elif isinstance(result, sleep_for_seconds):
+            self.schedule(coroutine, None, stack, time() + result._wait_time)
+        elif result is sys.stdin:
+            self._tasks_waiting_on_stdin.append((coroutine, stack))
+        elif stack:
+            self.schedule(stack[0], result, stack[1])
+
+    def schedule(self, coroutine, value=None, stack=(), when=None):
+        """
+        Schedule a coroutine task to be run, with value to be sent to it, and
+        stack containing the coroutines that are waiting for the value yielded
+        by this coroutine.
+        """
+        # Bind the parameters to a function to be scheduled as a function with
+        # no parameters.
+        task = partial(self.resume_task, coroutine, value, stack)
+        if when:
+            insort(self._timers, (when, task))
+        else:
+            self._tasks.append(task)
+
+    def stop(self):
+        self._running = False
+
+    def do_on_next_tick(self, func, *args, **kwargs):
+        self._tasks.appendleft(partial(func, *args, **kwargs))
+
+    def run_forever(self):
+        self._running = True
+        while self._running:
+            # First check for available IO input
+            for key, mask in self._selector.select(0):
+                line = key.fileobj.readline().strip()
+                for task, stack in self._tasks_waiting_on_stdin:
+                    self.schedule(task, line, stack)
+                self._tasks_waiting_on_stdin.clear()
+
+            # Next, run the next task
+            if self._tasks:
+                task = self._tasks.popleft()
+                task()
+
+            # Finally run time scheduled tasks
+            while self._timers and self._timers[0][0] < time():
+                task = self._timers[0][1]
+                del self._timers[0]
+                task()
+
+        self._running = False
+
+
+def print_every(message, interval):
+    """
+    Coroutine task to repeatedly print the message at the given interval
+    (in seconds)
+    """
+    while True:
+        print("{} - {}".format(int(time()), message))
+        yield sleep_for_seconds(interval)
+
+
+def read_input(loop):
+    """
+    Coroutine task to repeatedly read new lines of input from stdin, treat
+    the input as a number n, and calculate and display fib(n).
+    """
+    while True:
+        line = yield sys.stdin
+        if line == 'exit':
+            loop.do_on_next_tick(loop.stop)
+            continue
+        n = int(line)
+        print("fib({}) = {}".format(n, timed_fib(n)))
+
+
+def main():
+    loop = EventLoop()
+    hello_task = print_every('Hello world!', 3)
+    fib_task = read_input(loop)
+    loop.schedule(hello_task)
+    loop.schedule(fib_task)
+    loop.run_forever()
+
+
+if __name__ == '__main__':
+    main()
+
+{% end highlight %}
+
+注意到这种实现允许我们添加一个简单的 `do_on_next_tick` 方法，或多或少做些 Node.js 里面 `process.nextTick` 一样的事情。我用它实现了一个简单的键入 *exit* 就退出的功能(当然，我不是必须要用到 `do_on_next_tick`，我可以直接调用 `loop.stop()` !)
+
+另一个有意思的事情就是我们可以重新实现我们的递归 Fibonacci 算法，使用协程，而不是递归调用，这样我们可以让它于其他协程一起「并行」执行，包括打印 hello。看起来像这样:
+
+{% highlight python %}
+
+from event_loop_coroutine import EventLoop
+from event_loop_coroutine import print_every
+import sys
+
+
+def fib(n):
+    if n <= 1:
+        yield n
+    else:
+        a = yield fib(n - 1)
+        b = yield fib(n - 2)
+        yield a + b
+
+
+def read_input(loop):
+    while True:
+        line = yield sys.stdin
+        n = int(line)
+        fib_n = yield fib(n)
+        print("fib({}) = {}".format(n, fib_n))
+
+
+def main():
+    loop = EventLoop()
+    hello_task = print_every('Hello world!', 3)
+    fib_task = read_input(loop)
+    loop.schedule(hello_task)
+    loop.schedule(fib_task)
+    loop.run_forever()
+
+
+if __name__ == '__main__':
+    main()
+
+{% end highlight %}
+
+程序的输出将会是:
+
+{% highlight shell %}
+
+$ python3.4 fib_coroutine.py
+1412727829 - Hello world!
+1412727832 - Hello world!
+28
+1412727835 - Hello world!
+1412727838 - Hello world!
+fib(28) = 317811
+1412727841 - Hello world!
+1412727844 - Hello world!
+
+{% end highlight %}
+
+## 不是重复造轮子
+
+在前面两部分里面，我们用通用的方法实现了允许使用回调或者协程编写异步代码的事件循环。这对实践和学习来说有很大的意义但是在实践中，已经有好多成熟的 Python 库提供了事件循环。另外，在 Python 3.4 中带有一个 `asyncio` 模块，提供了事件循环和 IO 操作，网络等等。让我们先用 `asyncio` 解决上面的问题，然后来看一些更有趣的例子。
+
+{% highlight python %}
+
+import asyncio
+import sys
+from time import time
+from fib import timed_fib
+
+
+def process_input():
+    text = sys.stdin.readline()
+    n = int(text.strip())
+    print('fib({}) = {}'.format(n, timed_fib(n)))
+
+
+@asyncio.coroutine
+def print_hello():
+    while True:
+        print("{} - Hello world!".format(int(time())))
+        yield from asyncio.sleep(3)
+
+
+def main():
+    loop = asyncio.get_event_loop()
+    loop.add_reader(sys.stdin, process_input)
+    loop.run_until_complete(print_hello())
+
+
+if __name__ == '__main__':
+    main()
+
+{% end python %}
+
+注意 `@asyncio.coroutine` 是如何修饰协程的，而且用 `yield from` 而不是仅仅 `yield` 在其他协程的返回值上面。
+
+## 异常处理
+
+Python 的协程允许在协程运行时栈帧内抛出异常，这是协程已经暂停。我们来看个简单的例子:
+
+{% highlight python %}
+
+def coroutine():
+    print("Starting")
+    try:
+        yield "Let's pause until continued."
+        print("Continuing")
+    except Exception as e:
+        yield "Got an exception: " + str(e)
+
+
+def main():
+    c = coroutine()
+    next(c)  # Execute until the first yield
+    # Now throw an exception at the point where the coroutine has paused
+    value = c.throw(Exception("Have an exceptional day!"))
+    print(value)
+
+
+if __name__ == '__main__':
+    main()
+
+{% end highlight %}
+
+会输出:
+
+{$ highlight shell %}
+
+Starting
+Got an exception: Have an exceptional day!
+
+{% end highlight %}
+
+这将使用抛出异常来处理错误变得非常简单，在同步或者异步代码中，让事件循环可以适当的捕获和传递异常。例如，我们来看一个链式协程和事件循环:
+
+{% highlight python %}
+
+import asyncio
+
+
+@asyncio.coroutine
+def A():
+    raise Exception("Something went wrong in A!")
+
+
+@asyncio.coroutine
+def B():
+    a = yield from A()
+    yield a + 1
+
+
+@asyncio.coroutine
+def C():
+    try:
+        b = yield from B()
+        print(b)
+    except Exception as e:
+        print("C got exception:", e)
+
+
+def main():
+    loop = asyncio.get_event_loop()
+    loop.run_until_complete(C())
+
+
+if __name__ == '__main__':
+    main()
+
+{% end highlight %}
+
+在这个例子中，协程 `C` 依赖 `B` 的结果，`B` 依赖 `A`， `A` 抛出异常。所以如你所见，异常一直被传递到 `C` 之后被捕获，打印出消息。如你所见，这样的表现几乎跟同步代码一样。不需要手动在回调里面传递和捕获异常!
+
+
