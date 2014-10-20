@@ -1,11 +1,9 @@
-------
-
+---
 layout: post
-title: 译文:Understanding Asynchronous IO with Python 3.4's Asyncio and Node.js
+title: Understanding Asynchronous IO with Python 3.4's Asyncio and Node.js
 date: 2014-10-17
 category: work
-
-------
+---
 
 ## 介绍
 
@@ -48,7 +46,7 @@ var handleInput = function handleInput(data) {
 process.stdin.on('data', handleInput);
 setInterval(sayHello, 3000);
 
-{% end highlight %}
+{% endhighlight %}
 
 大家可以看到，在 Node.js 中很容易实现。我们只需要设置一个间隔计时器来打印 「Hello World!」然后在吗`process.stdin` 上 attach 一个 `data` evnet handler，就做完了。在抽象层面很容易理解，并且也很容易使用。It just works!。But how? 为了回答这个问题，我们在 Python 里面做些同样的事情。
 
@@ -67,7 +65,7 @@ def fib(n):
 
     timed_fib = log_execution_time(fib)
 
-{% end highlight %}
+{% endhighlight %}
 
 现在回到手上的问题。我们是怎么开始的? Python 没用提供内置的 `setInterval` 或者 `setTimeout`。所以第一种可能的解决方案是使用系统级别的并发来解决。我们来使用两条线程来实现。我们需要对线程的细节多些了解。
 
@@ -103,11 +101,11 @@ def main():
 if __name__ == '__main__':
     main()
 
-{% end highlight %}
+{% endhighlight %}
 
 也很简单。那么基于线程的 Python 实现与 Node.js 中的实现相同吗? 我们来做个试验。像我们之前讨论过的，我们的 Fibonacci 数的计算代码非常的慢，让我们试一个非常大的数字，比如 Python 中用 37，Node.js 用45(JavaScript 在数字计算中确实比 Python 快些)。
 
-{% highlight shell %}
+{% highlight bash %}
 
 $ python3.4 hello_threads.py
 1412360472 - Hello world!
@@ -119,7 +117,7 @@ Executing fib took 8.96 seconds.
 fib(37) = 24157817
 1412360484 - Hello world!
 
-{% end highlight %}
+{% endhighlight %}
 
 在 Node.js 中，当计算 Fibbonacci 数时候，打印 「Hello World!」消息就停止了。让我们看看这是怎么回事。
 
@@ -178,11 +176,11 @@ def main():
 if __name__ == '__main__':
     main()
 
-{% end highlight %}
+{% endhighlight %}
 
 这是输出结果:
 
-{% highlight shell %}
+{% highlight bash %}
 
 $ python3.4 hello_eventloop.py
 1412376429 - Hello world!
@@ -194,7 +192,7 @@ fib(37) = 24157817
 1412376447 - Hello world!
 1412376450 - Hello world!
 
-{% end highlight %}
+{% endhighlight %}
 
 正如我们所料，由于我们使用了单线程，程序表现的跟 Node.js 一样，就是说，计算操作阻塞了打印操作。好的，优雅! 但是我们的解决是针对某种情形的硬编码。下面的部分，我们会关注通用化我们的事件循环代码来让它更强大和容易编写，首先应用回调，然后应用协程。
 
@@ -275,7 +273,7 @@ def main():
 if __name__ == '__main__':
     main()
 
-{% end highlight %}
+{% endhighlight %}
 
 这个看起来很简单，在实践中，这也是 Node.js 中常用的方法。然而，在更复杂的程序中，这种书写异步代码的方式，特别是加入了异常处理之后，将会成为所谓的 `callback hell`。引用 Guido van Rossum 关于回调的说法:
 
@@ -299,7 +297,7 @@ def read_input():
         n = int(line)
         print("fib({}) = {}", n, timed_fib(n))
 
-{% end highlight %}
+{% endhighlight %}
 
 当然，为此我们需要一个事件循环来处理协程。为此，我们需要维护一个任务队列，在事件循环中执行。当有输入或者定时器到时(或者更通用一些，任何其他我们关心的事件)，我们维护一个需要继续执行的协程列表(可能还有需要传入的值)。对于每一个任务，我们维护一个绑定的 `stack` 变量来跟踪协程的栈，保持他们链式执行，各自根据下一个协程完毕。这是基于 [PEP342](http://legacy.python.org/dev/peps/pep-0342/) 中给出的 「Trampoline」的例子实现。我还用到了 Python 当中的 `functools.partial`，等价于 Javascript 中的 `Function.prototyp.bind`，也就是[函数柯里化](http://en.wikipedia.org/wiki/Currying)。
 
@@ -439,7 +437,7 @@ def main():
 if __name__ == '__main__':
     main()
 
-{% end highlight %}
+{% endhighlight %}
 
 注意到这种实现允许我们添加一个简单的 `do_on_next_tick` 方法，或多或少做些 Node.js 里面 `process.nextTick` 一样的事情。我用它实现了一个简单的键入 *exit* 就退出的功能(当然，我不是必须要用到 `do_on_next_tick`，我可以直接调用 `loop.stop()` !)
 
@@ -481,11 +479,11 @@ def main():
 if __name__ == '__main__':
     main()
 
-{% end highlight %}
+{% endhighlight %}
 
 程序的输出将会是:
 
-{% highlight shell %}
+{% highlight bash %}
 
 $ python3.4 fib_coroutine.py
 1412727829 - Hello world!
@@ -497,7 +495,7 @@ fib(28) = 317811
 1412727841 - Hello world!
 1412727844 - Hello world!
 
-{% end highlight %}
+{% endhighlight %}
 
 ## 不是重复造轮子
 
@@ -533,7 +531,7 @@ def main():
 if __name__ == '__main__':
     main()
 
-{% end python %}
+{% endhighlight %}
 
 注意 `@asyncio.coroutine` 是如何修饰协程的，而且用 `yield from` 而不是仅仅 `yield` 在其他协程的返回值上面。
 
@@ -563,16 +561,16 @@ def main():
 if __name__ == '__main__':
     main()
 
-{% end highlight %}
+{% endhighlight %}
 
 会输出:
 
-{$ highlight shell %}
+{% highlight bash %}
 
 Starting
 Got an exception: Have an exceptional day!
 
-{% end highlight %}
+{% endhighlight %}
 
 这将使用抛出异常来处理错误变得非常简单，在同步或者异步代码中，让事件循环可以适当的捕获和传递异常。例如，我们来看一个链式协程和事件循环:
 
@@ -609,8 +607,194 @@ def main():
 if __name__ == '__main__':
     main()
 
-{% end highlight %}
+{% endhighlight %}
 
 在这个例子中，协程 `C` 依赖 `B` 的结果，`B` 依赖 `A`， `A` 抛出异常。所以如你所见，异常一直被传递到 `C` 之后被捕获，打印出消息。如你所见，这样的表现几乎跟同步代码一样。不需要手动在回调里面传递和捕获异常!
 
+当然，这个例子更偏向理论也比较乏味。我们来看一个现实中的例子:我们来写一段代码，通过 [ipify](http://www.ipify.org/) 异步获取外网 IP。因为 `asyncio` 并不具有 HTTP 客户端(无论如何，到目前为止!)，我们必须在 TCP 层手写 HTTP 请求并且处理相应。因为我们已经想好了一个特定的 API (作为一个例子，不是生产环境代码!)，我们直接开始。在实践中，用针对这个功能的现成的模块，比如 `aiohttp`，会好很多。让我们来看看代码是什么样的:
 
+{% highlight python %}
+
+import asyncio
+import json
+
+
+host = 'api.ipify.org'
+request_headers = {'User-Agent': 'python/3.4',
+                   'Host': host,
+                   'Accept': 'application/json',
+                   'Accept-Charset': 'UTF-8'}
+
+
+@asyncio.coroutine
+def write_headers(writer):
+    for key, value in request_headers.items():
+        writer.write((key + ': ' + value + '\r\n').encode())
+    writer.write(b'\r\n')
+    yield from writer.drain()
+
+
+@asyncio.coroutine
+def read_headers(reader):
+    response_headers = {}
+    while True:
+        line_bytes = yield from reader.readline()
+        line = line_bytes.decode().strip()
+        if not line:
+            break
+        key, value = line.split(':', 1)
+        response_headers[key.strip()] = value.strip()
+    return response_headers
+
+
+@asyncio.coroutine
+def get_my_ip_address(verbose):
+    reader, writer = yield from asyncio.open_connection(host, 80)
+    writer.write(b'GET /?format=json HTTP/1.1\r\n')
+    yield from write_headers(writer)
+    status_line = yield from reader.readline()
+    status_line = status_line.decode().strip()
+    http_version, status_code, status = status_line.split(' ')
+    if verbose:
+        print('Got status {} {}'.format(status_code, status))
+    response_headers = yield from read_headers(reader)
+    if verbose:
+        print('Response headers:')
+        for key, value in response_headers.items():
+            print(key + ': ' + value)
+    # Assume the content length is sent by the server, which is the case
+    # with ipify
+    content_length = int(response_headers['Content-Length'])
+    response_body_bytes = yield from reader.read(content_length)
+    response_body = response_body_bytes.decode()
+    response_object = json.loads(response_body)
+    writer.close()
+    return response_object['ip']
+
+
+@asyncio.coroutine
+def print_my_ip_address(verbose):
+    try:
+        ip_address = yield from get_my_ip_address(verbose)
+        print("My IP address is:")
+        print(ip_address)
+    except Exception as e:
+        print("Error: ", e)
+
+
+def main():
+    loop = asyncio.get_event_loop()
+    try:
+        loop.run_until_complete(print_my_ip_address(verbose=True))
+    finally:
+        loop.close()
+
+
+if __name__ == '__main__':
+    main()
+
+{% endhighlight %}
+
+再一次，注意与同步代码的相似之处: 没有回调，没有复杂的错误处理，仅仅是非常简单而且可读的代码。我们来看看它怎么工作，没有发生任何错误:
+
+{% highlight bash %}
+
+$ python3.4 ipify.py
+Got status 200 OK
+Response headers:
+Content-Length: 21
+Server: Cowboy
+Connection: keep-alive
+Via: 1.1 vegur
+Content-Type: application/json
+Date: Fri, 10 Oct 2014 03:46:31 GMT
+My IP address is:
+<my IP address here, hidden for privacy!>
+
+{% endhighlight %}
+
+另外，如果发生了错误，例如没有网络连接，会输出:
+
+{% highlight bash %}
+
+$ python3.4 ipify.py
+Error:  [Errno 8] nodename nor servname provided, or not known
+
+{% endhighlight %}
+
+我认为这是使用协程编代替编写异步代码的主要好处: 与同步代码中的错误处理是一致的。比如上面的例子，万一协程链中的某一步失败了，或者某一个同步调用失败，异常都会被同样的捕获和处理。
+
+##  依赖多个相关协程的执行结果
+
+在前面的例子中，我们编写的代码在内部都是有一定顺序的，就是说协程内部的每条语句依赖钱一个协程完成。有时候，我们会需要执行一系列相关的任务，使用他们的 **完成时**，而不关心他们执行的顺序。例如，写一个爬虫，我们可能会针对页面内所有链接发送一些异步请求然后把这些相应加入到一个队列里面，按照我们的需求来处理。
+
+协程允许我们编写有序执行的异步代码，但是执行相关的任务然后处理他们的结果，可能是全部统一处理，也可能是单独逐一处理每一个完成的任务，比如可能用到回调，可能看起来会更好。然而，Python 3.4 的 `asyncio` 模块恰好自带了两个方法符合这两种场景，就是 `asyncio.as_completed` 和 `asyncio.gather` 这两个方法。
+
+我们来看两个简单的载入 URL 的例子，首先，应用 `asyncio.as_completed` 依次处理每一个完成的请求，然后，应用 `asyncio.gather` 等待所有全部完成之后统一处理。我们用随机暂停几秒的方法来代替真正的发送请求。这是代码:
+
+{% highlight python %}
+
+import asyncio
+import random
+
+
+@asyncio.coroutine
+def get_url(url):
+    wait_time = random.randint(1, 4)
+    yield from asyncio.sleep(wait_time)
+    print('Done: URL {} took {}s to get!'.format(url, wait_time))
+    return url, wait_time
+
+
+@asyncio.coroutine
+def process_as_results_come_in():
+    coroutines = [get_url(url) for url in ['URL1', 'URL2', 'URL3']]
+    for coroutine in asyncio.as_completed(coroutines):
+        url, wait_time = yield from coroutine
+        print('Coroutine for {} is done'.format(url))
+
+
+@asyncio.coroutine
+def process_once_everything_ready():
+    coroutines = [get_url(url) for url in ['URL1', 'URL2', 'URL3']]
+    results = yield from asyncio.gather(*coroutines)
+    print(results)
+
+
+def main():
+    loop = asyncio.get_event_loop()
+    print("First, process results as they come in:")
+    loop.run_until_complete(process_as_results_come_in())
+    print("\nNow, process results once they are all ready:")
+    loop.run_until_complete(process_once_everything_ready())
+
+
+if __name__ == '__main__':
+    main()
+
+{% endhighlight %}
+
+输出:
+
+{% highlight bash %}
+
+$ python3.4 gather.py
+First, process results as they come in:
+Done: URL URL2 took 2s to get!
+Coroutine for URL2 is done
+Done: URL URL3 took 3s to get!
+Coroutine for URL3 is done
+Done: URL URL1 took 4s to get!
+Coroutine for URL1 is done
+
+Now, process results once they are all ready:
+Done: URL URL1 took 1s to get!
+Done: URL URL2 took 3s to get!
+Done: URL URL3 took 4s to get!
+[('URL1', 1), ('URL2', 3), ('URL3', 4)]
+
+{% endhighlight %}
+
+## 深入挖掘
+
+还有很多我没有提到的，举个例子[Futures](https://docs.python.org/3/library/asyncio-task.html#asyncio.Future) 和 [libuv](https://github.com/joyent/libuv)。还有 [Guido's talk on asynchronous IO in Python 3.4](http://www.youtube.com/watch?v=1coLC-MUCJc)。还有好多内容我忘记提到所以欢迎在评论里面提出推荐。

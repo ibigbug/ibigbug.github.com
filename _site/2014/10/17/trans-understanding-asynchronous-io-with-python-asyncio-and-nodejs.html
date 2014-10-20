@@ -1,0 +1,772 @@
+<!DOCTYPE html><html lang="en"><head><title>Understanding Asynchronous IO with Python 3.4's Asyncio and Node.js — 8D is Here</title><link rel="prev" href="http://blog.xiaoba.me"><link rel="stylesheet" href="/css/site.css"><meta name="viewport" content="width=device-width"><meta name="author" content="Yuwei Ba"><meta name="keywords" content="Javascript, Python, Life, Thoughts"><meta name="description" content="Programming makes life easier and better. Life Lover."><link rel="icon" href="/favicon.png" type="image/png"><link rel="canonical" href="http://blog.xiaoba.me/2014/10/17/trans-understanding-asynchronous-io-with-python-asyncio-and-nodejs.html"><meta property="twitter:card" content="summary"><meta property="twitter:site" content="@ibigbug"><meta property="twitter:creator" content="@ibigbug"><meta property="twitter:title" content="Understanding Asynchronous IO with Python 3.4's Asyncio and Node.js — 8D is Here"><meta property="twitter:description" content=" Programming makes life easier and better. Life Lover. "><meta property="twitter:url" content="http://blog.xiaoba.me/2014/10/17/trans-understanding-asynchronous-io-with-python-asyncio-and-nodejs.html"><meta property="twitter:domain" content="8D is Here"></head><body class="yue"><div class="header"><div class="inner-header"><div class="nav">
+
+
+
+<a class="page-link" href="/">Home</a>
+
+<a class="page-link" href="/archives/">Archives</a>
+
+<a class="page-link" href="/thoughts/">Thoughts</a>
+
+<a class="page-link" href="/about/">Résumé</a>
+
+<a class="page-link" href="/feed.xml">Feed</a>
+</div></div><div class="inner-header-iphone"><div class="nav"><?xml version="1.0" encoding="utf-8"?><!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd"><svg version="1.1" id="图形" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="32px" height="32px" viewBox="0 0 1000 1024" enable-background="new 15.167 -16.333 1000 1024" xml:space="preserve"><path fill="#272636" d="M872 675q28 0 47.5 -19.5t19.5 -47.5v-51q0 -28 -19.5 -47.5t-47.5 -19.5h-742q-28 0 -47.5 19.5t-19.5 47.5v51q0 28 19.5 47.5t47.5 19.5h742zM872 362q28 0 47.5 -19.5t19.5 -47.5v-51q0 -28 -19.5 -47.5t-47.5 -19.5h-742q-28 0 -47.5 19.5t-19.5 47.5v51 q0 28 19.5 47.5t47.5 19.5h742zM872 49q28 0 47.5 -19.5t19.5 -47.5v-51q0 -28 -19.5 -47.5t-47.5 -19.5h-742q-28 0 -47.5 19.5t-19.5 47.5v51q0 28 19.5 47.5t47.5 19.5h742z" transform="translate(0, 800) scale(1, -1)"/></svg><ul class="nav-list">
+
+
+
+<li><a href="/" class="page-link">Home</a></li>
+
+<li><a href="/archives/" class="page-link">Archives</a></li>
+
+<li><a href="/thoughts/" class="page-link">Thoughts</a></li>
+
+<li><a href="/about/" class="page-link">Résumé</a></li>
+
+<li><a href="/feed.xml" class="page-link">Feed</a></li>
+</ul></div></div></div><div class="main-wrapper"><div class="inner-wrapper"><div class="logo"><a href="/">8D is Here</a></div><div class="page-meta">
+天青色等烟雨，而我在等你。
+</div><div class="main-area"><div class="post-entry"><h1 class="entry-title">Understanding Asynchronous IO with Python 3.4's Asyncio and Node.js</h1><div class="entry-meta"><time class="updated">Oct 17, 2014</time></div><div class="entry-content"><h2 id="section">介绍</h2>
+
+<p>今年夏天我都在开发运行于 Node.js 的 Web 平台。这是我第一次全职在写 Node.js，然后几周之后问题明显的暴露出来，就是好多开发者，包括我，缺乏对 Node.js 中异步特性的清晰认识以及在底层是如何实现的。因为我确信要想高效使用一个平台需要清楚的理解它是如何工作的，所以我决定深入研究一下。这份好奇心让我开始研究其他语言中的异步特性是如何实现的，尤其是 Python，是我每次学习和试验用的语言。这让我去研究 Python 3.4 中的异步 IO 库 <code>asyncio</code> ，跟我之前研究的 coroutines (看我之前的文章 <a href="http://sahandsaba.com/combinatorial-generation-using-coroutines-in-python.html">combinatorial generation using coroutines in Python</a>)。这篇文章探讨了一些我在学习这块主题时候遇到的问题和解答，我希望能够帮助大家理解和回答一些问题。</p>
+
+<p>所有的 Python 代码需要 Python 3.4 环境。这主要是因为 Python 3.4 中介绍了 <code>selectors</code> 和 <code>asyncio</code> 模块。对于一些 Python 的早期版本中，类似 Twisted，gevent，tornado 等库也提供了类似的功能。</p>
+
+<p>在下面的一些例子中，我决定几乎完全忽略了错误和异常处理。这主要是为了简单起见，但是需要注意的是适当的异常处理在下面的编码设计方式中也很重要。我会在最后用一些例子展示 Python 3.4 的 <code>asyncio</code> 模块中如果对异常进行处理。</p>
+
+<h2 id="getting-sarted--hello-world">Getting Sarted: 重访 Hello World</h2>
+
+<p>让我们从编写一个解决非常简单的问题的代码开始。我们从头到尾都将以这个问题和它的细微变化来展示概念。</p>
+
+<blockquote>
+  <p>Write a program to print “Hello world!” every three seconds, and at the same time wait for input from the user. Each line of user input will contain a single positive number n. As soon as input is entered, calculate and output the Fibonacci number F(n) and continue to wait for more input.</p>
+</blockquote>
+
+<p>注意当用户输入的时候，周期性的「Hello World!」将会有可能出现，但是我们不关心这点。</p>
+
+<p>熟悉 Node.js 和 JavaScript 的人可能已经想出了解决方案，可能看起来是这样:</p>
+
+<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="nx">log_execution_time</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;./utils&#39;</span><span class="p">).</span><span class="nx">log_execution_time</span><span class="p">;</span>
+
+<span class="kd">var</span> <span class="nx">fib</span> <span class="o">=</span> <span class="kd">function</span> <span class="nx">fib</span><span class="p">(</span><span class="nx">n</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nx">n</span> <span class="o">&lt;</span> <span class="mi">2</span><span class="p">)</span> <span class="k">return</span> <span class="nx">n</span><span class="p">;</span>
+    <span class="k">return</span> <span class="nx">fib</span><span class="p">(</span><span class="nx">n</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">+</span> <span class="nx">fib</span><span class="p">(</span><span class="nx">n</span> <span class="o">-</span> <span class="mi">2</span><span class="p">);</span>
+<span class="p">};</span>
+
+<span class="kd">var</span> <span class="nx">timed_fib</span> <span class="o">=</span> <span class="nx">log_execution_time</span><span class="p">(</span><span class="nx">fib</span><span class="p">);</span>
+
+<span class="kd">var</span> <span class="nx">sayHello</span> <span class="o">=</span> <span class="kd">function</span> <span class="nx">sayHello</span><span class="p">()</span> <span class="p">{</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nb">Math</span><span class="p">.</span><span class="nx">floor</span><span class="p">((</span><span class="k">new</span> <span class="nb">Date</span><span class="p">()).</span><span class="nx">getTime</span><span class="p">()</span> <span class="o">/</span> <span class="mi">1000</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot; - Hello world!&quot;</span><span class="p">);</span>
+<span class="p">};</span>
+
+<span class="kd">var</span> <span class="nx">handleInput</span> <span class="o">=</span> <span class="kd">function</span> <span class="nx">handleInput</span><span class="p">(</span><span class="nx">data</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">n</span> <span class="o">=</span> <span class="nb">parseInt</span><span class="p">(</span><span class="nx">data</span><span class="p">.</span><span class="nx">toString</span><span class="p">());</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;fib(&#39;</span> <span class="o">+</span> <span class="nx">n</span> <span class="o">+</span> <span class="s1">&#39;) = &#39;</span> <span class="o">+</span> <span class="nx">timed_fib</span><span class="p">(</span><span class="nx">n</span><span class="p">));</span>
+<span class="p">};</span>
+
+<span class="nx">process</span><span class="p">.</span><span class="nx">stdin</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s1">&#39;data&#39;</span><span class="p">,</span> <span class="nx">handleInput</span><span class="p">);</span>
+<span class="nx">setInterval</span><span class="p">(</span><span class="nx">sayHello</span><span class="p">,</span> <span class="mi">3000</span><span class="p">);</span></code></pre></div>
+
+<p>大家可以看到，在 Node.js 中很容易实现。我们只需要设置一个间隔计时器来打印 「Hello World!」然后在吗<code>process.stdin</code> 上 attach 一个 <code>data</code> evnet handler，就做完了。在抽象层面很容易理解，并且也很容易使用。It just works!。But how? 为了回答这个问题，我们在 Python 里面做些同样的事情。</p>
+
+<p>同样需要注意的，我们使用了一个 <code>log_execution_time</code> 的修饰符来输出计算 Fibonacci 数用掉的时间。</p>
+
+<p>在这里我们用来计算 Fibonacci 数的算法我们有意选择了所有算法中最慢的一种(指数增长)。这是由于本篇文章不是关于 Fibonacci 数的(关于这个话题，参考<a href="http://sahandsaba.com/five-ways-to-calculate-fibonacci-numbers-with-python-code.html">这篇文章</a>, 里面讲了一种对数时间复杂度的算法) 并且我就是想让代码运算得慢些来展示一些概念。这是 Python 实现，会用上几倍的时间。</p>
+
+<div class="highlight"><pre><code class="language-python" data-lang="python"><span class="kn">from</span> <span class="nn">log_execution_time</span> <span class="kn">import</span> <span class="n">log_execution_time</span>
+
+
+<span class="k">def</span> <span class="nf">fib</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">fib</span><span class="p">(</span><span class="n">n</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">+</span> <span class="n">fib</span><span class="p">(</span><span class="n">n</span> <span class="o">-</span> <span class="mi">2</span><span class="p">)</span> <span class="k">if</span> <span class="n">n</span> <span class="o">&gt;</span> <span class="mi">1</span> <span class="k">else</span> <span class="n">n</span>
+
+
+    <span class="n">timed_fib</span> <span class="o">=</span> <span class="n">log_execution_time</span><span class="p">(</span><span class="n">fib</span><span class="p">)</span></code></pre></div>
+
+<p>现在回到手上的问题。我们是怎么开始的? Python 没用提供内置的 <code>setInterval</code> 或者 <code>setTimeout</code>。所以第一种可能的解决方案是使用系统级别的并发来解决。我们来使用两条线程来实现。我们需要对线程的细节多些了解。</p>
+
+<div class="highlight"><pre><code class="language-python" data-lang="python"><span class="kn">from</span> <span class="nn">threading</span> <span class="kn">import</span> <span class="n">Thread</span>
+<span class="kn">from</span> <span class="nn">time</span> <span class="kn">import</span> <span class="n">sleep</span>
+<span class="kn">from</span> <span class="nn">time</span> <span class="kn">import</span> <span class="n">time</span>
+<span class="kn">from</span> <span class="nn">fib</span> <span class="kn">import</span> <span class="n">timed_fib</span>
+
+
+<span class="k">def</span> <span class="nf">print_hello</span><span class="p">():</span>
+    <span class="k">while</span> <span class="bp">True</span><span class="p">:</span>
+        <span class="k">print</span><span class="p">(</span><span class="s">&quot;{} - Hello world!&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">time</span><span class="p">())))</span>
+        <span class="n">sleep</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">read_and_process_input</span><span class="p">():</span>
+    <span class="k">while</span> <span class="bp">True</span><span class="p">:</span>
+        <span class="n">n</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">input</span><span class="p">())</span>
+        <span class="k">print</span><span class="p">(</span><span class="s">&#39;fib({}) = {}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">timed_fib</span><span class="p">(</span><span class="n">n</span><span class="p">)))</span>
+
+
+<span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
+    <span class="c"># Second thread will print the hello message. Starting as a daemon means</span>
+    <span class="c"># the thread will not prevent the process from exiting.</span>
+    <span class="n">t</span> <span class="o">=</span> <span class="n">Thread</span><span class="p">(</span><span class="n">target</span><span class="o">=</span><span class="n">print_hello</span><span class="p">)</span>
+    <span class="n">t</span><span class="o">.</span><span class="n">daemon</span> <span class="o">=</span> <span class="bp">True</span>
+    <span class="n">t</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+    <span class="c"># Main thread will read and process input</span>
+    <span class="n">read_and_process_input</span><span class="p">()</span>
+
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">&#39;__main__&#39;</span><span class="p">:</span>
+    <span class="n">main</span><span class="p">()</span></code></pre></div>
+
+<p>也很简单。那么基于线程的 Python 实现与 Node.js 中的实现相同吗? 我们来做个试验。像我们之前讨论过的，我们的 Fibonacci 数的计算代码非常的慢，让我们试一个非常大的数字，比如 Python 中用 37，Node.js 用45(JavaScript 在数字计算中确实比 Python 快些)。</p>
+
+<div class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nv">$ </span>python3.4 hello_threads.py
+<span class="m">1412360472</span> - Hello world!
+37
+<span class="m">1412360475</span> - Hello world!
+<span class="m">1412360478</span> - Hello world!
+<span class="m">1412360481</span> - Hello world!
+Executing fib took 8.96 seconds.
+fib<span class="o">(</span>37<span class="o">)</span> <span class="o">=</span> 24157817
+<span class="m">1412360484</span> - Hello world!</code></pre></div>
+
+<p>在 Node.js 中，当计算 Fibbonacci 数时候，打印 「Hello World!」消息就停止了。让我们看看这是怎么回事。</p>
+
+<h2 id="section-1">事件循环和线程</h2>
+
+<p>为了理解前面部分中出现的两种解决方案之间的区别，我们需要简单的了解一下线程和事件循环。首先，我们从线程开始。线程被认为是一个单一的操作序列和 CPU 的执行它们的当前状态(CPU 状态指的是例如寄存器中的值，特别是下一条指令的地址)。</p>
+
+<p>简单的同步程序通常在一条单一的线程中运行，这就是为什么有的操作需要等待，比如等待 IO 操作或者计时器，程序的执行会被暂停直到阻塞操作结束。最简单的阻塞操作之一就是<code>sleep</code>。事实上，<code>sleep</code>所做的全部事情，也就是按照给定的时间长度阻塞当前执行的线程。一个建成可以运行许多线程。在同一条进程里面的线程共享进程级的资源，比如内存和它的地址空间，文件描述符等等。</p>
+
+<p>操作系统会控制操作线程，系统内部的调度器会关心进程内部的线程切换(和进程切换，但是我们在这里不太关心它，因为它不在本文的讨论范围)。操作系统的调度器会选择什么时候暂停一条线程然后把 CPU 的控制权交给另外一条线程执行。这个叫做上下文切换，需要关系到当前线程上下文的保存(比如，CPU 寄存器的值)然后载入目标线程的上下文。上下文切换的代价会比较大因为需要 CPU 的循环。</p>
+
+<p>有很多原因可以让 CPU 决定切换到下一条线程。比如高优先级的进程或者线程需要立即执行(比如，处理硬件中断的代码)，或者线程自己要求暂定一会(比如调用<code>sleep</code>)，或者线程的执行超过了为它分配的时间(也被称作「量子时间」(时间片?，译者注))然后必须回到等待队列等待下一次被调度继续执行。</p>
+
+<p>回到我们之前的解决方案，Python 解法明显是基于多线程的。这也解释了为什么两个任务可以同时执行，以及为什么计算大的 Fibonacci 数这种 CPU 密集型操作没有阻塞另一条线程执行。</p>
+
+<p>那么 Node.js 是怎么样的呢? 事实证明，计算是阻塞了另外一个任务的，也就是说我们的代码是单线程执行的。这也是事实上 Node.js 是如何实现的。至于操作系统方面，你的程序也是运行在单线程的(这里我稍微简化了一些东西，以为基于 libuv 平台可能会对一些 IO 事件应用到线程池，但是这不影响你的 Javascript 代码还是运行在单线程的)。</p>
+
+<p>有很多原因需要你在一些场景避免使用多线程。其中之一就是线程在计算机和资源方面是昂贵的，另外真正的基于线程的并行带来的内存共享问题会牵扯到比如死锁和竞争条件，需要在编程是考虑保持线程安全，是代码更加复杂。(当然，这些都是相对的，线程有自己的时间和空间(这里每太看懂，译者)。但是这不是本文的重点!)</p>
+
+<p>让我们看看如果我们不用多线程解决这个问题。这样我们需要模仿 Node.js 背后的场景:事件循环。首先，我们需要一个办法来查询<code>stdin</code>来保持输入，也就是一个系统调用来等待一个文件描述符(这里就是<code>stdin</code>)是否有可读的输入。基于操作系统，有很多系统调用来实现比如<code>poll</code>，<code>select</code>，<code>kqueue</code>等待。在 Python 3.4 中，<code>selectors</code> 模块提供了这些系统调用的一个抽象，你可以安全地(在某种意义上)在不同的机器上面使用它。</p>
+
+<p>当我们有了查询功能，我们的事件循环将会非常简单:在每次循环迭代中，我们查询是否有可读输入，如果有，把它读进来处理。然后，我们检查是不是距离上次打印「Hello World!」是不是已经过了三秒钟，如果是，我们再打印。来看下。</p>
+
+<div class="highlight"><pre><code class="language-python" data-lang="python"><span class="kn">import</span> <span class="nn">selectors</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">from</span> <span class="nn">time</span> <span class="kn">import</span> <span class="n">time</span>
+<span class="kn">from</span> <span class="nn">fib</span> <span class="kn">import</span> <span class="n">timed_fib</span>
+
+
+<span class="k">def</span> <span class="nf">process_input</span><span class="p">(</span><span class="n">stream</span><span class="p">):</span>
+    <span class="n">text</span> <span class="o">=</span> <span class="n">stream</span><span class="o">.</span><span class="n">readline</span><span class="p">()</span>
+    <span class="n">n</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">text</span><span class="o">.</span><span class="n">strip</span><span class="p">())</span>
+    <span class="k">print</span><span class="p">(</span><span class="s">&#39;fib({}) = {}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">timed_fib</span><span class="p">(</span><span class="n">n</span><span class="p">)))</span>
+
+
+<span class="k">def</span> <span class="nf">print_hello</span><span class="p">():</span>
+    <span class="k">print</span><span class="p">(</span><span class="s">&quot;{} - Hello world!&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">time</span><span class="p">())))</span>
+
+
+<span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
+    <span class="n">selector</span> <span class="o">=</span> <span class="n">selectors</span><span class="o">.</span><span class="n">DefaultSelector</span><span class="p">()</span>
+    <span class="c"># Register the selector to poll for &quot;read&quot; readiness on stdin</span>
+    <span class="n">selector</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">stdin</span><span class="p">,</span> <span class="n">selectors</span><span class="o">.</span><span class="n">EVENT_READ</span><span class="p">)</span>
+    <span class="n">last_hello</span> <span class="o">=</span> <span class="mi">0</span>  <span class="c"># Setting to 0 means the timer will start right away</span>
+    <span class="k">while</span> <span class="bp">True</span><span class="p">:</span>
+        <span class="c"># Wait at most 10 milliseconds for input to be available</span>
+        <span class="k">for</span> <span class="n">event</span><span class="p">,</span> <span class="n">mask</span> <span class="ow">in</span> <span class="n">selector</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="mf">0.1</span><span class="p">):</span>
+            <span class="n">process_input</span><span class="p">(</span><span class="n">event</span><span class="o">.</span><span class="n">fileobj</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">last_hello</span> <span class="o">&gt;</span> <span class="mi">3</span><span class="p">:</span>
+            <span class="n">last_hello</span> <span class="o">=</span> <span class="n">time</span><span class="p">()</span>
+            <span class="n">print_hello</span><span class="p">()</span>
+
+
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">&#39;__main__&#39;</span><span class="p">:</span>
+    <span class="n">main</span><span class="p">()</span></code></pre></div>
+
+<p>这是输出结果:</p>
+
+<div class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nv">$ </span>python3.4 hello_eventloop.py
+<span class="m">1412376429</span> - Hello world!
+<span class="m">1412376432</span> - Hello world!
+<span class="m">1412376435</span> - Hello world!
+37
+Executing fib took 9.7 seconds.
+fib<span class="o">(</span>37<span class="o">)</span> <span class="o">=</span> 24157817
+<span class="m">1412376447</span> - Hello world!
+<span class="m">1412376450</span> - Hello world!</code></pre></div>
+
+<p>正如我们所料，由于我们使用了单线程，程序表现的跟 Node.js 一样，就是说，计算操作阻塞了打印操作。好的，优雅! 但是我们的解决是针对某种情形的硬编码。下面的部分，我们会关注通用化我们的事件循环代码来让它更强大和容易编写，首先应用回调，然后应用协程。</p>
+
+<h2 id="section-2">基于回调的事件循环</h2>
+
+<p>对于前面部分的事件循环的一个自然通用概括就是支持通用事件处理。使用回调可以相对容易的得到:对于每种事件类型(在我们的例子中，我们只有两种，<code>stdin</code>上面的输入和计时器计时)，让用户可以添加任意的方法作为事件处理。代码很简单，我们直接跳过了。只有一点稍微有些复杂，就是应用<code>bisect.insort</code>来处理计时事件。这里的算法是维护一个有序的计时器事件，最早的计时器事件先执行。这样，在每次的循环迭代中，我们只需检查是否有计时器，如果有，在开始的时候执行然后执行所有过期的计时器。<code>bisect.insort</code>简化了列表的正确插入。有很多方法实现这一点，这里我选择了这种。</p>
+
+<div class="highlight"><pre><code class="language-python" data-lang="python"><span class="kn">from</span> <span class="nn">bisect</span> <span class="kn">import</span> <span class="n">insort</span>
+<span class="kn">from</span> <span class="nn">fib</span> <span class="kn">import</span> <span class="n">timed_fib</span>
+<span class="kn">from</span> <span class="nn">time</span> <span class="kn">import</span> <span class="n">time</span>
+<span class="kn">import</span> <span class="nn">selectors</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+
+
+<span class="k">class</span> <span class="nc">EventLoop</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Implements a callback based single-threaded event loop as a simple</span>
+<span class="sd">    demonstration.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">tasks</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_running</span> <span class="o">=</span> <span class="bp">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_stdin_handlers</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_timers</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_selector</span> <span class="o">=</span> <span class="n">selectors</span><span class="o">.</span><span class="n">DefaultSelector</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_selector</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">stdin</span><span class="p">,</span> <span class="n">selectors</span><span class="o">.</span><span class="n">EVENT_READ</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">run_forever</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_running</span> <span class="o">=</span> <span class="bp">True</span>
+        <span class="k">while</span> <span class="bp">self</span><span class="o">.</span><span class="n">_running</span><span class="p">:</span>
+            <span class="c"># First check for available IO input</span>
+            <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">mask</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_selector</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="mi">0</span><span class="p">):</span>
+                <span class="n">line</span> <span class="o">=</span> <span class="n">key</span><span class="o">.</span><span class="n">fileobj</span><span class="o">.</span><span class="n">readline</span><span class="p">()</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+                <span class="k">for</span> <span class="n">callback</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_stdin_handlers</span><span class="p">:</span>
+                    <span class="n">callback</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
+
+            <span class="c"># Handle timer events</span>
+            <span class="k">while</span> <span class="bp">self</span><span class="o">.</span><span class="n">_timers</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">_timers</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">time</span><span class="p">():</span>
+                <span class="n">handler</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_timers</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span>
+                <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">_timers</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+                <span class="n">handler</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">add_stdin_handler</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">callback</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_stdin_handlers</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">callback</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">add_timer</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">wait_time</span><span class="p">,</span> <span class="n">callback</span><span class="p">):</span>
+        <span class="n">insort</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_timers</span><span class="p">,</span> <span class="p">(</span><span class="n">time</span><span class="p">()</span> <span class="o">+</span> <span class="n">wait_time</span><span class="p">,</span> <span class="n">callback</span><span class="p">))</span>
+
+    <span class="k">def</span> <span class="nf">stop</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_running</span> <span class="o">=</span> <span class="bp">False</span>
+
+
+<span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
+    <span class="n">loop</span> <span class="o">=</span> <span class="n">EventLoop</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">on_stdin_input</span><span class="p">(</span><span class="n">line</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">line</span> <span class="o">==</span> <span class="s">&#39;exit&#39;</span><span class="p">:</span>
+            <span class="n">loop</span><span class="o">.</span><span class="n">stop</span><span class="p">()</span>
+            <span class="k">return</span>
+        <span class="n">n</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
+        <span class="k">print</span><span class="p">(</span><span class="s">&quot;fib({}) = {}&quot;</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">timed_fib</span><span class="p">(</span><span class="n">n</span><span class="p">))</span>
+
+    <span class="k">def</span> <span class="nf">print_hello</span><span class="p">():</span>
+        <span class="k">print</span><span class="p">(</span><span class="s">&quot;{} - Hello world!&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">time</span><span class="p">())))</span>
+        <span class="n">loop</span><span class="o">.</span><span class="n">add_timer</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="n">print_hello</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">f</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+        <span class="k">def</span> <span class="nf">g</span><span class="p">():</span>
+            <span class="k">print</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">g</span>
+
+    <span class="n">loop</span><span class="o">.</span><span class="n">add_stdin_handler</span><span class="p">(</span><span class="n">on_stdin_input</span><span class="p">)</span>
+    <span class="n">loop</span><span class="o">.</span><span class="n">add_timer</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">print_hello</span><span class="p">)</span>
+    <span class="n">loop</span><span class="o">.</span><span class="n">run_forever</span><span class="p">()</span>
+
+
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">&#39;__main__&#39;</span><span class="p">:</span>
+    <span class="n">main</span><span class="p">()</span></code></pre></div>
+
+<p>这个看起来很简单，在实践中，这也是 Node.js 中常用的方法。然而，在更复杂的程序中，这种书写异步代码的方式，特别是加入了异常处理之后，将会成为所谓的 <code>callback hell</code>。引用 Guido van Rossum 关于回调的说法:</p>
+
+<blockquote>
+  <p>It requires super human discipline to write readable code in callbacks and if you don’t believe me look at any piece of JavaScript code. - Guido van Rossum</p>
+</blockquote>
+
+<p>有好多种其他的方案可以实现，比如 promises 和协程(已经有无数的 NPM 库做了对应的实现)。我更偏向的是(不是密码，我觉得<a href="http://sahandsaba.com/combinatorial-generation-using-coroutines-in-python.html">协程很酷!</a>)使用协程。下一部分我们基于协程实现了一个类似的事件循环。</p>
+
+<h2 id="section-3">基于协程的事件循环</h2>
+
+<p>协程就是当一个函数「返回」时仍然保存它返回时的状态(局部作用域的变量，以及下一步要执行的操作)。这样允许协程下一次被调用时直接进入它上次放回时的状态。这种形式的「返回」通常称为<strong>yielding</strong>。我在我的文章<a href="http://sahandsaba.com/combinatorial-generation-using-coroutines-in-python.html">combinatorial generation using coroutines article</a>中研究过许多协程的细节和他们在 Python 中的实现。下面在我们应用它之前，我提供了一个非常简要的介绍。</p>
+
+<p>在 Python 中，<code>yield</code>关键字可以用来创建协程。当简单地被当作一条语句使用时，比如 <code>yield value</code>，给出的值将会被产出，控制权交还给调用者。想要从 <code>yield</code> 语句下一步继续执行协程，调用者需要调用内置的 <code>next</code> 函数。当作为表达式使用时，比如 <code>y = yield x</code>，<code>x</code>被产出，当需要继续协程时，可以调用协程的 <code>send</code> 方法，这样传给 <code>send</code> 方法的值会被发送回去赋给协程的返回表达式的返回值(这个例子中是 <code>y</code>)。</p>
+
+<p>这意味着我们可以利用协程编写异步代码，当我们需要等待异步操作时，简单的调用 yield。这样，我们可以 yield 需要继续执行的任务或者协程。这样代码看起来会非常有序而且看上去很像同步代码。这是一个产生 Fibonocci 数一部分的例子:</p>
+
+<div class="highlight"><pre><code class="language-python" data-lang="python"><span class="k">def</span> <span class="nf">read_input</span><span class="p">():</span>
+    <span class="k">while</span> <span class="bp">True</span><span class="p">:</span>
+        <span class="n">line</span> <span class="o">=</span> <span class="k">yield</span> <span class="n">sys</span><span class="o">.</span><span class="n">stdin</span>
+        <span class="n">n</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
+        <span class="k">print</span><span class="p">(</span><span class="s">&quot;fib({}) = {}&quot;</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">timed_fib</span><span class="p">(</span><span class="n">n</span><span class="p">))</span></code></pre></div>
+
+<p>当然，为此我们需要一个事件循环来处理协程。为此，我们需要维护一个任务队列，在事件循环中执行。当有输入或者定时器到时(或者更通用一些，任何其他我们关心的事件)，我们维护一个需要继续执行的协程列表(可能还有需要传入的值)。对于每一个任务，我们维护一个绑定的 <code>stack</code> 变量来跟踪协程的栈，保持他们链式执行，各自根据下一个协程完毕。这是基于 <a href="http://legacy.python.org/dev/peps/pep-0342/">PEP342</a> 中给出的 「Trampoline」的例子实现。我还用到了 Python 当中的 <code>functools.partial</code>，等价于 Javascript 中的 <code>Function.prototyp.bind</code>，也就是<a href="http://en.wikipedia.org/wiki/Currying">函数柯里化</a>。</p>
+
+<p>像这样:</p>
+
+<div class="highlight"><pre><code class="language-python" data-lang="python"><span class="kn">from</span> <span class="nn">bisect</span> <span class="kn">import</span> <span class="n">insort</span>
+<span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">deque</span>
+<span class="kn">from</span> <span class="nn">fib</span> <span class="kn">import</span> <span class="n">timed_fib</span>
+<span class="kn">from</span> <span class="nn">functools</span> <span class="kn">import</span> <span class="n">partial</span>
+<span class="kn">from</span> <span class="nn">time</span> <span class="kn">import</span> <span class="n">time</span>
+<span class="kn">import</span> <span class="nn">selectors</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">import</span> <span class="nn">types</span>
+
+
+<span class="k">class</span> <span class="nc">sleep_for_seconds</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Yield and object of this type from a coroutine to have it &quot;sleep&quot; for the</span>
+<span class="sd">    given number of seconds.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">wait_time</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_wait_time</span> <span class="o">=</span> <span class="n">wait_time</span>
+
+
+<span class="k">class</span> <span class="nc">EventLoop</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Implements a simplified coroutine-based event loop as a demonstration.</span>
+<span class="sd">    Very similar to the &quot;Trampoline&quot; example in PEP 342, with exception</span>
+<span class="sd">    handling taken out for simplicity, and selectors added to handle file IO</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">tasks</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_running</span> <span class="o">=</span> <span class="bp">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_selector</span> <span class="o">=</span> <span class="n">selectors</span><span class="o">.</span><span class="n">DefaultSelector</span><span class="p">()</span>
+
+        <span class="c"># Queue of functions scheduled to run</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_tasks</span> <span class="o">=</span> <span class="n">deque</span><span class="p">(</span><span class="n">tasks</span><span class="p">)</span>
+
+        <span class="c"># (coroutine, stack) pair of tasks waiting for input from stdin</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_tasks_waiting_on_stdin</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="c"># List of (time_to_run, task) pairs, in sorted order</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_timers</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="c"># Register for polling stdin for input to read</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_selector</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">stdin</span><span class="p">,</span> <span class="n">selectors</span><span class="o">.</span><span class="n">EVENT_READ</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">resume_task</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">coroutine</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">stack</span><span class="o">=</span><span class="p">()):</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">coroutine</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="n">types</span><span class="o">.</span><span class="n">GeneratorType</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">schedule</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="bp">None</span><span class="p">,</span> <span class="p">(</span><span class="n">coroutine</span><span class="p">,</span> <span class="n">stack</span><span class="p">))</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="n">sleep_for_seconds</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">schedule</span><span class="p">(</span><span class="n">coroutine</span><span class="p">,</span> <span class="bp">None</span><span class="p">,</span> <span class="n">stack</span><span class="p">,</span> <span class="n">time</span><span class="p">()</span> <span class="o">+</span> <span class="n">result</span><span class="o">.</span><span class="n">_wait_time</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">result</span> <span class="ow">is</span> <span class="n">sys</span><span class="o">.</span><span class="n">stdin</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_tasks_waiting_on_stdin</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">coroutine</span><span class="p">,</span> <span class="n">stack</span><span class="p">))</span>
+        <span class="k">elif</span> <span class="n">stack</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">schedule</span><span class="p">(</span><span class="n">stack</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">result</span><span class="p">,</span> <span class="n">stack</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+
+    <span class="k">def</span> <span class="nf">schedule</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">coroutine</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">stack</span><span class="o">=</span><span class="p">(),</span> <span class="n">when</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Schedule a coroutine task to be run, with value to be sent to it, and</span>
+<span class="sd">        stack containing the coroutines that are waiting for the value yielded</span>
+<span class="sd">        by this coroutine.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c"># Bind the parameters to a function to be scheduled as a function with</span>
+        <span class="c"># no parameters.</span>
+        <span class="n">task</span> <span class="o">=</span> <span class="n">partial</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">resume_task</span><span class="p">,</span> <span class="n">coroutine</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">stack</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">when</span><span class="p">:</span>
+            <span class="n">insort</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_timers</span><span class="p">,</span> <span class="p">(</span><span class="n">when</span><span class="p">,</span> <span class="n">task</span><span class="p">))</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_tasks</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">task</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">stop</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_running</span> <span class="o">=</span> <span class="bp">False</span>
+
+    <span class="k">def</span> <span class="nf">do_on_next_tick</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">func</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_tasks</span><span class="o">.</span><span class="n">appendleft</span><span class="p">(</span><span class="n">partial</span><span class="p">(</span><span class="n">func</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">))</span>
+
+    <span class="k">def</span> <span class="nf">run_forever</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_running</span> <span class="o">=</span> <span class="bp">True</span>
+        <span class="k">while</span> <span class="bp">self</span><span class="o">.</span><span class="n">_running</span><span class="p">:</span>
+            <span class="c"># First check for available IO input</span>
+            <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">mask</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_selector</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="mi">0</span><span class="p">):</span>
+                <span class="n">line</span> <span class="o">=</span> <span class="n">key</span><span class="o">.</span><span class="n">fileobj</span><span class="o">.</span><span class="n">readline</span><span class="p">()</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+                <span class="k">for</span> <span class="n">task</span><span class="p">,</span> <span class="n">stack</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_tasks_waiting_on_stdin</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">schedule</span><span class="p">(</span><span class="n">task</span><span class="p">,</span> <span class="n">line</span><span class="p">,</span> <span class="n">stack</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_tasks_waiting_on_stdin</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+
+            <span class="c"># Next, run the next task</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_tasks</span><span class="p">:</span>
+                <span class="n">task</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_tasks</span><span class="o">.</span><span class="n">popleft</span><span class="p">()</span>
+                <span class="n">task</span><span class="p">()</span>
+
+            <span class="c"># Finally run time scheduled tasks</span>
+            <span class="k">while</span> <span class="bp">self</span><span class="o">.</span><span class="n">_timers</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">_timers</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">time</span><span class="p">():</span>
+                <span class="n">task</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_timers</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span>
+                <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">_timers</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+                <span class="n">task</span><span class="p">()</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_running</span> <span class="o">=</span> <span class="bp">False</span>
+
+
+<span class="k">def</span> <span class="nf">print_every</span><span class="p">(</span><span class="n">message</span><span class="p">,</span> <span class="n">interval</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Coroutine task to repeatedly print the message at the given interval</span>
+<span class="sd">    (in seconds)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">while</span> <span class="bp">True</span><span class="p">:</span>
+        <span class="k">print</span><span class="p">(</span><span class="s">&quot;{} - {}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">time</span><span class="p">()),</span> <span class="n">message</span><span class="p">))</span>
+        <span class="k">yield</span> <span class="n">sleep_for_seconds</span><span class="p">(</span><span class="n">interval</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">read_input</span><span class="p">(</span><span class="n">loop</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Coroutine task to repeatedly read new lines of input from stdin, treat</span>
+<span class="sd">    the input as a number n, and calculate and display fib(n).</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">while</span> <span class="bp">True</span><span class="p">:</span>
+        <span class="n">line</span> <span class="o">=</span> <span class="k">yield</span> <span class="n">sys</span><span class="o">.</span><span class="n">stdin</span>
+        <span class="k">if</span> <span class="n">line</span> <span class="o">==</span> <span class="s">&#39;exit&#39;</span><span class="p">:</span>
+            <span class="n">loop</span><span class="o">.</span><span class="n">do_on_next_tick</span><span class="p">(</span><span class="n">loop</span><span class="o">.</span><span class="n">stop</span><span class="p">)</span>
+            <span class="k">continue</span>
+        <span class="n">n</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
+        <span class="k">print</span><span class="p">(</span><span class="s">&quot;fib({}) = {}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">timed_fib</span><span class="p">(</span><span class="n">n</span><span class="p">)))</span>
+
+
+<span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
+    <span class="n">loop</span> <span class="o">=</span> <span class="n">EventLoop</span><span class="p">()</span>
+    <span class="n">hello_task</span> <span class="o">=</span> <span class="n">print_every</span><span class="p">(</span><span class="s">&#39;Hello world!&#39;</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+    <span class="n">fib_task</span> <span class="o">=</span> <span class="n">read_input</span><span class="p">(</span><span class="n">loop</span><span class="p">)</span>
+    <span class="n">loop</span><span class="o">.</span><span class="n">schedule</span><span class="p">(</span><span class="n">hello_task</span><span class="p">)</span>
+    <span class="n">loop</span><span class="o">.</span><span class="n">schedule</span><span class="p">(</span><span class="n">fib_task</span><span class="p">)</span>
+    <span class="n">loop</span><span class="o">.</span><span class="n">run_forever</span><span class="p">()</span>
+
+
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">&#39;__main__&#39;</span><span class="p">:</span>
+    <span class="n">main</span><span class="p">()</span></code></pre></div>
+
+<p>注意到这种实现允许我们添加一个简单的 <code>do_on_next_tick</code> 方法，或多或少做些 Node.js 里面 <code>process.nextTick</code> 一样的事情。我用它实现了一个简单的键入 <em>exit</em> 就退出的功能(当然，我不是必须要用到 <code>do_on_next_tick</code>，我可以直接调用 <code>loop.stop()</code> !)</p>
+
+<p>另一个有意思的事情就是我们可以重新实现我们的递归 Fibonacci 算法，使用协程，而不是递归调用，这样我们可以让它于其他协程一起「并行」执行，包括打印 hello。看起来像这样:</p>
+
+<div class="highlight"><pre><code class="language-python" data-lang="python"><span class="kn">from</span> <span class="nn">event_loop_coroutine</span> <span class="kn">import</span> <span class="n">EventLoop</span>
+<span class="kn">from</span> <span class="nn">event_loop_coroutine</span> <span class="kn">import</span> <span class="n">print_every</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+
+
+<span class="k">def</span> <span class="nf">fib</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">n</span> <span class="o">&lt;=</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="k">yield</span> <span class="n">n</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">a</span> <span class="o">=</span> <span class="k">yield</span> <span class="n">fib</span><span class="p">(</span><span class="n">n</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="n">b</span> <span class="o">=</span> <span class="k">yield</span> <span class="n">fib</span><span class="p">(</span><span class="n">n</span> <span class="o">-</span> <span class="mi">2</span><span class="p">)</span>
+        <span class="k">yield</span> <span class="n">a</span> <span class="o">+</span> <span class="n">b</span>
+
+
+<span class="k">def</span> <span class="nf">read_input</span><span class="p">(</span><span class="n">loop</span><span class="p">):</span>
+    <span class="k">while</span> <span class="bp">True</span><span class="p">:</span>
+        <span class="n">line</span> <span class="o">=</span> <span class="k">yield</span> <span class="n">sys</span><span class="o">.</span><span class="n">stdin</span>
+        <span class="n">n</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
+        <span class="n">fib_n</span> <span class="o">=</span> <span class="k">yield</span> <span class="n">fib</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+        <span class="k">print</span><span class="p">(</span><span class="s">&quot;fib({}) = {}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">fib_n</span><span class="p">))</span>
+
+
+<span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
+    <span class="n">loop</span> <span class="o">=</span> <span class="n">EventLoop</span><span class="p">()</span>
+    <span class="n">hello_task</span> <span class="o">=</span> <span class="n">print_every</span><span class="p">(</span><span class="s">&#39;Hello world!&#39;</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+    <span class="n">fib_task</span> <span class="o">=</span> <span class="n">read_input</span><span class="p">(</span><span class="n">loop</span><span class="p">)</span>
+    <span class="n">loop</span><span class="o">.</span><span class="n">schedule</span><span class="p">(</span><span class="n">hello_task</span><span class="p">)</span>
+    <span class="n">loop</span><span class="o">.</span><span class="n">schedule</span><span class="p">(</span><span class="n">fib_task</span><span class="p">)</span>
+    <span class="n">loop</span><span class="o">.</span><span class="n">run_forever</span><span class="p">()</span>
+
+
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">&#39;__main__&#39;</span><span class="p">:</span>
+    <span class="n">main</span><span class="p">()</span></code></pre></div>
+
+<p>程序的输出将会是:</p>
+
+<div class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nv">$ </span>python3.4 fib_coroutine.py
+<span class="m">1412727829</span> - Hello world!
+<span class="m">1412727832</span> - Hello world!
+28
+<span class="m">1412727835</span> - Hello world!
+<span class="m">1412727838</span> - Hello world!
+fib<span class="o">(</span>28<span class="o">)</span> <span class="o">=</span> 317811
+<span class="m">1412727841</span> - Hello world!
+<span class="m">1412727844</span> - Hello world!</code></pre></div>
+
+<h2 id="section-4">不是重复造轮子</h2>
+
+<p>在前面两部分里面，我们用通用的方法实现了允许使用回调或者协程编写异步代码的事件循环。这对实践和学习来说有很大的意义但是在实践中，已经有好多成熟的 Python 库提供了事件循环。另外，在 Python 3.4 中带有一个 <code>asyncio</code> 模块，提供了事件循环和 IO 操作，网络等等。让我们先用 <code>asyncio</code> 解决上面的问题，然后来看一些更有趣的例子。</p>
+
+<div class="highlight"><pre><code class="language-python" data-lang="python"><span class="kn">import</span> <span class="nn">asyncio</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">from</span> <span class="nn">time</span> <span class="kn">import</span> <span class="n">time</span>
+<span class="kn">from</span> <span class="nn">fib</span> <span class="kn">import</span> <span class="n">timed_fib</span>
+
+
+<span class="k">def</span> <span class="nf">process_input</span><span class="p">():</span>
+    <span class="n">text</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">stdin</span><span class="o">.</span><span class="n">readline</span><span class="p">()</span>
+    <span class="n">n</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">text</span><span class="o">.</span><span class="n">strip</span><span class="p">())</span>
+    <span class="k">print</span><span class="p">(</span><span class="s">&#39;fib({}) = {}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">timed_fib</span><span class="p">(</span><span class="n">n</span><span class="p">)))</span>
+
+
+<span class="nd">@asyncio.coroutine</span>
+<span class="k">def</span> <span class="nf">print_hello</span><span class="p">():</span>
+    <span class="k">while</span> <span class="bp">True</span><span class="p">:</span>
+        <span class="k">print</span><span class="p">(</span><span class="s">&quot;{} - Hello world!&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">time</span><span class="p">())))</span>
+        <span class="k">yield from</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
+    <span class="n">loop</span> <span class="o">=</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">get_event_loop</span><span class="p">()</span>
+    <span class="n">loop</span><span class="o">.</span><span class="n">add_reader</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">stdin</span><span class="p">,</span> <span class="n">process_input</span><span class="p">)</span>
+    <span class="n">loop</span><span class="o">.</span><span class="n">run_until_complete</span><span class="p">(</span><span class="n">print_hello</span><span class="p">())</span>
+
+
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">&#39;__main__&#39;</span><span class="p">:</span>
+    <span class="n">main</span><span class="p">()</span></code></pre></div>
+
+<p>注意 <code>@asyncio.coroutine</code> 是如何修饰协程的，而且用 <code>yield from</code> 而不是仅仅 <code>yield</code> 在其他协程的返回值上面。</p>
+
+<h2 id="section-5">异常处理</h2>
+
+<p>Python 的协程允许在协程运行时栈帧内抛出异常，这是协程已经暂停。我们来看个简单的例子:</p>
+
+<div class="highlight"><pre><code class="language-python" data-lang="python"><span class="k">def</span> <span class="nf">coroutine</span><span class="p">():</span>
+    <span class="k">print</span><span class="p">(</span><span class="s">&quot;Starting&quot;</span><span class="p">)</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="k">yield</span> <span class="s">&quot;Let&#39;s pause until continued.&quot;</span>
+        <span class="k">print</span><span class="p">(</span><span class="s">&quot;Continuing&quot;</span><span class="p">)</span>
+    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="k">yield</span> <span class="s">&quot;Got an exception: &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
+    <span class="n">c</span> <span class="o">=</span> <span class="n">coroutine</span><span class="p">()</span>
+    <span class="nb">next</span><span class="p">(</span><span class="n">c</span><span class="p">)</span>  <span class="c"># Execute until the first yield</span>
+    <span class="c"># Now throw an exception at the point where the coroutine has paused</span>
+    <span class="n">value</span> <span class="o">=</span> <span class="n">c</span><span class="o">.</span><span class="n">throw</span><span class="p">(</span><span class="ne">Exception</span><span class="p">(</span><span class="s">&quot;Have an exceptional day!&quot;</span><span class="p">))</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+
+
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">&#39;__main__&#39;</span><span class="p">:</span>
+    <span class="n">main</span><span class="p">()</span></code></pre></div>
+
+<p>会输出:</p>
+
+<div class="highlight"><pre><code class="language-bash" data-lang="bash">Starting
+Got an exception: Have an exceptional day!</code></pre></div>
+
+<p>这将使用抛出异常来处理错误变得非常简单，在同步或者异步代码中，让事件循环可以适当的捕获和传递异常。例如，我们来看一个链式协程和事件循环:</p>
+
+<div class="highlight"><pre><code class="language-python" data-lang="python"><span class="kn">import</span> <span class="nn">asyncio</span>
+
+
+<span class="nd">@asyncio.coroutine</span>
+<span class="k">def</span> <span class="nf">A</span><span class="p">():</span>
+    <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s">&quot;Something went wrong in A!&quot;</span><span class="p">)</span>
+
+
+<span class="nd">@asyncio.coroutine</span>
+<span class="k">def</span> <span class="nf">B</span><span class="p">():</span>
+    <span class="n">a</span> <span class="o">=</span> <span class="k">yield from</span> <span class="n">A</span><span class="p">()</span>
+    <span class="k">yield</span> <span class="n">a</span> <span class="o">+</span> <span class="mi">1</span>
+
+
+<span class="nd">@asyncio.coroutine</span>
+<span class="k">def</span> <span class="nf">C</span><span class="p">():</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">b</span> <span class="o">=</span> <span class="k">yield from</span> <span class="n">B</span><span class="p">()</span>
+        <span class="k">print</span><span class="p">(</span><span class="n">b</span><span class="p">)</span>
+    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="k">print</span><span class="p">(</span><span class="s">&quot;C got exception:&quot;</span><span class="p">,</span> <span class="n">e</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
+    <span class="n">loop</span> <span class="o">=</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">get_event_loop</span><span class="p">()</span>
+    <span class="n">loop</span><span class="o">.</span><span class="n">run_until_complete</span><span class="p">(</span><span class="n">C</span><span class="p">())</span>
+
+
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">&#39;__main__&#39;</span><span class="p">:</span>
+    <span class="n">main</span><span class="p">()</span></code></pre></div>
+
+<p>在这个例子中，协程 <code>C</code> 依赖 <code>B</code> 的结果，<code>B</code> 依赖 <code>A</code>， <code>A</code> 抛出异常。所以如你所见，异常一直被传递到 <code>C</code> 之后被捕获，打印出消息。如你所见，这样的表现几乎跟同步代码一样。不需要手动在回调里面传递和捕获异常!</p>
+
+<p>当然，这个例子更偏向理论也比较乏味。我们来看一个现实中的例子:我们来写一段代码，通过 <a href="http://www.ipify.org/">ipify</a> 异步获取外网 IP。因为 <code>asyncio</code> 并不具有 HTTP 客户端(无论如何，到目前为止!)，我们必须在 TCP 层手写 HTTP 请求并且处理相应。因为我们已经想好了一个特定的 API (作为一个例子，不是生产环境代码!)，我们直接开始。在实践中，用针对这个功能的现成的模块，比如 <code>aiohttp</code>，会好很多。让我们来看看代码是什么样的:</p>
+
+<div class="highlight"><pre><code class="language-python" data-lang="python"><span class="kn">import</span> <span class="nn">asyncio</span>
+<span class="kn">import</span> <span class="nn">json</span>
+
+
+<span class="n">host</span> <span class="o">=</span> <span class="s">&#39;api.ipify.org&#39;</span>
+<span class="n">request_headers</span> <span class="o">=</span> <span class="p">{</span><span class="s">&#39;User-Agent&#39;</span><span class="p">:</span> <span class="s">&#39;python/3.4&#39;</span><span class="p">,</span>
+                   <span class="s">&#39;Host&#39;</span><span class="p">:</span> <span class="n">host</span><span class="p">,</span>
+                   <span class="s">&#39;Accept&#39;</span><span class="p">:</span> <span class="s">&#39;application/json&#39;</span><span class="p">,</span>
+                   <span class="s">&#39;Accept-Charset&#39;</span><span class="p">:</span> <span class="s">&#39;UTF-8&#39;</span><span class="p">}</span>
+
+
+<span class="nd">@asyncio.coroutine</span>
+<span class="k">def</span> <span class="nf">write_headers</span><span class="p">(</span><span class="n">writer</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">request_headers</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="n">writer</span><span class="o">.</span><span class="n">write</span><span class="p">((</span><span class="n">key</span> <span class="o">+</span> <span class="s">&#39;: &#39;</span> <span class="o">+</span> <span class="n">value</span> <span class="o">+</span> <span class="s">&#39;</span><span class="se">\r\n</span><span class="s">&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">encode</span><span class="p">())</span>
+    <span class="n">writer</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">b</span><span class="s">&#39;</span><span class="se">\r\n</span><span class="s">&#39;</span><span class="p">)</span>
+    <span class="k">yield from</span> <span class="n">writer</span><span class="o">.</span><span class="n">drain</span><span class="p">()</span>
+
+
+<span class="nd">@asyncio.coroutine</span>
+<span class="k">def</span> <span class="nf">read_headers</span><span class="p">(</span><span class="n">reader</span><span class="p">):</span>
+    <span class="n">response_headers</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="k">while</span> <span class="bp">True</span><span class="p">:</span>
+        <span class="n">line_bytes</span> <span class="o">=</span> <span class="k">yield from</span> <span class="n">reader</span><span class="o">.</span><span class="n">readline</span><span class="p">()</span>
+        <span class="n">line</span> <span class="o">=</span> <span class="n">line_bytes</span><span class="o">.</span><span class="n">decode</span><span class="p">()</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">line</span><span class="p">:</span>
+            <span class="k">break</span>
+        <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&#39;:&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="n">response_headers</span><span class="p">[</span><span class="n">key</span><span class="o">.</span><span class="n">strip</span><span class="p">()]</span> <span class="o">=</span> <span class="n">value</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">response_headers</span>
+
+
+<span class="nd">@asyncio.coroutine</span>
+<span class="k">def</span> <span class="nf">get_my_ip_address</span><span class="p">(</span><span class="n">verbose</span><span class="p">):</span>
+    <span class="n">reader</span><span class="p">,</span> <span class="n">writer</span> <span class="o">=</span> <span class="k">yield from</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">open_connection</span><span class="p">(</span><span class="n">host</span><span class="p">,</span> <span class="mi">80</span><span class="p">)</span>
+    <span class="n">writer</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">b</span><span class="s">&#39;GET /?format=json HTTP/1.1</span><span class="se">\r\n</span><span class="s">&#39;</span><span class="p">)</span>
+    <span class="k">yield from</span> <span class="n">write_headers</span><span class="p">(</span><span class="n">writer</span><span class="p">)</span>
+    <span class="n">status_line</span> <span class="o">=</span> <span class="k">yield from</span> <span class="n">reader</span><span class="o">.</span><span class="n">readline</span><span class="p">()</span>
+    <span class="n">status_line</span> <span class="o">=</span> <span class="n">status_line</span><span class="o">.</span><span class="n">decode</span><span class="p">()</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+    <span class="n">http_version</span><span class="p">,</span> <span class="n">status_code</span><span class="p">,</span> <span class="n">status</span> <span class="o">=</span> <span class="n">status_line</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&#39; &#39;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+        <span class="k">print</span><span class="p">(</span><span class="s">&#39;Got status {} {}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">status_code</span><span class="p">,</span> <span class="n">status</span><span class="p">))</span>
+    <span class="n">response_headers</span> <span class="o">=</span> <span class="k">yield from</span> <span class="n">read_headers</span><span class="p">(</span><span class="n">reader</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+        <span class="k">print</span><span class="p">(</span><span class="s">&#39;Response headers:&#39;</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">response_headers</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="k">print</span><span class="p">(</span><span class="n">key</span> <span class="o">+</span> <span class="s">&#39;: &#39;</span> <span class="o">+</span> <span class="n">value</span><span class="p">)</span>
+    <span class="c"># Assume the content length is sent by the server, which is the case</span>
+    <span class="c"># with ipify</span>
+    <span class="n">content_length</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">response_headers</span><span class="p">[</span><span class="s">&#39;Content-Length&#39;</span><span class="p">])</span>
+    <span class="n">response_body_bytes</span> <span class="o">=</span> <span class="k">yield from</span> <span class="n">reader</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">content_length</span><span class="p">)</span>
+    <span class="n">response_body</span> <span class="o">=</span> <span class="n">response_body_bytes</span><span class="o">.</span><span class="n">decode</span><span class="p">()</span>
+    <span class="n">response_object</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">response_body</span><span class="p">)</span>
+    <span class="n">writer</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">response_object</span><span class="p">[</span><span class="s">&#39;ip&#39;</span><span class="p">]</span>
+
+
+<span class="nd">@asyncio.coroutine</span>
+<span class="k">def</span> <span class="nf">print_my_ip_address</span><span class="p">(</span><span class="n">verbose</span><span class="p">):</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">ip_address</span> <span class="o">=</span> <span class="k">yield from</span> <span class="n">get_my_ip_address</span><span class="p">(</span><span class="n">verbose</span><span class="p">)</span>
+        <span class="k">print</span><span class="p">(</span><span class="s">&quot;My IP address is:&quot;</span><span class="p">)</span>
+        <span class="k">print</span><span class="p">(</span><span class="n">ip_address</span><span class="p">)</span>
+    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="k">print</span><span class="p">(</span><span class="s">&quot;Error: &quot;</span><span class="p">,</span> <span class="n">e</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
+    <span class="n">loop</span> <span class="o">=</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">get_event_loop</span><span class="p">()</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">loop</span><span class="o">.</span><span class="n">run_until_complete</span><span class="p">(</span><span class="n">print_my_ip_address</span><span class="p">(</span><span class="n">verbose</span><span class="o">=</span><span class="bp">True</span><span class="p">))</span>
+    <span class="k">finally</span><span class="p">:</span>
+        <span class="n">loop</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+
+
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">&#39;__main__&#39;</span><span class="p">:</span>
+    <span class="n">main</span><span class="p">()</span></code></pre></div>
+
+<p>再一次，注意与同步代码的相似之处: 没有回调，没有复杂的错误处理，仅仅是非常简单而且可读的代码。我们来看看它怎么工作，没有发生任何错误:</p>
+
+<div class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nv">$ </span>python3.4 ipify.py
+Got status <span class="m">200</span> OK
+Response headers:
+Content-Length: 21
+Server: Cowboy
+Connection: keep-alive
+Via: 1.1 vegur
+Content-Type: application/json
+Date: Fri, <span class="m">10</span> Oct <span class="m">2014</span> 03:46:31 GMT
+My IP address is:
+&lt;my IP address here, hidden <span class="k">for</span> privacy!&gt;</code></pre></div>
+
+<p>另外，如果发生了错误，例如没有网络连接，会输出:</p>
+
+<div class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nv">$ </span>python3.4 ipify.py
+Error:  <span class="o">[</span>Errno 8<span class="o">]</span> nodename nor servname provided, or not known</code></pre></div>
+
+<p>我认为这是使用协程编代替编写异步代码的主要好处: 与同步代码中的错误处理是一致的。比如上面的例子，万一协程链中的某一步失败了，或者某一个同步调用失败，异常都会被同样的捕获和处理。</p>
+
+<h2 id="section-6">依赖多个相关协程的执行结果</h2>
+
+<p>在前面的例子中，我们编写的代码在内部都是有一定顺序的，就是说协程内部的每条语句依赖钱一个协程完成。有时候，我们会需要执行一系列相关的任务，使用他们的 <strong>完成时</strong>，而不关心他们执行的顺序。例如，写一个爬虫，我们可能会针对页面内所有链接发送一些异步请求然后把这些相应加入到一个队列里面，按照我们的需求来处理。</p>
+
+<p>协程允许我们编写有序执行的异步代码，但是执行相关的任务然后处理他们的结果，可能是全部统一处理，也可能是单独逐一处理每一个完成的任务，比如可能用到回调，可能看起来会更好。然而，Python 3.4 的 <code>asyncio</code> 模块恰好自带了两个方法符合这两种场景，就是 <code>asyncio.as_completed</code> 和 <code>asyncio.gather</code> 这两个方法。</p>
+
+<p>我们来看两个简单的载入 URL 的例子，首先，应用 <code>asyncio.as_completed</code> 依次处理每一个完成的请求，然后，应用 <code>asyncio.gather</code> 等待所有全部完成之后统一处理。我们用随机暂停几秒的方法来代替真正的发送请求。这是代码:</p>
+
+<div class="highlight"><pre><code class="language-python" data-lang="python"><span class="kn">import</span> <span class="nn">asyncio</span>
+<span class="kn">import</span> <span class="nn">random</span>
+
+
+<span class="nd">@asyncio.coroutine</span>
+<span class="k">def</span> <span class="nf">get_url</span><span class="p">(</span><span class="n">url</span><span class="p">):</span>
+    <span class="n">wait_time</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
+    <span class="k">yield from</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="n">wait_time</span><span class="p">)</span>
+    <span class="k">print</span><span class="p">(</span><span class="s">&#39;Done: URL {} took {}s to get!&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">wait_time</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">url</span><span class="p">,</span> <span class="n">wait_time</span>
+
+
+<span class="nd">@asyncio.coroutine</span>
+<span class="k">def</span> <span class="nf">process_as_results_come_in</span><span class="p">():</span>
+    <span class="n">coroutines</span> <span class="o">=</span> <span class="p">[</span><span class="n">get_url</span><span class="p">(</span><span class="n">url</span><span class="p">)</span> <span class="k">for</span> <span class="n">url</span> <span class="ow">in</span> <span class="p">[</span><span class="s">&#39;URL1&#39;</span><span class="p">,</span> <span class="s">&#39;URL2&#39;</span><span class="p">,</span> <span class="s">&#39;URL3&#39;</span><span class="p">]]</span>
+    <span class="k">for</span> <span class="n">coroutine</span> <span class="ow">in</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">as_completed</span><span class="p">(</span><span class="n">coroutines</span><span class="p">):</span>
+        <span class="n">url</span><span class="p">,</span> <span class="n">wait_time</span> <span class="o">=</span> <span class="k">yield from</span> <span class="n">coroutine</span>
+        <span class="k">print</span><span class="p">(</span><span class="s">&#39;Coroutine for {} is done&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">url</span><span class="p">))</span>
+
+
+<span class="nd">@asyncio.coroutine</span>
+<span class="k">def</span> <span class="nf">process_once_everything_ready</span><span class="p">():</span>
+    <span class="n">coroutines</span> <span class="o">=</span> <span class="p">[</span><span class="n">get_url</span><span class="p">(</span><span class="n">url</span><span class="p">)</span> <span class="k">for</span> <span class="n">url</span> <span class="ow">in</span> <span class="p">[</span><span class="s">&#39;URL1&#39;</span><span class="p">,</span> <span class="s">&#39;URL2&#39;</span><span class="p">,</span> <span class="s">&#39;URL3&#39;</span><span class="p">]]</span>
+    <span class="n">results</span> <span class="o">=</span> <span class="k">yield from</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">gather</span><span class="p">(</span><span class="o">*</span><span class="n">coroutines</span><span class="p">)</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">results</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
+    <span class="n">loop</span> <span class="o">=</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">get_event_loop</span><span class="p">()</span>
+    <span class="k">print</span><span class="p">(</span><span class="s">&quot;First, process results as they come in:&quot;</span><span class="p">)</span>
+    <span class="n">loop</span><span class="o">.</span><span class="n">run_until_complete</span><span class="p">(</span><span class="n">process_as_results_come_in</span><span class="p">())</span>
+    <span class="k">print</span><span class="p">(</span><span class="s">&quot;</span><span class="se">\n</span><span class="s">Now, process results once they are all ready:&quot;</span><span class="p">)</span>
+    <span class="n">loop</span><span class="o">.</span><span class="n">run_until_complete</span><span class="p">(</span><span class="n">process_once_everything_ready</span><span class="p">())</span>
+
+
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">&#39;__main__&#39;</span><span class="p">:</span>
+    <span class="n">main</span><span class="p">()</span></code></pre></div>
+
+<p>输出:</p>
+
+<div class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nv">$ </span>python3.4 gather.py
+First, process results as they come in:
+Done: URL URL2 took 2s to get!
+Coroutine <span class="k">for</span> URL2 is <span class="k">done</span>
+Done: URL URL3 took 3s to get!
+Coroutine <span class="k">for</span> URL3 is <span class="k">done</span>
+Done: URL URL1 took 4s to get!
+Coroutine <span class="k">for</span> URL1 is <span class="k">done</span>
+
+Now, process results once they are all ready:
+Done: URL URL1 took 1s to get!
+Done: URL URL2 took 3s to get!
+Done: URL URL3 took 4s to get!
+<span class="o">[(</span><span class="s1">&#39;URL1&#39;</span>, 1<span class="o">)</span>, <span class="o">(</span><span class="s1">&#39;URL2&#39;</span>, 3<span class="o">)</span>, <span class="o">(</span><span class="s1">&#39;URL3&#39;</span>, 4<span class="o">)]</span></code></pre></div>
+
+<h2 id="section-7">深入挖掘</h2>
+
+<p>还有很多我没有提到的，举个例子<a href="https://docs.python.org/3/library/asyncio-task.html#asyncio.Future">Futures</a> 和 <a href="https://github.com/joyent/libuv">libuv</a>。还有 <a href="http://www.youtube.com/watch?v=1coLC-MUCJc">Guido’s talk on asynchronous IO in Python 3.4</a>。还有好多内容我忘记提到所以欢迎在评论里面提出推荐。</p>
+</div><div class="comment-area">
+   <div id="disqus_thread"></div>
+   <script type="text/javascript">
+       /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+       var disqus_shortname = 'heheblog'; // required: replace example with your forum shortname
+       /* * * DON'T EDIT BELOW THIS LINE * * */
+       (function() {
+           var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+           dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+           (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+       })();
+   </script>
+   <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+   <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+   
+</div></div></div></div></div><div class="footer"><div class="inner-footer"><p>&copy; Copyright 2014 by Yuwei Ba</p></div></div>
+
+<script>
+ (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+ (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+ m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+ })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+ ga('create', 'UA-53224060-1', 'auto');
+ ga('send', 'pageview');
+</script>
+
+</body></html>
