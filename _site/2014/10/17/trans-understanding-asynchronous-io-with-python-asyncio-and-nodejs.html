@@ -26,7 +26,11 @@
 <li><a href="/feed.xml" class="page-link">Feed</a></li>
 </ul></div></div></div><div class="main-wrapper"><div class="inner-wrapper"><div class="logo"><a href="/">8D is Here</a></div><div class="page-meta">
 天青色等烟雨，而我在等你。
-</div><div class="main-area"><div class="post-entry"><h1 class="entry-title">Understanding Asynchronous IO with Python 3.4's Asyncio and Node.js</h1><div class="entry-meta"><time class="updated">Oct 17, 2014</time></div><div class="entry-content"><h2 id="section">介绍</h2>
+</div><div class="main-area"><div class="post-entry"><h1 class="entry-title">Understanding Asynchronous IO with Python 3.4's Asyncio and Node.js</h1><div class="entry-meta"><time class="updated">Oct 17, 2014</time></div><div class="entry-content"><blockquote>
+  <p>这是一篇译文: <a href="http://sahandsaba.com/understanding-asyncio-node-js-python-3-4.html?utm_source=Python+Weekly+Newsletter&amp;utm_campaign=9117ced2ad-Python_Weekly_Issue_161_October_16_2014&amp;utm_medium=email&amp;utm_term=0_9e26887fc5-9117ced2ad-312705645">原文</a></p>
+</blockquote>
+
+<h2 id="section">介绍</h2>
 
 <p>今年夏天我都在开发运行于 Node.js 的 Web 平台。这是我第一次全职在写 Node.js，然后几周之后问题明显的暴露出来，就是好多开发者，包括我，缺乏对 Node.js 中异步特性的清晰认识以及在底层是如何实现的。因为我确信要想高效使用一个平台需要清楚的理解它是如何工作的，所以我决定深入研究一下。这份好奇心让我开始研究其他语言中的异步特性是如何实现的，尤其是 Python，是我每次学习和试验用的语言。这让我去研究 Python 3.4 中的异步 IO 库 <code>asyncio</code> ，跟我之前研究的 coroutines (看我之前的文章 <a href="http://sahandsaba.com/combinatorial-generation-using-coroutines-in-python.html">combinatorial generation using coroutines in Python</a>)。这篇文章探讨了一些我在学习这块主题时候遇到的问题和解答，我希望能够帮助大家理解和回答一些问题。</p>
 

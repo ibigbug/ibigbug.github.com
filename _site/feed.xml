@@ -5,13 +5,17 @@
     <description>Programming makes life easier and better. Life Lover.</description>
     <link>http://blog.xiaoba.me/</link>
     <atom:link href="http://blog.xiaoba.me/feed.xml" rel="self" type="application/rss+xml" />
-    <pubDate>Tue, 21 Oct 2014 00:40:27 +0800</pubDate>
-    <lastBuildDate>Tue, 21 Oct 2014 00:40:27 +0800</lastBuildDate>
+    <pubDate>Tue, 21 Oct 2014 00:42:35 +0800</pubDate>
+    <lastBuildDate>Tue, 21 Oct 2014 00:42:35 +0800</lastBuildDate>
     <generator>Jekyll v2.2.0</generator>
     
       <item>
         <title>Understanding Asynchronous IO with Python 3.4&#39;s Asyncio and Node.js</title>
-        <description>&lt;h2 id=&quot;section&quot;&gt;介绍&lt;/h2&gt;
+        <description>&lt;blockquote&gt;
+  &lt;p&gt;这是一篇译文: &lt;a href=&quot;http://sahandsaba.com/understanding-asyncio-node-js-python-3-4.html?utm_source=Python+Weekly+Newsletter&amp;amp;utm_campaign=9117ced2ad-Python_Weekly_Issue_161_October_16_2014&amp;amp;utm_medium=email&amp;amp;utm_term=0_9e26887fc5-9117ced2ad-312705645&quot;&gt;原文&lt;/a&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h2 id=&quot;section&quot;&gt;介绍&lt;/h2&gt;
 
 &lt;p&gt;今年夏天我都在开发运行于 Node.js 的 Web 平台。这是我第一次全职在写 Node.js，然后几周之后问题明显的暴露出来，就是好多开发者，包括我，缺乏对 Node.js 中异步特性的清晰认识以及在底层是如何实现的。因为我确信要想高效使用一个平台需要清楚的理解它是如何工作的，所以我决定深入研究一下。这份好奇心让我开始研究其他语言中的异步特性是如何实现的，尤其是 Python，是我每次学习和试验用的语言。这让我去研究 Python 3.4 中的异步 IO 库 &lt;code&gt;asyncio&lt;/code&gt; ，跟我之前研究的 coroutines (看我之前的文章 &lt;a href=&quot;http://sahandsaba.com/combinatorial-generation-using-coroutines-in-python.html&quot;&gt;combinatorial generation using coroutines in Python&lt;/a&gt;)。这篇文章探讨了一些我在学习这块主题时候遇到的问题和解答，我希望能够帮助大家理解和回答一些问题。&lt;/p&gt;
 
