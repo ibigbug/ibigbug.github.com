@@ -1,0 +1,27 @@
+---
+layout: post
+title: Leetcode Valid Number
+meta: Python 实现状态机判断输入字符串是否为科学计数法表示
+date: 2014-11-10
+category: Work
+---
+
+最近做了一道很有意思的题目，需要判断一个输入字符串是不是一个合法的「科学计数法」表示。[原题在这里](https://oj.leetcode.com/problems/valid-number/)。当然解法可能有很多，我选择了使用状态机来描述。因为之前看了许多关于词法分析的文章和书，一直没有机会实践，写完这道题目，算是对状态机有了一个亲身实践。
+
+很坑，因为不知道具体什么样的输入才满足 Leetcode 和「合法」，所以画了好几张流程图都不满足，最终参考网上资料，发现原来是对输入「e」的状态转移处理有问题，不过好说歹说算是画出来了，换来了优雅的「Accepted」。
+
+直接上我的草图好了:
+
+![leetcode-valid-number]({{ site.cdn}}/valid-number.jpg)
+
+简单解释一下:
+
+* d 表示输入为 digit
+* . 表示输入为 dot
+* s 表示输入为 space
+* e 表示输入为 e 或者 E
+* +, - 表示输入为 sig
+
+最终 Python 实现代码放在 [Github](https://github.com/ibigbug/leetcode/blob/master/valid-number.py)
+
+最开始是写了好多 if-else 的，后来 debug 起来太复杂，转成查表进行状态转移了。表驱动大法好。
