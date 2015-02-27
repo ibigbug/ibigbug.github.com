@@ -1,0 +1,121 @@
+---
+layout: post
+title: 一些常见高效 AngularJS 写法整理
+date: 2015-02-27
+category: work
+meta: 编写高性能的 AngularJS 代码
+---
+
+> 本文总结整理了一些高效的 AngularJS 写法。分为两部分: 第一部简单列举了 Javascript 中长出现的低效写法以及如何改善，第二部分列举了 AngularJS 中的一些高效写法以及一些应当避免的用法。
+
+# 简介
+
+AngularJS 的性能被诟病的点，主要就是 dirty check loop 的实现，也就是 $digest 过程。而影响这一过程最大的一个因素就是页面内 $watcher 的数量。所以在使用 AngularJS 框架进行 Web 程序开发时，在关注原生 Javascript 写法性能的同时，主要就是关注 $watcher 的合理使用以及控制 $digest 过程。
+
+# Javascript 中应该注意的一些写法
+
+## 循环
+
+尽量不要在循环内部进行函数调用:
+
+{% highlight javascript %}
+var sum = 0;
+for (var x = 0; x < 100; x++) {
+  var keys = Object.keys(obj);
+  sum = sum + keys[x];
+}
+{% endhighlight %}
+
+最好写作:
+
+{% highlight javascript %}
+var sum = 0;
+var keys = Object.keys(obj);
+for (var x = 0; x < 100; x++) {
+  sum = sum + keys[x];
+}
+{% endhighlight %}
+
+[http://jsperf.com/for-loop-perf-demo-basic](http://jsperf.com/for-loop-perf-demo-basic)
+
+## 访问 DOM
+
+与 jQuery 不同，在 AngularJS 应用中对 DOM 的访问已经大大减少。但是依旧，尽量少地在应用中访问 DOM，尽量不要改变内联样式，这样会导致 DOM reflow，非常影响页面性能。关于 reflow，可参考 [这里](http://www-archive.mozilla.org/newlayout/doc/reflow.html)
+
+## 变量作用于以及垃圾回收
+
+关于垃圾回收，可以参考这篇文章: [Javascript 中的垃圾回收机制](https://blog.xiaoba.me/2013/05/07/garbage-collection-in-javascript.html)。在单页应用中，关注内存使用显得更加重要。
+
+{% highlight javascript %}
+function demo(){
+    var b = {childFunction: function(){console.log('hi this is the child function')};
+    b.childFunction();
+    return b;
+  }
+{% endhighlight %}
+
+以上程序，当 demo 函数返回的时候，GC 会回收 b。但是，当有人写下了这样的代码:
+
+{% highlight javascript %}
+var bRef = demo();
+{% endhighlight %}
+
+就会增加了一个对 b 的引用，延长了 b 的生命周期。当然，这可能是正常的逻辑，只不过，对这种写法，需要头脑中时刻保持清醒。
+
+更多关于 V8 优化的信息，请访问 [https://github.com/petkaantonov/bluebird/wiki/Optimization-killers](Optimization killers)。
+
+# AngularJS 中的一些写法
+
+## 使用 `$watch`
+
+`$watch` 的第一个参数，永远不要是一个函数。因为创建的 watcher 会在每次 `$digest` 中运行不只一次。这意味着，`$watch` 的第一个参数，如果是一个函数，那么将会被频繁调用。
+
+AngularJS 更新视图的核心就是「脏值检测」，在内部通过 $rootScope 原型上面的 $digest 方法来实现。查看源码可以发现，$digest 的原理就是一个通过一个 while 循环，来不停的执行当前 scope 中的 watcher 来计算被 watcher 的表达式的值是否发生了变化。这意味着，当页面内拥有越多的 watcher 时，每一次 $digest 过程将会消耗越多的时间。
+
+同时，由于 AngularJS 的整个运行周期，都伴随这不停的 $digest 的过程。如果被 watch 的表达式是一个函数，显然会降低 $digest 的效率。
+
+## ngRepeat
+
+1. 减少 ngRepeat 列表的长度
+2. 使用 `track by` 表达式
+
+因为，ngRepeat 会进行大量的 DOM 操作。列表过长会导致单个页面内过多的 DOM 操作，对页面性能造成严重的影响。
+
+同时，ngRepeat 会依据一个 key 来跟踪每一个对象是否发生变化，来判断数据有更新，进而来判断，是否进行 DOM 更新操作。如果没有提供 `track by` 表达式，会使用 默认的 $hashkey，这意味着只要当引用发生变化，而不管数据有没有变化，ngRepeat 都会重新 $compile DOM -- 这显然不是我们想要的。所以，提供一个 `track by` 表达式，如 `track by item.id`，则会使 ngRepeat 依据每一个对象在数据库里面的 id 字段来判断数据是否更新，减少了不必要的 DOM 操作。
+
+但是，注意，在使用 `track by` 表达式的时候，一定要保证列表中每一项根据表达式求值的结果要唯一，否则会报错。
+
+## 关于使用 ngIf 和 ngShow 的区别
+
+ngShow/ngHide 是通过改变样式来实现页面内容的隐藏或是展现的。这意味着，当一个元素被 ngHide 了以后，其 $scope 以及 $scope 上的 $watcher 实际仍在运行。
+
+而 ngIf 则是通过添加或彻底移除 DOM 来实现。这意味，当页面元素被 ngIf 移除之后，对应的 $scope 会被销毁，$watcher 不会再运行。这看上去会在一定程度上加快 $digest，但是代价是每次 ngIf 生效的时候，会重新 $compile 以及操作 DOM。
+
+所以，如何使用 ngIf 和 ngShow/ngHide 还要结合具体业务场景来区分。
+
+## $digest 和 $apply
+
+尽量少地使用 $apply。
+
+因为，$apply() 实质上是调用 $rootScope.prototype.$digest()。而这一过程，会在当前应用内的所有 scope 上执行 $digest 过程。而 $digest() 则只在当从当前 scope 出发向下遍历所有 scope 来进行 $digest。所以，需要根据具体的应用场景，尽量减少 $apply 的调用。BTW，$timeout(func, 0) 的写法默认会调用一次 $rootScope.prototype.$digest()。
+
+另外，在一次 $digest 的每次 while 循环开始，AngularJS 会检测一个 `asyncQueue` 中是否有待执行的任务。这个队列通过 $evalAsync() 来向其添加任务。asyncQueue 中的任务，可以随时添加。如果当前正处于某一次 $digest，则直接取出执行;否则保留到下一次 $digest 中执行。可以一定程度上减少 $apply() 的调用。
+
+## 其他
+* 使用 \{\{ :oneTimeBind \}\}
+* 记得 unwatch
+* 记得 $destroy
+* 在 Directive 中尽量直接操作 DOM 样式而不是通过 ngShow/ngHide 等
+* 减少在 DOM 中直接使用 $filter，而是在 $controller 中先处理好数据，避免了通过 parse DOM 来执行 $filter
+* 使用 [ngPerf](https://github.com/ibigbug/ngPerf/) 实时监测 AngularJS 应用性能 
+
+# 总结
+
+Javascript 本身的运行速度是够快的，「慢」的往往是其他比如 DOM 操作 -- 这一点，无论在传统的 jQuery 应用还是 AngularJS 应用中，都是不变的。了解 Javascript 语言的本质，掌握框架的特性，是非常有必要的。
+
+关于 AngularJS 性能优化，最重要的就是以下两点:
+
+1. 减少 watcher 的数量，unwatch 和 $destroy()
+2. 减少 $digest 次数，使用 $evalAsync 代替 $apply
+
+只要在写法上注意这两点，就可以在很大程度上，保证了针对 AngularJS 的应用的性能达到最高。
