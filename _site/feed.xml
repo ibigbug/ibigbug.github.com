@@ -5,9 +5,160 @@
     <description>Programming makes life easier and better. Life Lover.</description>
     <link>http://blog.xiaoba.me/</link>
     <atom:link href="http://blog.xiaoba.me/feed.xml" rel="self" type="application/rss+xml" />
-    <pubDate>Fri, 27 Feb 2015 19:17:32 +0800</pubDate>
-    <lastBuildDate>Fri, 27 Feb 2015 19:17:32 +0800</lastBuildDate>
+    <pubDate>Tue, 19 May 2015 20:57:45 +0800</pubDate>
+    <lastBuildDate>Tue, 19 May 2015 20:57:45 +0800</lastBuildDate>
     <generator>Jekyll v2.2.0</generator>
+    
+      <item>
+        <title>如何知道女神生日</title>
+        <description>&lt;ol&gt;
+  &lt;li&gt;两位码农 Albert 和 Bernard 刚刚跟女神 Cheryl 成为了好朋友，想知道女神的生日是多少，女神说就是下面的某一天:&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-js&quot; data-lang=&quot;js&quot;&gt;&lt;span class=&quot;nx&quot;&gt;May&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;15&lt;/span&gt;     &lt;span class=&quot;nx&quot;&gt;May&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;16&lt;/span&gt;     &lt;span class=&quot;nx&quot;&gt;May&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;19&lt;/span&gt;
+   &lt;span class=&quot;nx&quot;&gt;June&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;17&lt;/span&gt;    &lt;span class=&quot;nx&quot;&gt;June&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;18&lt;/span&gt;
+   &lt;span class=&quot;nx&quot;&gt;July&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;14&lt;/span&gt;    &lt;span class=&quot;nx&quot;&gt;July&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;16&lt;/span&gt;
+ &lt;span class=&quot;nx&quot;&gt;August&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;14&lt;/span&gt;  &lt;span class=&quot;nx&quot;&gt;August&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;15&lt;/span&gt;  &lt;span class=&quot;nx&quot;&gt;August&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;17&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;女神又 &lt;strong&gt;分别&lt;/strong&gt; 告诉了两位码农她生日的 &lt;strong&gt;月份&lt;/strong&gt; 和 &lt;strong&gt;日期&lt;/strong&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;Albert&lt;/strong&gt; 说: 我不知道女神的生日是多少，但是我知道 Bernard 你也肯定不知道&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;Bernard&lt;/strong&gt; 说: 我 &lt;strong&gt;本来&lt;/strong&gt; 不知道的，但是现在我知道了。&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;Albert&lt;/strong&gt; 又说: 嘿嘿，我现在也知道了。&lt;/li&gt;
+  &lt;li&gt;那么女神的生日到底是多少呢?&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;据说这是一道国考的智力题，今天我们用码农的方式来解决。&lt;/p&gt;
+
+&lt;h2 id=&quot;section&quot;&gt;1.首先，女神说了 10 个可能的日期&lt;/h2&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-js&quot; data-lang=&quot;js&quot;&gt;&lt;span class=&quot;kr&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;DATES&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;
+    &lt;span class=&quot;s1&quot;&gt;&amp;#39;May 15&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&amp;#39;May 16&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&amp;#39;May 19&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+    &lt;span class=&quot;s1&quot;&gt;&amp;#39;June 17&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&amp;#39;June 18&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+    &lt;span class=&quot;s1&quot;&gt;&amp;#39;July 14&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&amp;#39;July 16&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+    &lt;span class=&quot;s1&quot;&gt;&amp;#39;August 14&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&amp;#39;August 15&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&amp;#39;August 17&amp;#39;&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;然后我们定义两个辅助函数来返回某个日期的 &lt;strong&gt;月份&lt;/strong&gt; 或者 &lt;strong&gt;日期&lt;/strong&gt;:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-js&quot; data-lang=&quot;js&quot;&gt;&lt;span class=&quot;err&quot;&gt; &lt;/span&gt;&lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;month&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;date&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;date&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;split&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&amp;#39; &amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+
+&lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;day&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;date&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;date&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;split&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&amp;#39; &amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;section-1&quot;&gt;2. 女神分别告诉了两个人月份和日期&lt;/h2&gt;
+
+&lt;p&gt;我们来翻译 &lt;strong&gt;告诉&lt;/strong&gt; 和 &lt;strong&gt;知道&lt;/strong&gt; 这两个函数:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-js&quot; data-lang=&quot;js&quot;&gt;&lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;tell&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;part&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;possible_dates&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+  &lt;span class=&quot;nx&quot;&gt;possible_dates&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;possible_dates&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;||&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;DATES&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;possible_dates&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;filter&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;date&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;date&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;indexOf&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;part&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+
+
+&lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;know&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;possible_dates&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;possible_dates&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;length&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;==&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;假如女神告诉 &lt;strong&gt;Albert&lt;/strong&gt; 说她生日是在 &lt;em&gt;五月&lt;/em&gt;，&lt;strong&gt;Albert&lt;/strong&gt; 用程序跑了一下:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-js&quot; data-lang=&quot;js&quot;&gt;&lt;span class=&quot;nx&quot;&gt;tell&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&amp;#39;May&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&amp;#39;May 15&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&amp;#39;May 16&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&amp;#39;May 19&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;如果女神告诉 &lt;strong&gt;Bernard&lt;/strong&gt; 说她生日是 &lt;strong&gt;15号&lt;/strong&gt;， &lt;strong&gt;Bernard&lt;/strong&gt; 也用程序跑了一下:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-js&quot; data-lang=&quot;js&quot;&gt;&lt;span class=&quot;nx&quot;&gt;tell&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&amp;#39;15&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&amp;#39;May 15&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&amp;#39;August 15&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;对 &lt;strong&gt;Bernard&lt;/strong&gt; 来说，他此时并不知道女神生日到底是多少:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-js&quot; data-lang=&quot;js&quot;&gt;&lt;span class=&quot;nx&quot;&gt;know&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;tell&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&amp;#39;15&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;False&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;section-2&quot;&gt;整体策略&lt;/h2&gt;
+
+&lt;p&gt;当女神告诉 &lt;strong&gt;Albert&lt;/strong&gt; 说是生日在 &lt;strong&gt;五月&lt;/strong&gt; 的时候，&lt;strong&gt;Albert&lt;/strong&gt; 就知道有结果三种可能，但是 &lt;em&gt;程序&lt;/em&gt; 不是 &lt;strong&gt;Albert&lt;/strong&gt;，程序只能对 &lt;em&gt;所有&lt;/em&gt; 可能的日期一个一个去试。为此我们针对题目中的条件 3 - 5 编写逻辑，然后用这些逻辑去验证每个可能的日期。如果正常的话，真相只有一个。&lt;/p&gt;
+
+&lt;p&gt;下面是主函数， &lt;code&gt;cheryls_birthday&lt;/code&gt;:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-js&quot; data-lang=&quot;js&quot;&gt;&lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;cheryls_birthday&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;possible_dates&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+  &lt;span class=&quot;nx&quot;&gt;possible_dates&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;possible_dates&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;||&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;DATES&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;possible_dates&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;filter&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;statements3to5&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+
+
+&lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;statements3to5&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;date&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;statement3&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;date&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;statement4&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;date&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;statement5&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;date&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;h3 id=&quot;albert---bernard-&quot;&gt;3. &lt;strong&gt;Albert&lt;/strong&gt; 说: 我不知道女神的生日是多少，但是我知道 Bernard 你也肯定不知道&lt;/h3&gt;
+
+&lt;p&gt;&lt;code&gt;statement3&lt;/code&gt; 将 &lt;strong&gt;Albert&lt;/strong&gt; 的陈述用代码来描述:&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;&lt;strong&gt;Albert&lt;/strong&gt; : 当女神告诉我她生日的月份之后，我不知道她的生日。虽然我不知道女神告诉 Bernard 的是哪一天，但是我知道所有可能的日期。不管是哪一天， Bernard 都不会知道生日是多少。&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;翻译成代码:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-js&quot; data-lang=&quot;js&quot;&gt;&lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;statement3&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;date&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+  &lt;span class=&quot;kd&quot;&gt;let&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;possible_dates&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;tell&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;month&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;date&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;!&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;know&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;possible_dates&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;possible_dates&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;every&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;d&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;!&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;know&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;tell&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;day&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;d&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)))))&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;我们可以来试一试 &lt;em&gt;条件3&lt;/em&gt;:&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;statement3(&#39;May 15&#39;) -&amp;gt; False&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;说明答案不是 &lt;em&gt;May 15&lt;/em&gt;。&lt;/p&gt;
+
+&lt;p&gt;其实，我们可以找出所有符合 &lt;em&gt;条件3&lt;/em&gt; 的答案:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-js&quot; data-lang=&quot;js&quot;&gt;&lt;span class=&quot;nx&quot;&gt;DATES&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;filter&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;statement3&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&amp;#39;July 14&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&amp;#39;July 16&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&amp;#39;August 14&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&amp;#39;August 15&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&amp;#39;August 17&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;h3 id=&quot;bernard----&quot;&gt;4. &lt;strong&gt;Bernard&lt;/strong&gt; 说: 我 &lt;strong&gt;本来&lt;/strong&gt; 不知道的，但是现在我知道了。&lt;/h3&gt;
+
+&lt;p&gt;再来翻译:
+&amp;gt; &lt;strong&gt;Bernard&lt;/strong&gt;: 开始女神告诉我日期的是，我是不知道的。但是我知道了满足 &lt;strong&gt;Albert&lt;/strong&gt; 说的 &lt;code&gt;statement3&lt;/code&gt; 所有可能的日期之后，我就知道了。&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-js&quot; data-lang=&quot;js&quot;&gt;&lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;statement4&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;date&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+  &lt;span class=&quot;kd&quot;&gt;let&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;at_first&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;tell&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;day&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;date&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;!&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;know&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;at_first&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;know&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;at_first&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;filter&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;statement3&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)))&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;&lt;em&gt;条件3&lt;/em&gt; 和 &lt;em&gt;条件4&lt;/em&gt; 可以得出:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-js&quot; data-lang=&quot;js&quot;&gt;&lt;span class=&quot;nx&quot;&gt;DATES&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;filter&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;statement3&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;filter&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;statement4&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&amp;#39;July 16&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&amp;#39;August 15&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&amp;#39;August 17&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;
+
+&lt;span class=&quot;c1&quot;&gt;// 离真相越来越近了&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;h3 id=&quot;albert--&quot;&gt;5. &lt;strong&gt;Albert&lt;/strong&gt; 又说: 嘿嘿，我现在也知道了。&lt;/h3&gt;
+
+&lt;p&gt;同样:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-js&quot; data-lang=&quot;js&quot;&gt;&lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;statement5&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;date&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;know&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;tell&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;month&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;date&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)).&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;filter&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;statement4&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;h3 id=&quot;section-3&quot;&gt;6. 答案揭晓&lt;/h3&gt;
+
+&lt;p&gt;&lt;code&gt;cheryls_birthday() -&amp;gt; [&#39;July 16&#39;]&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;Yeah! 我们推理出了女神的生日是 &lt;strong&gt;July 16&lt;/strong&gt;。&lt;/p&gt;
+
+&lt;p&gt;嘿嘿。&lt;/p&gt;
+
+&lt;hr /&gt;
+&lt;p&gt;抄袭自: &lt;a href=&quot;http://nbviewer.ipython.org/url/norvig.com/ipython/Cheryl.ipynb#&quot;&gt;When is Cheryl’s Birthday?&lt;/a&gt;&lt;/p&gt;
+</description>
+        <pubDate>Tue, 19 May 2015 00:00:00 +0800</pubDate>
+        <link>http://blog.xiaoba.me/2015/05/19/when-is-cheryls-birthday.html</link>
+        <guid isPermaLink="true">http://blog.xiaoba.me/2015/05/19/when-is-cheryls-birthday.html</guid>
+        
+        
+        <category>work</category>
+        
+      </item>
     
       <item>
         <title>一些常见高效 AngularJS 写法整理</title>
@@ -1327,89 +1478,6 @@ jQuery 默认 Ajax 请求：
         
         
         <category>work</category>
-        
-      </item>
-    
-      <item>
-        <title>细数杭州那些文艺地</title>
-        <description>&lt;p&gt;本来是参加公司培训时候做游戏抽到的一道题目，刚好借此机会存起来备用。&lt;/p&gt;
-
-&lt;h3 id=&quot;section&quot;&gt;一、丝联166创意产业园&lt;/h3&gt;
-
-&lt;p&gt;&lt;img src=&quot;http://yuwei-cdn.b0.upaiyun.com/blog/images/scene1.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;丝联166的前身，是杭州丝绸印染联合厂，是杭州发展工业特殊历史时期的标志之一，现在还保留着许多旧机器。这里除了有很多大大小小的工作室，还有一些文艺青年聚集的创意咖啡室。&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;地址：丽水路166号&lt;/li&gt;
-  &lt;li&gt;交通：公交61路至丽水北路龙腾街口、23路至丽水路锦鸿街口&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h3 id=&quot;section-1&quot;&gt;二、杭州之江凤凰国际创意园&lt;/h3&gt;
-
-&lt;p&gt;&lt;img src=&quot;http://yuwei-cdn.b0.upaiyun.com/blog/images/scene2.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;这家创意园由双流水泥厂改造而成，汇集了现代设计、动漫、艺术品、新媒体四个特色产业，吸引了何见平、蔡志忠、孟京辉、王伟忠、陈立恒、宋建明、方振华、郭守正、刘纪纲等一批名人入驻。&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;地址：转塘街道创意路1号&lt;/li&gt;
-  &lt;li&gt;交通：公交189路至凤凰国际创意园区&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h3 id=&quot;section-2&quot;&gt;三、四眼井&lt;/h3&gt;
-
-&lt;p&gt;&lt;img src=&quot;http://yuwei-cdn.b0.upaiyun.com/blog/images/scene3.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;四眼井是一个青年旅社扎堆的地方，在这里你会遇到志同道合的朋友，一起饮茶聊天，交流旅途上的见闻，是绝对的文艺青年必去之地。这里还是一个觅食的好地方，可以满足每一个吃货哦。&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;地址：虎跑路四眼井村&lt;/li&gt;
-  &lt;li&gt;交通：公交514B线、514区间、808路、822路、K291路、K4路、K504路、K527路、K822路，至动物园站&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h3 id=&quot;section-3&quot;&gt;四、小河直街&lt;/h3&gt;
-
-&lt;p&gt;&lt;img src=&quot;http://yuwei-cdn.b0.upaiyun.com/blog/images/scene4.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;小河直街是杭州历史文化街区仲，保留传统风貌较完整的街区之一。这里真实反映了清末民初运河沿线底层人民的生活环境，保留了大量的历史建筑，漫步街道，仿佛穿越到上个世纪。&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;地址：沿湖墅北路往北走&lt;/li&gt;
-  &lt;li&gt;交通：公交1路、76路至长征桥路&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h3 id=&quot;section-4&quot;&gt;五、西溪慢生活街区&lt;/h3&gt;
-
-&lt;p&gt;&lt;img src=&quot;http://yuwei-cdn.b0.upaiyun.com/blog/images/scene5.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;依着西溪的水，傍着西溪的景，却没有游客的喧闹。汝拉小镇、福里码头、懒懒咖啡……这些富有意味的小店，光听名字就让人有一种慵懒闲适的感觉，一种慢生活的节奏。&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;地址：文二西路西溪湿地北大门内&lt;/li&gt;
-  &lt;li&gt;交通：公交83路、86路至十字港桥&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h3 id=&quot;section-5&quot;&gt;六、青芝坞&lt;/h3&gt;
-
-&lt;p&gt;&lt;img src=&quot;http://yuwei-cdn.b0.upaiyun.com/blog/images/scene6.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;青芝坞位于浙大玉泉校区和植物园之间，内有灵峰水系穿村而过，“灵峰探梅”的出入口就在这里。这里有很多有个性的小餐厅、咖啡馆、青年旅社等，是文艺青年的必去之地。&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;地址：玉古龙北侧&lt;/li&gt;
-  &lt;li&gt;交通：公交15路、28路、82录、K27路、K28路、K807路、K82路、Y4路至玉泉站&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h3 id=&quot;section-6&quot;&gt;七、其他&lt;/h3&gt;
-
-&lt;p&gt;参见豆瓣帖子：&lt;a href=&quot;http://site.douban.com/188681/widget/notes/14322996/note/300029602/&quot;&gt;【发现杭州】20个你所不知道的杭州小众地方&lt;/a&gt;&lt;/p&gt;
-</description>
-        <pubDate>Thu, 07 Aug 2014 00:00:00 +0800</pubDate>
-        <link>http://blog.xiaoba.me/2014/08/07/scenes-in-hangzhou.html</link>
-        <guid isPermaLink="true">http://blog.xiaoba.me/2014/08/07/scenes-in-hangzhou.html</guid>
-        
-        
-        <category>life</category>
         
       </item>
     

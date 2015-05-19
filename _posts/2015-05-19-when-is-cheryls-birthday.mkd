@@ -1,0 +1,172 @@
+---
+layout: post
+title: 如何知道女神生日
+date: 2015-05-19
+category: work
+meta: Interestring.
+---
+
+1. 两位码农 Albert 和 Bernard 刚刚跟女神 Cheryl 成为了好朋友，想知道女神的生日是多少，女神说就是下面的某一天:
+
+{% highlight js %}
+	May 15     May 16     May 19
+   June 17    June 18
+   July 14    July 16
+ August 14  August 15  August 17
+{% endhighlight %}
+
+2. 女神又 **分别** 告诉了两位码农她生日的 **月份** 和 **日期**
+3. **Albert** 说: 我不知道女神的生日是多少，但是我知道 Bernard 你也肯定不知道
+4. **Bernard** 说: 我 **本来** 不知道的，但是现在我知道了。
+5. **Albert** 又说: 嘿嘿，我现在也知道了。
+6. 那么女神的生日到底是多少呢?
+
+据说这是一道国考的智力题，今天我们用码农的方式来解决。
+
+## 1.首先，女神说了 10 个可能的日期
+
+{% highlight js %}
+const DATES = [
+    'May 15', 'May 16', 'May 19',
+    'June 17', 'June 18',
+    'July 14', 'July 16',
+    'August 14', 'August 15', 'August 17'
+]
+{% endhighlight %}
+
+然后我们定义两个辅助函数来返回某个日期的 **月份** 或者 **日期**:
+
+{% highlight js %}
+ function month(date) {
+  return date.split(' ')[0]
+}
+
+function day(date) {
+  return date.split(' ')[1]
+}
+
+{% endhighlight %}
+
+## 2. 女神分别告诉了两个人月份和日期
+
+我们来翻译 **告诉** 和 **知道** 这两个函数:
+
+{% highlight js %}
+function tell(part, possible_dates) {
+  possible_dates = possible_dates || DATES
+  return possible_dates.filter(date => date.indexOf(part) >= 0)
+}
+
+
+function know(possible_dates) {
+  return possible_dates.length == 1
+}
+{% endhighlight %}
+
+假如女神告诉 **Albert** 说她生日是在 *五月*，**Albert** 用程序跑了一下:
+
+{% highlight js %}
+tell('May') -> ['May 15', 'May 16', 'May 19']
+{% endhighlight %}
+
+如果女神告诉 **Bernard** 说她生日是 **15号**， **Bernard** 也用程序跑了一下:
+
+{% highlight js %}
+tell('15') -> ['May 15', 'August 15']
+{% endhighlight %}
+
+对 **Bernard** 来说，他此时并不知道女神生日到底是多少:
+
+{% highlight js %}
+know(tell('15')) -> False
+{% endhighlight %}
+
+## 整体策略
+
+当女神告诉 **Albert** 说是生日在 **五月** 的时候，**Albert** 就知道有结果三种可能，但是 *程序* 不是 **Albert**，程序只能对 *所有* 可能的日期一个一个去试。为此我们针对题目中的条件 3 - 5 编写逻辑，然后用这些逻辑去验证每个可能的日期。如果正常的话，真相只有一个。
+
+下面是主函数， `cheryls_birthday`:
+
+{% highlight js %}
+function cheryls_birthday(possible_dates) {
+  possible_dates = possible_dates || DATES
+  return possible_dates.filter(statements3to5)
+}
+
+
+function statements3to5(date) {
+  return statement3(date) && statement4(date) && statement5(date)
+}
+{% endhighlight %}
+
+### 3. **Albert** 说: 我不知道女神的生日是多少，但是我知道 Bernard 你也肯定不知道
+
+`statement3` 将 **Albert** 的陈述用代码来描述:
+
+> **Albert** : 当女神告诉我她生日的月份之后，我不知道她的生日。虽然我不知道女神告诉 Bernard 的是哪一天，但是我知道所有可能的日期。不管是哪一天， Bernard 都不会知道生日是多少。
+
+翻译成代码:
+
+{% highlight js %}
+
+function statement3(date) {
+  let possible_dates = tell(month(date))
+  return (!know(possible_dates) && possible_dates.every(d => !know(tell(day(d)))))
+}
+
+
+{% endhighlight %}
+
+我们可以来试一试 *条件3*:
+
+`statement3('May 15') -> False`
+
+说明答案不是 *May 15*。
+
+其实，我们可以找出所有符合 *条件3* 的答案:
+
+{% highlight js %}
+DATES.filter(statement3) -> ['July 14', 'July 16', 'August 14', 'August 15', 'August 17']
+{% endhighlight %}
+
+### 4. **Bernard** 说: 我 **本来** 不知道的，但是现在我知道了。
+
+再来翻译:
+> **Bernard**: 开始女神告诉我日期的是，我是不知道的。但是我知道了满足 **Albert** 说的 `statement3` 所有可能的日期之后，我就知道了。
+
+{% highlight js %}
+function statement4(date) {
+  let at_first = tell(day(date))
+  return (!know(at_first) && know(at_first.filter(statement3)))
+}
+
+{% endhighlight %}
+
+*条件3* 和 *条件4* 可以得出:
+
+{% highlight js %}
+DATES.filter(statement3).filter(statement4) -> ['July 16', 'August 15', 'August 17']
+
+// 离真相越来越近了
+{% endhighlight %}
+
+### 5. **Albert** 又说: 嘿嘿，我现在也知道了。
+
+同样:
+
+{% highlight js %}
+function statement5(date) {
+  return know(tell(month(date)).filter(statement4))
+}
+{% endhighlight %}
+
+### 6. 答案揭晓
+
+`cheryls_birthday() -> ['July 16']`
+
+Yeah! 我们推理出了女神的生日是 **July 16**。
+
+嘿嘿。
+
+------
+抄袭自: [When is Cheryl's Birthday?](http://nbviewer.ipython.org/url/norvig.com/ipython/Cheryl.ipynb#)
