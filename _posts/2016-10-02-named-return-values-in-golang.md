@@ -8,7 +8,7 @@ meta: Be careful when using named return value in golang
 
 # Intro
 
-I'm recently writing some tools with golang and found golang function ships a feature called `named return value`. It was not introduced in other common programming languages like Python/Javascript/Java and not exactly the same as that in some 'functional' programing languages like Clojure/Haskell/Scheme which the evaluation of the last expression is the 'return value' of the function. In golang, we can write code like [this](https://tour.golang.org/basics/7):
+Recently, I'm writing some golang tools and have found that functions of golang have a feature called `named return value`, which cannot be found in other common programming languages like Python, Javascript or Java. It cannot also be equal to the feature in some 'functional' programing languages like Clojure, Haskell or Scheme, which the evaluation of the last expression is the 'return value' of the function. In golang, we write code like [this](https://tour.golang.org/basics/7):
 
 {% highlight go %}
 package main
@@ -26,11 +26,11 @@ func main() {
 }
 {% endhighlight %}
 
-We can leave the variable `x, y` out in the `return` expression. Deadly simple and convinient for short functions just like other golang programs which have their var names short and meaningful. However, today what I'm talking about some common pitfalls while using this awesome feature.
+By leaving out the variable `x, y`in the `return` expression, we have created a shorter function which already permit precise variable name in golang. Fairly simple and convenient. However, what I'm talking about today are some common pitfalls when using this handy feature.
 
 # Pitfall 1.
 
-Considering this problem, given an element `el` and find the  index `idx` in an array (or slice) `arr`. Without `named return value`, you may write code like:
+Considering this problem: find the index `idx` of the element "el" in an array (or slice) `arr`. Without `named return value`, you may write code like this :
 
 {% highlight go %}
 func findIdx(arr []int, el int) int {
@@ -44,7 +44,7 @@ func findIdx(arr []int, el int) int {
 }
 {% endhighlight %}
 
-Using `named return value`, you can change it to:
+Using `named return value`, you can change it to this:
 
 {% highlight go %}
 func findIdx(arr []int, el int) (idx int) {
@@ -60,13 +60,13 @@ func findIdx(arr []int, el int) (idx int) {
 
 [Let's run it to see what happens](https://go-sandbox.com/#/1U6U9Aadnh).
 
-That's to bad we got an error like:
+We encountered the following error:
 
 > Line 12: i is shadowed during return
 
 How could it be? The reason is `scope`.
 
-Golang provides block scope and a pair of `{}` create a new level of function scope. Our range loop body are wrapped in a `{}` plus we are using `:=` to create variables `idx` and `v`. So in the loop body we are totally creating a new variable name `idx` who is `shadowing` the outer scope binding `idx`.
+In Golang, one type of block scope is a pair of `{}` which generates a new level of function scope. In our example, our range loop body is wrapped in a `{}`, and, at the same time, we are also using `:=` to assign variables `idx` and `v`. Therefore, we have completely declared another variable name "idx", which is "shadowing" the outer scope binding (our intended)'idx' in the loop body. You can learn about the academic meaning of the word `shadow` or `binding` [here](https://en.wikipedia.org/wiki/Variable_shadowing)
 
 We can change the code to:
 
@@ -84,11 +84,12 @@ func findIdx(arr []int, el int) (idx int) {
 }
 {% endhighlight %}
 
-The word `shadow` or `binding` are some academic saying, learn more [here](https://en.wikipedia.org/wiki/Variable_shadowing)
+
 
 # Pitfall 2.
 
-If you are saying pitfall 1 is not a truth since the compiler will complain the wrong code, let's see the second one.
+If you are confident that you won't fall into the first case, since the compiler will warn of the error. Pitfall 2 is less obvious then.
+
 
 {% highlight go %}
 type User struct {
@@ -134,13 +135,13 @@ Output:
 
 > Program exited.
 
-In the output line 1, we found the admin user `root` in `us1`, good.
+In line 1 from output, we confirmed that the admin user `root` is in `us1`, good.
 
-Wait, the output line 2: WTF how does `guest` be an `Admin` users? There are no `Admin` user in `us2` at all!
+But wait. Look at line 2: There is no `Admin` user in `us2` at all! How could `guest` turn out to be an `Admin` users?
 
-The reasone is not mysterious: in the range loop, we can't find an `Admin` user in `us2` obviously. But the named value `u` is modified eash iteration in the range loop body. After the loop it was set to the last element in the `us2` array and notice the `return` after the range loop, we are returning it to the caller. So in the `main` function, `admin2` was set to `guest` which is not what we want.
+Well, now, we shouldn't find it hard to figure it out:  Although the named value `u` is modified during each iteration in the range loop body, it will, at the end of loop, be set to the last element in the `us2` array. Note the `return` after the range loop. It will then return the value to the caller. As a result, in the `main` function, `admin2` is set to `guest`. This is clearly not what we intended.
 
-Change the code:
+To correct the code:
 
 {% highlight go %}
 func findAdmin(users []*User) (u *User) {
@@ -155,11 +156,11 @@ func findAdmin(users []*User) (u *User) {
 }
 {% endhighlight %}
 
-The result would be right now.
+Now, it will end up with the right outcome.
 
 # Conclusion
 
-1. Golang has block scope which may have a impact on your `named return value`
-2. Don not forget to reset the named return value after a range loop
+1. Beware of variable shadow and binding within a golang range loop
+2. Double check the named return value after writing a range loop.
 
-Hope this can help you golang beginner like me :)
+Hope my little reflection may help some of you Gofers. :)
