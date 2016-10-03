@@ -5,15 +5,15 @@
     <description>Programming makes life easier and better. Life Lover.</description>
     <link>http://blog.xiaoba.me/</link>
     <atom:link href="http://blog.xiaoba.me/feed.xml" rel="self" type="application/rss+xml" />
-    <pubDate>Sun, 02 Oct 2016 21:07:11 +0800</pubDate>
-    <lastBuildDate>Sun, 02 Oct 2016 21:07:11 +0800</lastBuildDate>
+    <pubDate>Mon, 03 Oct 2016 19:35:38 +0800</pubDate>
+    <lastBuildDate>Mon, 03 Oct 2016 19:35:38 +0800</lastBuildDate>
     <generator>Jekyll v2.2.0</generator>
     
       <item>
         <title>Do you really know named return value in golang?</title>
         <description>&lt;h1 id=&quot;intro&quot;&gt;Intro&lt;/h1&gt;
 
-&lt;p&gt;I’m recently writing some tools with golang and found golang function ships a feature called &lt;code&gt;named return value&lt;/code&gt;. It was not introduced in other common programming languages like Python/Javascript/Java and not exactly the same as that in some ‘functional’ programing languages like Clojure/Haskell/Scheme which the evaluation of the last expression is the ‘return value’ of the function. In golang, we can write code like &lt;a href=&quot;https://tour.golang.org/basics/7&quot;&gt;this&lt;/a&gt;:&lt;/p&gt;
+&lt;p&gt;Recently, I’m writing some golang tools and have found that functions of golang have a feature called &lt;code&gt;named return value&lt;/code&gt;, which cannot be found in other common programming languages like Python, Javascript or Java. It cannot also be equal to the feature in some ‘functional’ programing languages like Clojure, Haskell or Scheme, which the evaluation of the last expression is the ‘return value’ of the function. In golang, we write code like &lt;a href=&quot;https://tour.golang.org/basics/7&quot;&gt;this&lt;/a&gt;:&lt;/p&gt;
 
 &lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-go&quot; data-lang=&quot;go&quot;&gt;&lt;span class=&quot;kn&quot;&gt;package&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;main&lt;/span&gt;
 
@@ -29,11 +29,11 @@
 	&lt;span class=&quot;nx&quot;&gt;fmt&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;Println&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;split&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;17&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;
 &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
-&lt;p&gt;We can leave the variable &lt;code&gt;x, y&lt;/code&gt; out in the &lt;code&gt;return&lt;/code&gt; expression. Deadly simple and convinient for short functions just like other golang programs which have their var names short and meaningful. However, today what I’m talking about some common pitfalls while using this awesome feature.&lt;/p&gt;
+&lt;p&gt;By leaving out the variable &lt;code&gt;x, y&lt;/code&gt;in the &lt;code&gt;return&lt;/code&gt; expression, we have created a shorter function which already permit precise variable name in golang. Fairly simple and convenient. However, what I’m talking about today are some common pitfalls when using this handy feature.&lt;/p&gt;
 
 &lt;h1 id=&quot;pitfall-1&quot;&gt;Pitfall 1.&lt;/h1&gt;
 
-&lt;p&gt;Considering this problem, given an element &lt;code&gt;el&lt;/code&gt; and find the  index &lt;code&gt;idx&lt;/code&gt; in an array (or slice) &lt;code&gt;arr&lt;/code&gt;. Without &lt;code&gt;named return value&lt;/code&gt;, you may write code like:&lt;/p&gt;
+&lt;p&gt;Considering this problem: find the index &lt;code&gt;idx&lt;/code&gt; of the element “el” in an array (or slice) &lt;code&gt;arr&lt;/code&gt;. Without &lt;code&gt;named return value&lt;/code&gt;, you may write code like this :&lt;/p&gt;
 
 &lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-go&quot; data-lang=&quot;go&quot;&gt;&lt;span class=&quot;kd&quot;&gt;func&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;findIdx&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;arr&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[]&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;el&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
   &lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;idx&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;v&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;:=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;range&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;arr&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
@@ -45,7 +45,7 @@
   &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;
 &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
-&lt;p&gt;Using &lt;code&gt;named return value&lt;/code&gt;, you can change it to:&lt;/p&gt;
+&lt;p&gt;Using &lt;code&gt;named return value&lt;/code&gt;, you can change it to this:&lt;/p&gt;
 
 &lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-go&quot; data-lang=&quot;go&quot;&gt;&lt;span class=&quot;kd&quot;&gt;func&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;findIdx&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;arr&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[]&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;el&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;idx&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
   &lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;idx&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;v&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;:=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;range&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;arr&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
@@ -59,7 +59,7 @@
 
 &lt;p&gt;&lt;a href=&quot;https://go-sandbox.com/#/1U6U9Aadnh&quot;&gt;Let’s run it to see what happens&lt;/a&gt;.&lt;/p&gt;
 
-&lt;p&gt;That’s to bad we got an error like:&lt;/p&gt;
+&lt;p&gt;We encountered the following error:&lt;/p&gt;
 
 &lt;blockquote&gt;
   &lt;p&gt;Line 12: i is shadowed during return&lt;/p&gt;
@@ -67,7 +67,7 @@
 
 &lt;p&gt;How could it be? The reason is &lt;code&gt;scope&lt;/code&gt;.&lt;/p&gt;
 
-&lt;p&gt;Golang provides block scope and a pair of &lt;code&gt;{}&lt;/code&gt; create a new level of function scope. Our range loop body are wrapped in a &lt;code&gt;{}&lt;/code&gt; plus we are using &lt;code&gt;:=&lt;/code&gt; to create variables &lt;code&gt;idx&lt;/code&gt; and &lt;code&gt;v&lt;/code&gt;. So in the loop body we are totally creating a new variable name &lt;code&gt;idx&lt;/code&gt; who is &lt;code&gt;shadowing&lt;/code&gt; the outer scope binding &lt;code&gt;idx&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;In Golang, one type of block scope is a pair of &lt;code&gt;{}&lt;/code&gt; which generates a new level of function scope. In our example, our range loop body is wrapped in a &lt;code&gt;{}&lt;/code&gt;, and, at the same time, we are also using &lt;code&gt;:=&lt;/code&gt; to assign variables &lt;code&gt;idx&lt;/code&gt; and &lt;code&gt;v&lt;/code&gt;. Therefore, we have completely declared another variable name “idx”, which is “shadowing” the outer scope binding (our intended)’idx’ in the loop body. You can learn about the academic meaning of the word &lt;code&gt;shadow&lt;/code&gt; or &lt;code&gt;binding&lt;/code&gt; &lt;a href=&quot;https://en.wikipedia.org/wiki/Variable_shadowing&quot;&gt;here&lt;/a&gt;&lt;/p&gt;
 
 &lt;p&gt;We can change the code to:&lt;/p&gt;
 
@@ -83,11 +83,9 @@
   &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;
 &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
-&lt;p&gt;The word &lt;code&gt;shadow&lt;/code&gt; or &lt;code&gt;binding&lt;/code&gt; are some academic saying, learn more &lt;a href=&quot;https://en.wikipedia.org/wiki/Variable_shadowing&quot;&gt;here&lt;/a&gt;&lt;/p&gt;
-
 &lt;h1 id=&quot;pitfall-2&quot;&gt;Pitfall 2.&lt;/h1&gt;
 
-&lt;p&gt;If you are saying pitfall 1 is not a truth since the compiler will complain the wrong code, let’s see the second one.&lt;/p&gt;
+&lt;p&gt;If you are confident that you won’t fall into the first case, since the compiler will warn of the error. Pitfall 2 is less obvious then.&lt;/p&gt;
 
 &lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-go&quot; data-lang=&quot;go&quot;&gt;&lt;span class=&quot;kd&quot;&gt;type&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;User&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;struct&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
 	&lt;span class=&quot;nx&quot;&gt;Admin&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;bool&lt;/span&gt;
@@ -135,13 +133,13 @@ Admin:  guest&lt;/p&gt;
   &lt;p&gt;Program exited.&lt;/p&gt;
 &lt;/blockquote&gt;
 
-&lt;p&gt;In the output line 1, we found the admin user &lt;code&gt;root&lt;/code&gt; in &lt;code&gt;us1&lt;/code&gt;, good.&lt;/p&gt;
+&lt;p&gt;In line 1 from output, we confirmed that the admin user &lt;code&gt;root&lt;/code&gt; is in &lt;code&gt;us1&lt;/code&gt;, good.&lt;/p&gt;
 
-&lt;p&gt;Wait, the output line 2: WTF how does &lt;code&gt;guest&lt;/code&gt; be an &lt;code&gt;Admin&lt;/code&gt; users? There are no &lt;code&gt;Admin&lt;/code&gt; user in &lt;code&gt;us2&lt;/code&gt; at all!&lt;/p&gt;
+&lt;p&gt;But wait. Look at line 2: There is no &lt;code&gt;Admin&lt;/code&gt; user in &lt;code&gt;us2&lt;/code&gt; at all! How could &lt;code&gt;guest&lt;/code&gt; turn out to be an &lt;code&gt;Admin&lt;/code&gt; users?&lt;/p&gt;
 
-&lt;p&gt;The reasone is not mysterious: in the range loop, we can’t find an &lt;code&gt;Admin&lt;/code&gt; user in &lt;code&gt;us2&lt;/code&gt; obviously. But the named value &lt;code&gt;u&lt;/code&gt; is modified eash iteration in the range loop body. After the loop it was set to the last element in the &lt;code&gt;us2&lt;/code&gt; array and notice the &lt;code&gt;return&lt;/code&gt; after the range loop, we are returning it to the caller. So in the &lt;code&gt;main&lt;/code&gt; function, &lt;code&gt;admin2&lt;/code&gt; was set to &lt;code&gt;guest&lt;/code&gt; which is not what we want.&lt;/p&gt;
+&lt;p&gt;Well, now, we shouldn’t find it hard to figure it out:  Although the named value &lt;code&gt;u&lt;/code&gt; is modified during each iteration in the range loop body, it will, at the end of loop, be set to the last element in the &lt;code&gt;us2&lt;/code&gt; array. Note the &lt;code&gt;return&lt;/code&gt; after the range loop. It will then return the value to the caller. As a result, in the &lt;code&gt;main&lt;/code&gt; function, &lt;code&gt;admin2&lt;/code&gt; is set to &lt;code&gt;guest&lt;/code&gt;. This is clearly not what we intended.&lt;/p&gt;
 
-&lt;p&gt;Change the code:&lt;/p&gt;
+&lt;p&gt;To correct the code:&lt;/p&gt;
 
 &lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-go&quot; data-lang=&quot;go&quot;&gt;&lt;span class=&quot;kd&quot;&gt;func&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;findAdmin&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;users&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[]&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;User&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;u&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;User&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
   &lt;span class=&quot;c1&quot;&gt;// note: not colon, aka not shadowling :)&lt;/span&gt;
@@ -154,16 +152,16 @@ Admin:  guest&lt;/p&gt;
 	&lt;span class=&quot;k&quot;&gt;return&lt;/span&gt;
 &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
-&lt;p&gt;The result would be right now.&lt;/p&gt;
+&lt;p&gt;Now, it will end up with the right outcome.&lt;/p&gt;
 
 &lt;h1 id=&quot;conclusion&quot;&gt;Conclusion&lt;/h1&gt;
 
 &lt;ol&gt;
-  &lt;li&gt;Golang has block scope which may have a impact on your &lt;code&gt;named return value&lt;/code&gt;&lt;/li&gt;
-  &lt;li&gt;Don not forget to reset the named return value after a range loop&lt;/li&gt;
+  &lt;li&gt;Beware of variable shadow and binding within a golang range loop&lt;/li&gt;
+  &lt;li&gt;Double check the named return value after writing a range loop&lt;/li&gt;
 &lt;/ol&gt;
 
-&lt;p&gt;Hope this can help you golang beginner like me :)&lt;/p&gt;
+&lt;p&gt;Hope my little reflection may help some of you Gophers. :)&lt;/p&gt;
 </description>
         <pubDate>Sun, 02 Oct 2016 00:00:00 +0800</pubDate>
         <link>http://blog.xiaoba.me/2016/10/02/named-return-values-in-golang.html</link>
