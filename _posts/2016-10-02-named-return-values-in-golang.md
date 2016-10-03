@@ -161,6 +161,6 @@ Now, it will end up with the right outcome.
 # Conclusion
 
 1. Beware of variable shadow and binding within a golang range loop
-2. Double check the named return value after writing a range loop.
+2. Double check the named return value after writing a range loop
 
-Hope my little reflection may help some of you Gofers. :)
+Hope my little reflection may help some of you Gophers. :)
