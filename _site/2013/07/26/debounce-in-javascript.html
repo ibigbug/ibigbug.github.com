@@ -32,7 +32,7 @@
 
 <h2 id="whydebounce">2.Why——为什么要debounce？</h2>
 
-<p>正如引言中所述，对于「猛击」的现象，我们需要使用<code>debounce</code>来让点击轻一点~比如用户在进行订单提交的时候，需要单击「提交」按钮，往往会有意或者无意的出现「双击」甚至「多击」的现象，如果JS对每次单击都相应一次，发出一个请求到后台，那么一方面，可能会造成逻辑错误，也就是造成「下了很多订单」;另一方面，对于「多击」的没一个请求，都会发送到后台，给web服务器增加了压力。</p>
+<p>正如引言中所述，对于「猛击」的现象，我们需要使用<code class="highlighter-rouge">debounce</code>来让点击轻一点~比如用户在进行订单提交的时候，需要单击「提交」按钮，往往会有意或者无意的出现「双击」甚至「多击」的现象，如果JS对每次单击都相应一次，发出一个请求到后台，那么一方面，可能会造成逻辑错误，也就是造成「下了很多订单」;另一方面，对于「多击」的没一个请求，都会发送到后台，给web服务器增加了压力。</p>
 
 <h2 id="howdebounce">3.How——如何debounce？</h2>
 
@@ -40,31 +40,31 @@
 
 <p>这个方法使用起来很简单：</p>
 
-<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">var</span> <span class="nx">lazyLayout</span> <span class="o">=</span> <span class="nx">_</span><span class="p">.</span><span class="nx">debounce</span><span class="p">(</span><span class="nx">calculateLayout</span><span class="p">,</span> <span class="mi">300</span><span class="p">);</span>
-<span class="nx">$</span><span class="p">(</span><span class="nb">window</span><span class="p">).</span><span class="nx">resize</span><span class="p">(</span><span class="nx">lazyLayout</span><span class="p">);</span></code></pre></div>
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">var</span> <span class="nx">lazyLayout</span> <span class="o">=</span> <span class="nx">_</span><span class="p">.</span><span class="nx">debounce</span><span class="p">(</span><span class="nx">calculateLayout</span><span class="p">,</span> <span class="mi">300</span><span class="p">);</span>
+<span class="nx">$</span><span class="p">(</span><span class="nb">window</span><span class="p">).</span><span class="nx">resize</span><span class="p">(</span><span class="nx">lazyLayout</span><span class="p">);</span></code></pre></figure>
 
-<p>上面的代码来自<a href="http://underscorejs.org/##debounce">underscore</a>  这样被<code>debounce</code>处理之后的lazyLayout有什么效果呢？</p>
+<p>上面的代码来自<a href="http://underscorejs.org/##debounce">underscore</a>  这样被<code class="highlighter-rouge">debounce</code>处理之后的lazyLayout有什么效果呢？</p>
 
 <p>这是underscore中debounce的原型</p>
 
-<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="nx">_</span><span class="p">.</span><span class="nx">debounce</span><span class="p">(</span><span class="kd">function</span><span class="p">,</span> <span class="nx">wait</span><span class="p">,</span> <span class="p">[</span><span class="nx">immediate</span><span class="p">])</span></code></pre></div>
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="nx">_</span><span class="p">.</span><span class="nx">debounce</span><span class="p">(</span><span class="kd">function</span><span class="p">,</span> <span class="nx">wait</span><span class="p">,</span> <span class="p">[</span><span class="nx">immediate</span><span class="p">])</span> </code></pre></figure>
 
 <p>有三个参数：</p>
 
 <ul>
   <li>function —— 需要被处理的函数</li>
-  <li>wait —— 等待时间，也就是说，在函数第一次触发之后，会有<code>wait</code>这么长的一个等待时间，这段时间里，所有对「被debounce过的函数」的调用，全部被丢弃。通俗一点说，你点击一次按钮之后，不论再快速的点多少次按钮，我都只当一次处理，直到你停下来，wait一段时间过后再点击，那才算第二次生效。</li>
+  <li>wait —— 等待时间，也就是说，在函数第一次触发之后，会有<code class="highlighter-rouge">wait</code>这么长的一个等待时间，这段时间里，所有对「被debounce过的函数」的调用，全部被丢弃。通俗一点说，你点击一次按钮之后，不论再快速的点多少次按钮，我都只当一次处理，直到你停下来，wait一段时间过后再点击，那才算第二次生效。</li>
   <li>[immediate] —— 这是一个很有趣的参数，默认是undefined也就是false，可以设置为true。当为false时，是当计时器计时结束后，执行函数，实际效果就是：你不停的点击，我不管你，当你停下来了，我再重新开始计时，过了设定的时间后，函数被执行;而设置为true时，就是计时器开始计时，就执行函数，之后无论你再怎么疯狂点击，我也不理你了。</li>
 </ul>
 
-<p>怎么样，是不是很简单实用？有了这个处理之后，就再也不怕有人误点击，或者疯狂点击按钮提交表单了。  </p>
+<p>怎么样，是不是很简单实用？有了这个处理之后，就再也不怕有人误点击，或者疯狂点击按钮提交表单了。</p>
 
 <p>下面是一个deboucne的演示，顺带还有个throttle对比，你可以不管： <br />
 <a href="http://jsfiddle.net/amyseqmedia/dD99u/37/">Underscore.js throttle vs debounce example - jsFiddle</a></p>
 
 <p>那么这么好的方法，是如何实现呢？其实很简单，就是一个计时器，在计时器结束之前，如果发现新的点击（也就是函数调用）请求，将其丢弃，重置计时器。直到计时器结束后，执行函数(immediate为false);或者第一次点击之后，立即调用函数，同时启动计时器，再计时器结束之前，收到新的函数调用请求，丢弃，重置计时器(immediate为true)。下面是underscore的具体实现,我加了一点注释，方便理解：</p>
 
-<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="nx">_</span><span class="p">.</span><span class="nx">debounce</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">func</span><span class="p">,</span> <span class="nx">wait</span><span class="p">,</span> <span class="nx">immediate</span><span class="p">)</span> <span class="p">{</span>
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"> <span class="nx">_</span><span class="p">.</span><span class="nx">debounce</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">func</span><span class="p">,</span> <span class="nx">wait</span><span class="p">,</span> <span class="nx">immediate</span><span class="p">)</span> <span class="p">{</span>
     <span class="kd">var</span> <span class="nx">result</span><span class="p">;</span>  <span class="c1">// 用户函数调用返回值</span>
     <span class="kd">var</span> <span class="nx">timeout</span> <span class="o">=</span> <span class="kc">null</span><span class="p">;</span>  <span class="c1">// 初始化计时器 因为会被返回的闭包引用，所以会保持，不会被GC。</span>
     <span class="k">return</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>  <span class="c1">// 返回被处理的函数</span>
@@ -79,7 +79,7 @@
     <span class="k">if</span> <span class="p">(</span><span class="nx">callNow</span><span class="p">)</span> <span class="nx">result</span> <span class="o">=</span> <span class="nx">func</span><span class="p">.</span><span class="nx">apply</span><span class="p">(</span><span class="nx">context</span><span class="p">,</span> <span class="nx">args</span><span class="p">);</span>  <span class="c1">// 注意这里的callNow，是上面赋值的。如果有设置了immediate，那么立即执行函数;如果immediate为false，那么就等上面的计时器结束，执行later      </span>
     <span class="k">return</span> <span class="nx">result</span><span class="p">;</span>  <span class="c1">// 返回结果    </span>
     <span class="p">};</span>
-<span class="p">};</span></code></pre></div>
+<span class="p">};</span></code></pre></figure>
 
 <h2 id="where--debounce">4.Where —— 哪里用到debounce？</h2>
 

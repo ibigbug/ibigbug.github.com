@@ -26,13 +26,13 @@
 <li><a href="/feed.xml" class="page-link">Feed</a></li>
 </ul></div></div></div><div class="main-wrapper"><div class="inner-wrapper"><div class="logo"><a href="/">8D is Here</a></div><div class="page-meta">
 天青色等烟雨，而我在等你。
-</div><div class="main-area"><div class="post-entry"><h1 class="entry-title">Ath9k驱动在Arch中无法连接无线网的问题</h1><div class="entry-meta"><time class="updated">Apr 11, 2013</time></div><div class="entry-content"><p>自从弄好了校园网无线共享之后发现Arch的无线网络有问题，莫名其妙各种连不上，各种iw的命令放上去都是<code>Invalid argument</code>，真是郁闷= =</p>
+</div><div class="main-area"><div class="post-entry"><h1 class="entry-title">Ath9k驱动在Arch中无法连接无线网的问题</h1><div class="entry-meta"><time class="updated">Apr 11, 2013</time></div><div class="entry-content"><p>自从弄好了校园网无线共享之后发现Arch的无线网络有问题，莫名其妙各种连不上，各种iw的命令放上去都是<code class="highlighter-rouge">Invalid argument</code>，真是郁闷= =</p>
 
 <p>为什么这么确定是Arch问题呢，因为手机和Windows都没问题= =。</p>
 
 <p>折腾了两天，算是把问题解决了。</p>
 
-<p>最开始以为是更新内核之后驱动有问题，于是自己编译了Arch Wiki里面提到的<code>compat-wireless</code>。果不其然，现在可以操作无线网卡了！但是还是连不上网。</p>
+<p>最开始以为是更新内核之后驱动有问题，于是自己编译了Arch Wiki里面提到的<code class="highlighter-rouge">compat-wireless</code>。果不其然，现在可以操作无线网卡了！但是还是连不上网。</p>
 
 <p>继续翻手册，上面提到wicd可能造成无线不稳定，卸载之，不成。</p>
 
@@ -40,16 +40,16 @@
 
 <p>不过此时虽然无线不能用，有线依然可以用得好好的啊。凑合着用了一下午的有线，但心里还是不爽。</p>
 
-<p>直到刚刚才想起可以用<code>dmesg</code>的，里面的相关记录的是<code>ctrl-event-disconnected reason=0</code>，放进去Google，好像好多人有这个问题。这下放心了肯定可以解决了。</p>
+<p>直到刚刚才想起可以用<code class="highlighter-rouge">dmesg</code>的，里面的相关记录的是<code class="highlighter-rouge">ctrl-event-disconnected reason=0</code>，放进去Google，好像好多人有这个问题。这下放心了肯定可以解决了。</p>
 
 <p>最终参考<a href="https://bbs.archlinux.org/viewtopic.php?id=137643">这个帖子</a>中一位老兄的办法：</p>
 
 <blockquote>
-  <p># sudo modprobe -rf ath9k  # sudo modprobe -v ath9k nohwcrypt=1  # sudo service network-manager restart # or wicd or whatever  </p>
+  <p># sudo modprobe -rf ath9k  # sudo modprobe -v ath9k nohwcrypt=1  # sudo service network-manager restart # or wicd or whatever</p>
 </blockquote>
 
 <blockquote>
-  <h4 id="if-it-works-make-it-permanent">If it works, make it permanent:</h4>
+  <p>####If it works, make it permanent:</p>
 </blockquote>
 
 <blockquote>

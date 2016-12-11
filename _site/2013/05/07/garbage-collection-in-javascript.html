@@ -31,7 +31,7 @@
 
 <h3 id="section">简介</h3>
 
-<p>在底层语言中，比如C，有专门的内存管理机制，比如<code>malloc()</code> 和 <code>free()</code>。而Javascript是有垃圾回收（<em>garbage collection</em>）机制的，也就是说JS解释器会自动分配和回收内存。这样就有人觉得，我用的是高级语言，就不用关心内存管理了，其实这是不对的。</p>
+<p>在底层语言中，比如C，有专门的内存管理机制，比如<code class="highlighter-rouge">malloc()</code> 和 <code class="highlighter-rouge">free()</code>。而Javascript是有垃圾回收（<em>garbage collection</em>）机制的，也就是说JS解释器会自动分配和回收内存。这样就有人觉得，我用的是高级语言，就不用关心内存管理了，其实这是不对的。</p>
 
 <h3 id="section-1">内存的生命周期</h3>
 
@@ -55,33 +55,33 @@
 
 <h4 id="section-2">变量初始化</h4>
 
-<p>当变量初始化的时候，Javascript会自动分配相应的内存空间（注：这里MDN上关于这里用的是<code>Value initialization</code>，到底是声明，还是在赋值时候分配空间，还要再学习一下）</p>
+<p>当变量初始化的时候，Javascript会自动分配相应的内存空间（注：这里MDN上关于这里用的是<code class="highlighter-rouge">Value initialization</code>，到底是声明，还是在赋值时候分配空间，还要再学习一下）</p>
 
-<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">var</span> <span class="nx">n</span> <span class="o">=</span> <span class="mi">123</span><span class="p">;</span> <span class="c1">//  为数字分配空间</span>
-<span class="kd">var</span> <span class="nx">s</span> <span class="o">=</span> <span class="s2">&quot;azerty&quot;</span><span class="p">;</span> <span class="c1">// 字符串 </span>
-<span class="kd">var</span> <span class="nx">o</span> <span class="o">=</span> <span class="p">{</span>  <span class="nx">a</span><span class="o">:</span> <span class="mi">1</span><span class="p">,</span>  <span class="nx">b</span><span class="o">:</span> <span class="kc">null</span><span class="p">};</span> <span class="c1">// 为对象和它包含的属性分配内存空间</span>
-<span class="kd">var</span> <span class="nx">a</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="kc">null</span><span class="p">,</span> <span class="s2">&quot;abra&quot;</span><span class="p">];</span> <span class="c1">// （类似对象）给数组和它里面的元素分配空间</span>
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">var</span> <span class="nx">n</span> <span class="o">=</span> <span class="mi">123</span><span class="p">;</span> <span class="c1">//  为数字分配空间</span>
+<span class="kd">var</span> <span class="nx">s</span> <span class="o">=</span> <span class="s2">"azerty"</span><span class="p">;</span> <span class="c1">// 字符串 </span>
+<span class="kd">var</span> <span class="nx">o</span> <span class="o">=</span> <span class="p">{</span>  <span class="na">a</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>  <span class="na">b</span><span class="p">:</span> <span class="kc">null</span><span class="p">};</span> <span class="c1">// 为对象和它包含的属性分配内存空间</span>
+<span class="kd">var</span> <span class="nx">a</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="kc">null</span><span class="p">,</span> <span class="s2">"abra"</span><span class="p">];</span> <span class="c1">// （类似对象）给数组和它里面的元素分配空间</span>
 <span class="kd">function</span> <span class="nx">f</span><span class="p">(</span><span class="nx">a</span><span class="p">){</span>  <span class="k">return</span> <span class="nx">a</span> <span class="o">+</span> <span class="mi">2</span><span class="p">;}</span> <span class="c1">// 为函数分配空间</span>
 <span class="c1">//  函数有时也会为分配对象空间</span>
-<span class="nx">someElement</span><span class="p">.</span><span class="nx">addEventListener</span><span class="p">(</span><span class="s1">&#39;click&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(){</span>
-    <span class="nx">someElement</span><span class="p">.</span><span class="nx">style</span><span class="p">.</span><span class="nx">backgroundColor</span> <span class="o">=</span> <span class="s1">&#39;blue&#39;</span><span class="p">;</span> <span class="c1">//个人补充，未考证，这里会为someElement分配空间，如注释所说，为对象分配空间</span>
-<span class="p">},</span> <span class="kc">false</span><span class="p">);</span></code></pre></div>
+<span class="nx">someElement</span><span class="p">.</span><span class="nx">addEventListener</span><span class="p">(</span><span class="s1">'click'</span><span class="p">,</span> <span class="kd">function</span><span class="p">(){</span>
+    <span class="nx">someElement</span><span class="p">.</span><span class="nx">style</span><span class="p">.</span><span class="nx">backgroundColor</span> <span class="o">=</span> <span class="s1">'blue'</span><span class="p">;</span> <span class="c1">//个人补充，未考证，这里会为someElement分配空间，如注释所说，为对象分配空间</span>
+<span class="p">},</span> <span class="kc">false</span><span class="p">);</span></code></pre></figure>
 
 <h4 id="section-3">函数调用时候分配空间</h4>
 
 <p>有的函数调用，会产生上面说的那种 为对象分配空间</p>
 
-<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">var</span> <span class="nx">d</span> <span class="o">=</span> <span class="k">new</span> <span class="nb">Date</span><span class="p">();</span>
-<span class="kd">var</span> <span class="nx">e</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">createElement</span><span class="p">(</span><span class="s1">&#39;div&#39;</span><span class="p">);</span> <span class="c1">// allocates an DOM element</span></code></pre></div>
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">var</span> <span class="nx">d</span> <span class="o">=</span> <span class="k">new</span> <span class="nb">Date</span><span class="p">();</span>
+<span class="kd">var</span> <span class="nx">e</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">createElement</span><span class="p">(</span><span class="s1">'div'</span><span class="p">);</span> <span class="c1">// allocates an DOM element</span></code></pre></figure>
 
 <p>还有下面这种</p>
 
-<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">var</span> <span class="nx">s</span> <span class="o">=</span> <span class="s2">&quot;azerty&quot;</span><span class="p">;</span>
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">var</span> <span class="nx">s</span> <span class="o">=</span> <span class="s2">"azerty"</span><span class="p">;</span>
 <span class="kd">var</span> <span class="nx">s2</span> <span class="o">=</span> <span class="nx">s</span><span class="p">.</span><span class="nx">substr</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">3</span><span class="p">);</span> <span class="c1">// s2 is a new string</span>
 <span class="c1">// 由于Javascript中字符串是不可变的，所以Javascript也许并没有为s2中的字符串分配新空间，而是只存了[0, 3]的区间（用来索引</span>
-<span class="kd">var</span> <span class="nx">a</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;ouais ouais&quot;</span><span class="p">,</span> <span class="s2">&quot;nan nan&quot;</span><span class="p">];</span>
-<span class="kd">var</span> <span class="nx">a2</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;generation&quot;</span><span class="p">,</span> <span class="s2">&quot;nan nan&quot;</span><span class="p">];</span>
-<span class="kd">var</span> <span class="nx">a3</span> <span class="o">=</span> <span class="nx">a</span><span class="p">.</span><span class="nx">concat</span><span class="p">(</span><span class="nx">a2</span><span class="p">);</span> <span class="c1">// 新的空间来存储数组a3</span></code></pre></div>
+<span class="kd">var</span> <span class="nx">a</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"ouais ouais"</span><span class="p">,</span> <span class="s2">"nan nan"</span><span class="p">];</span>
+<span class="kd">var</span> <span class="nx">a2</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"generation"</span><span class="p">,</span> <span class="s2">"nan nan"</span><span class="p">];</span>
+<span class="kd">var</span> <span class="nx">a3</span> <span class="o">=</span> <span class="nx">a</span><span class="p">.</span><span class="nx">concat</span><span class="p">(</span><span class="nx">a2</span><span class="p">);</span> <span class="c1">// 新的空间来存储数组a3</span></code></pre></figure>
 
 <h3 id="section-4">操作变量值</h3>
 
@@ -109,9 +109,9 @@
 
 <h4 id="section-9">举个栗子</h4>
 
-<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">var</span> <span class="nx">o</span> <span class="o">=</span> <span class="p">{</span> <span class="c1">// 称之为外层对象 </span>
-    <span class="nx">a</span><span class="o">:</span> <span class="p">{</span> <span class="c1">//称之为内层对象</span>
-        <span class="nx">b</span><span class="o">:</span><span class="mi">2</span>
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">var</span> <span class="nx">o</span> <span class="o">=</span> <span class="p">{</span> <span class="c1">// 称之为外层对象 </span>
+    <span class="na">a</span><span class="p">:</span> <span class="p">{</span> <span class="c1">//称之为内层对象</span>
+        <span class="na">b</span><span class="p">:</span><span class="mi">2</span>
     <span class="p">}</span>
 <span class="p">};</span> <span class="c1">//  创建了两个对象 内层对象作为外层对象的属性而被引用</span>
 <span class="c1">// 而外层对象被变量o引用</span>
@@ -120,41 +120,41 @@
 <span class="nx">o</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span> <span class="c1">//  现在o不再引用外层对象，只有o2在引用，引用计数为 ‘1’</span>
 <span class="kd">var</span> <span class="nx">oa</span> <span class="o">=</span> <span class="nx">o2</span><span class="p">.</span><span class="nx">a</span><span class="p">;</span> <span class="c1">// oa 引用内层对象</span>
 <span class="c1">//  现在内层对象同时被作为外层对象的属性引用和被oa引用，引用计数为‘2’</span>
-<span class="nx">o2</span> <span class="o">=</span> <span class="s2">&quot;yo&quot;</span><span class="p">;</span> <span class="c1">//  好，现在o2也不引用外层对象了，外层对象引用计数为“0”</span>
+<span class="nx">o2</span> <span class="o">=</span> <span class="s2">"yo"</span><span class="p">;</span> <span class="c1">//  好，现在o2也不引用外层对象了，外层对象引用计数为“0”</span>
 <span class="c1">// 意味着外层对象可以被“垃圾回收”了</span>
 <span class="c1">// 然而，内层对象还被oa引用着，因此还是没有被回收 （个人注释：这里有一点闭包的意味</span>
 <span class="nx">oa</span> <span class="o">=</span> <span class="kc">null</span><span class="p">;</span> <span class="c1">//  现在oa不引用内层对象了</span>
-<span class="c1">// 内层对象也被垃圾回收</span></code></pre></div>
+<span class="c1">// 内层对象也被垃圾回收</span></code></pre></figure>
 
 <h4 id="section-10">局限：循环引用</h4>
 
 <p>看下面代码：</p>
 
-<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">function</span> <span class="nx">f</span><span class="p">(){</span>
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">function</span> <span class="nx">f</span><span class="p">(){</span>
     <span class="kd">var</span> <span class="nx">o</span> <span class="o">=</span> <span class="p">{};</span> 
     <span class="kd">var</span> <span class="nx">o2</span> <span class="o">=</span> <span class="p">{};</span>  
     <span class="nx">o</span><span class="p">.</span><span class="nx">a</span> <span class="o">=</span> <span class="nx">o2</span><span class="p">;</span> <span class="c1">// o 引用 o2  </span>
     <span class="nx">o2</span><span class="p">.</span><span class="nx">a</span> <span class="o">=</span> <span class="nx">o</span><span class="p">;</span> <span class="c1">// o2 引用 o   </span>
 
-    <span class="k">return</span> <span class="s2">&quot;azerty&quot;</span><span class="p">;</span>
+    <span class="k">return</span> <span class="s2">"azerty"</span><span class="p">;</span>
 <span class="p">}</span>
 <span class="nx">f</span><span class="p">();</span>
 <span class="c1">// o o2两个对象构成了循环引用 </span>
 <span class="c1">// 当函数执行完毕的时候，他们就被关在了f的作用域里面，没有外面的人可以使用他们</span>
 <span class="c1">// 所以按理说，他们已经没有存在价值了，需要被垃圾回收，释放内存</span>
 <span class="c1">// 然而，他们的引用计数都不为“0”</span>
-<span class="c1">// 所以在这种引用计数的机制下，他们没有被回收</span></code></pre></div>
+<span class="c1">// 所以在这种引用计数的机制下，他们没有被回收</span></code></pre></figure>
 
 <h4 id="section-11">实际例子</h4>
 
 <p>在IE6,7版本的浏览器中，就是使用的引用计数机制。因此，下面的代码在IE6,7中可以稳稳地发生内存泄漏</p>
 
-<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">var</span> <span class="nx">div</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">createElement</span><span class="p">(</span><span class="s2">&quot;div&quot;</span><span class="p">);</span>
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">var</span> <span class="nx">div</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">createElement</span><span class="p">(</span><span class="s2">"div"</span><span class="p">);</span>
 <span class="nx">div</span><span class="p">.</span><span class="nx">onclick</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(){</span>  
     <span class="nx">doSomething</span><span class="p">();</span>
 <span class="p">};</span> <span class="c1">// div的onclick属性，会引用 function</span>
 <span class="c1">// 然而这个 function 反过来又引用了这个div，因为div在handler的作用域里面。</span>
-<span class="c1">// 造成上述循环引用，导致内存泄漏。</span></code></pre></div>
+<span class="c1">// 造成上述循环引用，导致内存泄漏。 </span></code></pre></figure>
 
 <h3 id="section-12">标记清除算法</h3>
 
@@ -191,7 +191,7 @@
 
 <h2 id="section-16">说明</h2>
 
-<p>以上大部分文字来自<a href="https://developer.mozilla.org/en-US/docs/JavaScript/Memory_Management">Memory Management</a>。尽量在保证不出错的前提下，加上了一些个人的注释和理解。虽然被MDN标注了 <code>This article is in need of a technical review.</code>，但是对于理解垃圾回收还是有一点帮助的吧。</p>
+<p>以上大部分文字来自<a href="https://developer.mozilla.org/en-US/docs/JavaScript/Memory_Management">Memory Management</a>。尽量在保证不出错的前提下，加上了一些个人的注释和理解。虽然被MDN标注了 <code class="highlighter-rouge">This article is in need of a technical review.</code>，但是对于理解垃圾回收还是有一点帮助的吧。</p>
 </div><div class="comment-area">
    <div id="disqus_thread"></div>
    <script type="text/javascript">

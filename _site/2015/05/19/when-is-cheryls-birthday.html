@@ -30,10 +30,10 @@ Interestring.
   <li>两位码农 Albert 和 Bernard 刚刚跟女神 Cheryl 成为了好朋友，想知道女神的生日是多少，女神说就是下面的某一天:</li>
 </ol>
 
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">May</span> <span class="mi">15</span>     <span class="nx">May</span> <span class="mi">16</span>     <span class="nx">May</span> <span class="mi">19</span>
+<figure class="highlight"><pre><code class="language-js" data-lang="js">	<span class="nx">May</span> <span class="mi">15</span>     <span class="nx">May</span> <span class="mi">16</span>     <span class="nx">May</span> <span class="mi">19</span>
    <span class="nx">June</span> <span class="mi">17</span>    <span class="nx">June</span> <span class="mi">18</span>
    <span class="nx">July</span> <span class="mi">14</span>    <span class="nx">July</span> <span class="mi">16</span>
- <span class="nx">August</span> <span class="mi">14</span>  <span class="nx">August</span> <span class="mi">15</span>  <span class="nx">August</span> <span class="mi">17</span></code></pre></div>
+ <span class="nx">August</span> <span class="mi">14</span>  <span class="nx">August</span> <span class="mi">15</span>  <span class="nx">August</span> <span class="mi">17</span></code></pre></figure>
 
 <ol>
   <li>女神又 <strong>分别</strong> 告诉了两位码农她生日的 <strong>月份</strong> 和 <strong>日期</strong></li>
@@ -47,28 +47,28 @@ Interestring.
 
 <h2 id="section">1.首先，女神说了 10 个可能的日期</h2>
 
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">const</span> <span class="nx">DATES</span> <span class="o">=</span> <span class="p">[</span>
-    <span class="s1">&#39;May 15&#39;</span><span class="p">,</span> <span class="s1">&#39;May 16&#39;</span><span class="p">,</span> <span class="s1">&#39;May 19&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;June 17&#39;</span><span class="p">,</span> <span class="s1">&#39;June 18&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;July 14&#39;</span><span class="p">,</span> <span class="s1">&#39;July 16&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;August 14&#39;</span><span class="p">,</span> <span class="s1">&#39;August 15&#39;</span><span class="p">,</span> <span class="s1">&#39;August 17&#39;</span>
-<span class="p">]</span></code></pre></div>
+<figure class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">const</span> <span class="nx">DATES</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s1">'May 15'</span><span class="p">,</span> <span class="s1">'May 16'</span><span class="p">,</span> <span class="s1">'May 19'</span><span class="p">,</span>
+    <span class="s1">'June 17'</span><span class="p">,</span> <span class="s1">'June 18'</span><span class="p">,</span>
+    <span class="s1">'July 14'</span><span class="p">,</span> <span class="s1">'July 16'</span><span class="p">,</span>
+    <span class="s1">'August 14'</span><span class="p">,</span> <span class="s1">'August 15'</span><span class="p">,</span> <span class="s1">'August 17'</span>
+<span class="p">]</span></code></pre></figure>
 
 <p>然后我们定义两个辅助函数来返回某个日期的 <strong>月份</strong> 或者 <strong>日期</strong>:</p>
 
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="err"> </span><span class="kd">function</span> <span class="nx">month</span><span class="p">(</span><span class="nx">date</span><span class="p">)</span> <span class="p">{</span>
-  <span class="k">return</span> <span class="nx">date</span><span class="p">.</span><span class="nx">split</span><span class="p">(</span><span class="s1">&#39; &#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+<figure class="highlight"><pre><code class="language-js" data-lang="js"><span class="err"> </span><span class="kd">function</span> <span class="nx">month</span><span class="p">(</span><span class="nx">date</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="nx">date</span><span class="p">.</span><span class="nx">split</span><span class="p">(</span><span class="s1">' '</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
 <span class="p">}</span>
 
 <span class="kd">function</span> <span class="nx">day</span><span class="p">(</span><span class="nx">date</span><span class="p">)</span> <span class="p">{</span>
-  <span class="k">return</span> <span class="nx">date</span><span class="p">.</span><span class="nx">split</span><span class="p">(</span><span class="s1">&#39; &#39;</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span>
-<span class="p">}</span></code></pre></div>
+  <span class="k">return</span> <span class="nx">date</span><span class="p">.</span><span class="nx">split</span><span class="p">(</span><span class="s1">' '</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span>
+<span class="p">}</span></code></pre></figure>
 
 <h2 id="section-1">2. 女神分别告诉了两个人月份和日期</h2>
 
 <p>我们来翻译 <strong>告诉</strong> 和 <strong>知道</strong> 这两个函数:</p>
 
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kd">function</span> <span class="nx">tell</span><span class="p">(</span><span class="nx">part</span><span class="p">,</span> <span class="nx">possible_dates</span><span class="p">)</span> <span class="p">{</span>
+<figure class="highlight"><pre><code class="language-js" data-lang="js"><span class="kd">function</span> <span class="nx">tell</span><span class="p">(</span><span class="nx">part</span><span class="p">,</span> <span class="nx">possible_dates</span><span class="p">)</span> <span class="p">{</span>
   <span class="nx">possible_dates</span> <span class="o">=</span> <span class="nx">possible_dates</span> <span class="o">||</span> <span class="nx">DATES</span>
   <span class="k">return</span> <span class="nx">possible_dates</span><span class="p">.</span><span class="nx">filter</span><span class="p">(</span><span class="nx">date</span> <span class="o">=&gt;</span> <span class="nx">date</span><span class="p">.</span><span class="nx">indexOf</span><span class="p">(</span><span class="nx">part</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">)</span>
 <span class="p">}</span>
@@ -76,27 +76,27 @@ Interestring.
 
 <span class="kd">function</span> <span class="nx">know</span><span class="p">(</span><span class="nx">possible_dates</span><span class="p">)</span> <span class="p">{</span>
   <span class="k">return</span> <span class="nx">possible_dates</span><span class="p">.</span><span class="nx">length</span> <span class="o">==</span> <span class="mi">1</span>
-<span class="p">}</span></code></pre></div>
+<span class="p">}</span></code></pre></figure>
 
 <p>假如女神告诉 <strong>Albert</strong> 说她生日是在 <em>五月</em>，<strong>Albert</strong> 用程序跑了一下:</p>
 
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">tell</span><span class="p">(</span><span class="s1">&#39;May&#39;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="p">[</span><span class="s1">&#39;May 15&#39;</span><span class="p">,</span> <span class="s1">&#39;May 16&#39;</span><span class="p">,</span> <span class="s1">&#39;May 19&#39;</span><span class="p">]</span></code></pre></div>
+<figure class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">tell</span><span class="p">(</span><span class="s1">'May'</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="p">[</span><span class="s1">'May 15'</span><span class="p">,</span> <span class="s1">'May 16'</span><span class="p">,</span> <span class="s1">'May 19'</span><span class="p">]</span></code></pre></figure>
 
 <p>如果女神告诉 <strong>Bernard</strong> 说她生日是 <strong>15号</strong>， <strong>Bernard</strong> 也用程序跑了一下:</p>
 
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">tell</span><span class="p">(</span><span class="s1">&#39;15&#39;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="p">[</span><span class="s1">&#39;May 15&#39;</span><span class="p">,</span> <span class="s1">&#39;August 15&#39;</span><span class="p">]</span></code></pre></div>
+<figure class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">tell</span><span class="p">(</span><span class="s1">'15'</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="p">[</span><span class="s1">'May 15'</span><span class="p">,</span> <span class="s1">'August 15'</span><span class="p">]</span></code></pre></figure>
 
 <p>对 <strong>Bernard</strong> 来说，他此时并不知道女神生日到底是多少:</p>
 
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">know</span><span class="p">(</span><span class="nx">tell</span><span class="p">(</span><span class="s1">&#39;15&#39;</span><span class="p">))</span> <span class="o">-&gt;</span> <span class="nx">False</span></code></pre></div>
+<figure class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">know</span><span class="p">(</span><span class="nx">tell</span><span class="p">(</span><span class="s1">'15'</span><span class="p">))</span> <span class="o">-&gt;</span> <span class="nx">False</span></code></pre></figure>
 
 <h2 id="section-2">整体策略</h2>
 
 <p>当女神告诉 <strong>Albert</strong> 说是生日在 <strong>五月</strong> 的时候，<strong>Albert</strong> 就知道有结果三种可能，但是 <em>程序</em> 不是 <strong>Albert</strong>，程序只能对 <em>所有</em> 可能的日期一个一个去试。为此我们针对题目中的条件 3 - 5 编写逻辑，然后用这些逻辑去验证每个可能的日期。如果正常的话，真相只有一个。</p>
 
-<p>下面是主函数， <code>cheryls_birthday</code>:</p>
+<p>下面是主函数， <code class="highlighter-rouge">cheryls_birthday</code>:</p>
 
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kd">function</span> <span class="nx">cheryls_birthday</span><span class="p">(</span><span class="nx">possible_dates</span><span class="p">)</span> <span class="p">{</span>
+<figure class="highlight"><pre><code class="language-js" data-lang="js"><span class="kd">function</span> <span class="nx">cheryls_birthday</span><span class="p">(</span><span class="nx">possible_dates</span><span class="p">)</span> <span class="p">{</span>
   <span class="nx">possible_dates</span> <span class="o">=</span> <span class="nx">possible_dates</span> <span class="o">||</span> <span class="nx">DATES</span>
   <span class="k">return</span> <span class="nx">possible_dates</span><span class="p">.</span><span class="nx">filter</span><span class="p">(</span><span class="nx">statements3to5</span><span class="p">)</span>
 <span class="p">}</span>
@@ -104,11 +104,11 @@ Interestring.
 
 <span class="kd">function</span> <span class="nx">statements3to5</span><span class="p">(</span><span class="nx">date</span><span class="p">)</span> <span class="p">{</span>
   <span class="k">return</span> <span class="nx">statement3</span><span class="p">(</span><span class="nx">date</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="nx">statement4</span><span class="p">(</span><span class="nx">date</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="nx">statement5</span><span class="p">(</span><span class="nx">date</span><span class="p">)</span>
-<span class="p">}</span></code></pre></div>
+<span class="p">}</span></code></pre></figure>
 
 <h3 id="albert---bernard-">3. <strong>Albert</strong> 说: 我不知道女神的生日是多少，但是我知道 Bernard 你也肯定不知道</h3>
 
-<p><code>statement3</code> 将 <strong>Albert</strong> 的陈述用代码来描述:</p>
+<p><code class="highlighter-rouge">statement3</code> 将 <strong>Albert</strong> 的陈述用代码来描述:</p>
 
 <blockquote>
   <p><strong>Albert</strong> : 当女神告诉我她生日的月份之后，我不知道她的生日。虽然我不知道女神告诉 Bernard 的是哪一天，但是我知道所有可能的日期。不管是哪一天， Bernard 都不会知道生日是多少。</p>
@@ -116,48 +116,48 @@ Interestring.
 
 <p>翻译成代码:</p>
 
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kd">function</span> <span class="nx">statement3</span><span class="p">(</span><span class="nx">date</span><span class="p">)</span> <span class="p">{</span>
+<figure class="highlight"><pre><code class="language-js" data-lang="js"><span class="kd">function</span> <span class="nx">statement3</span><span class="p">(</span><span class="nx">date</span><span class="p">)</span> <span class="p">{</span>
   <span class="kd">let</span> <span class="nx">possible_dates</span> <span class="o">=</span> <span class="nx">tell</span><span class="p">(</span><span class="nx">month</span><span class="p">(</span><span class="nx">date</span><span class="p">))</span>
   <span class="k">return</span> <span class="p">(</span><span class="o">!</span><span class="nx">know</span><span class="p">(</span><span class="nx">possible_dates</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="nx">possible_dates</span><span class="p">.</span><span class="nx">every</span><span class="p">(</span><span class="nx">d</span> <span class="o">=&gt;</span> <span class="o">!</span><span class="nx">know</span><span class="p">(</span><span class="nx">tell</span><span class="p">(</span><span class="nx">day</span><span class="p">(</span><span class="nx">d</span><span class="p">)))))</span>
-<span class="p">}</span></code></pre></div>
+<span class="p">}</span></code></pre></figure>
 
 <p>我们可以来试一试 <em>条件3</em>:</p>
 
-<p><code>statement3('May 15') -&gt; False</code></p>
+<p><code class="highlighter-rouge">statement3('May 15') -&gt; False</code></p>
 
 <p>说明答案不是 <em>May 15</em>。</p>
 
 <p>其实，我们可以找出所有符合 <em>条件3</em> 的答案:</p>
 
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">DATES</span><span class="p">.</span><span class="nx">filter</span><span class="p">(</span><span class="nx">statement3</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="p">[</span><span class="s1">&#39;July 14&#39;</span><span class="p">,</span> <span class="s1">&#39;July 16&#39;</span><span class="p">,</span> <span class="s1">&#39;August 14&#39;</span><span class="p">,</span> <span class="s1">&#39;August 15&#39;</span><span class="p">,</span> <span class="s1">&#39;August 17&#39;</span><span class="p">]</span></code></pre></div>
+<figure class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">DATES</span><span class="p">.</span><span class="nx">filter</span><span class="p">(</span><span class="nx">statement3</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="p">[</span><span class="s1">'July 14'</span><span class="p">,</span> <span class="s1">'July 16'</span><span class="p">,</span> <span class="s1">'August 14'</span><span class="p">,</span> <span class="s1">'August 15'</span><span class="p">,</span> <span class="s1">'August 17'</span><span class="p">]</span></code></pre></figure>
 
 <h3 id="bernard----">4. <strong>Bernard</strong> 说: 我 <strong>本来</strong> 不知道的，但是现在我知道了。</h3>
 
 <p>再来翻译:
-&gt; <strong>Bernard</strong>: 开始女神告诉我日期的是，我是不知道的。但是我知道了满足 <strong>Albert</strong> 说的 <code>statement3</code> 所有可能的日期之后，我就知道了。</p>
+&gt; <strong>Bernard</strong>: 开始女神告诉我日期的是，我是不知道的。但是我知道了满足 <strong>Albert</strong> 说的 <code class="highlighter-rouge">statement3</code> 所有可能的日期之后，我就知道了。</p>
 
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kd">function</span> <span class="nx">statement4</span><span class="p">(</span><span class="nx">date</span><span class="p">)</span> <span class="p">{</span>
+<figure class="highlight"><pre><code class="language-js" data-lang="js"><span class="kd">function</span> <span class="nx">statement4</span><span class="p">(</span><span class="nx">date</span><span class="p">)</span> <span class="p">{</span>
   <span class="kd">let</span> <span class="nx">at_first</span> <span class="o">=</span> <span class="nx">tell</span><span class="p">(</span><span class="nx">day</span><span class="p">(</span><span class="nx">date</span><span class="p">))</span>
   <span class="k">return</span> <span class="p">(</span><span class="o">!</span><span class="nx">know</span><span class="p">(</span><span class="nx">at_first</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="nx">know</span><span class="p">(</span><span class="nx">at_first</span><span class="p">.</span><span class="nx">filter</span><span class="p">(</span><span class="nx">statement3</span><span class="p">)))</span>
-<span class="p">}</span></code></pre></div>
+<span class="p">}</span></code></pre></figure>
 
 <p><em>条件3</em> 和 <em>条件4</em> 可以得出:</p>
 
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">DATES</span><span class="p">.</span><span class="nx">filter</span><span class="p">(</span><span class="nx">statement3</span><span class="p">).</span><span class="nx">filter</span><span class="p">(</span><span class="nx">statement4</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="p">[</span><span class="s1">&#39;July 16&#39;</span><span class="p">,</span> <span class="s1">&#39;August 15&#39;</span><span class="p">,</span> <span class="s1">&#39;August 17&#39;</span><span class="p">]</span>
+<figure class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">DATES</span><span class="p">.</span><span class="nx">filter</span><span class="p">(</span><span class="nx">statement3</span><span class="p">).</span><span class="nx">filter</span><span class="p">(</span><span class="nx">statement4</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="p">[</span><span class="s1">'July 16'</span><span class="p">,</span> <span class="s1">'August 15'</span><span class="p">,</span> <span class="s1">'August 17'</span><span class="p">]</span>
 
-<span class="c1">// 离真相越来越近了</span></code></pre></div>
+<span class="c1">// 离真相越来越近了</span></code></pre></figure>
 
 <h3 id="albert--">5. <strong>Albert</strong> 又说: 嘿嘿，我现在也知道了。</h3>
 
 <p>同样:</p>
 
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kd">function</span> <span class="nx">statement5</span><span class="p">(</span><span class="nx">date</span><span class="p">)</span> <span class="p">{</span>
+<figure class="highlight"><pre><code class="language-js" data-lang="js"><span class="kd">function</span> <span class="nx">statement5</span><span class="p">(</span><span class="nx">date</span><span class="p">)</span> <span class="p">{</span>
   <span class="k">return</span> <span class="nx">know</span><span class="p">(</span><span class="nx">tell</span><span class="p">(</span><span class="nx">month</span><span class="p">(</span><span class="nx">date</span><span class="p">)).</span><span class="nx">filter</span><span class="p">(</span><span class="nx">statement4</span><span class="p">))</span>
-<span class="p">}</span></code></pre></div>
+<span class="p">}</span></code></pre></figure>
 
 <h3 id="section-3">6. 答案揭晓</h3>
 
-<p><code>cheryls_birthday() -&gt; ['July 16']</code></p>
+<p><code class="highlighter-rouge">cheryls_birthday() -&gt; ['July 16']</code></p>
 
 <p>Yeah! 我们推理出了女神的生日是 <strong>July 16</strong>。</p>
 

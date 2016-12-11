@@ -28,86 +28,86 @@
 天青色等烟雨，而我在等你。
 </div><div class="main-area"><div class="post-entry"><h1 class="entry-title">什么时候该使用assert</h1><div class="entry-meta"><time class="updated">Nov 19, 2013</time></div><div class="entry-content"><p><em>【本文译自<a href="https://mail.python.org/pipermail/python-list/2013-November/660401.html">When to use assert</a>】</em></p>
 
-<p>什么情况下该使用<code>assert</code>语句的问题很常见，经常有人误用它，因此我写了这篇文章来介绍什么时候、为什么要使用断言语句<code>assert</code>，什么时候不该用。</p>
+<p>什么情况下该使用<code class="highlighter-rouge">assert</code>语句的问题很常见，经常有人误用它，因此我写了这篇文章来介绍什么时候、为什么要使用断言语句<code class="highlighter-rouge">assert</code>，什么时候不该用。</p>
 
-<p>为不熟悉的人简单说明一下，Python中的<code>assert</code>语句用来验证一个条件。如果条件为真，什么都不发生；相反，便会触发一个<code>AssertionError</code>，带有一个可选的错误信息。例如：</p>
+<p>为不熟悉的人简单说明一下，Python中的<code class="highlighter-rouge">assert</code>语句用来验证一个条件。如果条件为真，什么都不发生；相反，便会触发一个<code class="highlighter-rouge">AssertionError</code>，带有一个可选的错误信息。例如：</p>
 
-<div class="highlight"><pre><code class="language-python" data-lang="python"><span class="n">py</span><span class="o">&gt;</span> <span class="n">x</span> <span class="o">=</span> <span class="mi">23</span>
-<span class="n">py</span><span class="o">&gt;</span> <span class="k">assert</span> <span class="n">x</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">,</span> <span class="s">&quot;x is not zero or negative&quot;</span>
-<span class="n">py</span><span class="o">&gt;</span> <span class="k">assert</span> <span class="n">x</span><span class="o">%</span><span class="mi">2</span> <span class="o">==</span> <span class="mi">0</span><span class="p">,</span> <span class="s">&quot;x is not an even number&quot;</span>
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="n">py</span><span class="o">&gt;</span> <span class="n">x</span> <span class="o">=</span> <span class="mi">23</span>
+<span class="n">py</span><span class="o">&gt;</span> <span class="k">assert</span> <span class="n">x</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">,</span> <span class="s">"x is not zero or negative"</span>
+<span class="n">py</span><span class="o">&gt;</span> <span class="k">assert</span> <span class="n">x</span><span class="o">%</span><span class="mi">2</span> <span class="o">==</span> <span class="mi">0</span><span class="p">,</span> <span class="s">"x is not an even number"</span>
 <span class="n">Traceback</span> <span class="p">(</span><span class="n">most</span> <span class="n">recent</span> <span class="n">call</span> <span class="n">last</span><span class="p">):</span>
-    <span class="n">File</span> <span class="s">&quot;&lt;stdin&gt;&quot;</span><span class="p">,</span> <span class="n">line</span> <span class="mi">1</span><span class="p">,</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span> 
-    <span class="ne">AssertionError</span><span class="p">:</span> <span class="n">x</span> <span class="ow">is</span> <span class="ow">not</span> <span class="n">an</span> <span class="n">even</span> <span class="n">number</span></code></pre></div>
+    <span class="n">File</span> <span class="s">"&lt;stdin&gt;"</span><span class="p">,</span> <span class="n">line</span> <span class="mi">1</span><span class="p">,</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span> 
+    <span class="nb">AssertionError</span><span class="p">:</span> <span class="n">x</span> <span class="ow">is</span> <span class="ow">not</span> <span class="n">an</span> <span class="n">even</span> <span class="n">number</span></code></pre></figure>
 
-<p>很多人用<code>assert</code>语句来快速方便地在输入参数不正确的时候触发异常。但这是错误，而且是一个很危险的错误的做法，有两个原因。其一，<code>AssertionError</code>不是用来测试函数参数时候该给出的错误类型。你不应该像下面这样写代码：</p>
+<p>很多人用<code class="highlighter-rouge">assert</code>语句来快速方便地在输入参数不正确的时候触发异常。但这是错误，而且是一个很危险的错误的做法，有两个原因。其一，<code class="highlighter-rouge">AssertionError</code>不是用来测试函数参数时候该给出的错误类型。你不应该像下面这样写代码：</p>
 
-<div class="highlight"><pre><code class="language-python" data-lang="python"><span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="nb">int</span><span class="p">):</span>
-    <span class="k">raise</span> <span class="ne">AssertionError</span><span class="p">(</span><span class="s">&quot;not an int&quot;</span><span class="p">)</span></code></pre></div>
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="nb">int</span><span class="p">):</span>
+    <span class="k">raise</span> <span class="nb">AssertionError</span><span class="p">(</span><span class="s">"not an int"</span><span class="p">)</span></code></pre></figure>
 
-<p>这里应该触发<code>TypeError</code>异常而不是<code>AssertionError</code>。<code>assert</code>触发了错误的异常类型。</p>
+<p>这里应该触发<code class="highlighter-rouge">TypeError</code>异常而不是<code class="highlighter-rouge">AssertionError</code>。<code class="highlighter-rouge">assert</code>触发了错误的异常类型。</p>
 
-<p>然而，更加危险的是，有一种情况[?]：当带着<code>-O</code>或者<code>-OO</code>优化参数来运行脚本时，<code>assert</code>语句在编译的时候将被忽略，因此不能保证<code>assert</code>语句一定会执行。这是正常使用<code>assert</code>语句的一个特性，但是当使用不恰当时，便会导致亿<code>-O</code>参数运行的程序崩溃。</p>
+<p>然而，更加危险的是，有一种情况[?]：当带着<code class="highlighter-rouge">-O</code>或者<code class="highlighter-rouge">-OO</code>优化参数来运行脚本时，<code class="highlighter-rouge">assert</code>语句在编译的时候将被忽略，因此不能保证<code class="highlighter-rouge">assert</code>语句一定会执行。这是正常使用<code class="highlighter-rouge">assert</code>语句的一个特性，但是当使用不恰当时，便会导致亿<code class="highlighter-rouge">-O</code>参数运行的程序崩溃。</p>
 
-<p>那么什么时候该使用<code>assert</code>？以下几种场景可以使用，排名不分先后：</p>
+<p>那么什么时候该使用<code class="highlighter-rouge">assert</code>？以下几种场景可以使用，排名不分先后：</p>
 
 <ul>
   <li>防卫式编程* 运行时的程序逻辑检查* 契约式检查（比如：先验条件和后验条件）* 程序不变量* 测试注释</li>
 </ul>
 
-<p>（在测试代码的时候使用<code>assert</code>也是可以的，作为一种<em>快速丑陋</em>的懒人的测试用例，如果你接受当程序以<code>-O</code>参数运行时，<code>assert</code>将不会起任何作用。我有时也会用<code>assert False</code>来标记代码分支中尚未完成的部分，我希望这一部分会断言失败。如果写的更多一些，<code>rasie NotImplementError</code>可能会显得更恰当）</p>
+<p>（在测试代码的时候使用<code class="highlighter-rouge">assert</code>也是可以的，作为一种<em>快速丑陋</em>的懒人的测试用例，如果你接受当程序以<code class="highlighter-rouge">-O</code>参数运行时，<code class="highlighter-rouge">assert</code>将不会起任何作用。我有时也会用<code class="highlighter-rouge">assert False</code>来标记代码分支中尚未完成的部分，我希望这一部分会断言失败。如果写的更多一些，<code class="highlighter-rouge">rasie NotImplementError</code>可能会显得更恰当）</p>
 
-<p>断言的情形有很多，因为这是用来检验代码的正确性的语句。如果你确信某一部分代码是正确的，那么<code>assert</code>便没有意义了，因为这里永远不会断言失败你可以安全的删除这一处断言。如果你担心断言可能会失败（例如测试用户输入的数据），那么你不敢放心的使用<code>assert</code>因为它有可能会在编译时被忽略，那么你的检测就被跳过了。</p>
+<p>断言的情形有很多，因为这是用来检验代码的正确性的语句。如果你确信某一部分代码是正确的，那么<code class="highlighter-rouge">assert</code>便没有意义了，因为这里永远不会断言失败你可以安全的删除这一处断言。如果你担心断言可能会失败（例如测试用户输入的数据），那么你不敢放心的使用<code class="highlighter-rouge">assert</code>因为它有可能会在编译时被忽略，那么你的检测就被跳过了。</p>
 
 <p>有一种有趣的情形介于上面两种之间，有时你认为某段代码是正确的但又不是<em>100%</em>的确信。也许你曾经忽视过一些奇怪的边界情形（毕竟我们只是人类）。这种情况下，附加运行时的检查会让你安心一些，这样错误会在发生是被尽快的捕获而不是在程序已经运行了一段时间之后。</p>
 
-<p>（这也是为什么<code>assert</code>的使用会出现分歧。每个人对自己代码的自信力不同，有的人觉得某一处<code>assert</code>是有必要的别人可能觉得是多余的）</p>
+<p>（这也是为什么<code class="highlighter-rouge">assert</code>的使用会出现分歧。每个人对自己代码的自信力不同，有的人觉得某一处<code class="highlighter-rouge">assert</code>是有必要的别人可能觉得是多余的）</p>
 
-<p>还有一种好的实践是用<code>assert</code>来检测程序不变量。程序不变量是指你可以依赖的始终不变的条件，除非代码出了bug导致条件发生变化。如果程序有bug，最好今早的发现，所以我们做了测试，但是我们不希望这种测试拖慢我们的程序运行。因此，可以在开发的时候开启<code>assert</code>测试，在生产环境下去掉他们。</p>
+<p>还有一种好的实践是用<code class="highlighter-rouge">assert</code>来检测程序不变量。程序不变量是指你可以依赖的始终不变的条件，除非代码出了bug导致条件发生变化。如果程序有bug，最好今早的发现，所以我们做了测试，但是我们不希望这种测试拖慢我们的程序运行。因此，可以在开发的时候开启<code class="highlighter-rouge">assert</code>测试，在生产环境下去掉他们。</p>
 
 <p>一个不变量的例子，你的某个函数，在开始执行的时候需要一个数据库连接并且确保在函数执行期间连接始终有效直到函数返回，那么这个数据库连接可以看作这个函数内部的不变量：</p>
 
-<div class="highlight"><pre><code class="language-python" data-lang="python"><span class="k">def</span> <span class="nf">some_function</span><span class="p">(</span><span class="n">arg</span><span class="p">):</span> 
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="k">def</span> <span class="nf">some_function</span><span class="p">(</span><span class="n">arg</span><span class="p">):</span> 
     <span class="k">assert</span> <span class="ow">not</span> <span class="n">DB</span><span class="o">.</span><span class="n">closed</span><span class="p">()</span>    
     <span class="o">...</span> <span class="c"># code goes here    </span>
     <span class="k">assert</span> <span class="ow">not</span> <span class="n">DB</span><span class="o">.</span><span class="n">closed</span><span class="p">()</span>    
-    <span class="k">return</span> <span class="n">result</span></code></pre></div>
+    <span class="k">return</span> <span class="n">result</span></code></pre></figure>
 
 <p>断言也可以作为不错的测试注释。对于下面这种注释：</p>
 
-<div class="highlight"><pre><code class="language-python" data-lang="python"><span class="c"># when we reach here, we know that n &gt; 2</span></code></pre></div>
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="c"># when we reach here, we know that n &gt; 2</span></code></pre></figure>
 
 <p>你可以通过如下断言确保这个注释已经测试通过，来取代上面的注释写法：</p>
 
-<div class="highlight"><pre><code class="language-python" data-lang="python"><span class="k">assert</span> <span class="n">n</span> <span class="o">&gt;</span> <span class="mi">2</span></code></pre></div>
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="k">assert</span> <span class="n">n</span> <span class="o">&gt;</span> <span class="mi">2</span></code></pre></figure>
 
 <p>在防卫式编程中使用断言也是不错的方式。你可能没有对代码中可能出现的错误采取立即的保护手段，而是在后面对可能出现错误的变化情况做保护。理想情况下，测试用例会查处这些错误，不过让我们来面对他们，即使是有测试用例的情况下，也不一定保证测试完整。开发的查错机器人可能会崩溃并且连续好几周没人注意到，或者程序员在提交代码之前忘记执行测试。在内部做检查是另一层防止错误溜入的方式，除了那种使程序功能出错返回错误结果但并不致程序崩溃的错误。</p>
 
-<p>假设你知道某一个变量会有哪几种可能的取值，你要写一系列的<code>if...elif</code>代码段：</p>
+<p>假设你知道某一个变量会有哪几种可能的取值，你要写一系列的<code class="highlighter-rouge">if...elif</code>代码段：</p>
 
-<div class="highlight"><pre><code class="language-python" data-lang="python"><span class="c"># target is expected to be one of x, y, or z, and nothing else.</span>
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="c"># target is expected to be one of x, y, or z, and nothing else.</span>
 <span class="k">if</span> <span class="n">target</span> <span class="o">==</span> <span class="n">x</span><span class="p">:</span> 
     <span class="n">run_x_code</span><span class="p">()</span>
 <span class="k">elif</span> <span class="n">target</span> <span class="o">==</span> <span class="n">y</span><span class="p">:</span>
     <span class="n">run_y_code</span><span class="p">()</span>
 <span class="k">else</span><span class="p">:</span>
-    <span class="n">run_z_code</span><span class="p">()</span></code></pre></div>
+    <span class="n">run_z_code</span><span class="p">()</span></code></pre></figure>
 
-<p>假象上面的代码现在是正确的。但是会保证一直正确么？需求变更。代码发生变化。如果需求变化导致当<code>target = w</code>时运行<code>run_w_code</code>会怎么样？如果我们改变了代码，给<code>target</code>变量赋值，却忘记修改上面这一块代码，就回错误的执行<code>run_z_code()</code>导致不好的事情发生。所以上述代码最好写成防卫式，这样要么正确执行，要么理解抛出异常，即使日后可能会发生变化。</p>
+<p>假象上面的代码现在是正确的。但是会保证一直正确么？需求变更。代码发生变化。如果需求变化导致当<code class="highlighter-rouge">target = w</code>时运行<code class="highlighter-rouge">run_w_code</code>会怎么样？如果我们改变了代码，给<code class="highlighter-rouge">target</code>变量赋值，却忘记修改上面这一块代码，就回错误的执行<code class="highlighter-rouge">run_z_code()</code>导致不好的事情发生。所以上述代码最好写成防卫式，这样要么正确执行，要么理解抛出异常，即使日后可能会发生变化。</p>
 
 <p>在这一块开始之前写上注释是个不错的第一步，但是众人皆知人们可能不会去阅读和更新注释。会导致注释失效。不过如果是个断言，则既起到这一块的注释作用又显得很整洁，并且如果注释条件被违反，程序会立即抛错：</p>
 
-<div class="highlight"><pre><code class="language-python" data-lang="python"><span class="k">assert</span> <span class="n">target</span> <span class="ow">in</span> <span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">)</span>
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="k">assert</span> <span class="n">target</span> <span class="ow">in</span> <span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">)</span>
 <span class="k">if</span> <span class="n">target</span> <span class="o">==</span> <span class="n">x</span><span class="p">:</span>    
     <span class="n">run_x_code</span><span class="p">()</span>
 <span class="k">elif</span> <span class="n">target</span> <span class="o">==</span> <span class="n">y</span><span class="p">:</span>    
     <span class="n">run_y_code</span><span class="p">()</span>
 <span class="k">else</span><span class="p">:</span>   
     <span class="k">assert</span> <span class="n">target</span> <span class="o">==</span> <span class="n">z</span>    
-        <span class="n">run_z_code</span><span class="p">()</span></code></pre></div>
+        <span class="n">run_z_code</span><span class="p">()</span></code></pre></figure>
 
 <p>这里，断言既是一种防卫式编程又是一个测试文档。我认为这是比下面更优雅的一种解决方案：</p>
 
-<div class="highlight"><pre><code class="language-python" data-lang="python"><span class="k">if</span> <span class="n">target</span> <span class="o">==</span> <span class="n">x</span><span class="p">:</span>
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="k">if</span> <span class="n">target</span> <span class="o">==</span> <span class="n">x</span><span class="p">:</span>
     <span class="n">run_x_code</span><span class="p">()</span>
 <span class="k">elif</span> <span class="n">target</span> <span class="o">==</span> <span class="n">y</span><span class="p">:</span>
     <span class="n">run_y_code</span><span class="p">()</span>
@@ -115,9 +115,9 @@
     <span class="n">run_z_code</span><span class="p">()</span>
 <span class="k">else</span><span class="p">:</span>
     <span class="c"># This can never happen. But just in case it does...</span>
-    <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s">&quot;an unexpected error occurred&quot;</span><span class="p">)</span></code></pre></div>
+    <span class="k">raise</span> <span class="nb">RuntimeError</span><span class="p">(</span><span class="s">"an unexpected error occurred"</span><span class="p">)</span></code></pre></figure>
 
-<p>这种方法去掉了不必要的<code>value = c</code>的判断，帮助开发者使代码变得简洁，并且去掉了<code>RuntimeError</code>这一块<a href="http://en.wikipedia.org/wiki/Dead_code">死代码</a>。另外，发生「unexpected error」（未知错误）也会显得很尴尬，而且他们也确实会发生。</p>
+<p>这种方法去掉了不必要的<code class="highlighter-rouge">value = c</code>的判断，帮助开发者使代码变得简洁，并且去掉了<code class="highlighter-rouge">RuntimeError</code>这一块<a href="http://en.wikipedia.org/wiki/Dead_code">死代码</a>。另外，发生「unexpected error」（未知错误）也会显得很尴尬，而且他们也确实会发生。</p>
 
 <p><a href="http://zh.wikipedia.org/wiki/%E5%A5%91%E7%BA%A6%E5%BC%8F%E8%AE%BE%E8%AE%A1">契约式设计</a>也是对断言的合理使用。在契约式设计中，我们认为函数与他的调用者之间签了契约。像下面这样：</p>
 
@@ -125,23 +125,23 @@
 
 <p>如果这个契约被函数或者调用函数的代码破坏，程序就会出现bug。我们说函数有「先验条件」（限制必须要有参数）和后置条件（限制必须要有返回值）。因此这个函数可能会这样编写：</p>
 
-<div class="highlight"><pre><code class="language-python" data-lang="python"><span class="k">def</span> <span class="nf">first_upper</span><span class="p">(</span><span class="n">astring</span><span class="p">):</span>
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="k">def</span> <span class="nf">first_upper</span><span class="p">(</span><span class="n">astring</span><span class="p">):</span>
     <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">astring</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">astring</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span>
     <span class="n">result</span> <span class="o">=</span> <span class="n">astring</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span>
     <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">result</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span>
     <span class="k">assert</span> <span class="n">result</span> <span class="o">==</span> <span class="n">result</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span>
-    <span class="k">return</span> <span class="n">result</span></code></pre></div>
+    <span class="k">return</span> <span class="n">result</span></code></pre></figure>
 
-<p><code>契约式设计</code>的目标是，在正确的程序中，一直要保证先验条件和后验条件。始终断言，直到（断言一直在）我们发布没有bug的代码并将它们投入生产环境时，程序将会正常运行，我们也可以放心的移除断言测试。</p>
+<p><code class="highlighter-rouge">契约式设计</code>的目标是，在正确的程序中，一直要保证先验条件和后验条件。始终断言，直到（断言一直在）我们发布没有bug的代码并将它们投入生产环境时，程序将会正常运行，我们也可以放心的移除断言测试。</p>
 
 <p>下面是我的建议，什么情况下<em>不该</em>使用断言：</p>
 
 <ul>
   <li>永远不要用断言来测试用户输入的数据，或者任何其他必须要测试的情形。</li>
-  <li>不要使用断言来测试程序正常运行时可能会出现的错误。断言是用在不正常的出错条件的。永远不要让你的用户看到<code>AssertionError</code>；如果他们看到了，修复这个bug。</li>
-  <li>特别的，不要只是仅为<code>assert</code>比起正常的抛出异常的测试书写起来短一些就使用它。<code>assert</code>不是专门给懒人程序员使用的快捷方法。</li>
-  <li>不要用<code>assert</code>来测试公共库函数的输入参数（私有的库函数没问题）因为你无法控制函数调用也无法保证断言不会破坏函数之间的契约。</li>
-  <li>不要把<code>assert</code>用在你要修复的错误上面。换句话说，这样你便需要在生产环境中来处理<code>AssertionError</code>异常</li>
+  <li>不要使用断言来测试程序正常运行时可能会出现的错误。断言是用在不正常的出错条件的。永远不要让你的用户看到<code class="highlighter-rouge">AssertionError</code>；如果他们看到了，修复这个bug。</li>
+  <li>特别的，不要只是仅为<code class="highlighter-rouge">assert</code>比起正常的抛出异常的测试书写起来短一些就使用它。<code class="highlighter-rouge">assert</code>不是专门给懒人程序员使用的快捷方法。</li>
+  <li>不要用<code class="highlighter-rouge">assert</code>来测试公共库函数的输入参数（私有的库函数没问题）因为你无法控制函数调用也无法保证断言不会破坏函数之间的契约。</li>
+  <li>不要把<code class="highlighter-rouge">assert</code>用在你要修复的错误上面。换句话说，这样你便需要在生产环境中来处理<code class="highlighter-rouge">AssertionError</code>异常</li>
   <li>别用太多断言导致代码变得复杂</li>
 </ul>
 
@@ -149,7 +149,7 @@
 
 <p>【译文完】</p>
 
-<p>最后附加一份<a href="http://lepture.com">lepture</a>提交给Tornado的有关<code>assert</code>的PR：</p>
+<p>最后附加一份<a href="http://lepture.com">lepture</a>提交给Tornado的有关<code class="highlighter-rouge">assert</code>的PR：</p>
 
 <p><a href="https://github.com/facebook/tornado/pull/937/files">https://github.com/facebook/tornado/pull/937/files</a></p>
 </div><div class="comment-area">

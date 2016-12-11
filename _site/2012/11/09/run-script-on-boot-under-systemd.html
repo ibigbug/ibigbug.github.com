@@ -43,19 +43,19 @@
 
 <p>The demo may look like this:</p>
 
-<h4 id="customservice">custom.service:</h4>
+<p>####custom.service:</p>
 
-<div class="highlight"><pre><code class="language-c" data-lang="c"><span class="p">[</span><span class="n">Unit</span><span class="p">]</span><span class="n">Description</span><span class="o">=</span><span class="n">Custom</span> <span class="n">startup</span><span class="o">-</span><span class="n">scripts</span>
+<figure class="highlight"><pre><code class="language-c" data-lang="c"><span class="p">[</span><span class="n">Unit</span><span class="p">]</span><span class="n">Description</span><span class="o">=</span><span class="n">Custom</span> <span class="n">startup</span><span class="o">-</span><span class="n">scripts</span>
 
 <span class="p">[</span><span class="n">Service</span><span class="p">]</span><span class="n">ExecStart</span><span class="o">=/</span><span class="n">usr</span><span class="o">/</span><span class="n">bin</span><span class="o">/</span><span class="n">systemd_scripts_on_boot</span>
 
-<span class="p">[</span><span class="n">Install</span><span class="p">]</span><span class="n">WantedBy</span><span class="o">=</span><span class="n">multi</span><span class="o">-</span><span class="n">user</span><span class="p">.</span><span class="n">target</span></code></pre></div>
+<span class="p">[</span><span class="n">Install</span><span class="p">]</span><span class="n">WantedBy</span><span class="o">=</span><span class="n">multi</span><span class="o">-</span><span class="n">user</span><span class="p">.</span><span class="n">target</span></code></pre></figure>
 
-<h4 id="systemdscriptsonboot">systemd_scripts_on_boot:</h4>
+<p>####systemd_scripts_on_boot:</p>
 
-<div class="highlight"><pre><code class="language-c" data-lang="c"><span class="cp">#!/bin/bash</span>
-
-<span class="n">EXECUTE</span> <span class="n">YOUR</span> <span class="n">CUSTOM</span> <span class="n">SCRIPT</span> <span class="n">YOU</span> <span class="n">WANT</span> <span class="n">TO</span> <span class="n">RUN</span> <span class="n">ON</span> <span class="n">STARTUP</span></code></pre></div>
+<figure class="highlight"><pre><code class="language-c" data-lang="c"><span class="cp">#!/bin/bash
+</span>
+<span class="n">EXECUTE</span> <span class="n">YOUR</span> <span class="n">CUSTOM</span> <span class="n">SCRIPT</span> <span class="n">YOU</span> <span class="n">WANT</span> <span class="n">TO</span> <span class="n">RUN</span> <span class="n">ON</span> <span class="n">STARTUP</span></code></pre></figure>
 
 <p>I’m a newbie on linux, systemd and English. Please let me know if any bugs ^^</p>
 </div><div class="comment-area">

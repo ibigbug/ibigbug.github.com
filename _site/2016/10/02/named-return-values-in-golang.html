@@ -28,49 +28,49 @@
 Be careful when using named return value in golang
 </div><div class="main-area"><div class="post-entry"><h1 class="entry-title">Do you really know named return value in golang?</h1><div class="entry-meta"><time class="updated">Oct 2, 2016</time></div><div class="entry-content"><h1 id="intro">Intro</h1>
 
-<p>Recently, I’m writing some golang tools and have found that functions of golang have a feature called <code>named return value</code>, which cannot be found in other common programming languages like Python, Javascript or Java. It cannot also be equal to the feature in some ‘functional’ programing languages like Clojure, Haskell or Scheme, which the evaluation of the last expression is the ‘return value’ of the function. In golang, we write code like <a href="https://tour.golang.org/basics/7">this</a>:</p>
+<p>Recently, I’m writing some golang tools and have found that functions of golang have a feature called <code class="highlighter-rouge">named return value</code>, which cannot be found in other common programming languages like Python, Javascript or Java. It cannot also be equal to the feature in some ‘functional’ programing languages like Clojure, Haskell or Scheme, which the evaluation of the last expression is the ‘return value’ of the function. In golang, we write code like <a href="https://tour.golang.org/basics/7">this</a>:</p>
 
-<div class="highlight"><pre><code class="language-go" data-lang="go"><span class="kn">package</span> <span class="nx">main</span>
+<figure class="highlight"><pre><code class="language-go" data-lang="go"><span class="k">package</span><span class="x"> </span><span class="n">main</span><span class="x">
 
-<span class="kn">import</span> <span class="s">&quot;fmt&quot;</span>
+</span><span class="k">import</span><span class="x"> </span><span class="s">"fmt"</span><span class="x">
 
-<span class="kd">func</span> <span class="nx">split</span><span class="p">(</span><span class="nx">sum</span> <span class="kt">int</span><span class="p">)</span> <span class="p">(</span><span class="nx">x</span><span class="p">,</span> <span class="nx">y</span> <span class="kt">int</span><span class="p">)</span> <span class="p">{</span>
-	<span class="nx">x</span> <span class="p">=</span> <span class="nx">sum</span> <span class="o">*</span> <span class="mi">4</span> <span class="o">/</span> <span class="mi">9</span>
-	<span class="nx">y</span> <span class="p">=</span> <span class="nx">sum</span> <span class="o">-</span> <span class="nx">x</span>
-	<span class="k">return</span>
-<span class="p">}</span>
+</span><span class="k">func</span><span class="x"> </span><span class="n">split</span><span class="p">(</span><span class="n">sum</span><span class="x"> </span><span class="kt">int</span><span class="p">)</span><span class="x"> </span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="x"> </span><span class="n">y</span><span class="x"> </span><span class="kt">int</span><span class="p">)</span><span class="x"> </span><span class="p">{</span><span class="x">
+	</span><span class="n">x</span><span class="x"> </span><span class="o">=</span><span class="x"> </span><span class="n">sum</span><span class="x"> </span><span class="o">*</span><span class="x"> </span><span class="m">4</span><span class="x"> </span><span class="o">/</span><span class="x"> </span><span class="m">9</span><span class="x">
+	</span><span class="n">y</span><span class="x"> </span><span class="o">=</span><span class="x"> </span><span class="n">sum</span><span class="x"> </span><span class="o">-</span><span class="x"> </span><span class="n">x</span><span class="x">
+	</span><span class="k">return</span><span class="x">
+</span><span class="p">}</span><span class="x">
 
-<span class="kd">func</span> <span class="nx">main</span><span class="p">()</span> <span class="p">{</span>
-	<span class="nx">fmt</span><span class="p">.</span><span class="nx">Println</span><span class="p">(</span><span class="nx">split</span><span class="p">(</span><span class="mi">17</span><span class="p">))</span>
-<span class="p">}</span></code></pre></div>
+</span><span class="k">func</span><span class="x"> </span><span class="n">main</span><span class="p">()</span><span class="x"> </span><span class="p">{</span><span class="x">
+	</span><span class="n">fmt</span><span class="o">.</span><span class="n">Println</span><span class="p">(</span><span class="n">split</span><span class="p">(</span><span class="m">17</span><span class="p">))</span><span class="x">
+</span><span class="p">}</span></code></pre></figure>
 
-<p>By leaving out the variable <code>x, y</code>in the <code>return</code> expression, we have created a shorter function which already permit precise variable name in golang. Fairly simple and convenient. However, what I’m talking about today are some common pitfalls when using this handy feature.</p>
+<p>By leaving out the variable <code class="highlighter-rouge">x, y</code>in the <code class="highlighter-rouge">return</code> expression, we have created a shorter function which already permit precise variable name in golang. Fairly simple and convenient. However, what I’m talking about today are some common pitfalls when using this handy feature.</p>
 
 <h1 id="pitfall-1">Pitfall 1.</h1>
 
-<p>Considering this problem: find the index <code>idx</code> of the element “el” in an array (or slice) <code>arr</code>. Without <code>named return value</code>, you may write code like this :</p>
+<p>Considering this problem: find the index <code class="highlighter-rouge">idx</code> of the element “el” in an array (or slice) <code class="highlighter-rouge">arr</code>. Without <code class="highlighter-rouge">named return value</code>, you may write code like this :</p>
 
-<div class="highlight"><pre><code class="language-go" data-lang="go"><span class="kd">func</span> <span class="nx">findIdx</span><span class="p">(</span><span class="nx">arr</span> <span class="p">[]</span><span class="kt">int</span><span class="p">,</span> <span class="nx">el</span> <span class="kt">int</span><span class="p">)</span> <span class="kt">int</span> <span class="p">{</span>
-  <span class="k">for</span> <span class="nx">idx</span><span class="p">,</span> <span class="nx">v</span> <span class="o">:=</span> <span class="k">range</span> <span class="nx">arr</span> <span class="p">{</span>
-    <span class="k">if</span> <span class="nx">v</span> <span class="o">==</span> <span class="nx">el</span> <span class="p">{</span>
-      <span class="c1">// found you!</span>
-      <span class="k">return</span> <span class="nx">idx</span>
-    <span class="p">}</span>
-  <span class="p">}</span>
-  <span class="k">return</span> <span class="o">-</span><span class="mi">1</span>
-<span class="p">}</span></code></pre></div>
+<figure class="highlight"><pre><code class="language-go" data-lang="go"><span class="k">func</span><span class="x"> </span><span class="n">findIdx</span><span class="p">(</span><span class="n">arr</span><span class="x"> </span><span class="p">[]</span><span class="kt">int</span><span class="p">,</span><span class="x"> </span><span class="n">el</span><span class="x"> </span><span class="kt">int</span><span class="p">)</span><span class="x"> </span><span class="kt">int</span><span class="x"> </span><span class="p">{</span><span class="x">
+  </span><span class="k">for</span><span class="x"> </span><span class="n">idx</span><span class="p">,</span><span class="x"> </span><span class="n">v</span><span class="x"> </span><span class="o">:=</span><span class="x"> </span><span class="k">range</span><span class="x"> </span><span class="n">arr</span><span class="x"> </span><span class="p">{</span><span class="x">
+    </span><span class="k">if</span><span class="x"> </span><span class="n">v</span><span class="x"> </span><span class="o">==</span><span class="x"> </span><span class="n">el</span><span class="x"> </span><span class="p">{</span><span class="x">
+      </span><span class="c">// found you!</span><span class="x">
+      </span><span class="k">return</span><span class="x"> </span><span class="n">idx</span><span class="x">
+    </span><span class="p">}</span><span class="x">
+  </span><span class="p">}</span><span class="x">
+  </span><span class="k">return</span><span class="x"> </span><span class="o">-</span><span class="m">1</span><span class="x">
+</span><span class="p">}</span></code></pre></figure>
 
-<p>Using <code>named return value</code>, you can change it to this:</p>
+<p>Using <code class="highlighter-rouge">named return value</code>, you can change it to this:</p>
 
-<div class="highlight"><pre><code class="language-go" data-lang="go"><span class="kd">func</span> <span class="nx">findIdx</span><span class="p">(</span><span class="nx">arr</span> <span class="p">[]</span><span class="kt">int</span><span class="p">,</span> <span class="nx">el</span> <span class="kt">int</span><span class="p">)</span> <span class="p">(</span><span class="nx">idx</span> <span class="kt">int</span><span class="p">)</span> <span class="p">{</span>
-  <span class="k">for</span> <span class="nx">idx</span><span class="p">,</span> <span class="nx">v</span> <span class="o">:=</span> <span class="k">range</span> <span class="nx">arr</span> <span class="p">{</span>
-    <span class="k">if</span> <span class="nx">v</span> <span class="o">==</span> <span class="nx">el</span> <span class="p">{</span>
-      <span class="c1">// found you!</span>
-      <span class="k">return</span>
-    <span class="p">}</span>
-  <span class="p">}</span>
-  <span class="k">return</span> <span class="o">-</span><span class="mi">1</span>
-<span class="p">}</span></code></pre></div>
+<figure class="highlight"><pre><code class="language-go" data-lang="go"><span class="k">func</span><span class="x"> </span><span class="n">findIdx</span><span class="p">(</span><span class="n">arr</span><span class="x"> </span><span class="p">[]</span><span class="kt">int</span><span class="p">,</span><span class="x"> </span><span class="n">el</span><span class="x"> </span><span class="kt">int</span><span class="p">)</span><span class="x"> </span><span class="p">(</span><span class="n">idx</span><span class="x"> </span><span class="kt">int</span><span class="p">)</span><span class="x"> </span><span class="p">{</span><span class="x">
+  </span><span class="k">for</span><span class="x"> </span><span class="n">idx</span><span class="p">,</span><span class="x"> </span><span class="n">v</span><span class="x"> </span><span class="o">:=</span><span class="x"> </span><span class="k">range</span><span class="x"> </span><span class="n">arr</span><span class="x"> </span><span class="p">{</span><span class="x">
+    </span><span class="k">if</span><span class="x"> </span><span class="n">v</span><span class="x"> </span><span class="o">==</span><span class="x"> </span><span class="n">el</span><span class="x"> </span><span class="p">{</span><span class="x">
+      </span><span class="c">// found you!</span><span class="x">
+      </span><span class="k">return</span><span class="x">
+    </span><span class="p">}</span><span class="x">
+  </span><span class="p">}</span><span class="x">
+  </span><span class="k">return</span><span class="x"> </span><span class="o">-</span><span class="m">1</span><span class="x">
+</span><span class="p">}</span></code></pre></figure>
 
 <p><a href="https://go-sandbox.com/#/1U6U9Aadnh">Let’s run it to see what happens</a>.</p>
 
@@ -80,60 +80,60 @@ Be careful when using named return value in golang
   <p>Line 12: i is shadowed during return</p>
 </blockquote>
 
-<p>How could it be? The reason is <code>scope</code>.</p>
+<p>How could it be? The reason is <code class="highlighter-rouge">scope</code>.</p>
 
-<p>In Golang, one type of block scope is a pair of <code>{}</code> which generates a new level of function scope. In our example, our range loop body is wrapped in a <code>{}</code>, and, at the same time, we are also using <code>:=</code> to assign variables <code>idx</code> and <code>v</code>. Therefore, we have completely declared another variable name “idx”, which is “shadowing” the outer scope binding (our intended)’idx’ in the loop body. You can learn about the academic meaning of the word <code>shadow</code> or <code>binding</code> <a href="https://en.wikipedia.org/wiki/Variable_shadowing">here</a></p>
+<p>In Golang, one type of block scope is a pair of <code class="highlighter-rouge"><span class="p">{}</span></code> which generates a new level of function scope. In our example, our range loop body is wrapped in a <code class="highlighter-rouge"><span class="p">{}</span></code>, and, at the same time, we are also using <code class="highlighter-rouge">:=</code> to assign variables <code class="highlighter-rouge">idx</code> and <code class="highlighter-rouge">v</code>. Therefore, we have completely declared another variable name “idx”, which is “shadowing” the outer scope binding (our intended)’idx’ in the loop body. You can learn about the academic meaning of the word <code class="highlighter-rouge">shadow</code> or <code class="highlighter-rouge">binding</code> <a href="https://en.wikipedia.org/wiki/Variable_shadowing">here</a></p>
 
 <p>We can change the code to:</p>
 
-<div class="highlight"><pre><code class="language-go" data-lang="go"><span class="kd">func</span> <span class="nx">findIdx</span><span class="p">(</span><span class="nx">arr</span> <span class="p">[]</span><span class="kt">int</span><span class="p">,</span> <span class="nx">el</span> <span class="kt">int</span><span class="p">)</span> <span class="p">(</span><span class="nx">idx</span> <span class="kt">int</span><span class="p">)</span> <span class="p">{</span>
-  <span class="k">for</span> <span class="nx">i</span><span class="p">,</span> <span class="nx">v</span> <span class="o">:=</span> <span class="k">range</span> <span class="nx">arr</span> <span class="p">{</span>
-    <span class="k">if</span> <span class="nx">v</span> <span class="o">==</span> <span class="nx">el</span> <span class="p">{</span>
-      <span class="c1">// found you!</span>
-      <span class="c1">// note: no colon here</span>
-      <span class="nx">idx</span> <span class="p">=</span> <span class="nx">i</span>
-      <span class="k">return</span>
-    <span class="p">}</span>
-  <span class="p">}</span>
-  <span class="k">return</span> <span class="o">-</span><span class="mi">1</span>
-<span class="p">}</span></code></pre></div>
+<figure class="highlight"><pre><code class="language-go" data-lang="go"><span class="k">func</span><span class="x"> </span><span class="n">findIdx</span><span class="p">(</span><span class="n">arr</span><span class="x"> </span><span class="p">[]</span><span class="kt">int</span><span class="p">,</span><span class="x"> </span><span class="n">el</span><span class="x"> </span><span class="kt">int</span><span class="p">)</span><span class="x"> </span><span class="p">(</span><span class="n">idx</span><span class="x"> </span><span class="kt">int</span><span class="p">)</span><span class="x"> </span><span class="p">{</span><span class="x">
+  </span><span class="k">for</span><span class="x"> </span><span class="n">i</span><span class="p">,</span><span class="x"> </span><span class="n">v</span><span class="x"> </span><span class="o">:=</span><span class="x"> </span><span class="k">range</span><span class="x"> </span><span class="n">arr</span><span class="x"> </span><span class="p">{</span><span class="x">
+    </span><span class="k">if</span><span class="x"> </span><span class="n">v</span><span class="x"> </span><span class="o">==</span><span class="x"> </span><span class="n">el</span><span class="x"> </span><span class="p">{</span><span class="x">
+      </span><span class="c">// found you!</span><span class="x">
+      </span><span class="c">// note: no colon here</span><span class="x">
+      </span><span class="n">idx</span><span class="x"> </span><span class="o">=</span><span class="x"> </span><span class="n">i</span><span class="x">
+      </span><span class="k">return</span><span class="x">
+    </span><span class="p">}</span><span class="x">
+  </span><span class="p">}</span><span class="x">
+  </span><span class="k">return</span><span class="x"> </span><span class="o">-</span><span class="m">1</span><span class="x">
+</span><span class="p">}</span></code></pre></figure>
 
 <h1 id="pitfall-2">Pitfall 2.</h1>
 
 <p>If you are confident that you won’t fall into the first case, since the compiler will warn of the error. Pitfall 2 is less obvious then.</p>
 
-<div class="highlight"><pre><code class="language-go" data-lang="go"><span class="kd">type</span> <span class="nx">User</span> <span class="kd">struct</span> <span class="p">{</span>
-	<span class="nx">Admin</span> <span class="kt">bool</span>
-	<span class="nx">Name</span>  <span class="kt">string</span>
-<span class="p">}</span>
+<figure class="highlight"><pre><code class="language-go" data-lang="go"><span class="k">type</span><span class="x"> </span><span class="n">User</span><span class="x"> </span><span class="k">struct</span><span class="x"> </span><span class="p">{</span><span class="x">
+	</span><span class="n">Admin</span><span class="x"> </span><span class="kt">bool</span><span class="x">
+	</span><span class="n">Name</span><span class="x">  </span><span class="kt">string</span><span class="x">
+</span><span class="p">}</span><span class="x">
 
-<span class="kd">func</span> <span class="nx">findAdmin</span><span class="p">(</span><span class="nx">users</span> <span class="p">[]</span><span class="o">*</span><span class="nx">User</span><span class="p">)</span> <span class="p">(</span><span class="nx">u</span> <span class="o">*</span><span class="nx">User</span><span class="p">)</span> <span class="p">{</span>
-  <span class="c1">// note: not colon, aka not shadowling :)</span>
-	<span class="k">for</span> <span class="nx">_</span><span class="p">,</span> <span class="nx">u</span> <span class="p">=</span> <span class="k">range</span> <span class="nx">users</span> <span class="p">{</span>
-		<span class="k">if</span> <span class="nx">u</span><span class="p">.</span><span class="nx">Admin</span> <span class="p">{</span>
-			<span class="k">return</span>
-		<span class="p">}</span>
-	<span class="p">}</span>
-	<span class="k">return</span>
-<span class="p">}</span>
+</span><span class="k">func</span><span class="x"> </span><span class="n">findAdmin</span><span class="p">(</span><span class="n">users</span><span class="x"> </span><span class="p">[]</span><span class="o">*</span><span class="n">User</span><span class="p">)</span><span class="x"> </span><span class="p">(</span><span class="n">u</span><span class="x"> </span><span class="o">*</span><span class="n">User</span><span class="p">)</span><span class="x"> </span><span class="p">{</span><span class="x">
+  </span><span class="c">// note: not colon, aka not shadowling :)</span><span class="x">
+	</span><span class="k">for</span><span class="x"> </span><span class="n">_</span><span class="p">,</span><span class="x"> </span><span class="n">u</span><span class="x"> </span><span class="o">=</span><span class="x"> </span><span class="k">range</span><span class="x"> </span><span class="n">users</span><span class="x"> </span><span class="p">{</span><span class="x">
+		</span><span class="k">if</span><span class="x"> </span><span class="n">u</span><span class="o">.</span><span class="n">Admin</span><span class="x"> </span><span class="p">{</span><span class="x">
+			</span><span class="k">return</span><span class="x">
+		</span><span class="p">}</span><span class="x">
+	</span><span class="p">}</span><span class="x">
+	</span><span class="k">return</span><span class="x">
+</span><span class="p">}</span><span class="x">
 
-<span class="kd">func</span> <span class="nx">main</span><span class="p">()</span> <span class="p">{</span>
-	<span class="kd">var</span> <span class="nx">us1</span> <span class="p">=</span> <span class="p">[]</span><span class="o">*</span><span class="nx">User</span><span class="p">{</span>
-		<span class="o">&amp;</span><span class="nx">User</span><span class="p">{</span><span class="nx">Admin</span><span class="p">:</span> <span class="kc">false</span><span class="p">,</span> <span class="nx">Name</span><span class="p">:</span> <span class="s">&quot;anonymouse&quot;</span><span class="p">},</span>
-		<span class="o">&amp;</span><span class="nx">User</span><span class="p">{</span><span class="nx">Admin</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span> <span class="nx">Name</span><span class="p">:</span> <span class="s">&quot;root&quot;</span><span class="p">},</span>
-	<span class="p">}</span>
+</span><span class="k">func</span><span class="x"> </span><span class="n">main</span><span class="p">()</span><span class="x"> </span><span class="p">{</span><span class="x">
+	</span><span class="k">var</span><span class="x"> </span><span class="n">us1</span><span class="x"> </span><span class="o">=</span><span class="x"> </span><span class="p">[]</span><span class="o">*</span><span class="n">User</span><span class="p">{</span><span class="x">
+		</span><span class="o">&amp;</span><span class="n">User</span><span class="p">{</span><span class="n">Admin</span><span class="o">:</span><span class="x"> </span><span class="no">false</span><span class="p">,</span><span class="x"> </span><span class="n">Name</span><span class="o">:</span><span class="x"> </span><span class="s">"anonymouse"</span><span class="p">},</span><span class="x">
+		</span><span class="o">&amp;</span><span class="n">User</span><span class="p">{</span><span class="n">Admin</span><span class="o">:</span><span class="x"> </span><span class="no">true</span><span class="p">,</span><span class="x"> </span><span class="n">Name</span><span class="o">:</span><span class="x"> </span><span class="s">"root"</span><span class="p">},</span><span class="x">
+	</span><span class="p">}</span><span class="x">
 
-	<span class="nx">admin</span> <span class="o">:=</span> <span class="nx">findAdmin</span><span class="p">(</span><span class="nx">us1</span><span class="p">)</span>
-	<span class="nx">fmt</span><span class="p">.</span><span class="nx">Println</span><span class="p">(</span><span class="s">&quot;Admin: &quot;</span><span class="p">,</span> <span class="nx">admin</span><span class="p">.</span><span class="nx">Name</span><span class="p">)</span>
+	</span><span class="n">admin</span><span class="x"> </span><span class="o">:=</span><span class="x"> </span><span class="n">findAdmin</span><span class="p">(</span><span class="n">us1</span><span class="p">)</span><span class="x">
+	</span><span class="n">fmt</span><span class="o">.</span><span class="n">Println</span><span class="p">(</span><span class="s">"Admin: "</span><span class="p">,</span><span class="x"> </span><span class="n">admin</span><span class="o">.</span><span class="n">Name</span><span class="p">)</span><span class="x">
 
-	<span class="kd">var</span> <span class="nx">us2</span> <span class="p">=</span> <span class="p">[]</span><span class="o">*</span><span class="nx">User</span><span class="p">{</span>
-		<span class="o">&amp;</span><span class="nx">User</span><span class="p">{</span><span class="nx">Admin</span><span class="p">:</span> <span class="kc">false</span><span class="p">,</span> <span class="nx">Name</span><span class="p">:</span> <span class="s">&quot;anonymouse&quot;</span><span class="p">},</span>
-		<span class="o">&amp;</span><span class="nx">User</span><span class="p">{</span><span class="nx">Admin</span><span class="p">:</span> <span class="kc">false</span><span class="p">,</span> <span class="nx">Name</span><span class="p">:</span> <span class="s">&quot;guest&quot;</span><span class="p">},</span>
-	<span class="p">}</span>
+	</span><span class="k">var</span><span class="x"> </span><span class="n">us2</span><span class="x"> </span><span class="o">=</span><span class="x"> </span><span class="p">[]</span><span class="o">*</span><span class="n">User</span><span class="p">{</span><span class="x">
+		</span><span class="o">&amp;</span><span class="n">User</span><span class="p">{</span><span class="n">Admin</span><span class="o">:</span><span class="x"> </span><span class="no">false</span><span class="p">,</span><span class="x"> </span><span class="n">Name</span><span class="o">:</span><span class="x"> </span><span class="s">"anonymouse"</span><span class="p">},</span><span class="x">
+		</span><span class="o">&amp;</span><span class="n">User</span><span class="p">{</span><span class="n">Admin</span><span class="o">:</span><span class="x"> </span><span class="no">false</span><span class="p">,</span><span class="x"> </span><span class="n">Name</span><span class="o">:</span><span class="x"> </span><span class="s">"guest"</span><span class="p">},</span><span class="x">
+	</span><span class="p">}</span><span class="x">
 
-	<span class="nx">admin2</span> <span class="o">:=</span> <span class="nx">findAdmin</span><span class="p">(</span><span class="nx">us2</span><span class="p">)</span>
-	<span class="nx">fmt</span><span class="p">.</span><span class="nx">Println</span><span class="p">(</span><span class="s">&quot;Admin: &quot;</span><span class="p">,</span> <span class="nx">admin2</span><span class="p">.</span><span class="nx">Name</span><span class="p">)</span>
-<span class="p">}</span></code></pre></div>
+	</span><span class="n">admin2</span><span class="x"> </span><span class="o">:=</span><span class="x"> </span><span class="n">findAdmin</span><span class="p">(</span><span class="n">us2</span><span class="p">)</span><span class="x">
+	</span><span class="n">fmt</span><span class="o">.</span><span class="n">Println</span><span class="p">(</span><span class="s">"Admin: "</span><span class="p">,</span><span class="x"> </span><span class="n">admin2</span><span class="o">.</span><span class="n">Name</span><span class="p">)</span><span class="x">
+</span><span class="p">}</span></code></pre></figure>
 
 <p><a href="https://go-sandbox.com/#/8m_gOo-FYi">Run it</a></p>
 
@@ -148,24 +148,24 @@ Admin:  guest</p>
   <p>Program exited.</p>
 </blockquote>
 
-<p>In line 1 from output, we confirmed that the admin user <code>root</code> is in <code>us1</code>, good.</p>
+<p>In line 1 from output, we confirmed that the admin user <code class="highlighter-rouge">root</code> is in <code class="highlighter-rouge">us1</code>, good.</p>
 
-<p>But wait. Look at line 2: There is no <code>Admin</code> user in <code>us2</code> at all! How could <code>guest</code> turn out to be an <code>Admin</code> users?</p>
+<p>But wait. Look at line 2: There is no <code class="highlighter-rouge">Admin</code> user in <code class="highlighter-rouge">us2</code> at all! How could <code class="highlighter-rouge">guest</code> turn out to be an <code class="highlighter-rouge">Admin</code> users?</p>
 
-<p>Well, now, we shouldn’t find it hard to figure it out:  Although the named value <code>u</code> is modified during each iteration in the range loop body, it will, at the end of loop, be set to the last element in the <code>us2</code> array. Note the <code>return</code> after the range loop. It will then return the value to the caller. As a result, in the <code>main</code> function, <code>admin2</code> is set to <code>guest</code>. This is clearly not what we intended.</p>
+<p>Well, now, we shouldn’t find it hard to figure it out:  Although the named value <code class="highlighter-rouge">u</code> is modified during each iteration in the range loop body, it will, at the end of loop, be set to the last element in the <code class="highlighter-rouge">us2</code> array. Note the <code class="highlighter-rouge">return</code> after the range loop. It will then return the value to the caller. As a result, in the <code class="highlighter-rouge">main</code> function, <code class="highlighter-rouge">admin2</code> is set to <code class="highlighter-rouge">guest</code>. This is clearly not what we intended.</p>
 
 <p>To correct the code:</p>
 
-<div class="highlight"><pre><code class="language-go" data-lang="go"><span class="kd">func</span> <span class="nx">findAdmin</span><span class="p">(</span><span class="nx">users</span> <span class="p">[]</span><span class="o">*</span><span class="nx">User</span><span class="p">)</span> <span class="p">(</span><span class="nx">u</span> <span class="o">*</span><span class="nx">User</span><span class="p">)</span> <span class="p">{</span>
-  <span class="c1">// note: not colon, aka not shadowling :)</span>
-	<span class="k">for</span> <span class="nx">_</span><span class="p">,</span> <span class="nx">u</span> <span class="p">=</span> <span class="k">range</span> <span class="nx">users</span> <span class="p">{</span>
-		<span class="k">if</span> <span class="nx">u</span><span class="p">.</span><span class="nx">Admin</span> <span class="p">{</span>
-			<span class="k">return</span>
-		<span class="p">}</span>
-	<span class="p">}</span>
-  <span class="nx">u</span> <span class="p">=</span> <span class="kc">nil</span>
-	<span class="k">return</span>
-<span class="p">}</span></code></pre></div>
+<figure class="highlight"><pre><code class="language-go" data-lang="go"><span class="k">func</span><span class="x"> </span><span class="n">findAdmin</span><span class="p">(</span><span class="n">users</span><span class="x"> </span><span class="p">[]</span><span class="o">*</span><span class="n">User</span><span class="p">)</span><span class="x"> </span><span class="p">(</span><span class="n">u</span><span class="x"> </span><span class="o">*</span><span class="n">User</span><span class="p">)</span><span class="x"> </span><span class="p">{</span><span class="x">
+  </span><span class="c">// note: not colon, aka not shadowling :)</span><span class="x">
+	</span><span class="k">for</span><span class="x"> </span><span class="n">_</span><span class="p">,</span><span class="x"> </span><span class="n">u</span><span class="x"> </span><span class="o">=</span><span class="x"> </span><span class="k">range</span><span class="x"> </span><span class="n">users</span><span class="x"> </span><span class="p">{</span><span class="x">
+		</span><span class="k">if</span><span class="x"> </span><span class="n">u</span><span class="o">.</span><span class="n">Admin</span><span class="x"> </span><span class="p">{</span><span class="x">
+			</span><span class="k">return</span><span class="x">
+		</span><span class="p">}</span><span class="x">
+	</span><span class="p">}</span><span class="x">
+  </span><span class="n">u</span><span class="x"> </span><span class="o">=</span><span class="x"> </span><span class="no">nil</span><span class="x">
+	</span><span class="k">return</span><span class="x">
+</span><span class="p">}</span></code></pre></figure>
 
 <p>Now, it will end up with the right outcome.</p>
 

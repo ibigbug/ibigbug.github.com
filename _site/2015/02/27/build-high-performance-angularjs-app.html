@@ -40,19 +40,19 @@
 
 <p>尽量不要在循环内部进行函数调用:</p>
 
-<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">var</span> <span class="nx">sum</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">var</span> <span class="nx">sum</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
 <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">x</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">x</span> <span class="o">&lt;</span> <span class="mi">100</span><span class="p">;</span> <span class="nx">x</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
   <span class="kd">var</span> <span class="nx">keys</span> <span class="o">=</span> <span class="nb">Object</span><span class="p">.</span><span class="nx">keys</span><span class="p">(</span><span class="nx">obj</span><span class="p">);</span>
   <span class="nx">sum</span> <span class="o">=</span> <span class="nx">sum</span> <span class="o">+</span> <span class="nx">keys</span><span class="p">[</span><span class="nx">x</span><span class="p">];</span>
-<span class="p">}</span></code></pre></div>
+<span class="p">}</span></code></pre></figure>
 
 <p>最好写作:</p>
 
-<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">var</span> <span class="nx">sum</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">var</span> <span class="nx">sum</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
 <span class="kd">var</span> <span class="nx">keys</span> <span class="o">=</span> <span class="nb">Object</span><span class="p">.</span><span class="nx">keys</span><span class="p">(</span><span class="nx">obj</span><span class="p">);</span>
 <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">x</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">x</span> <span class="o">&lt;</span> <span class="mi">100</span><span class="p">;</span> <span class="nx">x</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
   <span class="nx">sum</span> <span class="o">=</span> <span class="nx">sum</span> <span class="o">+</span> <span class="nx">keys</span><span class="p">[</span><span class="nx">x</span><span class="p">];</span>
-<span class="p">}</span></code></pre></div>
+<span class="p">}</span></code></pre></figure>
 
 <p><a href="http://jsperf.com/for-loop-perf-demo-basic">http://jsperf.com/for-loop-perf-demo-basic</a></p>
 
@@ -64,15 +64,15 @@
 
 <p>关于垃圾回收，可以参考这篇文章: <a href="https://blog.xiaoba.me/2013/05/07/garbage-collection-in-javascript.html">Javascript 中的垃圾回收机制</a>。在单页应用中，关注内存使用显得更加重要。</p>
 
-<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">function</span> <span class="nx">demo</span><span class="p">(){</span>
-    <span class="kd">var</span> <span class="nx">b</span> <span class="o">=</span> <span class="p">{</span><span class="nx">childFunction</span><span class="o">:</span> <span class="kd">function</span><span class="p">(){</span><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;hi this is the child function&#39;</span><span class="p">)};</span>
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">function</span> <span class="nx">demo</span><span class="p">(){</span>
+    <span class="kd">var</span> <span class="nx">b</span> <span class="o">=</span> <span class="p">{</span><span class="na">childFunction</span><span class="p">:</span> <span class="kd">function</span><span class="p">(){</span><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">'hi this is the child function'</span><span class="p">)};</span>
     <span class="nx">b</span><span class="p">.</span><span class="nx">childFunction</span><span class="p">();</span>
     <span class="k">return</span> <span class="nx">b</span><span class="p">;</span>
-  <span class="p">}</span></code></pre></div>
+  <span class="p">}</span></code></pre></figure>
 
 <p>以上程序，当 demo 函数返回的时候，GC 会回收 b。但是，当有人写下了这样的代码:</p>
 
-<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">var</span> <span class="nx">bRef</span> <span class="o">=</span> <span class="nx">demo</span><span class="p">();</span></code></pre></div>
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">var</span> <span class="nx">bRef</span> <span class="o">=</span> <span class="nx">demo</span><span class="p">();</span></code></pre></figure>
 
 <p>就会增加了一个对 b 的引用，延长了 b 的生命周期。当然，这可能是正常的逻辑，只不过，对这种写法，需要头脑中时刻保持清醒。</p>
 
@@ -80,9 +80,9 @@
 
 <h1 id="angularjs-">AngularJS 中的一些写法</h1>
 
-<h2 id="watch">使用 <code>$watch</code></h2>
+<h2 id="watch">使用 <code class="highlighter-rouge">$watch</code></h2>
 
-<p><code>$watch</code> 的第一个参数，永远不要是一个函数。因为创建的 watcher 会在每次 <code>$digest</code> 中运行不只一次。这意味着，<code>$watch</code> 的第一个参数，如果是一个函数，那么将会被频繁调用。</p>
+<p><code class="highlighter-rouge">$watch</code> 的第一个参数，永远不要是一个函数。因为创建的 watcher 会在每次 <code class="highlighter-rouge">$digest</code> 中运行不只一次。这意味着，<code class="highlighter-rouge">$watch</code> 的第一个参数，如果是一个函数，那么将会被频繁调用。</p>
 
 <p>AngularJS 更新视图的核心就是「脏值检测」，在内部通过 $rootScope 原型上面的 $digest 方法来实现。查看源码可以发现，$digest 的原理就是一个通过一个 while 循环，来不停的执行当前 scope 中的 watcher 来计算被 watcher 的表达式的值是否发生了变化。这意味着，当页面内拥有越多的 watcher 时，每一次 $digest 过程将会消耗越多的时间。</p>
 
@@ -92,14 +92,14 @@
 
 <ol>
   <li>减少 ngRepeat 列表的长度</li>
-  <li>使用 <code>track by</code> 表达式</li>
+  <li>使用 <code class="highlighter-rouge">track by</code> 表达式</li>
 </ol>
 
 <p>因为，ngRepeat 会进行大量的 DOM 操作。列表过长会导致单个页面内过多的 DOM 操作，对页面性能造成严重的影响。</p>
 
-<p>同时，ngRepeat 会依据一个 key 来跟踪每一个对象是否发生变化，来判断数据有更新，进而来判断，是否进行 DOM 更新操作。如果没有提供 <code>track by</code> 表达式，会使用 默认的 $hashkey，这意味着只要当引用发生变化，而不管数据有没有变化，ngRepeat 都会重新 $compile DOM – 这显然不是我们想要的。所以，提供一个 <code>track by</code> 表达式，如 <code>track by item.id</code>，则会使 ngRepeat 依据每一个对象在数据库里面的 id 字段来判断数据是否更新，减少了不必要的 DOM 操作。</p>
+<p>同时，ngRepeat 会依据一个 key 来跟踪每一个对象是否发生变化，来判断数据有更新，进而来判断，是否进行 DOM 更新操作。如果没有提供 <code class="highlighter-rouge">track by</code> 表达式，会使用 默认的 $hashkey，这意味着只要当引用发生变化，而不管数据有没有变化，ngRepeat 都会重新 $compile DOM – 这显然不是我们想要的。所以，提供一个 <code class="highlighter-rouge">track by</code> 表达式，如 <code class="highlighter-rouge">track by item.id</code>，则会使 ngRepeat 依据每一个对象在数据库里面的 id 字段来判断数据是否更新，减少了不必要的 DOM 操作。</p>
 
-<p>但是，注意，在使用 <code>track by</code> 表达式的时候，一定要保证列表中每一项根据表达式求值的结果要唯一，否则会报错。</p>
+<p>但是，注意，在使用 <code class="highlighter-rouge">track by</code> 表达式的时候，一定要保证列表中每一项根据表达式求值的结果要唯一，否则会报错。</p>
 
 <h2 id="ngif--ngshow-">关于使用 ngIf 和 ngShow 的区别</h2>
 
@@ -115,7 +115,7 @@
 
 <p>因为，$apply() 实质上是调用 $rootScope.prototype.$digest()。而这一过程，会在当前应用内的所有 scope 上执行 $digest 过程。而 $digest() 则只在当从当前 scope 出发向下遍历所有 scope 来进行 $digest。所以，需要根据具体的应用场景，尽量减少 $apply 的调用。BTW，$timeout(func, 0) 的写法默认会调用一次 $rootScope.prototype.$digest()。</p>
 
-<p>另外，在一次 $digest 的每次 while 循环开始，AngularJS 会检测一个 <code>asyncQueue</code> 中是否有待执行的任务。这个队列通过 $evalAsync() 来向其添加任务。asyncQueue 中的任务，可以随时添加。如果当前正处于某一次 $digest，则直接取出执行;否则保留到下一次 $digest 中执行。可以一定程度上减少 $apply() 的调用。</p>
+<p>另外，在一次 $digest 的每次 while 循环开始，AngularJS 会检测一个 <code class="highlighter-rouge">asyncQueue</code> 中是否有待执行的任务。这个队列通过 $evalAsync() 来向其添加任务。asyncQueue 中的任务，可以随时添加。如果当前正处于某一次 $digest，则直接取出执行;否则保留到下一次 $digest 中执行。可以一定程度上减少 $apply() 的调用。</p>
 
 <h2 id="section-3">其他</h2>
 <ul>
@@ -124,7 +124,7 @@
   <li>记得 $destroy</li>
   <li>在 Directive 中尽量直接操作 DOM 样式而不是通过 ngShow/ngHide 等</li>
   <li>减少在 DOM 中直接使用 $filter，而是在 $controller 中先处理好数据，避免了通过 parse DOM 来执行 $filter</li>
-  <li>使用 <a href="https://github.com/ibigbug/ngPerf/">ngPerf</a> 实时监测 AngularJS 应用性能 </li>
+  <li>使用 <a href="https://github.com/ibigbug/ngPerf/">ngPerf</a> 实时监测 AngularJS 应用性能</li>
 </ul>
 
 <h1 id="section-4">总结</h1>

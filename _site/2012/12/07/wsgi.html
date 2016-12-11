@@ -32,15 +32,15 @@
 
 <p>A simple WSGI application(meaning WSGI compliant) may look like this:</p>
 
-<div class="highlight"><pre><code class="language-python" data-lang="python"><span class="k">def</span> <span class="nf">application</span><span class="p">(</span><span class="n">environ</span><span class="p">,</span> <span class="n">start_respone</span><span class="p">):</span>
-    <span class="n">start_respone</span><span class="p">(</span><span class="s">&#39;200 OK&#39;</span><span class="p">,</span> <span class="p">[(</span><span class="s">&#39;Content-Type&#39;</span><span class="p">,</span> <span class="s">&#39;text/plain&#39;</span><span class="p">)])</span>
-    <span class="k">yield</span> <span class="s">&#39;Hello World</span><span class="se">\n</span><span class="s">&#39;</span></code></pre></div>
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="k">def</span> <span class="nf">application</span><span class="p">(</span><span class="n">environ</span><span class="p">,</span> <span class="n">start_respone</span><span class="p">):</span>
+    <span class="n">start_respone</span><span class="p">(</span><span class="s">'200 OK'</span><span class="p">,</span> <span class="p">[(</span><span class="s">'Content-Type'</span><span class="p">,</span> <span class="s">'text/plain'</span><span class="p">)])</span>
+    <span class="k">yield</span> <span class="s">'Hello World</span><span class="se">\n</span><span class="s">'</span></code></pre></figure>
 
-<p>It’s a callable and takes two parameters environ and start_respone. <code>environ</code> is a dictionary containing <a href="http://en.wikipedia.org/wiki/Common_Gateway_Interface#Environment_variables">environment variables in CGI</a>.<code>start_respone</code> is a callable taking two required parameters <code>status(200 OK)</code> and <code>response_headers(['Content-Type', 'text/plain'])</code>.</p>
+<p>It’s a callable and takes two parameters environ and start_respone. <code class="highlighter-rouge">environ</code> is a dictionary containing <a href="http://en.wikipedia.org/wiki/Common_Gateway_Interface#Environment_variables">environment variables in CGI</a>.<code class="highlighter-rouge">start_respone</code> is a callable taking two required parameters <code class="highlighter-rouge">status(200 OK)</code> and <code class="highlighter-rouge">response_headers(['Content-Type', 'text/plain'])</code>.</p>
 
 <p>And a simple WSGI server may look like this:</p>
 
-<div class="highlight"><pre><code class="language-python" data-lang="python"><span class="k">def</span> <span class="nf">call_application</span><span class="p">(</span><span class="n">app</span><span class="p">,</span> <span class="n">environ</span><span class="p">):</span>
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="k">def</span> <span class="nf">call_application</span><span class="p">(</span><span class="n">app</span><span class="p">,</span> <span class="n">environ</span><span class="p">):</span>
     <span class="n">body</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="n">status_headers</span> <span class="o">=</span> <span class="p">[</span><span class="bp">None</span><span class="p">,</span> <span class="bp">None</span><span class="p">]</span>
     <span class="k">def</span> <span class="nf">start_response</span><span class="p">(</span><span class="n">status</span><span class="p">,</span> <span class="n">headers</span><span class="p">):</span>
@@ -51,11 +51,11 @@
         <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">app_iter</span><span class="p">:</span>
             <span class="n">body</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
     <span class="k">finally</span><span class="p">:</span>
-        <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">app_iter</span><span class="p">,</span> <span class="s">&#39;close&#39;</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">app_iter</span><span class="p">,</span> <span class="s">'close'</span><span class="p">):</span>
             <span class="n">app_iter</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
-    <span class="k">return</span> <span class="n">status_headers</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">status_headers</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="s">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">body</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">status_headers</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">status_headers</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="s">''</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">body</span><span class="p">)</span>
 
-<span class="n">status</span><span class="p">,</span> <span class="n">headers</span><span class="p">,</span> <span class="n">body</span> <span class="o">=</span> <span class="n">call_application</span><span class="p">(</span><span class="n">app</span><span class="p">,</span> <span class="p">{</span><span class="o">...</span><span class="n">environ</span><span class="o">...</span><span class="p">})</span></code></pre></div>
+<span class="n">status</span><span class="p">,</span> <span class="n">headers</span><span class="p">,</span> <span class="n">body</span> <span class="o">=</span> <span class="n">call_application</span><span class="p">(</span><span class="n">app</span><span class="p">,</span> <span class="p">{</span><span class="o">...</span><span class="n">environ</span><span class="o">...</span><span class="p">})</span></code></pre></figure>
 
 <p>Both app and server above are WSGI compliant and the two function just explain how the python frameworks work.</p>
 

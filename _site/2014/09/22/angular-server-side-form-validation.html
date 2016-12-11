@@ -39,39 +39,39 @@
 
 <h2 id="section-1">向服务端发送请求</h2>
 
-<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="nx">app</span><span class="p">.</span><span class="nx">factory</span><span class="p">(</span><span class="s1">&#39;service&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">$q</span><span class="p">,</span> <span class="nx">$http</span><span class="p">){</span>
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="nx">app</span><span class="p">.</span><span class="nx">factory</span><span class="p">(</span><span class="s1">'service'</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">$q</span><span class="p">,</span> <span class="nx">$http</span><span class="p">){</span>
   <span class="k">return</span> <span class="p">{</span>
-    <span class="nx">get</span><span class="o">:</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">v</span><span class="p">){</span>
+    <span class="na">get</span><span class="p">:</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">v</span><span class="p">){</span>
       <span class="kd">var</span> <span class="nx">d</span> <span class="o">=</span> <span class="nx">$q</span><span class="p">.</span><span class="nx">defer</span><span class="p">();</span>
-      <span class="nx">$http</span><span class="p">.</span><span class="nx">post</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">,</span> <span class="p">{</span><span class="nx">q</span><span class="o">:</span><span class="nx">v</span><span class="p">}).</span><span class="nx">success</span><span class="p">(</span><span class="nx">d</span><span class="p">.</span><span class="nx">resolve</span><span class="p">).</span><span class="nx">error</span><span class="p">(</span><span class="nx">d</span><span class="p">.</span><span class="nx">reject</span><span class="p">);</span>
+      <span class="nx">$http</span><span class="p">.</span><span class="nx">post</span><span class="p">(</span><span class="s1">'/'</span><span class="p">,</span> <span class="p">{</span><span class="na">q</span><span class="p">:</span><span class="nx">v</span><span class="p">}).</span><span class="nx">success</span><span class="p">(</span><span class="nx">d</span><span class="p">.</span><span class="nx">resolve</span><span class="p">).</span><span class="nx">error</span><span class="p">(</span><span class="nx">d</span><span class="p">.</span><span class="nx">reject</span><span class="p">);</span>
       <span class="k">return</span> <span class="nx">d</span><span class="p">.</span><span class="nx">promise</span><span class="p">;</span>
     <span class="p">}</span>
   <span class="p">};</span>
-<span class="p">})</span></code></pre></div>
+<span class="p">})</span></code></pre></figure>
 
-<p>很简单，提供一个 <code>get()</code> 方法接受要校验的值返回校验结果。</p>
+<p>很简单，提供一个 <code class="highlighter-rouge">get()</code> 方法接受要校验的值返回校验结果。</p>
 
 <h2 id="directive-">表单校验 Directive 实现</h2>
 
 <p>从文档中可以推测出 <em>formCtroller</em> 维护一个 <em>VALIDATOR</em> 队列，要自定义表单校验，只需向该队列中加入一个自定义校验方法即可。</p>
 
-<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="nx">app</span><span class="p">.</span><span class="nx">directive</span><span class="p">(</span><span class="s1">&#39;unique&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">service</span><span class="p">){</span>
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="nx">app</span><span class="p">.</span><span class="nx">directive</span><span class="p">(</span><span class="s1">'unique'</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">service</span><span class="p">){</span>
   <span class="k">return</span> <span class="p">{</span>
-    <span class="nx">require</span><span class="o">:</span> <span class="s1">&#39;ngModel&#39;</span><span class="p">,</span>
-    <span class="nx">link</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">scope</span><span class="p">,</span> <span class="nx">ele</span><span class="p">,</span> <span class="nx">attrs</span><span class="p">,</span> <span class="nx">ctrl</span><span class="p">)</span> <span class="p">{</span>
+    <span class="na">require</span><span class="p">:</span> <span class="s1">'ngModel'</span><span class="p">,</span>
+    <span class="na">link</span><span class="p">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">scope</span><span class="p">,</span> <span class="nx">ele</span><span class="p">,</span> <span class="nx">attrs</span><span class="p">,</span> <span class="nx">ctrl</span><span class="p">)</span> <span class="p">{</span>
       <span class="nx">ctrl</span><span class="p">.</span><span class="nx">$parsers</span><span class="p">.</span><span class="nx">unshift</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">viewValue</span><span class="p">){</span>
         <span class="nx">service</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="nx">viewValue</span><span class="p">).</span><span class="nx">then</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">resp</span><span class="p">){</span>
-          <span class="nx">ctrl</span><span class="p">.</span><span class="nx">$setValidity</span><span class="p">(</span><span class="s1">&#39;unique&#39;</span><span class="p">,</span> <span class="nx">resp</span><span class="p">.</span><span class="nx">data</span><span class="p">);</span>
+          <span class="nx">ctrl</span><span class="p">.</span><span class="nx">$setValidity</span><span class="p">(</span><span class="s1">'unique'</span><span class="p">,</span> <span class="nx">resp</span><span class="p">.</span><span class="nx">data</span><span class="p">);</span>
         <span class="p">});</span>
         <span class="k">return</span> <span class="nx">viewValue</span><span class="p">;</span>
       <span class="p">});</span>
     <span class="p">}</span>
   <span class="p">};</span>
-<span class="p">})</span></code></pre></div>
+<span class="p">})</span></code></pre></figure>
 
-<p>与文档中给出的实现差别不大，但是有个<strong>坑</strong>。其实也不算坑了，所谓的坑无非是经验或者能力不足。就是由于网络请求是异步的，所以返回 <code>viewValue</code> 一定要放在回调函数的外面！否则会断掉 <code>ngModel</code> 的绑定。也就是说自定义的 validator 必须要返回 <code>viewValue</code> 值。而回调函数虽然用 Promise 对象封装成了链式写法但终究还是异步的，想要在里面直接返回数据给外部依旧是天方夜谭。</p>
+<p>与文档中给出的实现差别不大，但是有个<strong>坑</strong>。其实也不算坑了，所谓的坑无非是经验或者能力不足。就是由于网络请求是异步的，所以返回 <code class="highlighter-rouge">viewValue</code> 一定要放在回调函数的外面！否则会断掉 <code class="highlighter-rouge">ngModel</code> 的绑定。也就是说自定义的 validator 必须要返回 <code class="highlighter-rouge">viewValue</code> 值。而回调函数虽然用 Promise 对象封装成了链式写法但终究还是异步的，想要在里面直接返回数据给外部依旧是天方夜谭。</p>
 
-<p>当然还有一种写法就是在回调里面根据 <code>attrs.ngModel</code> 给 <code>$scope</code> 赋值，可以符合官方文档给出的自定义校验的逻辑(成功返回 viewVale，否则返回 undefined)，但是感觉违背了 validator-chain 的意思，总觉得不够优雅。</p>
+<p>当然还有一种写法就是在回调里面根据 <code class="highlighter-rouge">attrs.ngModel</code> 给 <code class="highlighter-rouge">$scope</code> 赋值，可以符合官方文档给出的自定义校验的逻辑(成功返回 viewVale，否则返回 undefined)，但是感觉违背了 validator-chain 的意思，总觉得不够优雅。</p>
 
 <p>目前这种写法还没遇到什么问题，如果以后发现问题再来改进看看有没有更好的写法。</p>
 </div><div class="comment-area">

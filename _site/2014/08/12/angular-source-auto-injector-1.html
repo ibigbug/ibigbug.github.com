@@ -30,7 +30,7 @@ AngularJS 中的 $injector 机制
 
 <p>最近由于工作需要用到 AngularJS，所以干脆一边学一边用一边读读源码好了。也算不上是剖析，看到哪里写到哪里。</p>
 
-<p>这一篇主要是 AngularJS 中的依赖注入的实现。源码在 <code>auto/injector.js</code>。</p>
+<p>这一篇主要是 AngularJS 中的依赖注入的实现。源码在 <code class="highlighter-rouge">auto/injector.js</code>。</p>
 
 <p>依赖注入(Dependency Injection) 是一种软件设计模式，用来处理组件如何维护他们的依赖关系。</p>
 
@@ -41,7 +41,7 @@ AngularJS 中的 $injector 机制
 <p>有三种方法，可以实现组件(对象或者函数) 维护他们所需的依赖：</p>
 
 <ol>
-  <li>组件内部可以创建依赖，典型的直接调用 <code>new</code> 来生成</li>
+  <li>组件内部可以创建依赖，典型的直接调用 <code class="highlighter-rouge">new</code> 来生成</li>
   <li>组件可以从全局变量中查找依赖</li>
   <li>组件可以在需要依赖的地方将依赖传入</li>
 </ol>
@@ -52,24 +52,24 @@ AngularJS 中的 $injector 机制
 
 <h3 id="section-1">直接上代码</h3>
 
-<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="cm">/* 这几个正则表达式很好懂。 */</span>
-<span class="kd">var</span> <span class="nx">FN_ARGS</span> <span class="o">=</span> <span class="sr">/^function\s*[^\(]*\(\s*([^\)]*)\)/m</span><span class="p">;</span>
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="cm">/* 这几个正则表达式很好懂。 */</span>
+<span class="kd">var</span> <span class="nx">FN_ARGS</span> <span class="o">=</span> <span class="sr">/^function</span><span class="se">\s</span><span class="sr">*</span><span class="se">[^\(]</span><span class="sr">*</span><span class="se">\(\s</span><span class="sr">*</span><span class="se">([^\)]</span><span class="sr">*</span><span class="se">)\)</span><span class="sr">/m</span><span class="p">;</span>
 <span class="kd">var</span> <span class="nx">FN_ARG_SPLIT</span> <span class="o">=</span> <span class="sr">/,/</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">FN_ARG</span> <span class="o">=</span> <span class="sr">/^\s*(_?)(\S+?)\1\s*$/</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">STRIP_COMMENTS</span> <span class="o">=</span> <span class="sr">/((\/\/.*$)|(\/\*[\s\S]*?\*\/))/mg</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">$injectorMinErr</span> <span class="o">=</span> <span class="nx">minErr</span><span class="p">(</span><span class="s1">&#39;$injector&#39;</span><span class="p">);</span>  <span class="c1">// 不重要</span>
+<span class="kd">var</span> <span class="nx">FN_ARG</span> <span class="o">=</span> <span class="sr">/^</span><span class="se">\s</span><span class="sr">*</span><span class="se">(</span><span class="sr">_</span><span class="se">?)(\S</span><span class="sr">+</span><span class="se">?)\1\s</span><span class="sr">*$/</span><span class="p">;</span>
+<span class="kd">var</span> <span class="nx">STRIP_COMMENTS</span> <span class="o">=</span> <span class="sr">/</span><span class="se">((\/\/</span><span class="sr">.*$</span><span class="se">)</span><span class="sr">|</span><span class="se">(\/\*[\s\S]</span><span class="sr">*</span><span class="se">?\*\/))</span><span class="sr">/mg</span><span class="p">;</span>
+<span class="kd">var</span> <span class="nx">$injectorMinErr</span> <span class="o">=</span> <span class="nx">minErr</span><span class="p">(</span><span class="s1">'$injector'</span><span class="p">);</span>  <span class="c1">// 不重要</span>
 
 <span class="kd">function</span> <span class="nx">anonFn</span><span class="p">(</span><span class="nx">fn</span><span class="p">)</span> <span class="p">{</span>
   <span class="cm">/* 这个函数返回的是函数所带的形参列表 */</span>
 
   <span class="c1">// For anonymous functions, showing at the very least the function signature can help in</span>
   <span class="c1">// debugging.</span>
-  <span class="kd">var</span> <span class="nx">fnText</span> <span class="o">=</span> <span class="nx">fn</span><span class="p">.</span><span class="nx">toString</span><span class="p">().</span><span class="nx">replace</span><span class="p">(</span><span class="nx">STRIP_COMMENTS</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">),</span>
+  <span class="kd">var</span> <span class="nx">fnText</span> <span class="o">=</span> <span class="nx">fn</span><span class="p">.</span><span class="nx">toString</span><span class="p">().</span><span class="nx">replace</span><span class="p">(</span><span class="nx">STRIP_COMMENTS</span><span class="p">,</span> <span class="s1">''</span><span class="p">),</span>
       <span class="nx">args</span> <span class="o">=</span> <span class="nx">fnText</span><span class="p">.</span><span class="nx">match</span><span class="p">(</span><span class="nx">FN_ARGS</span><span class="p">);</span>
   <span class="k">if</span> <span class="p">(</span><span class="nx">args</span><span class="p">)</span> <span class="p">{</span>
-    <span class="k">return</span> <span class="s1">&#39;function(&#39;</span> <span class="o">+</span> <span class="p">(</span><span class="nx">args</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">||</span> <span class="s1">&#39;&#39;</span><span class="p">).</span><span class="nx">replace</span><span class="p">(</span><span class="sr">/[\s\r\n]+/</span><span class="p">,</span> <span class="s1">&#39; &#39;</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;)&#39;</span><span class="p">;</span>
+    <span class="k">return</span> <span class="s1">'function('</span> <span class="o">+</span> <span class="p">(</span><span class="nx">args</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">||</span> <span class="s1">''</span><span class="p">).</span><span class="nx">replace</span><span class="p">(</span><span class="sr">/</span><span class="se">[\s\r\n]</span><span class="sr">+/</span><span class="p">,</span> <span class="s1">' '</span><span class="p">)</span> <span class="o">+</span> <span class="s1">')'</span><span class="p">;</span>
   <span class="p">}</span>
-  <span class="k">return</span> <span class="s1">&#39;fn&#39;</span><span class="p">;</span>
+  <span class="k">return</span> <span class="s1">'fn'</span><span class="p">;</span>
 <span class="p">}</span>
 
 <span class="kd">function</span> <span class="nx">annotate</span><span class="p">(</span><span class="nx">fn</span><span class="p">,</span> <span class="nx">strictDi</span><span class="p">,</span> <span class="nx">name</span><span class="p">)</span> <span class="p">{</span>
@@ -80,7 +80,7 @@ AngularJS 中的 $injector 机制
       <span class="nx">argDecl</span><span class="p">,</span>
       <span class="nx">last</span><span class="p">;</span>
 
-  <span class="k">if</span> <span class="p">(</span><span class="k">typeof</span> <span class="nx">fn</span> <span class="o">===</span> <span class="s1">&#39;function&#39;</span><span class="p">)</span> <span class="p">{</span> 
+  <span class="k">if</span> <span class="p">(</span><span class="k">typeof</span> <span class="nx">fn</span> <span class="o">===</span> <span class="s1">'function'</span><span class="p">)</span> <span class="p">{</span> 
     <span class="cm">/* 对应 function($scope, $http, ...) 形式的依赖声明 */</span>
     <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="p">(</span><span class="nx">$inject</span> <span class="o">=</span> <span class="nx">fn</span><span class="p">.</span><span class="nx">$inject</span><span class="p">))</span> <span class="p">{</span>  <span class="c1">// 确保 fn 尚未被注入</span>
       <span class="nx">$inject</span> <span class="o">=</span> <span class="p">[];</span>
@@ -90,11 +90,11 @@ AngularJS 中的 $injector 机制
             <span class="nx">name</span> <span class="o">=</span> <span class="nx">fn</span><span class="p">.</span><span class="nx">name</span> <span class="o">||</span> <span class="nx">anonFn</span><span class="p">(</span><span class="nx">fn</span><span class="p">);</span>
           <span class="p">}</span>
           <span class="cm">/* 直接抛异常，因为在 strict-di 模式下，是不允许这种方式的依赖声明的，会被 JS 压缩或者混淆工具破坏 */</span>
-          <span class="k">throw</span> <span class="nx">$injectorMinErr</span><span class="p">(</span><span class="s1">&#39;strictdi&#39;</span><span class="p">,</span>
-            <span class="s1">&#39;{0} is not using explicit annotation and cannot be invoked in strict mode&#39;</span><span class="p">,</span> <span class="nx">name</span><span class="p">);</span>
+          <span class="k">throw</span> <span class="nx">$injectorMinErr</span><span class="p">(</span><span class="s1">'strictdi'</span><span class="p">,</span>
+            <span class="s1">'{0} is not using explicit annotation and cannot be invoked in strict mode'</span><span class="p">,</span> <span class="nx">name</span><span class="p">);</span>
         <span class="p">}</span>
         <span class="c1">// 取出函数定义</span>
-        <span class="nx">fnText</span> <span class="o">=</span> <span class="nx">fn</span><span class="p">.</span><span class="nx">toString</span><span class="p">().</span><span class="nx">replace</span><span class="p">(</span><span class="nx">STRIP_COMMENTS</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">);</span>
+        <span class="nx">fnText</span> <span class="o">=</span> <span class="nx">fn</span><span class="p">.</span><span class="nx">toString</span><span class="p">().</span><span class="nx">replace</span><span class="p">(</span><span class="nx">STRIP_COMMENTS</span><span class="p">,</span> <span class="s1">''</span><span class="p">);</span>
         <span class="c1">// 取出函数的形参声明</span>
         <span class="nx">argDecl</span> <span class="o">=</span> <span class="nx">fnText</span><span class="p">.</span><span class="nx">match</span><span class="p">(</span><span class="nx">FN_ARGS</span><span class="p">);</span>
         <span class="c1">// 去除每个形参的第一个 `_`</span>
@@ -111,20 +111,20 @@ AngularJS 中的 $injector 机制
       <span class="c1">// 这个分支实际上就是将 function Controller($scope, $http, ...) 这种形式的声明的函数的形参列表作为函数的依赖，保存在 Controller.$inject 数组中，作为 Controller 被 `annotate` 过的证据。</span>
     <span class="p">}</span>
   <span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">isArray</span><span class="p">(</span><span class="nx">fn</span><span class="p">))</span> <span class="p">{</span>
-    <span class="cm">/* 这种对应 [&#39;$scope&#39;, &#39;$http&#39;, function(scope, http) {}] */</span>
+    <span class="cm">/* 这种对应 ['$scope', '$http', function(scope, http) {}] */</span>
     <span class="nx">last</span> <span class="o">=</span> <span class="nx">fn</span><span class="p">.</span><span class="nx">length</span> <span class="o">-</span> <span class="mi">1</span><span class="p">;</span>
-    <span class="nx">assertArgFn</span><span class="p">(</span><span class="nx">fn</span><span class="p">[</span><span class="nx">last</span><span class="p">],</span> <span class="s1">&#39;fn&#39;</span><span class="p">);</span>  <span class="c1">// 确保最后一个参数是个 `function`</span>
+    <span class="nx">assertArgFn</span><span class="p">(</span><span class="nx">fn</span><span class="p">[</span><span class="nx">last</span><span class="p">],</span> <span class="s1">'fn'</span><span class="p">);</span>  <span class="c1">// 确保最后一个参数是个 `function`</span>
     <span class="c1">// 将最后一个参数移除之后，剩下的就是依赖声明。</span>
     <span class="nx">$inject</span> <span class="o">=</span> <span class="nx">fn</span><span class="p">.</span><span class="nx">slice</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nx">last</span><span class="p">);</span>
   <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
-    <span class="c1">// 暂时无法得到 $inject，等待 fn.$inject = [&#39;$scope&#39;, &#39;$http&#39;] 这种声明</span>
-    <span class="nx">assertArgFn</span><span class="p">(</span><span class="nx">fn</span><span class="p">,</span> <span class="s1">&#39;fn&#39;</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
+    <span class="c1">// 暂时无法得到 $inject，等待 fn.$inject = ['$scope', '$http'] 这种声明</span>
+    <span class="nx">assertArgFn</span><span class="p">(</span><span class="nx">fn</span><span class="p">,</span> <span class="s1">'fn'</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
   <span class="p">}</span>
   <span class="k">return</span> <span class="nx">$inject</span><span class="p">;</span>
-<span class="p">}</span></code></pre></div>
+<span class="p">}</span></code></pre></figure>
 
 <h3 id="section-2">总结</h3>
-<p>这里只是 <code>$inject</code> 的准备工作，主要工作还在下面的 <code>createInjector</code>。明天继续。</p>
+<p>这里只是 <code class="highlighter-rouge">$inject</code> 的准备工作，主要工作还在下面的 <code class="highlighter-rouge">createInjector</code>。明天继续。</p>
 </div><div class="comment-area">
    <div id="disqus_thread"></div>
    <script type="text/javascript">

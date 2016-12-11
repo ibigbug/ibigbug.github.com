@@ -26,18 +26,18 @@
 <li><a href="/feed.xml" class="page-link">Feed</a></li>
 </ul></div></div></div><div class="main-wrapper"><div class="inner-wrapper"><div class="logo"><a href="/">8D is Here</a></div><div class="page-meta">
 AngularJS 中的 $injector 机制
-</div><div class="main-area"><div class="post-entry"><h1 class="entry-title">AngularJS 源码剖析：injector.js(下)</h1><div class="entry-meta"><time class="updated">Aug 14, 2014</time></div><div class="entry-content"><p><a href="/2014/08/12/angular-source-auto-injector-1.html">上一篇文章</a>解析了 Angular 如何分析依赖注入。这篇分析如何根据分析好的依赖注入创建<code>injector</code>。</p>
+</div><div class="main-area"><div class="post-entry"><h1 class="entry-title">AngularJS 源码剖析：injector.js(下)</h1><div class="entry-meta"><time class="updated">Aug 14, 2014</time></div><div class="entry-content"><p><a href="/2014/08/12/angular-source-auto-injector-1.html">上一篇文章</a>解析了 Angular 如何分析依赖注入。这篇分析如何根据分析好的依赖注入创建<code class="highlighter-rouge">injector</code>。</p>
 
-<h3 id="injector">什么是 <code>injector</code></h3>
+<h3 id="injector">什么是 <code class="highlighter-rouge">injector</code></h3>
 
-<p>很简单，这就是 <code>injector</code>：</p>
+<p>很简单，这就是 <code class="highlighter-rouge">injector</code>：</p>
 
 <p><img src="http://yuwei-cdn.b0.upaiyun.com/blog/images/angular1.png" alt="angular injector" /></p>
 
-<p>一个 <code>injector</code> 以下几个方法：</p>
+<p>一个 <code class="highlighter-rouge">injector</code> 以下几个方法：</p>
 
 <ul>
-  <li>invoke: 将传入的 <code>fn</code> 进行依赖分析并调用 <code>get</code> 方法根据依赖名(如，$scope)获取对应的工厂方法</li>
+  <li>invoke: 将传入的 <code class="highlighter-rouge">fn</code> 进行依赖分析并调用 <code class="highlighter-rouge">get</code> 方法根据依赖名(如，$scope)获取对应的工厂方法</li>
   <li>instantiate: 实例化一个工厂函数</li>
   <li>get：根据依赖字符串获取对应的实现</li>
   <li>annotate: 依赖分析</li>
@@ -46,7 +46,7 @@ AngularJS 中的 $injector 机制
 
 <h3 id="createinjector">createInjector</h3>
 
-<p>根据传入的 <code>modulesToLoad</code> 对象，创建一个 <code>injector</code>。在这个函数里面，声明了几个私有方法：</p>
+<p>根据传入的 <code class="highlighter-rouge">modulesToLoad</code> 对象，创建一个 <code class="highlighter-rouge">injector</code>。在这个函数里面，声明了几个私有方法：</p>
 
 <ul>
   <li>provider</li>
@@ -56,20 +56,20 @@ AngularJS 中的 $injector 机制
   <li>constant</li>
 </ul>
 
-<p>可以看到，这就是我们时常使用的几个方法。其中比较重要的是 <code>provider()</code> 这一个。这个方法定义两个形参 <code>name</code> 和 <code>provider_</code>。根据传入的 <code>provider_</code> 在内部调用 <code>instantiate()</code> 方法，进行相关的实例化工作。最后在 <code>providerCache</code> 中创建 <code>name</code> -&gt; <code>provider_</code> 键值对进行保存。</p>
+<p>可以看到，这就是我们时常使用的几个方法。其中比较重要的是 <code class="highlighter-rouge">provider()</code> 这一个。这个方法定义两个形参 <code class="highlighter-rouge">name</code> 和 <code class="highlighter-rouge">provider_</code>。根据传入的 <code class="highlighter-rouge">provider_</code> 在内部调用 <code class="highlighter-rouge">instantiate()</code> 方法，进行相关的实例化工作。最后在 <code class="highlighter-rouge">providerCache</code> 中创建 <code class="highlighter-rouge">name</code> -&gt; <code class="highlighter-rouge">provider_</code> 键值对进行保存。</p>
 
-<p>在源码中可以看到，如果 <code>provider_</code> 没有 <code>$get</code> 属性，直接抛出异常。</p>
+<p>在源码中可以看到，如果 <code class="highlighter-rouge">provider_</code> 没有 <code class="highlighter-rouge">$get</code> 属性，直接抛出异常。</p>
 
-<p>而 <code>factory()</code> 方法就是将传入的工厂函数封装成一个 <code>provider_</code> 传给 <code>provider()</code> 方法</p>
+<p>而 <code class="highlighter-rouge">factory()</code> 方法就是将传入的工厂函数封装成一个 <code class="highlighter-rouge">provider_</code> 传给 <code class="highlighter-rouge">provider()</code> 方法</p>
 
 <h3 id="bootstrap">bootstrap</h3>
 
 <p>以上就是 Angular 内部核心的依赖分析和依赖注入过程。由于代码比较复杂，就不逐行分析了。
-下面看下 Angular 是如何启动进行 <code>bootstrap()</code> 的。</p>
+下面看下 Angular 是如何启动进行 <code class="highlighter-rouge">bootstrap()</code> 的。</p>
 
-<p>在 Angular 源码的最后几行可以看到，在进行一些预备工作之后，会调用 <code>angularInit(document, bootstrap)</code> 方法对 Angular 进行初始化。<code>angularInit()</code> 内部会遍历 <code>document</code>，找到启动 <code>bootstrap()</code> 方法的标识(<code>[names = ['ng:app', 'ng-app', 'x-ng-app', 'data-ng-app']]</code>)。如果找到对应的 element，对其进行 <code>bootstrap()</code>，并传入 <code>module</code> name。</p>
+<p>在 Angular 源码的最后几行可以看到，在进行一些预备工作之后，会调用 <code class="highlighter-rouge">angularInit(document, bootstrap)</code> 方法对 Angular 进行初始化。<code class="highlighter-rouge">angularInit()</code> 内部会遍历 <code class="highlighter-rouge">document</code>，找到启动 <code class="highlighter-rouge">bootstrap()</code> 方法的标识(<code class="highlighter-rouge">[names = ['ng:app', 'ng-app', 'x-ng-app', 'data-ng-app']]</code>)。如果找到对应的 element，对其进行 <code class="highlighter-rouge">bootstrap()</code>，并传入 <code class="highlighter-rouge">module</code> name。</p>
 
-<p>再来看 <code>bootstrap()</code> 方法。<code>bootstrap()</code> 方法内部首先初始化一个 <code>injector</code>，依赖 <code>$provide</code> 和 <code>ng</code>。然后再对这个 <code>injector</code> 进行依赖注入。注入以下几个依赖：</p>
+<p>再来看 <code class="highlighter-rouge">bootstrap()</code> 方法。<code class="highlighter-rouge">bootstrap()</code> 方法内部首先初始化一个 <code class="highlighter-rouge">injector</code>，依赖 <code class="highlighter-rouge">$provide</code> 和 <code class="highlighter-rouge">ng</code>。然后再对这个 <code class="highlighter-rouge">injector</code> 进行依赖注入。注入以下几个依赖：</p>
 
 <ul>
   <li>$rootScope</li>
@@ -79,7 +79,7 @@ AngularJS 中的 $injector 机制
   <li>$animate</li>
 </ul>
 
-<p>之后在 <code>$rootScope</code> 内对 <code>element</code> 和 <code>scope</code> 进行 <code>compile()</code>。至此 Angular 启动完成。</p>
+<p>之后在 <code class="highlighter-rouge">$rootScope</code> 内对 <code class="highlighter-rouge">element</code> 和 <code class="highlighter-rouge">scope</code> 进行 <code class="highlighter-rouge">compile()</code>。至此 Angular 启动完成。</p>
 
 <h3 id="section">总结</h3>
 
@@ -87,7 +87,7 @@ AngularJS 中的 $injector 机制
 
 <ol>
   <li>遍历 document，寻找启动指令</li>
-  <li>找到之后进行 <code>bootstrap()</code>，创建 <code>$rootScope</code> 和相应的 <code>injector</code></li>
+  <li>找到之后进行 <code class="highlighter-rouge">bootstrap()</code>，创建 <code class="highlighter-rouge">$rootScope</code> 和相应的 <code class="highlighter-rouge">injector</code></li>
   <li>执行其他工作(后面再进行分析)</li>
 </ol>
 </div><div class="comment-area">
