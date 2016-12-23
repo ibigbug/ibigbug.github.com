@@ -8,7 +8,7 @@ permalink: /about/
 
 ## About
 
-Hi! My name is **Yuwei Ba**. My friends also all me **8D** (sounds like *buddy* in Chinese).
+Hi! My name is **Yuwei Ba**. My friends also call me **8D** (sounds like *buddy* in Chinese).
 
 I love computer and programming and study them on my own.
 
@@ -23,14 +23,17 @@ I believe in that coding makes life easier and better. I write something I think
 I am familiar with:
 
 * Python
+* Golang
+* NodeJS
+* HTTP
 * Javascript
-* Java
 * CSS / HTML
 * Unix
 
 I also know something about:
 
 * C
+* Java
 * Data Structures
 * Programming Languages
 * Objective-C
