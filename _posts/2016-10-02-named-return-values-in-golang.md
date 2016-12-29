@@ -26,7 +26,7 @@ func main() {
 }
 {% endhighlight %}
 
-By leaving out the variable `x, y`in the `return` expression, we have created a shorter function which already permit precise variable name in golang. Fairly simple and convenient. However, what I'm talking about today are some common pitfalls when using this handy feature.
+By leaving out the variable `x, y`in the `return` expression, we have created a shorter function which already permit precise variable naming in golang. Fairly simple and convenient. However, what I'm talking about today are some common pitfalls when using this handy feature.
 
 # Pitfall 1.
 
@@ -161,6 +161,6 @@ Now, it will end up with the right outcome.
 # Conclusion
 
 1. Beware of variable shadow and binding within a golang range loop
-2. Double check the named return value after writing a range loop
+2. Pay attention to the named return value after writing a range loop
 
-Hope my little reflection may help some of you Gophers. :)
+Hope this note may help some of you Gofers. :)
