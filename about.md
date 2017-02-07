@@ -10,7 +10,7 @@ permalink: /about/
 
 Hi! My name is **Yuwei Ba**. My friends also call me **8D** (sounds like *buddy* in Chinese).
 
-I love computer and programming and study them on my own.
+I love computer and programming and learn them on my own.
 
 Life Lover.
 
@@ -69,7 +69,3 @@ My first internship.
 * Major: Electrical Engineering
 * Dates: Sep. 2010 - June 2014
 * Location: Wuhan, China
-
-## Travel
-
-* Beautiful World: 736272000 - Now
