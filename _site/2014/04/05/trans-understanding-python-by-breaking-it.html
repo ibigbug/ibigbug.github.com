@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><title>Understanding Python by breaking it — 8D is Here</title><link rel="prev" href="http://blog.xiaoba.me"><link rel="stylesheet" href="/css/site.css"><meta name="viewport" content="width=device-width"><meta name="author" content="Yuwei Ba"><meta name="keywords" content="Javascript, Python, Life, Thoughts"><meta name="description" content="Programming makes life easier and better. Life Lover."><link rel="icon" href="/favicon.png" type="image/png"><link rel="canonical" href="http://blog.xiaoba.me/2014/04/05/trans-understanding-python-by-breaking-it.html"><meta property="twitter:card" content="summary"><meta property="twitter:site" content="@ibigbug"><meta property="twitter:creator" content="@ibigbug"><meta property="twitter:title" content="Understanding Python by breaking it — 8D is Here"><meta property="twitter:description" content=" Programming makes life easier and better. Life Lover. "><meta property="twitter:url" content="http://blog.xiaoba.me/2014/04/05/trans-understanding-python-by-breaking-it.html"><meta property="twitter:domain" content="8D is Here">
+<!DOCTYPE html><html lang="en"><head><title>Understanding Python by breaking it — 8D is Here</title><link rel="prev" href="http://localhost:4000"><link rel="stylesheet" href="/css/site.css"><meta name="viewport" content="width=device-width"><meta name="author" content="Yuwei Ba"><meta name="keywords" content="Javascript, Python, Life, Thoughts"><meta name="description" content="Programming makes life easier and better. Life Lover."><link rel="icon" href="/favicon.png" type="image/png"><link rel="canonical" href="http://localhost:4000/2014/04/05/trans-understanding-python-by-breaking-it.html"><meta property="twitter:card" content="summary"><meta property="twitter:site" content="@ibigbug"><meta property="twitter:creator" content="@ibigbug"><meta property="twitter:title" content="Understanding Python by breaking it — 8D is Here"><meta property="twitter:description" content=" Programming makes life easier and better. Life Lover. "><meta property="twitter:url" content="http://localhost:4000/2014/04/05/trans-understanding-python-by-breaking-it.html"><meta property="twitter:domain" content="8D is Here">
 <script>
  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
@@ -160,7 +160,7 @@
 <span class="o">&gt;&gt;&gt;</span> <span class="nb">id</span><span class="p">(</span><span class="n">p</span><span class="p">)</span> <span class="o">==</span> <span class="nb">id</span><span class="p">(</span><span class="n">p2</span><span class="p">)</span>
 <span class="bp">True</span>  <span class="c"># the two variables are references to the same string object!</span></code></pre></figure>
 
-<h1 id="section">破坏引用计数</h1>
+<h1 id="破坏引用计数">破坏引用计数</h1>
 
 <p>到目前为止，我们还知识读取<code class="highlighter-rouge">ob_refcnt</code>的值。如果我们改变它会怎么样？   我们可以改写<code class="highlighter-rouge">ob_refcnt</code>强制提前进行垃圾回收！</p>
 
@@ -179,7 +179,7 @@
 
 <p>当然：这种写法会使解释器进入不稳定的状态并且很可能导致崩溃！</p>
 
-<h1 id="tuple">干扰 <code class="highlighter-rouge">tuple</code></h1>
+<h1 id="干扰-tuple">干扰 <code class="highlighter-rouge">tuple</code></h1>
 
 <p>干扰<code class="highlighter-rouge">tuple</code>是很有意思并且比较容易的事情。文档里面讲「<code class="highlighter-rouge">tuple</code>是一类不可变的序列」：我们来试着改变它！</p>
 
@@ -266,11 +266,11 @@
     <span class="n">src_addr</span> <span class="o">=</span> <span class="nb">id</span><span class="p">(</span><span class="n">src</span><span class="p">)</span> <span class="o">+</span> <span class="n">OFFSET</span>
     <span class="n">ctypes</span><span class="o">.</span><span class="n">memmove</span><span class="p">(</span><span class="n">dst_addr</span><span class="p">,</span> <span class="n">src_addr</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">src</span><span class="p">)</span> <span class="o">*</span> <span class="n">PTR_SIZE</span><span class="p">)</span></code></pre></figure>
 
-<h1 id="section-1">深入函数和编码对象</h1>
+<h1 id="深入函数和编码对象">深入函数和编码对象</h1>
 
 <p>现在我们可以修改元组了，我们来看下修改函数和编码对象中的一些重要元组有什么影响</p>
 
-<h2 id="code-object">编码对象（Code object）</h2>
+<h2 id="编码对象code-object">编码对象（Code object）</h2>
 
 <p>文档中是这样解释的：「Code objects 表示的是编译成的可执行的 Python 代码」  在Python 2中，编码对象存在一个函数的<code class="highlighter-rouge">func_code</code>变量中。</p>
 
@@ -359,7 +359,7 @@
          <span class="mi">0</span> <span class="n">LOAD_CONST</span>               <span class="mi">0</span> <span class="p">([</span><span class="mi">2</span><span class="p">])</span>
          <span class="mi">3</span> <span class="n">RETURN_VALUE</span></code></pre></figure>
 
-<h1 id="section-2">函数闭包</h1>
+<h1 id="函数闭包">函数闭包</h1>
 
 <p>最后，我们来玩一下闭包！一个函数生成另外的函数的时候就会出现闭包。<a href="http://en.wikipedia.org/wiki/Closure_%28computer_programming%29">维基的解释</a></p>
 
@@ -396,7 +396,7 @@
 
 <p>就这么多！</p>
 
-<h1 id="section-3">总结</h1>
+<h1 id="总结">总结</h1>
 
 <p>我非常喜欢打乱Python（不止一次）并且我希望你也一样。我认为这是一个可以快速方便地了解Python内部结构和它们工作方式的途径。</p>
 

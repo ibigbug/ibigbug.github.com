@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><title>Understanding Asynchronous IO with Python 3.4's Asyncio and Node.js — 8D is Here</title><link rel="prev" href="http://blog.xiaoba.me"><link rel="stylesheet" href="/css/site.css"><meta name="viewport" content="width=device-width"><meta name="author" content="Yuwei Ba"><meta name="keywords" content="Javascript, Python, Life, Thoughts"><meta name="description" content="Programming makes life easier and better. Life Lover."><link rel="icon" href="/favicon.png" type="image/png"><link rel="canonical" href="http://blog.xiaoba.me/2014/10/17/trans-understanding-asynchronous-io-with-python-asyncio-and-nodejs.html"><meta property="twitter:card" content="summary"><meta property="twitter:site" content="@ibigbug"><meta property="twitter:creator" content="@ibigbug"><meta property="twitter:title" content="Understanding Asynchronous IO with Python 3.4's Asyncio and Node.js — 8D is Here"><meta property="twitter:description" content=" Programming makes life easier and better. Life Lover. "><meta property="twitter:url" content="http://blog.xiaoba.me/2014/10/17/trans-understanding-asynchronous-io-with-python-asyncio-and-nodejs.html"><meta property="twitter:domain" content="8D is Here">
+<!DOCTYPE html><html lang="en"><head><title>Understanding Asynchronous IO with Python 3.4's Asyncio and Node.js — 8D is Here</title><link rel="prev" href="http://localhost:4000"><link rel="stylesheet" href="/css/site.css"><meta name="viewport" content="width=device-width"><meta name="author" content="Yuwei Ba"><meta name="keywords" content="Javascript, Python, Life, Thoughts"><meta name="description" content="Programming makes life easier and better. Life Lover."><link rel="icon" href="/favicon.png" type="image/png"><link rel="canonical" href="http://localhost:4000/2014/10/17/trans-understanding-asynchronous-io-with-python-asyncio-and-nodejs.html"><meta property="twitter:card" content="summary"><meta property="twitter:site" content="@ibigbug"><meta property="twitter:creator" content="@ibigbug"><meta property="twitter:title" content="Understanding Asynchronous IO with Python 3.4's Asyncio and Node.js — 8D is Here"><meta property="twitter:description" content=" Programming makes life easier and better. Life Lover. "><meta property="twitter:url" content="http://localhost:4000/2014/10/17/trans-understanding-asynchronous-io-with-python-asyncio-and-nodejs.html"><meta property="twitter:domain" content="8D is Here">
 <script>
  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
@@ -39,7 +39,7 @@
   <p>这是一篇译文: <a href="http://sahandsaba.com/understanding-asyncio-node-js-python-3-4.html?utm_source=Python+Weekly+Newsletter&amp;utm_campaign=9117ced2ad-Python_Weekly_Issue_161_October_16_2014&amp;utm_medium=email&amp;utm_term=0_9e26887fc5-9117ced2ad-312705645">原文</a></p>
 </blockquote>
 
-<h2 id="section">介绍</h2>
+<h2 id="介绍">介绍</h2>
 
 <p>今年夏天我都在开发运行于 Node.js 的 Web 平台。这是我第一次全职在写 Node.js，然后几周之后问题明显的暴露出来，就是好多开发者，包括我，缺乏对 Node.js 中异步特性的清晰认识以及在底层是如何实现的。因为我确信要想高效使用一个平台需要清楚的理解它是如何工作的，所以我决定深入研究一下。这份好奇心让我开始研究其他语言中的异步特性是如何实现的，尤其是 Python，是我每次学习和试验用的语言。这让我去研究 Python 3.4 中的异步 IO 库 <code class="highlighter-rouge">asyncio</code> ，跟我之前研究的 coroutines (看我之前的文章 <a href="http://sahandsaba.com/combinatorial-generation-using-coroutines-in-python.html">combinatorial generation using coroutines in Python</a>)。这篇文章探讨了一些我在学习这块主题时候遇到的问题和解答，我希望能够帮助大家理解和回答一些问题。</p>
 
@@ -47,7 +47,7 @@
 
 <p>在下面的一些例子中，我决定几乎完全忽略了错误和异常处理。这主要是为了简单起见，但是需要注意的是适当的异常处理在下面的编码设计方式中也很重要。我会在最后用一些例子展示 Python 3.4 的 <code class="highlighter-rouge">asyncio</code> 模块中如果对异常进行处理。</p>
 
-<h2 id="getting-sarted--hello-world">Getting Sarted: 重访 Hello World</h2>
+<h2 id="getting-sarted-重访-hello-world">Getting Sarted: 重访 Hello World</h2>
 
 <p>让我们从编写一个解决非常简单的问题的代码开始。我们从头到尾都将以这个问题和它的细微变化来展示概念。</p>
 
@@ -141,7 +141,7 @@ fib<span class="o">(</span>37<span class="o">)</span> <span class="o">=</span> 2
 
 <p>在 Node.js 中，当计算 Fibbonacci 数时候，打印 「Hello World!」消息就停止了。让我们看看这是怎么回事。</p>
 
-<h2 id="section-1">事件循环和线程</h2>
+<h2 id="事件循环和线程">事件循环和线程</h2>
 
 <p>为了理解前面部分中出现的两种解决方案之间的区别，我们需要简单的了解一下线程和事件循环。首先，我们从线程开始。线程被认为是一个单一的操作序列和 CPU 的执行它们的当前状态(CPU 状态指的是例如寄存器中的值，特别是下一条指令的地址)。</p>
 
@@ -208,7 +208,7 @@ fib<span class="o">(</span>37<span class="o">)</span> <span class="o">=</span> 2
 
 <p>正如我们所料，由于我们使用了单线程，程序表现的跟 Node.js 一样，就是说，计算操作阻塞了打印操作。好的，优雅! 但是我们的解决是针对某种情形的硬编码。下面的部分，我们会关注通用化我们的事件循环代码来让它更强大和容易编写，首先应用回调，然后应用协程。</p>
 
-<h2 id="section-2">基于回调的事件循环</h2>
+<h2 id="基于回调的事件循环">基于回调的事件循环</h2>
 
 <p>对于前面部分的事件循环的一个自然通用概括就是支持通用事件处理。使用回调可以相对容易的得到:对于每种事件类型(在我们的例子中，我们只有两种，<code class="highlighter-rouge">stdin</code>上面的输入和计时器计时)，让用户可以添加任意的方法作为事件处理。代码很简单，我们直接跳过了。只有一点稍微有些复杂，就是应用<code class="highlighter-rouge">bisect.insort</code>来处理计时事件。这里的算法是维护一个有序的计时器事件，最早的计时器事件先执行。这样，在每次的循环迭代中，我们只需检查是否有计时器，如果有，在开始的时候执行然后执行所有过期的计时器。<code class="highlighter-rouge">bisect.insort</code>简化了列表的正确插入。有很多方法实现这一点，这里我选择了这种。</p>
 
@@ -291,7 +291,7 @@ fib<span class="o">(</span>37<span class="o">)</span> <span class="o">=</span> 2
 
 <p>有好多种其他的方案可以实现，比如 promises 和协程(已经有无数的 NPM 库做了对应的实现)。我更偏向的是(不是密码，我觉得<a href="http://sahandsaba.com/combinatorial-generation-using-coroutines-in-python.html">协程很酷!</a>)使用协程。下一部分我们基于协程实现了一个类似的事件循环。</p>
 
-<h2 id="section-3">基于协程的事件循环</h2>
+<h2 id="基于协程的事件循环">基于协程的事件循环</h2>
 
 <p>协程就是当一个函数「返回」时仍然保存它返回时的状态(局部作用域的变量，以及下一步要执行的操作)。这样允许协程下一次被调用时直接进入它上次放回时的状态。这种形式的「返回」通常称为<strong>yielding</strong>。我在我的文章<a href="http://sahandsaba.com/combinatorial-generation-using-coroutines-in-python.html">combinatorial generation using coroutines article</a>中研究过许多协程的细节和他们在 Python 中的实现。下面在我们应用它之前，我提供了一个非常简要的介绍。</p>
 
@@ -491,7 +491,7 @@ fib<span class="o">(</span>28<span class="o">)</span> <span class="o">=</span> 3
 1412727841 - Hello world!
 1412727844 - Hello world!</code></pre></figure>
 
-<h2 id="section-4">不是重复造轮子</h2>
+<h2 id="不是重复造轮子">不是重复造轮子</h2>
 
 <p>在前面两部分里面，我们用通用的方法实现了允许使用回调或者协程编写异步代码的事件循环。这对实践和学习来说有很大的意义但是在实践中，已经有好多成熟的 Python 库提供了事件循环。另外，在 Python 3.4 中带有一个 <code class="highlighter-rouge">asyncio</code> 模块，提供了事件循环和 IO 操作，网络等等。让我们先用 <code class="highlighter-rouge">asyncio</code> 解决上面的问题，然后来看一些更有趣的例子。</p>
 
@@ -525,7 +525,7 @@ fib<span class="o">(</span>28<span class="o">)</span> <span class="o">=</span> 3
 
 <p>注意 <code class="highlighter-rouge">@asyncio.coroutine</code> 是如何修饰协程的，而且用 <code class="highlighter-rouge">yield from</code> 而不是仅仅 <code class="highlighter-rouge">yield</code> 在其他协程的返回值上面。</p>
 
-<h2 id="section-5">异常处理</h2>
+<h2 id="异常处理">异常处理</h2>
 
 <p>Python 的协程允许在协程运行时栈帧内抛出异常，这是协程已经暂停。我们来看个简单的例子:</p>
 
@@ -690,7 +690,7 @@ Error:  <span class="o">[</span>Errno 8] nodename nor servname provided, or not 
 
 <p>我认为这是使用协程编代替编写异步代码的主要好处: 与同步代码中的错误处理是一致的。比如上面的例子，万一协程链中的某一步失败了，或者某一个同步调用失败，异常都会被同样的捕获和处理。</p>
 
-<h2 id="section-6">依赖多个相关协程的执行结果</h2>
+<h2 id="依赖多个相关协程的执行结果">依赖多个相关协程的执行结果</h2>
 
 <p>在前面的例子中，我们编写的代码在内部都是有一定顺序的，就是说协程内部的每条语句依赖钱一个协程完成。有时候，我们会需要执行一系列相关的任务，使用他们的 <strong>完成时</strong>，而不关心他们执行的顺序。例如，写一个爬虫，我们可能会针对页面内所有链接发送一些异步请求然后把这些相应加入到一个队列里面，按照我们的需求来处理。</p>
 
@@ -753,7 +753,7 @@ Done: URL URL2 took 3s to get!
 Done: URL URL3 took 4s to get!
 <span class="o">[(</span><span class="s1">'URL1'</span>, 1<span class="o">)</span>, <span class="o">(</span><span class="s1">'URL2'</span>, 3<span class="o">)</span>, <span class="o">(</span><span class="s1">'URL3'</span>, 4<span class="o">)]</span></code></pre></figure>
 
-<h2 id="section-7">深入挖掘</h2>
+<h2 id="深入挖掘">深入挖掘</h2>
 
 <p>还有很多我没有提到的，举个例子<a href="https://docs.python.org/3/library/asyncio-task.html#asyncio.Future">Futures</a> 和 <a href="https://github.com/joyent/libuv">libuv</a>。还有 <a href="http://www.youtube.com/watch?v=1coLC-MUCJc">Guido’s talk on asynchronous IO in Python 3.4</a>。还有好多内容我忘记提到所以欢迎在评论里面提出推荐。</p>
 </div><div class="comment-area">

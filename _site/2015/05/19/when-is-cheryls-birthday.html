@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><title>如何知道女神生日 — 8D is Here</title><link rel="prev" href="http://blog.xiaoba.me"><link rel="stylesheet" href="/css/site.css"><meta name="viewport" content="width=device-width"><meta name="author" content="Yuwei Ba"><meta name="keywords" content="Javascript, Python, Life, Thoughts"><meta name="description" content="Programming makes life easier and better. Life Lover."><link rel="icon" href="/favicon.png" type="image/png"><link rel="canonical" href="http://blog.xiaoba.me/2015/05/19/when-is-cheryls-birthday.html"><meta property="twitter:card" content="summary"><meta property="twitter:site" content="@ibigbug"><meta property="twitter:creator" content="@ibigbug"><meta property="twitter:title" content="如何知道女神生日 — 8D is Here"><meta property="twitter:description" content=" Programming makes life easier and better. Life Lover. "><meta property="twitter:url" content="http://blog.xiaoba.me/2015/05/19/when-is-cheryls-birthday.html"><meta property="twitter:domain" content="8D is Here">
+<!DOCTYPE html><html lang="en"><head><title>如何知道女神生日 — 8D is Here</title><link rel="prev" href="http://localhost:4000"><link rel="stylesheet" href="/css/site.css"><meta name="viewport" content="width=device-width"><meta name="author" content="Yuwei Ba"><meta name="keywords" content="Javascript, Python, Life, Thoughts"><meta name="description" content="Programming makes life easier and better. Life Lover."><link rel="icon" href="/favicon.png" type="image/png"><link rel="canonical" href="http://localhost:4000/2015/05/19/when-is-cheryls-birthday.html"><meta property="twitter:card" content="summary"><meta property="twitter:site" content="@ibigbug"><meta property="twitter:creator" content="@ibigbug"><meta property="twitter:title" content="如何知道女神生日 — 8D is Here"><meta property="twitter:description" content=" Programming makes life easier and better. Life Lover. "><meta property="twitter:url" content="http://localhost:4000/2015/05/19/when-is-cheryls-birthday.html"><meta property="twitter:domain" content="8D is Here">
 <script>
  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
@@ -54,7 +54,7 @@ Interestring.
 
 <p>据说这是一道国考的智力题，今天我们用码农的方式来解决。</p>
 
-<h2 id="section">1.首先，女神说了 10 个可能的日期</h2>
+<h2 id="1首先女神说了-10-个可能的日期">1.首先，女神说了 10 个可能的日期</h2>
 
 <figure class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">const</span> <span class="nx">DATES</span> <span class="o">=</span> <span class="p">[</span>
     <span class="s1">'May 15'</span><span class="p">,</span> <span class="s1">'May 16'</span><span class="p">,</span> <span class="s1">'May 19'</span><span class="p">,</span>
@@ -73,7 +73,7 @@ Interestring.
   <span class="k">return</span> <span class="nx">date</span><span class="p">.</span><span class="nx">split</span><span class="p">(</span><span class="s1">' '</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span>
 <span class="p">}</span></code></pre></figure>
 
-<h2 id="section-1">2. 女神分别告诉了两个人月份和日期</h2>
+<h2 id="2-女神分别告诉了两个人月份和日期">2. 女神分别告诉了两个人月份和日期</h2>
 
 <p>我们来翻译 <strong>告诉</strong> 和 <strong>知道</strong> 这两个函数:</p>
 
@@ -99,7 +99,7 @@ Interestring.
 
 <figure class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">know</span><span class="p">(</span><span class="nx">tell</span><span class="p">(</span><span class="s1">'15'</span><span class="p">))</span> <span class="o">-&gt;</span> <span class="nx">False</span></code></pre></figure>
 
-<h2 id="section-2">整体策略</h2>
+<h2 id="整体策略">整体策略</h2>
 
 <p>当女神告诉 <strong>Albert</strong> 说是生日在 <strong>五月</strong> 的时候，<strong>Albert</strong> 就知道有结果三种可能，但是 <em>程序</em> 不是 <strong>Albert</strong>，程序只能对 <em>所有</em> 可能的日期一个一个去试。为此我们针对题目中的条件 3 - 5 编写逻辑，然后用这些逻辑去验证每个可能的日期。如果正常的话，真相只有一个。</p>
 
@@ -115,7 +115,7 @@ Interestring.
   <span class="k">return</span> <span class="nx">statement3</span><span class="p">(</span><span class="nx">date</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="nx">statement4</span><span class="p">(</span><span class="nx">date</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="nx">statement5</span><span class="p">(</span><span class="nx">date</span><span class="p">)</span>
 <span class="p">}</span></code></pre></figure>
 
-<h3 id="albert---bernard-">3. <strong>Albert</strong> 说: 我不知道女神的生日是多少，但是我知道 Bernard 你也肯定不知道</h3>
+<h3 id="3-albert-说-我不知道女神的生日是多少但是我知道-bernard-你也肯定不知道">3. <strong>Albert</strong> 说: 我不知道女神的生日是多少，但是我知道 Bernard 你也肯定不知道</h3>
 
 <p><code class="highlighter-rouge">statement3</code> 将 <strong>Albert</strong> 的陈述用代码来描述:</p>
 
@@ -140,10 +140,12 @@ Interestring.
 
 <figure class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">DATES</span><span class="p">.</span><span class="nx">filter</span><span class="p">(</span><span class="nx">statement3</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="p">[</span><span class="s1">'July 14'</span><span class="p">,</span> <span class="s1">'July 16'</span><span class="p">,</span> <span class="s1">'August 14'</span><span class="p">,</span> <span class="s1">'August 15'</span><span class="p">,</span> <span class="s1">'August 17'</span><span class="p">]</span></code></pre></figure>
 
-<h3 id="bernard----">4. <strong>Bernard</strong> 说: 我 <strong>本来</strong> 不知道的，但是现在我知道了。</h3>
+<h3 id="4-bernard-说-我-本来-不知道的但是现在我知道了">4. <strong>Bernard</strong> 说: 我 <strong>本来</strong> 不知道的，但是现在我知道了。</h3>
 
-<p>再来翻译:
-&gt; <strong>Bernard</strong>: 开始女神告诉我日期的是，我是不知道的。但是我知道了满足 <strong>Albert</strong> 说的 <code class="highlighter-rouge">statement3</code> 所有可能的日期之后，我就知道了。</p>
+<p>再来翻译:</p>
+<blockquote>
+  <p><strong>Bernard</strong>: 开始女神告诉我日期的是，我是不知道的。但是我知道了满足 <strong>Albert</strong> 说的 <code class="highlighter-rouge">statement3</code> 所有可能的日期之后，我就知道了。</p>
+</blockquote>
 
 <figure class="highlight"><pre><code class="language-js" data-lang="js"><span class="kd">function</span> <span class="nx">statement4</span><span class="p">(</span><span class="nx">date</span><span class="p">)</span> <span class="p">{</span>
   <span class="kd">let</span> <span class="nx">at_first</span> <span class="o">=</span> <span class="nx">tell</span><span class="p">(</span><span class="nx">day</span><span class="p">(</span><span class="nx">date</span><span class="p">))</span>
@@ -156,7 +158,7 @@ Interestring.
 
 <span class="c1">// 离真相越来越近了</span></code></pre></figure>
 
-<h3 id="albert--">5. <strong>Albert</strong> 又说: 嘿嘿，我现在也知道了。</h3>
+<h3 id="5-albert-又说-嘿嘿我现在也知道了">5. <strong>Albert</strong> 又说: 嘿嘿，我现在也知道了。</h3>
 
 <p>同样:</p>
 
@@ -164,7 +166,7 @@ Interestring.
   <span class="k">return</span> <span class="nx">know</span><span class="p">(</span><span class="nx">tell</span><span class="p">(</span><span class="nx">month</span><span class="p">(</span><span class="nx">date</span><span class="p">)).</span><span class="nx">filter</span><span class="p">(</span><span class="nx">statement4</span><span class="p">))</span>
 <span class="p">}</span></code></pre></figure>
 
-<h3 id="section-3">6. 答案揭晓</h3>
+<h3 id="6-答案揭晓">6. 答案揭晓</h3>
 
 <p><code class="highlighter-rouge">cheryls_birthday() -&gt; ['July 16']</code></p>
 

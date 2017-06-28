@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><title>一些常见高效 AngularJS 写法整理 — 8D is Here</title><link rel="prev" href="http://blog.xiaoba.me"><link rel="stylesheet" href="/css/site.css"><meta name="viewport" content="width=device-width"><meta name="author" content="Yuwei Ba"><meta name="keywords" content="Javascript, Python, Life, Thoughts"><meta name="description" content="Programming makes life easier and better. Life Lover."><link rel="icon" href="/favicon.png" type="image/png"><link rel="canonical" href="http://blog.xiaoba.me/2015/02/27/build-high-performance-angularjs-app.html"><meta property="twitter:card" content="summary"><meta property="twitter:site" content="@ibigbug"><meta property="twitter:creator" content="@ibigbug"><meta property="twitter:title" content="一些常见高效 AngularJS 写法整理 — 8D is Here"><meta property="twitter:description" content=" Programming makes life easier and better. Life Lover. "><meta property="twitter:url" content="http://blog.xiaoba.me/2015/02/27/build-high-performance-angularjs-app.html"><meta property="twitter:domain" content="8D is Here">
+<!DOCTYPE html><html lang="en"><head><title>一些常见高效 AngularJS 写法整理 — 8D is Here</title><link rel="prev" href="http://localhost:4000"><link rel="stylesheet" href="/css/site.css"><meta name="viewport" content="width=device-width"><meta name="author" content="Yuwei Ba"><meta name="keywords" content="Javascript, Python, Life, Thoughts"><meta name="description" content="Programming makes life easier and better. Life Lover."><link rel="icon" href="/favicon.png" type="image/png"><link rel="canonical" href="http://localhost:4000/2015/02/27/build-high-performance-angularjs-app.html"><meta property="twitter:card" content="summary"><meta property="twitter:site" content="@ibigbug"><meta property="twitter:creator" content="@ibigbug"><meta property="twitter:title" content="一些常见高效 AngularJS 写法整理 — 8D is Here"><meta property="twitter:description" content=" Programming makes life easier and better. Life Lover. "><meta property="twitter:url" content="http://localhost:4000/2015/02/27/build-high-performance-angularjs-app.html"><meta property="twitter:domain" content="8D is Here">
 <script>
  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
@@ -39,13 +39,13 @@
   <p>本文总结整理了一些高效的 AngularJS 写法。分为两部分: 第一部简单列举了 Javascript 中长出现的低效写法以及如何改善，第二部分列举了 AngularJS 中的一些高效写法以及一些应当避免的用法。</p>
 </blockquote>
 
-<h1 id="section">简介</h1>
+<h1 id="简介">简介</h1>
 
 <p>AngularJS 的性能被诟病的点，主要就是 dirty check loop 的实现，也就是 $digest 过程。而影响这一过程最大的一个因素就是页面内 $watcher 的数量。所以在使用 AngularJS 框架进行 Web 程序开发时，在关注原生 Javascript 写法性能的同时，主要就是关注 $watcher 的合理使用以及控制 $digest 过程。</p>
 
-<h1 id="javascript-">Javascript 中应该注意的一些写法</h1>
+<h1 id="javascript-中应该注意的一些写法">Javascript 中应该注意的一些写法</h1>
 
-<h2 id="section-1">循环</h2>
+<h2 id="循环">循环</h2>
 
 <p>尽量不要在循环内部进行函数调用:</p>
 
@@ -65,11 +65,11 @@
 
 <p><a href="http://jsperf.com/for-loop-perf-demo-basic">http://jsperf.com/for-loop-perf-demo-basic</a></p>
 
-<h2 id="dom">访问 DOM</h2>
+<h2 id="访问-dom">访问 DOM</h2>
 
 <p>与 jQuery 不同，在 AngularJS 应用中对 DOM 的访问已经大大减少。但是依旧，尽量少地在应用中访问 DOM，尽量不要改变内联样式，这样会导致 DOM reflow，非常影响页面性能。关于 reflow，可参考 <a href="http://www-archive.mozilla.org/newlayout/doc/reflow.html">这里</a></p>
 
-<h2 id="section-2">变量作用于以及垃圾回收</h2>
+<h2 id="变量作用于以及垃圾回收">变量作用于以及垃圾回收</h2>
 
 <p>关于垃圾回收，可以参考这篇文章: <a href="https://blog.xiaoba.me/2013/05/07/garbage-collection-in-javascript.html">Javascript 中的垃圾回收机制</a>。在单页应用中，关注内存使用显得更加重要。</p>
 
@@ -87,9 +87,9 @@
 
 <p>更多关于 V8 优化的信息，请访问 <a href="Optimization killers">https://github.com/petkaantonov/bluebird/wiki/Optimization-killers</a>。</p>
 
-<h1 id="angularjs-">AngularJS 中的一些写法</h1>
+<h1 id="angularjs-中的一些写法">AngularJS 中的一些写法</h1>
 
-<h2 id="watch">使用 <code class="highlighter-rouge">$watch</code></h2>
+<h2 id="使用-watch">使用 <code class="highlighter-rouge">$watch</code></h2>
 
 <p><code class="highlighter-rouge">$watch</code> 的第一个参数，永远不要是一个函数。因为创建的 watcher 会在每次 <code class="highlighter-rouge">$digest</code> 中运行不只一次。这意味着，<code class="highlighter-rouge">$watch</code> 的第一个参数，如果是一个函数，那么将会被频繁调用。</p>
 
@@ -110,7 +110,7 @@
 
 <p>但是，注意，在使用 <code class="highlighter-rouge">track by</code> 表达式的时候，一定要保证列表中每一项根据表达式求值的结果要唯一，否则会报错。</p>
 
-<h2 id="ngif--ngshow-">关于使用 ngIf 和 ngShow 的区别</h2>
+<h2 id="关于使用-ngif-和-ngshow-的区别">关于使用 ngIf 和 ngShow 的区别</h2>
 
 <p>ngShow/ngHide 是通过改变样式来实现页面内容的隐藏或是展现的。这意味着，当一个元素被 ngHide 了以后，其 $scope 以及 $scope 上的 $watcher 实际仍在运行。</p>
 
@@ -118,7 +118,7 @@
 
 <p>所以，如何使用 ngIf 和 ngShow/ngHide 还要结合具体业务场景来区分。</p>
 
-<h2 id="digest--apply">$digest 和 $apply</h2>
+<h2 id="digest-和-apply">$digest 和 $apply</h2>
 
 <p>尽量少地使用 $apply。</p>
 
@@ -126,7 +126,7 @@
 
 <p>另外，在一次 $digest 的每次 while 循环开始，AngularJS 会检测一个 <code class="highlighter-rouge">asyncQueue</code> 中是否有待执行的任务。这个队列通过 $evalAsync() 来向其添加任务。asyncQueue 中的任务，可以随时添加。如果当前正处于某一次 $digest，则直接取出执行;否则保留到下一次 $digest 中执行。可以一定程度上减少 $apply() 的调用。</p>
 
-<h2 id="section-3">其他</h2>
+<h2 id="其他">其他</h2>
 <ul>
   <li>使用 {{ :oneTimeBind }}</li>
   <li>记得 unwatch</li>
@@ -136,7 +136,7 @@
   <li>使用 <a href="https://github.com/ibigbug/ngPerf/">ngPerf</a> 实时监测 AngularJS 应用性能</li>
 </ul>
 
-<h1 id="section-4">总结</h1>
+<h1 id="总结">总结</h1>
 
 <p>Javascript 本身的运行速度是够快的，「慢」的往往是其他比如 DOM 操作 – 这一点，无论在传统的 jQuery 应用还是 AngularJS 应用中，都是不变的。了解 Javascript 语言的本质，掌握框架的特性，是非常有必要的。</p>
 

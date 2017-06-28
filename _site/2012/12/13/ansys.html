@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><title>ansys解决平行传输线周围静电场分布 — 8D is Here</title><link rel="prev" href="http://blog.xiaoba.me"><link rel="stylesheet" href="/css/site.css"><meta name="viewport" content="width=device-width"><meta name="author" content="Yuwei Ba"><meta name="keywords" content="Javascript, Python, Life, Thoughts"><meta name="description" content="Programming makes life easier and better. Life Lover."><link rel="icon" href="/favicon.png" type="image/png"><link rel="canonical" href="http://blog.xiaoba.me/2012/12/13/ansys.html"><meta property="twitter:card" content="summary"><meta property="twitter:site" content="@ibigbug"><meta property="twitter:creator" content="@ibigbug"><meta property="twitter:title" content="ansys解决平行传输线周围静电场分布 — 8D is Here"><meta property="twitter:description" content=" Programming makes life easier and better. Life Lover. "><meta property="twitter:url" content="http://blog.xiaoba.me/2012/12/13/ansys.html"><meta property="twitter:domain" content="8D is Here">
+<!DOCTYPE html><html lang="en"><head><title>ansys解决平行传输线周围静电场分布 — 8D is Here</title><link rel="prev" href="http://localhost:4000"><link rel="stylesheet" href="/css/site.css"><meta name="viewport" content="width=device-width"><meta name="author" content="Yuwei Ba"><meta name="keywords" content="Javascript, Python, Life, Thoughts"><meta name="description" content="Programming makes life easier and better. Life Lover."><link rel="icon" href="/favicon.png" type="image/png"><link rel="canonical" href="http://localhost:4000/2012/12/13/ansys.html"><meta property="twitter:card" content="summary"><meta property="twitter:site" content="@ibigbug"><meta property="twitter:creator" content="@ibigbug"><meta property="twitter:title" content="ansys解决平行传输线周围静电场分布 — 8D is Here"><meta property="twitter:description" content=" Programming makes life easier and better. Life Lover. "><meta property="twitter:url" content="http://localhost:4000/2012/12/13/ansys.html"><meta property="twitter:domain" content="8D is Here">
 <script>
  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
@@ -43,7 +43,7 @@
 
 <p>大概分为以下几步:</p>
 
-<h3 id="section">建立有限元模型</h3>
+<h3 id="建立有限元模型">建立有限元模型</h3>
 
 <ol>
   <li>
@@ -57,11 +57,11 @@
   </li>
 </ol>
 
-<h3 id="section-1">加载(载荷)和求解</h3>
+<h3 id="加载载荷和求解">加载(载荷)和求解</h3>
 
 <p>载荷不多说,就是加上相应参数.这个例子里面就是告诉ansys每根导线电势多少,边界电势多少,等等.</p>
 
-<h3 id="section-2">后处理</h3>
+<h3 id="后处理">后处理</h3>
 
 <p>当ansys按照上面的模型,载荷,计算出结果之后.提供了很多后处理方法,这个例子就用到了绘制电场云图,电位云图等功能.</p>
 

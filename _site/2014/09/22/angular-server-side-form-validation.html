@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><title>AngularJS 中进行服务端表单校验 — 8D is Here</title><link rel="prev" href="http://blog.xiaoba.me"><link rel="stylesheet" href="/css/site.css"><meta name="viewport" content="width=device-width"><meta name="author" content="Yuwei Ba"><meta name="keywords" content="Javascript, Python, Life, Thoughts"><meta name="description" content="Programming makes life easier and better. Life Lover."><link rel="icon" href="/favicon.png" type="image/png"><link rel="canonical" href="http://blog.xiaoba.me/2014/09/22/angular-server-side-form-validation.html"><meta property="twitter:card" content="summary"><meta property="twitter:site" content="@ibigbug"><meta property="twitter:creator" content="@ibigbug"><meta property="twitter:title" content="AngularJS 中进行服务端表单校验 — 8D is Here"><meta property="twitter:description" content=" Programming makes life easier and better. Life Lover. "><meta property="twitter:url" content="http://blog.xiaoba.me/2014/09/22/angular-server-side-form-validation.html"><meta property="twitter:domain" content="8D is Here">
+<!DOCTYPE html><html lang="en"><head><title>AngularJS 中进行服务端表单校验 — 8D is Here</title><link rel="prev" href="http://localhost:4000"><link rel="stylesheet" href="/css/site.css"><meta name="viewport" content="width=device-width"><meta name="author" content="Yuwei Ba"><meta name="keywords" content="Javascript, Python, Life, Thoughts"><meta name="description" content="Programming makes life easier and better. Life Lover."><link rel="icon" href="/favicon.png" type="image/png"><link rel="canonical" href="http://localhost:4000/2014/09/22/angular-server-side-form-validation.html"><meta property="twitter:card" content="summary"><meta property="twitter:site" content="@ibigbug"><meta property="twitter:creator" content="@ibigbug"><meta property="twitter:title" content="AngularJS 中进行服务端表单校验 — 8D is Here"><meta property="twitter:description" content=" Programming makes life easier and better. Life Lover. "><meta property="twitter:url" content="http://localhost:4000/2014/09/22/angular-server-side-form-validation.html"><meta property="twitter:domain" content="8D is Here">
 <script>
  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
@@ -35,7 +35,7 @@
 <li><a href="/feed.xml" class="page-link">Feed</a></li>
 </ul></div></div></div><div class="main-wrapper"><div class="inner-wrapper"><div class="logo"><a href="/">8D is Here</a></div><div class="page-meta">
 在 AngularJS 中利用 Directive 和 Service 进行 服务端表单校验
-</div><div class="main-area"><div class="post-entry"><h1 class="entry-title">AngularJS 中进行服务端表单校验</h1><div class="entry-meta"><time class="updated">Sep 22, 2014</time></div><div class="entry-content"><h2 id="section">前言</h2>
+</div><div class="main-area"><div class="post-entry"><h1 class="entry-title">AngularJS 中进行服务端表单校验</h1><div class="entry-meta"><time class="updated">Sep 22, 2014</time></div><div class="entry-content"><h2 id="前言">前言</h2>
 
 <p>AngularJS 自带的表单校验功能还是很弱的，但是定制性很强。本文实现了利用 Directive 配合 Service 给出了一种简单的服务端表单校验解决方案。功能实现主要分为两部分：</p>
 
@@ -46,7 +46,7 @@
 
 <p>不多说直接上代码。</p>
 
-<h2 id="section-1">向服务端发送请求</h2>
+<h2 id="向服务端发送请求">向服务端发送请求</h2>
 
 <figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="nx">app</span><span class="p">.</span><span class="nx">factory</span><span class="p">(</span><span class="s1">'service'</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">$q</span><span class="p">,</span> <span class="nx">$http</span><span class="p">){</span>
   <span class="k">return</span> <span class="p">{</span>
@@ -60,7 +60,7 @@
 
 <p>很简单，提供一个 <code class="highlighter-rouge">get()</code> 方法接受要校验的值返回校验结果。</p>
 
-<h2 id="directive-">表单校验 Directive 实现</h2>
+<h2 id="表单校验-directive-实现">表单校验 Directive 实现</h2>
 
 <p>从文档中可以推测出 <em>formCtroller</em> 维护一个 <em>VALIDATOR</em> 队列，要自定义表单校验，只需向该队列中加入一个自定义校验方法即可。</p>
 

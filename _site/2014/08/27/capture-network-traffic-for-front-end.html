@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><title>Wireshark 与 HTTP 协议 — 8D is Here</title><link rel="prev" href="http://blog.xiaoba.me"><link rel="stylesheet" href="/css/site.css"><meta name="viewport" content="width=device-width"><meta name="author" content="Yuwei Ba"><meta name="keywords" content="Javascript, Python, Life, Thoughts"><meta name="description" content="Programming makes life easier and better. Life Lover."><link rel="icon" href="/favicon.png" type="image/png"><link rel="canonical" href="http://blog.xiaoba.me/2014/08/27/capture-network-traffic-for-front-end.html"><meta property="twitter:card" content="summary"><meta property="twitter:site" content="@ibigbug"><meta property="twitter:creator" content="@ibigbug"><meta property="twitter:title" content="Wireshark 与 HTTP 协议 — 8D is Here"><meta property="twitter:description" content=" Programming makes life easier and better. Life Lover. "><meta property="twitter:url" content="http://blog.xiaoba.me/2014/08/27/capture-network-traffic-for-front-end.html"><meta property="twitter:domain" content="8D is Here">
+<!DOCTYPE html><html lang="en"><head><title>Wireshark 与 HTTP 协议 — 8D is Here</title><link rel="prev" href="http://localhost:4000"><link rel="stylesheet" href="/css/site.css"><meta name="viewport" content="width=device-width"><meta name="author" content="Yuwei Ba"><meta name="keywords" content="Javascript, Python, Life, Thoughts"><meta name="description" content="Programming makes life easier and better. Life Lover."><link rel="icon" href="/favicon.png" type="image/png"><link rel="canonical" href="http://localhost:4000/2014/08/27/capture-network-traffic-for-front-end.html"><meta property="twitter:card" content="summary"><meta property="twitter:site" content="@ibigbug"><meta property="twitter:creator" content="@ibigbug"><meta property="twitter:title" content="Wireshark 与 HTTP 协议 — 8D is Here"><meta property="twitter:description" content=" Programming makes life easier and better. Life Lover. "><meta property="twitter:url" content="http://localhost:4000/2014/08/27/capture-network-traffic-for-front-end.html"><meta property="twitter:domain" content="8D is Here">
 <script>
  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
@@ -35,7 +35,7 @@
 <li><a href="/feed.xml" class="page-link">Feed</a></li>
 </ul></div></div></div><div class="main-wrapper"><div class="inner-wrapper"><div class="logo"><a href="/">8D is Here</a></div><div class="page-meta">
 在 Mac 中使用 wireshark 抓取网络包，近距离观察 HTTP 请求
-</div><div class="main-area"><div class="post-entry"><h1 class="entry-title">Wireshark 与 HTTP 协议</h1><div class="entry-meta"><time class="updated">Aug 27, 2014</time></div><div class="entry-content"><h2 id="section">一、前言</h2>
+</div><div class="main-area"><div class="post-entry"><h1 class="entry-title">Wireshark 与 HTTP 协议</h1><div class="entry-meta"><time class="updated">Aug 27, 2014</time></div><div class="entry-content"><h2 id="一前言">一、前言</h2>
 <p>虽然是前端开发人员，对 HTTP 协议有些了解还是没有坏处的。</p>
 
 <p>Windows 环境下有 Fiddler 可以很方便的拦截浏览器浏览器对 HTTP 请求进行分析、重放等功能，可惜目前没有 Mac 版本。我选择使用 Wireshark 来完成抓包。Wireshark 很强大，本文只用它来过滤 HTTP 请求用来分析。如果嫌麻烦可以使用 AlloyTeam 出品的 <a href="http://www.alloyteam.com/2012/05/web-front-end-tool-rythem-1/">Rythem</a>，很方便。</p>
@@ -44,14 +44,14 @@
 
 <p>进入正题。</p>
 
-<h2 id="section-1">二、准备工作</h2>
+<h2 id="二准备工作">二、准备工作</h2>
 
-<h3 id="wireshark">1.安装 wireshark</h3>
+<h3 id="1安装-wireshark">1.安装 wireshark</h3>
 <p>直接用 <code class="highlighter-rouge">brew install wireshark --with-qt</code> 即可。（PS：编译这个东西的时候电脑会好热！）</p>
 
 <p>其实编译的图形界面是又 QT 和 GTK 可选的，但我选了 QT，因为相对于 Gnome 来说我更喜欢看 KDE。虽然我推测在这里不管 QT 还是 GTK 出来的界面都是没差的。</p>
 
-<h3 id="section-2">2.前端代码</h3>
+<h3 id="2前端代码">2.前端代码</h3>
 
 <figure class="highlight"><pre><code class="language-html" data-lang="html"><span class="nt">&lt;form</span> <span class="na">action=</span><span class="s">"."</span> <span class="na">method=</span><span class="s">"post"</span><span class="nt">&gt;</span>
     <span class="nt">&lt;input</span> <span class="na">type=</span><span class="s">"text"</span> <span class="na">name=</span><span class="s">"normal"</span><span class="nt">&gt;</span>
@@ -84,11 +84,11 @@
     <span class="p">});</span>
 <span class="nt">&lt;/script&gt;</span></code></pre></figure>
 
-<h3 id="section-3">3.后端</h3>
+<h3 id="3后端">3.后端</h3>
 
 <p>直接用 python 的 SimpleHTTPServer 就好了。</p>
 
-<h2 id="section-4">三、开始</h2>
+<h2 id="三开始">三、开始</h2>
 
 <p>运行 <code class="highlighter-rouge">sudo wireshark-qt</code>。因为是要直接去读网卡的，所以必须要有 root 权限，不然什么都截不到。</p>
 
@@ -107,7 +107,7 @@
 
 <p>我们在最上方加了一个 HTTP filter，只查看 HTTP请求。</p>
 
-<h2 id="section-5">四、截图</h2>
+<h2 id="四截图">四、截图</h2>
 
 <figure>
 普通 HTTP 表单 POST：
@@ -126,14 +126,14 @@ jQuery 默认 Ajax 请求：
 <img src="http://yuwei-cdn.b0.upaiyun.com/blog/images/wireshark-ajax-json.png" />
 </figure>
 
-<h2 id="section-6">五、分析</h2>
+<h2 id="五分析">五、分析</h2>
 <p>从图中可以清晰的看出 HTTP 请求的格式。由于没学过计算机之前一直不理解 TCP 与 HTTP 之间的关系，后来慢慢懂了，所谓 HTTP 其实就是按照 TCP 三次握手的形式，将字符串按照一定的格式打包发送，就成了 HTTP。这也就是为什么 TCP 在传输层，HTTP 在应用层的解释吧。这也就是所谓「协议」了。</p>
 
 <p>在 multipart 表单提交中仔细观察发现，其实请求的 header 和 body 是符合 <a href="https://www.ietf.org/rfc/rfc2388.txt">rfc2388</a> 的。如果要模拟浏览器上传文件到 web 服务器的话，实现这个协议就好了。</p>
 
 <p>最后两张图，全部是用 Ajax 提交请求的。出于兼容性考虑，jQuey 默认的请求头是跟正常表单提交一样的（倒数第二张图），如果我们修改请求头部的 content-type，就成了倒数第一长图。可以看到请求的 body 已经从 <strong>form data</strong> 变成了 <strong>line-based text</strong>。这时候 web 服务器就没办法像处理表单那样直接处理这个请求了，需要按照头部指定的 content-type（json）来处理 body。这就是纯粹的 ajax + json 方式的前后端数据传递了。在 Flask 的源码中也可以看到，在 Request 对象中封装了 <code class="highlighter-rouge">get_json()</code> 方法，如果发现请求的 mimetype 是 json 格式的话，就可以通过直接调用这个方法来将请求的 body 转换成 json 数据返回。</p>
 
-<h2 id="section-7">六、后话</h2>
+<h2 id="六后话">六、后话</h2>
 <p>其实抓包的实现很简单，没事的时候抓抓包，就可以透过表象看清 WEB 请求运作的实质。抓包在安全领域的地位也很重要，比如媒体常常拿局域网嗅探来炒作无线热点的安全问题。有些事情看似复杂，其实原理都很好理解。就比如最近的<a href="https://twitter.com/search?q=好莱坞艳照门&amp;src=tyah">好莱坞艳照门事件</a>，如果真的像网友说的那样是用脚本跑出来的密码，那真的是技术含量很低。不过这恰恰也说明，重要的东西绝不是技术，而是技术到底能干什么和干了什么。</p>
 </div><div class="comment-area">
    <div id="disqus_thread"></div>

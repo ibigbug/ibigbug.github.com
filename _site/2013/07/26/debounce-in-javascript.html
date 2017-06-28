@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><title>Javascript中的debounce模式 — 8D is Here</title><link rel="prev" href="http://blog.xiaoba.me"><link rel="stylesheet" href="/css/site.css"><meta name="viewport" content="width=device-width"><meta name="author" content="Yuwei Ba"><meta name="keywords" content="Javascript, Python, Life, Thoughts"><meta name="description" content="Programming makes life easier and better. Life Lover."><link rel="icon" href="/favicon.png" type="image/png"><link rel="canonical" href="http://blog.xiaoba.me/2013/07/26/debounce-in-javascript.html"><meta property="twitter:card" content="summary"><meta property="twitter:site" content="@ibigbug"><meta property="twitter:creator" content="@ibigbug"><meta property="twitter:title" content="Javascript中的debounce模式 — 8D is Here"><meta property="twitter:description" content=" Programming makes life easier and better. Life Lover. "><meta property="twitter:url" content="http://blog.xiaoba.me/2013/07/26/debounce-in-javascript.html"><meta property="twitter:domain" content="8D is Here">
+<!DOCTYPE html><html lang="en"><head><title>Javascript中的debounce模式 — 8D is Here</title><link rel="prev" href="http://localhost:4000"><link rel="stylesheet" href="/css/site.css"><meta name="viewport" content="width=device-width"><meta name="author" content="Yuwei Ba"><meta name="keywords" content="Javascript, Python, Life, Thoughts"><meta name="description" content="Programming makes life easier and better. Life Lover."><link rel="icon" href="/favicon.png" type="image/png"><link rel="canonical" href="http://localhost:4000/2013/07/26/debounce-in-javascript.html"><meta property="twitter:card" content="summary"><meta property="twitter:site" content="@ibigbug"><meta property="twitter:creator" content="@ibigbug"><meta property="twitter:title" content="Javascript中的debounce模式 — 8D is Here"><meta property="twitter:description" content=" Programming makes life easier and better. Life Lover. "><meta property="twitter:url" content="http://localhost:4000/2013/07/26/debounce-in-javascript.html"><meta property="twitter:domain" content="8D is Here">
 <script>
  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
@@ -35,15 +35,15 @@
 <li><a href="/feed.xml" class="page-link">Feed</a></li>
 </ul></div></div></div><div class="main-wrapper"><div class="inner-wrapper"><div class="logo"><a href="/">8D is Here</a></div><div class="page-meta">
 天青色等烟雨，而我在等你。
-</div><div class="main-area"><div class="post-entry"><h1 class="entry-title">Javascript中的debounce模式</h1><div class="entry-meta"><time class="updated">Jul 26, 2013</time></div><div class="entry-content"><h2 id="whatdebounce">1.What——什么是debounce模式？</h2>
+</div><div class="main-area"><div class="post-entry"><h1 class="entry-title">Javascript中的debounce模式</h1><div class="entry-meta"><time class="updated">Jul 26, 2013</time></div><div class="entry-content"><h2 id="1what什么是debounce模式">1.What——什么是debounce模式？</h2>
 
 <p>如果你写过单片机开发的键盘扫描，那么你一定知道要进行「去抖动」。没错，在JS处理页面交互事件时，往往也需要进行一些去抖处理，这就是debounce。当然这里只是借用了名字，其实与键盘扫描的去抖，还是有一点差别的。下面有个效果演示，如果你心急，直接拉下去看效果。</p>
 
-<h2 id="whydebounce">2.Why——为什么要debounce？</h2>
+<h2 id="2why为什么要debounce">2.Why——为什么要debounce？</h2>
 
 <p>正如引言中所述，对于「猛击」的现象，我们需要使用<code class="highlighter-rouge">debounce</code>来让点击轻一点~比如用户在进行订单提交的时候，需要单击「提交」按钮，往往会有意或者无意的出现「双击」甚至「多击」的现象，如果JS对每次单击都相应一次，发出一个请求到后台，那么一方面，可能会造成逻辑错误，也就是造成「下了很多订单」;另一方面，对于「多击」的没一个请求，都会发送到后台，给web服务器增加了压力。</p>
 
-<h2 id="howdebounce">3.How——如何debounce？</h2>
+<h2 id="3how如何debounce">3.How——如何debounce？</h2>
 
 <p>underscore框架中有一个方法，叫做「debounce」，就是我们今天要介绍的。</p>
 
@@ -90,7 +90,7 @@
     <span class="p">};</span>
 <span class="p">};</span></code></pre></figure>
 
-<h2 id="where--debounce">4.Where —— 哪里用到debounce？</h2>
+<h2 id="4where--哪里用到debounce">4.Where —— 哪里用到debounce？</h2>
 
 <p>如上所述，一些类似表单提交，比如下订单，评论，等等有点击事件的地方，都可以用到～</p>
 
