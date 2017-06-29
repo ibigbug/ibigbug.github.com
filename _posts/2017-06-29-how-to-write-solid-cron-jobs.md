@@ -6,7 +6,7 @@ category: work
 meta: 6 tips for writing cron jobs
 ---
 
-Recently I migrate [pypi-mirrors](https://pypi-mirrors.org) from [Vultr](http://www.vultr.com/?ref=7028689) VPS to Racher stack, which is a pure container environment. Everything work fine, though it took me some time to setup the cron job in container correctly. And here is a short summary which might need keep in mind while using cron job inside a container.
+Recently I migrate [pypi-mirrors](https://pypi-mirrors.org) from [Vultr](http://www.vultr.com/?ref=7028689) VPS to Rancher stack, which is a pure container environment. Everything work fine, though it took me some time to setup the cron job in container correctly. And here is a short summary which might need keep in mind while using cron job inside a container.
 
 ### 1. Environment Variables
 
@@ -22,7 +22,7 @@ For example, prefer to use `/usr/local/bin/python` rather than `python` as much 
 
 Output useful information to stdout/stderr, this will help you when bad thing happens.
 
-### 4. Propery redirect
+### 4. Properly redirect
 
 In most cases, using something like `> /var/log/xxx.log 2>&1` would help you observe if your cron jobs are running as expected.
 
