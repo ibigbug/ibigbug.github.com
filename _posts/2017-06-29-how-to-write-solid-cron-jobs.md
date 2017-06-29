@@ -22,7 +22,7 @@ For example, prefer to use `/usr/local/bin/python` rather than `python` as much 
 
 Output useful information to stdout/stderr, this will help you when bad thing happens.
 
-### 4. Propery redirect
+### 4. Properly redirect
 
 In most cases, using something like `> /var/log/xxx.log 2>&1` would help you observe if your cron jobs are running as expected.
 
