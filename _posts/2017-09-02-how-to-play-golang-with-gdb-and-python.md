@@ -140,7 +140,7 @@ You can also get the similar output:
 
 ## Using gdb + python
 
-We can still use *gdb* plus some gdb python extension scripts to do it.
+We can also use *gdb* plus some gdb python extension scripts to do it.
 
 ### The basic idea
 
