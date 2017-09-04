@@ -35,7 +35,7 @@
 <li><a href="/feed.xml" class="page-link">Feed</a></li>
 </ul></div></div></div><div class="main-wrapper"><div class="inner-wrapper"><div class="logo"><a href="/">8D is Here</a></div><div class="page-meta">
 6 tips for writing cron jobs
-</div><div class="main-area"><div class="post-entry"><h1 class="entry-title">How to write solid cron jobs</h1><div class="entry-meta"><time class="updated">Jun 29, 2017</time></div><div class="entry-content"><p>Recently I migrate <a href="https://pypi-mirrors.org">pypi-mirrors</a> from <a href="http://www.vultr.com/?ref=7028689">Vultr</a> VPS to Racher stack, which is a pure container environment. Everything work fine, though it took me some time to setup the cron job in container correctly. And here is a short summary which might need keep in mind while using cron job inside a container.</p>
+</div><div class="main-area"><div class="post-entry"><h1 class="entry-title">How to write solid cron jobs</h1><div class="entry-meta"><time class="updated">Jun 29, 2017</time></div><div class="entry-content"><p>Recently I migrate <a href="https://pypi-mirrors.org">pypi-mirrors</a> from <a href="http://www.vultr.com/?ref=7028689">Vultr</a> VPS to Rancher stack, which is a pure container environment. Everything work fine, though it took me some time to setup the cron job in container correctly. And here is a short summary which might need keep in mind while using cron job inside a container.</p>
 
 <h3 id="1-environment-variables">1. Environment Variables</h3>
 
@@ -51,7 +51,7 @@
 
 <p>Output useful information to stdout/stderr, this will help you when bad thing happens.</p>
 
-<h3 id="4-propery-redirect">4. Propery redirect</h3>
+<h3 id="4-properly-redirect">4. Properly redirect</h3>
 
 <p>In most cases, using something like <code class="highlighter-rouge">&gt; /var/log/xxx.log 2&gt;&amp;1</code> would help you observe if your cron jobs are running as expected.</p>
 
