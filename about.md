@@ -8,7 +8,7 @@ permalink: /about/
 
 ## About
 
-Hi! My name is **Yuwei Ba**. My friends also call me **8D** (sounds like *buddy* in Chinese).
+Hi! My name is **Yuwei Ba**. I'm not a fullstack engineer but I'm familiar with web application development and deployment.
 
 I love computer and programming and learn them on my own.
 
@@ -16,35 +16,31 @@ Life Lover.
 
 ## Projects
 
-I believe in that coding makes life easier and better. I write something I think interesting and useful. You can find them on [Github](https://github.com/ibigbug)
+* [pypi-mirrors.org](https://pypi-mirrors.org)
+* [GArrow](https://github.com/garrow)
 
 
 ## Skills
 I am familiar with:
 
-* Python
-* Golang
-* NodeJS
-* HTTP
-* Javascript
-* CSS / HTML
-* Unix
+* Web application development
+* HTTP protocol
+* Linux and Distributed system
 
-I also know something about:
-
-* C
-* Java
-* Data Structures
-* Programming Languages
-* Objective-C
-* Git
-* MySQL
 
 I want to learn:
 
-* Things I don't know
+* Diving/Swimming
+* Taking Pictures
+* Driving
 
 ## Experiences
+
+### Zalora
+
+* Position: Software Engineer
+* Location: Singapore
+* Dates: May 2017 - Now
 
 ### Alipay
 
@@ -52,7 +48,7 @@ My first job.
 
 * Position: Front End Developer
 * Location: Hangzhou, China
-* Dates: July 2014 - Now
+* Dates: July 2014 - May 2017
 
 ### Tencent
 
