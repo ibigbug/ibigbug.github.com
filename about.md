@@ -8,7 +8,7 @@ permalink: /about/
 
 ## About
 
-Hi! My name is **Yuwei Ba**. I'm not a fullstack engineer but I'm familiar with web application development and deployment.
+Hi! My name is **Yuwei Ba**. I'm a SRE at Microsoft Azure, fan of Web technology, Networking, container(Docker, Kubernetes), Distributed System.
 
 I love computer and programming and learn them on my own.
 
@@ -16,8 +16,7 @@ Life Lover.
 
 ## Projects
 
-* [pypi-mirrors.org](https://pypi-mirrors.org)
-* [GArrow](https://github.com/garrow)
+* [GArrow](https://github.com/ibigbug/garrow)
 
 
 ## Skills
@@ -36,11 +35,17 @@ I want to learn:
 
 ## Experiences
 
+### Microsoft
+
+* Position: SRE
+* Location: Sydney
+* Dates: May 2018 - Present
+
 ### Zalora
 
 * Position: Software Engineer
 * Location: Singapore
-* Dates: May 2017 - Now
+* Dates: May 2017 - Mar 2018
 
 ### Alipay
 
