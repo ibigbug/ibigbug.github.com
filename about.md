@@ -8,65 +8,18 @@ permalink: /about/
 
 ## About
 
-Hi! My name is **Yuwei Ba**. I'm a SRE at Microsoft Azure, fan of Web technology, Networking, container(Docker, Kubernetes), Distributed System.
-
-I love computer and programming and learn them on my own.
-
-Life Lover.
+I'm trying to create some softwares that are useful for other people or just myself.
 
 ## Projects
 
-* [GArrow](https://github.com/ibigbug/garrow)
-
-
-## Skills
-I am familiar with:
-
-* Web application development
-* HTTP protocol
-* Linux and Distributed system
-
-
-I want to learn:
-
-* Diving/Swimming
-* Taking Pictures
-* Driving
+Checkout at [Pubs of ibigbug®](https://pub.ibigbug.online)
 
 ## Experiences
 
-### Microsoft
+I've become a software developer(or engineer) for 5 years.
 
-* Position: SRE
-* Location: Sydney
-* Dates: May 2018 - Present
+I can write web/desktop sotware in different programming languages.
 
-### Zalora
+I used to be a fan of HTTP/Linux/Distributed System/HA and I'm using Windows as my production environment now.
 
-* Position: Software Engineer
-* Location: Singapore
-* Dates: May 2017 - Mar 2018
-
-### Alipay
-
-My first job.
-
-* Position: Front End Developer
-* Location: Hangzhou, China
-* Dates: July 2014 - May 2017
-
-### Tencent
-
-My first internship.
-
-* Position: Front End Developer
-* Location: Shenzhen, China
-* Dates: June 2013 - Sep. 2013
-
-## Education
-
-### Wuhan University
-
-* Major: Electrical Engineering
-* Dates: Sep. 2010 - June 2014
-* Location: Wuhan, China
+I used to hate Java and XML and I still find YAML sucks.

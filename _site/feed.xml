@@ -3,10 +3,10 @@
   <channel>
     <title>8D is Here</title>
     <description>Programming makes life easier and better. Life Lover.</description>
-    <link>http://blog.xiaoba.me/</link>
-    <atom:link href="http://blog.xiaoba.me/feed.xml" rel="self" type="application/rss+xml" />
-    <pubDate>Fri, 07 Sep 2018 00:03:14 +1000</pubDate>
-    <lastBuildDate>Fri, 07 Sep 2018 00:03:14 +1000</lastBuildDate>
+    <link>http://localhost:4000/</link>
+    <atom:link href="http://localhost:4000/feed.xml" rel="self" type="application/rss+xml" />
+    <pubDate>Tue, 16 Jul 2019 01:51:18 +1000</pubDate>
+    <lastBuildDate>Tue, 16 Jul 2019 01:51:18 +1000</lastBuildDate>
     <generator>Jekyll v3.4.3</generator>
     
       <item>
@@ -226,8 +226,8 @@ DebugGC = false
 &lt;/div&gt;
 </description>
         <pubDate>Sat, 02 Sep 2017 00:00:00 +1000</pubDate>
-        <link>http://blog.xiaoba.me/2017/09/02/how-to-play-golang-with-gdb-and-python.html</link>
-        <guid isPermaLink="true">http://blog.xiaoba.me/2017/09/02/how-to-play-golang-with-gdb-and-python.html</guid>
+        <link>http://localhost:4000/2017/09/02/how-to-play-golang-with-gdb-and-python.html</link>
+        <guid isPermaLink="true">http://localhost:4000/2017/09/02/how-to-play-golang-with-gdb-and-python.html</guid>
         
         
         <category>work</category>
@@ -265,8 +265,8 @@ DebugGC = false
 &lt;p&gt;If you really not sure wether your cron job is running, try to install &lt;code class=&quot;highlighter-rouge&quot;&gt;syslog&lt;/code&gt; or &lt;code class=&quot;highlighter-rouge&quot;&gt;rsyslog&lt;/code&gt;, then uncomment the &lt;code class=&quot;highlighter-rouge&quot;&gt;cron&lt;/code&gt; related logging. Then you’ll see something in &lt;code class=&quot;highlighter-rouge&quot;&gt;/var/log/cron.log&lt;/code&gt;, which might be useful.&lt;/p&gt;
 </description>
         <pubDate>Thu, 29 Jun 2017 00:00:00 +1000</pubDate>
-        <link>http://blog.xiaoba.me/2017/06/29/how-to-write-solid-cron-jobs.html</link>
-        <guid isPermaLink="true">http://blog.xiaoba.me/2017/06/29/how-to-write-solid-cron-jobs.html</guid>
+        <link>http://localhost:4000/2017/06/29/how-to-write-solid-cron-jobs.html</link>
+        <guid isPermaLink="true">http://localhost:4000/2017/06/29/how-to-write-solid-cron-jobs.html</guid>
         
         
         <category>work</category>
@@ -284,8 +284,8 @@ DebugGC = false
 &lt;p&gt;互联网越来越发达，热点事件到达公众的视野的渠道越来越多，今天明星吸毒出轨，后天捐款献爱心。是随手爆料还是人为炒作。无论过程是风向一日三变一波三折，还是最终惨遭和谐封杀，这些事件的结局都只有一个，那就是成为人们茶余饭后的谈资，最终在下一个热点事件中被人们渐渐忘却。愤怒的的人似乎越来越多，意味着转发的人也就越来越多，但是始终扛不住热点事件一个接一个，一个人没有那么多精力去关注。何况人们上街的目的只是去吃饭买包，而不是散步。而且随着年龄的增长，渐渐地对于热点事件有些开始麻木了（又说了一句政治不正确的）。一是发生的太多，已经渐渐掌握了规律，所以不再有最初的新鲜感；二是虽未能深入事件内部，但是活在体制之内，也对体制的运作方式有了一定的了解，对事件的发展也能猜到一二，就算是出于 save you a click 的原因，也就不再有年少时候的激情。退一步来讲，就算参与，关注，跟帖转发，除了 click click click 之外，似乎好像也做不了什么有意义的事情了。有人说：你的一次转发，可能会帮助更多的人看清事实的真相。那么我请问你，即便是你亲眼看到的就一定是所谓的真相了么？何况更多的人跟我非亲非故，你怎么知道别人就愿意知道你所谓的真相？这不表示说就要做当代的犬儒主义，不拒绝的冷漠，不反抗的清醒；也不是要解构什么，来彰显自己的与众不同。只是活在体制当中，更希望能够在极度有限的自由空间内，当事情发生在自己上时候，能够坚守住一些东西。换句话说，既然没有能力改变现状，那也不要让自己被改变成讨厌的模样。呵呵，说得容易？废话，说得当然容易。&lt;/p&gt;
 </description>
         <pubDate>Sat, 24 Dec 2016 00:00:00 +1100</pubDate>
-        <link>http://blog.xiaoba.me/2016/12/24/hot-event.html</link>
-        <guid isPermaLink="true">http://blog.xiaoba.me/2016/12/24/hot-event.html</guid>
+        <link>http://localhost:4000/2016/12/24/hot-event.html</link>
+        <guid isPermaLink="true">http://localhost:4000/2016/12/24/hot-event.html</guid>
         
         
         <category>life</category>
@@ -447,8 +447,8 @@ Admin:  guest&lt;/p&gt;
 &lt;p&gt;Hope my little reflection may help some of you Gophers. :)&lt;/p&gt;
 </description>
         <pubDate>Sun, 02 Oct 2016 00:00:00 +1000</pubDate>
-        <link>http://blog.xiaoba.me/2016/10/02/named-return-values-in-golang.html</link>
-        <guid isPermaLink="true">http://blog.xiaoba.me/2016/10/02/named-return-values-in-golang.html</guid>
+        <link>http://localhost:4000/2016/10/02/named-return-values-in-golang.html</link>
+        <guid isPermaLink="true">http://localhost:4000/2016/10/02/named-return-values-in-golang.html</guid>
         
         
         <category>work</category>
@@ -600,8 +600,8 @@ Admin:  guest&lt;/p&gt;
 &lt;p&gt;抄袭自: &lt;a href=&quot;http://nbviewer.ipython.org/url/norvig.com/ipython/Cheryl.ipynb#&quot;&gt;When is Cheryl’s Birthday?&lt;/a&gt;&lt;/p&gt;
 </description>
         <pubDate>Tue, 19 May 2015 00:00:00 +1000</pubDate>
-        <link>http://blog.xiaoba.me/2015/05/19/when-is-cheryls-birthday.html</link>
-        <guid isPermaLink="true">http://blog.xiaoba.me/2015/05/19/when-is-cheryls-birthday.html</guid>
+        <link>http://localhost:4000/2015/05/19/when-is-cheryls-birthday.html</link>
+        <guid isPermaLink="true">http://localhost:4000/2015/05/19/when-is-cheryls-birthday.html</guid>
         
         
         <category>work</category>
@@ -725,8 +725,8 @@ Admin:  guest&lt;/p&gt;
 &lt;p&gt;只要在写法上注意这两点，就可以在很大程度上，保证了针对 AngularJS 的应用的性能达到最高。&lt;/p&gt;
 </description>
         <pubDate>Fri, 27 Feb 2015 00:00:00 +1100</pubDate>
-        <link>http://blog.xiaoba.me/2015/02/27/build-high-performance-angularjs-app.html</link>
-        <guid isPermaLink="true">http://blog.xiaoba.me/2015/02/27/build-high-performance-angularjs-app.html</guid>
+        <link>http://localhost:4000/2015/02/27/build-high-performance-angularjs-app.html</link>
+        <guid isPermaLink="true">http://localhost:4000/2015/02/27/build-high-performance-angularjs-app.html</guid>
         
         
         <category>work</category>
@@ -761,8 +761,8 @@ Admin:  guest&lt;/p&gt;
 &lt;/ul&gt;
 </description>
         <pubDate>Tue, 30 Dec 2014 00:00:00 +1100</pubDate>
-        <link>http://blog.xiaoba.me/2014/12/30/2014-end.html</link>
-        <guid isPermaLink="true">http://blog.xiaoba.me/2014/12/30/2014-end.html</guid>
+        <link>http://localhost:4000/2014/12/30/2014-end.html</link>
+        <guid isPermaLink="true">http://localhost:4000/2014/12/30/2014-end.html</guid>
         
         
         <category>life</category>
@@ -794,8 +794,8 @@ Admin:  guest&lt;/p&gt;
 &lt;p&gt;最开始是写了好多 if-else 的，后来 debug 起来太复杂，转成查表进行状态转移了。表驱动大法好。&lt;/p&gt;
 </description>
         <pubDate>Mon, 10 Nov 2014 00:00:00 +1100</pubDate>
-        <link>http://blog.xiaoba.me/2014/11/10/leetcode-valid-number.html</link>
-        <guid isPermaLink="true">http://blog.xiaoba.me/2014/11/10/leetcode-valid-number.html</guid>
+        <link>http://localhost:4000/2014/11/10/leetcode-valid-number.html</link>
+        <guid isPermaLink="true">http://localhost:4000/2014/11/10/leetcode-valid-number.html</guid>
         
         
         <category>Work</category>
@@ -1527,8 +1527,8 @@ Done: URL URL3 took 4s to get!
 &lt;p&gt;还有很多我没有提到的，举个例子&lt;a href=&quot;https://docs.python.org/3/library/asyncio-task.html#asyncio.Future&quot;&gt;Futures&lt;/a&gt; 和 &lt;a href=&quot;https://github.com/joyent/libuv&quot;&gt;libuv&lt;/a&gt;。还有 &lt;a href=&quot;http://www.youtube.com/watch?v=1coLC-MUCJc&quot;&gt;Guido’s talk on asynchronous IO in Python 3.4&lt;/a&gt;。还有好多内容我忘记提到所以欢迎在评论里面提出推荐。&lt;/p&gt;
 </description>
         <pubDate>Fri, 17 Oct 2014 00:00:00 +1100</pubDate>
-        <link>http://blog.xiaoba.me/2014/10/17/trans-understanding-asynchronous-io-with-python-asyncio-and-nodejs.html</link>
-        <guid isPermaLink="true">http://blog.xiaoba.me/2014/10/17/trans-understanding-asynchronous-io-with-python-asyncio-and-nodejs.html</guid>
+        <link>http://localhost:4000/2014/10/17/trans-understanding-asynchronous-io-with-python-asyncio-and-nodejs.html</link>
+        <guid isPermaLink="true">http://localhost:4000/2014/10/17/trans-understanding-asynchronous-io-with-python-asyncio-and-nodejs.html</guid>
         
         
         <category>work</category>
@@ -1562,8 +1562,8 @@ Done: URL URL3 took 4s to get!
 &lt;p&gt;Unlike phpMyadmin or MySQL workbench, navicat is a ALL-in-ONE application and supports any type of DB engine you use. Once you used Navicat, you wouldn’t want to use any other db manager anymore !&lt;/p&gt;
 </description>
         <pubDate>Wed, 01 Oct 2014 00:00:00 +1000</pubDate>
-        <link>http://blog.xiaoba.me/2014/10/01/navicat-on-mac.html</link>
-        <guid isPermaLink="true">http://blog.xiaoba.me/2014/10/01/navicat-on-mac.html</guid>
+        <link>http://localhost:4000/2014/10/01/navicat-on-mac.html</link>
+        <guid isPermaLink="true">http://localhost:4000/2014/10/01/navicat-on-mac.html</guid>
         
         
         <category>work</category>
