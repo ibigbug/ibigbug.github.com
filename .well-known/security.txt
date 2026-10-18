@@ -1,0 +1,16 @@
+Contact: mailto:contact@yba.dev
+Encryption: https://yba.dev/.well-known/openpgpkey/hu/dj3498u4hyyarh35rkjfnghbjxug6b19?l=contact
+Preferred-Languages: en, zh
+Canonical: https://yba.dev/.well-known/security.txt
+Expires: 2038-05-27T00:00:00.000Z
+
+# Security Principles & Bounty Policy:
+# 1. This is a static site served via GitHub Pages behind Cloudflare CDN. 
+#    Running automated vulnerability scanners (Acunetix, Nessus, SQLMap) 
+#    at 5,000 req/s will only benchmark Cloudflare's WAF and burn your own CPU.
+# 2. No social engineering attacks against the author, friends, or pets.
+# 3. Denial of Service (DoS/DDoS) is not a vulnerability; it just means you bought more bandwidth than me.
+# 4. Bounty: PGP-signed sincere gratitude, a public mention, and a cup of specialty coffee 
+#    (or craft beer) if you happen to be in the same city. No cash bounties.
+# 5. Please encrypt all vulnerability reports using the PGP key above. 
+#    Unencrypted disclosures will deduct 50 AI credits (or your monthly GPU quota).

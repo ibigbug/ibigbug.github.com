@@ -1,0 +1,38 @@
+{
+  "subject": "acct:yba@yba.dev",
+  "aliases": [
+    "acct:yba@social.yba.dev",
+    "acct:contact@yba.dev",
+    "https://social.yba.dev/@yba",
+    "https://social.yba.dev/users/yba"
+  ],
+  "links": [
+    {
+      "rel": "http://webfinger.net/rel/profile-page",
+      "type": "text/html",
+      "href": "https://social.yba.dev/@yba"
+    },
+    {
+      "rel": "self",
+      "type": "application/activity+json",
+      "href": "https://social.yba.dev/users/yba"
+    },
+    {
+      "rel": "http://ostatus.org/schema/1.0/subscribe",
+      "template": "https://social.yba.dev/authorize_interaction?uri={uri}"
+    },
+    {
+      "rel": "https://w3id.org/fep/3b86/Create",
+      "template": "https://social.yba.dev/share?text={content}"
+    },
+    {
+      "rel": "https://w3id.org/fep/3b86/Object",
+      "template": "https://social.yba.dev/authorize_interaction?uri={object}"
+    },
+    {
+      "rel": "http://webfinger.net/rel/avatar",
+      "type": "image/png",
+      "href": "https://files.social.yba.dev/accounts/avatars/110/647/982/586/060/944/original/fcbd170216c254b2.png"
+    }
+  ]
+}

@@ -1,0 +1,26 @@
+[1;36m
+  __   __  ____    _       ____   _______     __
+  \ \ / / | __ )  / \     |  _ \ | ____\ \   / /
+   \ V /  |  _ \ / _ \    | | | ||  _|  \ \ / / 
+    | |   | |_) / ___ \   | |_| || |___  \ V /  
+    |_|   |____/_/   \_\  |____/ |_____|  \_/   
+[0m
+  [1;37mYuwei Ba[0m [90m— Distributed Systems, Security & Photography[0m
+  [90m------------------------------------------------------------[0m
+
+  [1;33m[IDENTITY][0m
+  Contact   : [1;32mcontact@yba.dev[0m
+  Homepage  : [1;36mhttps://yba.dev[0m
+  PGP Key   : [1;37mC4FE882EB5D4A1C9[0m
+  WKD Fetch : [90mgpg --locate-keys contact@yba.dev[0m
+
+  [1;33m[FEDIVERSE & CODE][0m
+  Mastodon  : [1;36m@yba@social.yba.dev[0m [90m(Alias: @yba@yba.dev)[0m
+  GitHub    : [1;36mhttps://github.com/ibigbug[0m
+
+  [1;33m[TERMINAL ENDPOINTS][0m
+  $ curl -sL yba.dev
+  $ curl -sL yba.dev/id.pub
+  $ curl -sL yba.dev/key.asc
+  $ curl -sL yba.dev/.well-known/security.txt
+
